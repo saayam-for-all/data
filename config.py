@@ -1,4 +1,5 @@
 # will keep all url and configurations
 
 
-DATABASE_URI = 'postgresql+psycopg2://username:password@localhost/dbname'
+SQLALCHEMY_DATABASE_URI = 'postgresql://username:password@localhost/dbname'
+SQLALCHEMY_TRACK_MODIFICATIONS=False
