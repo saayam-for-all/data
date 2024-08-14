@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
+import pandas as pd
+
 db = SQLAlchemy()
 
 # Step 1: Define the Model
@@ -27,7 +29,8 @@ def insert_data(df):
     
     db.session.commit()
 
-# Assuming 'df' is your cleaned DataFrame
+df = pd.read_csv('cleaned_emergency_numbers.csv')
+
 insert_data(df)
 
 print("Data has been inserted into the PostgreSQL database using Flask SQLAlchemy.")
