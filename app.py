@@ -3,7 +3,7 @@ from extensions import db
 from datetime import datetime, timedelta
 from Models.FraudRequests import FraudRequests
 import config
-from translation.lang_detection import translate_to_english  # Import the translation logic
+from translation.lang_detection import translate_to_english
 
 app = Flask(__name__)
 
