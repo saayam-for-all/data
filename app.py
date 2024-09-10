@@ -3,7 +3,7 @@ from extensions import db
 from datetime import datetime, timedelta
 from Models.FraudRequests import FraudRequests
 import config
-#from fraud_detection import is_fraudulent_request
+from translation.lang_detection import translate_to_english  # Import the translation logic
 
 app = Flask(__name__)
 
@@ -60,6 +60,24 @@ def check_fraud():
     response = {
         "is_fraud": is_fraud,
         "reason": reason
+    }
+    return jsonify(response), 200
+
+# New API for language detection and translation
+@app.route('/api/translate', methods=['POST'])
+def translate_request_content():
+    data = request.get_json()
+    content = data.get('content', '')
+
+    if not content:
+        return jsonify({"error": "No content provided"}), 400
+
+    # Translate the text to English
+    translated_content = translate_to_english(content)
+    
+    response = {
+        "original": content,
+        "translated": translated_content
     }
     return jsonify(response), 200
 
