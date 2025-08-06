@@ -19,7 +19,7 @@ Before you start, ensure you have the following:
 | Password      | Database password                     | `******`                                             |
 | Database Name | Target database                       | `project_db`                                         |
 
-3. 🔌 How to make connection
+2. 🔌 How to make connection
 ## Using a Database Client (GUI)
 
 - Open your preferred client (e.g., DBeaver, MySQL Workbench).
@@ -33,12 +33,12 @@ Before you start, ensure you have the following:
 -- Test the connection.
 -- Save and connect.
 
-4. 🔒 Credentials Management
+3. 🔒 Credentials Management
 - Do NOT hardcode passwords in scripts.
 - Use AWS Secrets Manager.
 - For local development and testing, you may use .env files
 
-5. 📫 Possible issues and resolution
+4. 📫 Possible issues and resolution
    
 | Issue                            | Cause                         | Resolution                                  |
 | -------------------------------- | ----------------------------- | ------------------------------------------- |
