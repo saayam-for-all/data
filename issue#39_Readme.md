@@ -39,10 +39,11 @@ Before you start, ensure you have the following:
 - For local development and testing, you may use .env files
 
 5. 📫 Possible issues and resolution
+   
 | Issue                            | Cause                         | Resolution                                  |
 | -------------------------------- | ----------------------------- | ------------------------------------------- |
-| `Connection timed out`           | Security group/firewall issue | Allow inbound rules for DB specific port    |
-| `Invalid credentials`            | Wrong username/password       | Verify from AWS console or Secrets Manager  |
-| `FATAL: database does not exist` | Wrong database name           | Check available databases in RDS instance   |
-| `SSL errors`                     | SSL required for connection   | import the SSL credentials in connections   |
+| Connection timed out             | Security group/firewall issue | Allow inbound rules for DB specific port    |
+| Invalid credentials              | Wrong username/password       | Verify from AWS console or Secrets Manager  |
+| FATAL: database does not exist   | Wrong database name           | Check available databases in RDS instance   |
+| SSL errors                       | SSL required for connection   | import the SSL credentials in connections   |
 
