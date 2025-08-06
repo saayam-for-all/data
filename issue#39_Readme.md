@@ -1,4 +1,4 @@
-📌 Overview
+# Overview
 This document explains how to connect to the Amazon RDS instance used in this project. It includes details on prerequisites, connection methods, credentials management, and troubleshooting steps.
 
 1. 🔑 Prerequisites
