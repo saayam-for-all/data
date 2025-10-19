@@ -1,0 +1,57 @@
+name: ML CI Pipeline
+
+on:
+  push:
+    branches: ["test", "dev", "main"]
+
+  pull_request:
+    branches: ["test", "dev", "main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11.3"
+
+      - name: Install Python Virtual Environment
+        run: pip3 install virtualenv
+
+        # Cache Virtual Envrionment step
+      - name: Virtual Environment
+        uses: actions/cache@v3
+        id: cache-venv
+        with:
+          path: .venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            
+      - name: Install Dependencies
+        run: |
+          if [ ! -d ".venv" ]; then
+            python3 -m venv .venv
+          fi
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint with flake8
+        run: |
+          source .venv/bin/activate
+          pip install flake8
+          flake8 *.py --max-line-length=150
+
+        - name: Run pytest
+          run: |
+            source .venv/bin/activate
+            pytest
+
+        
+
+        
