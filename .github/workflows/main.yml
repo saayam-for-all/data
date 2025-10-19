@@ -43,12 +43,15 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          flake8 . --exclude .venv,venv,__pycache__,Models || true
+          flake8 . --max-line-length=150 --exclude .venv,venv,__pycache__,Models
 
       - name: Run pytest
         run: |
-          source .venv/bin/activate
-          pytest
+          if [ -d tests ] || ls -1 test_*.py 2>/dev/null | grep -q . ; then
+            pytest -q
+          else
+            echo "No tests found, skipping pytest"
+          fi
 
         
 
