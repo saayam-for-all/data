@@ -47,10 +47,10 @@ jobs:
           pip install flake8
           flake8 *.py --max-line-length=150
 
-        - name: Run pytest
-          run: |
-            source .venv/bin/activate
-            pytest
+      - name: Run pytest
+        run: |
+          source .venv/bin/activate
+          pytest
 
         
 
