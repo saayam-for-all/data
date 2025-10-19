@@ -45,7 +45,7 @@ jobs:
         run: |
           source .venv/bin/activate
           pip install flake8
-          flake8 . --exclude venv,__pycache__,Models || true
+          flake8 *.py --max-line-length=150
 
       - name: Run pytest
         run: |
