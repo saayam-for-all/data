@@ -1,0 +1,4 @@
+# Flake8 configuration: exclude virtualenvs and large vendor dirs, set line length to 88
+[flake8]
+exclude = .venv,venv,__pycache__,Models
+max-line-length = 88
