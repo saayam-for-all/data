@@ -8,47 +8,61 @@ on:
     branches: ["test", "dev", "main"]
 
 jobs:
-  build:
+  lint-and-test:
+    name: Lint, Format-check and Test
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11]
 
-      - name: Setup Python
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11.3"
+          python-version: ${{ matrix.python-version }}
 
-      - name: Install Python Virtual Environment
-        run: pip3 install virtualenv
-
-        # Cache Virtual Envrionment step
-      - name: Virtual Environment
-        uses: actions/cache@v3
-        id: cache-venv
+      - name: Cache pip
+        uses: actions/cache@v4
         with:
-          path: .venv
+          path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-            
-      - name: Install Dependencies
+
+      - name: Install project deps and CI tools
         run: |
-          if [ ! -d ".venv" ]; then
-            python3 -m venv .venv
-          fi
-          source .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+          # install tooling used by CI
+          python -m pip install flake8 pytest black ruff
+
+      - name: Verify linters installed
+        run: |
+          python -m pip show flake8 || true
+          python -m flake8 --version || true
+          python -m ruff --version || true
+          python -m black --version || true
+
+      - name: Run ruff (fast linter)
+        run: |
+          python -m ruff check .
+
+      - name: Check formatting with black
+        run: |
+          python -m black --check .
 
       - name: Lint with flake8
         run: |
-          flake8 . --max-line-length=150 --exclude .venv,venv,__pycache__,Models
+          # run via python -m to avoid PATH/entrypoint issues
+          python -m flake8 . --max-line-length=150 --exclude .venv,venv,__pycache__,Models
 
-      - name: Run pytest
+      - name: Run pytest (if tests exist)
         run: |
           if [ -d tests ] || ls -1 test_*.py 2>/dev/null | grep -q . ; then
-            pytest -q
+            python -m pytest -q
           else
             echo "No tests found, skipping pytest"
           fi
