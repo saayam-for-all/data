@@ -4,14 +4,15 @@ from datetime import datetime, timedelta
 from Models.FraudRequests import FraudRequests
 import config
 from translation.lang_detection import translate_to_english
+from nonprofit_enrichment import enrich_nonprofit
 
 app = Flask(__name__)
 
 app.config.from_object(config)
 db.init_app(app)
 
-with app.app_context():
-        db.create_all()
+#with app.app_context():
+#        db.create_all()
 
 @app.route('/')
 def home():
@@ -80,6 +81,19 @@ def translate_request_content():
         "translated": translated_content
     }
     return jsonify(response), 200
+
+@app.route('/api/enrich_nonprofit', methods=['POST'])
+def enrich_nonprofit_endpoint():
+    data = request.get_json()
+    name = data.get('name', '')
+    state = data.get('state')
+    
+    if not name:
+        return jsonify({"error": "Nonprofit name required"}), 400
+    
+    result = enrich_nonprofit(name, state)
+    return jsonify(result), 200
+
 
 # Run the application
 if __name__ in "main":
