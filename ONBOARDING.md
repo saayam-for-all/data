@@ -24,7 +24,7 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 |----------|-------|-------|
 | **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib** · **Sana** |
 | **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi** · **Vighnesh** |
-| **Project Management** | Task planning, coordination, timelines | **Janhavi** · **Ritvik** *(confirm name with Janhavi)* |
+| **Project Management** | Task planning, coordination, timelines | **Janhavi** · **Ruthwik** |
 
 **This README is oriented toward the Data Engineering team.** If you are joining Data Analytics, connect with Prachi or Vighnesh for guidance on analytics-specific work.
 
