@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request
-from extensions import db
+from src.extensions import db
 from datetime import datetime, timedelta
-from Models.FraudRequests import FraudRequests
-import config
-from translation.lang_detection import translate_to_english
+from src.models.fraud_requests import FraudRequests
+from src import config
+from src.translation.lang_detection import translate_to_english
 
 app = Flask(__name__)
 
