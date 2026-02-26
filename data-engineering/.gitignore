@@ -18,3 +18,4 @@ htmlcov/
 .coverage
 datasets/raw/
 datasets/cleaned/
+dist/
