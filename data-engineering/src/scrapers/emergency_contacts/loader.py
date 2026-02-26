@@ -1,8 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
 
 import pandas as pd
+import os
 
 db = SQLAlchemy()
+
+# Get the project root directory (data-engineering/)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 # Step 1: Define the Model
 class EmergencyNumber(db.Model):
@@ -29,7 +33,7 @@ def insert_data(df):
     
     db.session.commit()
 
-df = pd.read_csv('cleaned_emergency_numbers.csv')
+df = pd.read_csv(os.path.join(PROJECT_ROOT, 'datasets', 'cleaned', 'cleaned_emergency_numbers.csv'))
 
 insert_data(df)
 

@@ -1,8 +1,12 @@
 import pandas as pd
 import re
+import os
+
+# Get the project root directory (data-engineering/)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 # Step 1: Load the CSV data into a DataFrame
-df = pd.read_csv('emergency_numbers.csv')
+df = pd.read_csv(os.path.join(PROJECT_ROOT, 'datasets', 'raw', 'emergency_numbers.csv'))
 
 # Step 2: Remove duplicate header rows
 # Keep only the first occurrence of the headers
@@ -28,6 +32,6 @@ df['Notes'] = df['Notes'].str.strip()
 df['Country'] = df['Country'].str.title()
 
 # Step 6: Save the cleaned DataFrame to a new CSV file
-df.to_csv('cleaned_emergency_numbers.csv', index=False)
+df.to_csv(os.path.join(PROJECT_ROOT, 'datasets', 'cleaned', 'cleaned_emergency_numbers.csv'), index=False)
 
-print("Data has been cleaned and saved to 'cleaned_emergency_numbers.csv'.")
+print("Data has been cleaned and saved to 'datasets/cleaned/cleaned_emergency_numbers.csv'.")
