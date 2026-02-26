@@ -1,469 +1,278 @@
 # Saayam For All — Data Engineering Team
 
-> **⚠️ Read this entire document before you start working on any task.**
-> It will save you (and us) a lot of time. Seriously.
-
----
-
-## Table of Contents
-
-1. [What is Saayam For All?](#what-is-saayam-for-all)
-2. [How the Organization Works](#how-the-organization-works)
-3. [The Data Engineering Team](#the-data-engineering-team)
-4. [Tech Stack](#tech-stack)
-5. [Repository Structure](#repository-structure)
-6. [How the Data Repo Connects to Other Repos](#how-the-data-repo-connects-to-other-repos)
-7. [Getting Started — Setup & Access](#getting-started--setup--access)
-8. [How to Contribute](#how-to-contribute)
-9. [Beginner Task](#beginner-task)
-10. [Expectations & Formalities](#expectations--formalities)
-11. [Key Contacts](#key-contacts)
-12. [FAQs](#faqs)
+> **⚠️ Read this before you do anything else.** No exceptions.
 
 ---
 
 ## What is Saayam For All?
 
-Saayam For All is a **501(c)(3) nonprofit** building an "Uber for Help" platform — a web and mobile application that connects people in need (beneficiaries) with volunteers and organizations that can help them with basic necessities like food, shelter, healthcare, education, and general advice.
+Saayam For All is a **501(c)(3) nonprofit** building an "Uber for Help" platform — a web and mobile app that connects people in need with volunteers and organizations who can help with food, shelter, healthcare, education, and more.
 
-- **Website (latest features, test env):** [test-saayam.netlify.app](https://test-saayam.netlify.app/)
-- **Website (production):** [saayam.netlify.app](https://saayam.netlify.app/)
-- **GitHub Organization:** [github.com/saayam-for-all](https://github.com/saayam-for-all/)
-- **EIN:** 93-2798273 | **Location:** San Jose, CA
-- **Email:** info@SaayamForAll.org
+- **Test App (latest features):** [test-saayam.netlify.app](https://test-saayam.netlify.app/)
+- **Production App:** [saayam.netlify.app](https://saayam.netlify.app/)
+- **GitHub:** [github.com/saayam-for-all](https://github.com/saayam-for-all/)
 
-### How It Works
-
-A user submits a help request (e.g., "I need emergency food assistance in Austin, TX"). The platform matches them with nearby volunteers and relevant organizations based on category, location, and language preferences. Think of it as **Lyft meets Tinder meets 911** — request help, get matched, get helped.
-
-The platform has four user roles: **Beneficiaries** (help seekers), **Volunteers** (helpers), **Organizations** (registered charities), and **Admins**.
-
-> 💡 **Your first action:** Go to [test-saayam.netlify.app](https://test-saayam.netlify.app/) and explore. Create an account, submit a test help request, look at the categories and subcategories. Understand the product you are building for — this context is essential for every task you work on.
+> 💡 **First thing you should do:** Go to [test-saayam.netlify.app](https://test-saayam.netlify.app/), create an account, submit a test help request, and explore the categories. Understand the product before you touch any code.
 
 ---
 
-## How the Organization Works
+## Team Structure
 
-### Communication
+The **Data** group at Saayam consists of two sub-teams that share one WhatsApp group and one GitHub repo ([data](https://github.com/saayam-for-all/data)):
 
-- **Daily Scrum Call:** Every weekday at **10:00 AM PST** on Zoom, led by **Rao Bhethanabotla**. The Zoom link is posted in the WhatsApp Organization group each morning. This is the single best way to get oriented and unblocked. **If you have received an offer letter, attending this call is mandatory.** If you cannot attend, send your status update to your team's WhatsApp group.
-- **Weekly Meeting — Your Go-To for Questions:** We have a weekly team meeting for a reason. **Save your questions for this meeting first.** Mid-week, people are busy with their own work and responses on WhatsApp can be slow. The meeting is where you get dedicated time with the team to ask questions, get clarifications, and discuss blockers. Use it.
-- **WhatsApp Groups:** This is the secondary communication channel for async updates. You will be added to the main Software group and your team-specific group. If you do have an urgent question mid-week, post in your team group — but set your expectations accordingly.
-- **Important:** Our volunteers are from different countries and time zones. Never call someone directly without checking their availability via WhatsApp first. Even a direct text message might cost money in some countries.
+| Sub-Team | Focus | Leads |
+|----------|-------|-------|
+| **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib** · **Sana** |
+| **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi** · **Vighnesh** |
+| **Project Management** | Task planning, coordination, timelines | **Janhavi** · **Ritvik** *(confirm name with Janhavi)* |
 
-### Meetings & Recordings
-
-- All Zoom meetings are recorded and preserved.
-- All WhatsApp communications are preserved.
-- Product management meetings happen at 1:00 PM PST on Mondays and Fridays.
-
-### Offer Letters
-
-Saayam offers official **volunteering/interning offer letters**. Contact Sri Tejaswi Vadapalli or Sharanya Domakonda for these. If you have received an offer letter, daily scrum attendance and weekly status updates are mandatory. Volunteers who do not attend scrum or send status updates for one week without prior notice will have their offer letter voided.
-
-### Org-Wide Onboarding Wiki
-
-For more detailed information about the organization beyond what is covered here, read the full onboarding guide:
-**[New Volunteer Onboarding Wiki](https://github.com/saayam-for-all/docs/wiki/New-Volunteer-Onboarding)**
+**This README is oriented toward the Data Engineering team.** If you are joining Data Analytics, connect with Prachi or Vighnesh for guidance on analytics-specific work.
 
 ---
 
-## The Data Engineering Team
+## Meetings & Communication
 
-### What We Do
+### Weekly Team Meeting (REQUIRED — #1 Priority)
 
-The Data Engineering team is responsible for building the **data pipeline** that powers Saayam's intelligent features. Our work sits at the center of the platform — we take raw data from various sources, clean and transform it, and make it available for the AI team and the frontend to consume.
+| | |
+|---|---|
+| **When** | Every **Tuesday** — **1:00 PM PST** · **3:00 PM CST** · **4:00 PM EST** |
+| **Who** | Both Data Engineering and Data Analytics |
+| **Where** | Zoom (link shared in WhatsApp group) |
 
-### Team Roles
+This is the most important meeting. This is where you give updates, ask questions, get unblocked, and sync with the team. **Save your questions for this meeting** — mid-week, people get busy and responses take time.
 
-| Role | Responsibilities |
-|------|-----------------|
-| **Team Lead** | Owns the technical direction of the data team. Assigns tasks to volunteers, writes and manages issue descriptions/user stories, reviews and merges PRs, deploys code to AWS Lambda, and is the primary point of contact for cross-team coordination. If you need something, the team lead is your first stop (at the weekly meeting). |
-| **Product Manager (PM)** | Defines *what* we build and *why*. Writes requirement specs, prioritizes the backlog, coordinates with other PMs across the org, and ensures our work aligns with the MVP roadmap. PMs work closely with the team lead to scope tasks and write acceptance criteria. |
-| **Volunteer / Intern** | Does the hands-on development work — writing code, cleaning data, building scripts and Lambdas. Volunteers do **not** self-assign tasks, edit issue descriptions, or write user stories. You express interest in a task, and the team lead or PM assigns you. Your job is to build, test, submit PRs, attend meetings, and communicate your progress. |
+**If you miss 4 team meetings in a row, you will be removed from the group.**
 
-> **In short:** The team lead and PM decide *what* gets worked on and *how* it is scoped. You focus on *building* it. If you have ideas for new tasks or improvements, bring them up at the weekly meeting — we love initiative, we just need it to go through the right channel.
+### Daily Scrum (Org-Wide)
 
-### Our Current Work
+| | |
+|---|---|
+| **When** | Every weekday at **10:00 AM PST** |
+| **Who** | All Saayam tech volunteers |
+| **Led by** | **Rao Bhethanabotla** |
 
-Here is what the team is actively working on:
+This is an org-wide standup. Useful for getting context on what other teams are doing and for getting help from Rao directly. **Mandatory if you have an offer letter.** If you cannot attend, send your status to the WhatsApp group.
 
-| Issue | Title | Status | Description |
-|-------|-------|--------|-------------|
-| [#98](https://github.com/saayam-for-all/data/issues/98) | Aggregate Organization Listings from Multiple Sources | ✅ Completed | Built the `saayam-org-aggregator` Lambda that pulls org data from the Saayam DB and the GenAI Lambda, merges them, and returns a unified list |
-| [#99](https://github.com/saayam-for-all/data/issues/99) | Integrate Org Aggregator to Display Context-Aware Suggestions | 🔄 Open | Wire up the org-aggregator Lambda endpoint to the webapp frontend (cross-team task: data + webapp) |
-| [#100](https://github.com/saayam-for-all/data/issues/100) | Auto-Categorize Help Requests Using Lambda Function | 🔄 Open | Build a Lambda that uses an LLM to classify help requests into the correct category/subcategory |
+### WhatsApp
 
-### The Big Picture — Strategic Direction
+One shared WhatsApp group for both Data Engineering and Data Analytics. This is the primary communication channel. Introduce yourself when you join: name, qualifications, school, location, interests.
 
-The long-term vision for the data team is to build a full data pipeline:
+**Communication etiquette:** Our volunteers are across time zones and countries. Never call someone directly without checking availability via WhatsApp first.
+
+**Escalation chain:** Team WhatsApp group → Software WhatsApp group (if no response in 24 hrs) → Rao Bhethanabotla (408-390-1725).
+
+---
+
+## What the Data Engineering Team Does
+
+We build the **data pipeline** that powers Saayam's intelligent features — scraping, cleaning, aggregating, and serving data so the AI team and frontend can use it.
+
+### Active Work
+
+| Issue | Title | Status |
+|-------|-------|--------|
+| [#98](https://github.com/saayam-for-all/data/issues/98) | Aggregate Organization Listings from Multiple Sources | ✅ Completed |
+| [#99](https://github.com/saayam-for-all/data/issues/99) | Integrate Org Aggregator into Frontend | 🔄 Open (cross-team: data + webapp) |
+| [#100](https://github.com/saayam-for-all/data/issues/100) | Auto-Categorize Help Requests Using Lambda | 🔄 Open |
+
+### Strategic Direction
+
+The long-term pipeline Rao has set:
 
 ```
-PostgreSQL (RDBMS) → S3 Data Lake → Vectorize Data → Vector DB → AI Agent
+PostgreSQL (RDBMS) → S3 Data Lake → Vectorize → Vector DB → AI Agent
 ```
 
-This means periodically moving data from our relational database into an S3 data lake, vectorizing that data, storing it in a vector database, and ultimately powering an AI agent that understands Saayam's data. Future tasks will align with this pipeline.
+Future tasks will align with building out this pipeline.
 
 ---
 
 ## Tech Stack
 
-| Technology | Purpose |
-|-----------|---------|
-| **Python** | Primary language for all data engineering work |
-| **AWS Lambda** | Serverless functions for data processing (deployed by team leads only) |
-| **AWS S3** | Data lake storage for datasets |
-| **PostgreSQL (Aurora)** | Primary relational database |
-| **boto3** | AWS SDK for Python — used to interact with Lambda, S3, etc. |
+| Tech | Purpose |
+|------|---------|
+| **Python** | Primary language |
+| **AWS Lambda** | Serverless functions (team leads deploy — you don't get access) |
+| **AWS S3** | Data lake storage |
+| **PostgreSQL (Aurora)** | Primary database |
+| **boto3** | AWS SDK for Python |
 | **SQLAlchemy** | ORM for database interactions |
 | **pandas** | Data cleaning and manipulation |
-| **Flask** | Lightweight API framework (used in some services) |
-| **Docker** | Containerization for deployment |
+| **Docker** | Containerization |
 
-### Important: Local Development First
+### Local Development First
 
-**You will not get AWS Lambda access as a new volunteer.** This is by design — we cannot give Lambda/S3 access to everyone due to cost and security. Here is how development works:
-
-1. You develop and test everything **locally** on your machine using mock/sample data.
-2. Once your code is working and reviewed, you notify the team lead.
-3. The team lead deploys your code to AWS Lambda.
-
-This means your code should be structured so that AWS-specific calls (boto3, Lambda invocations, S3 reads) can be easily swapped with local mocks.
+**You will not get AWS Lambda/S3 access.** You develop and test locally with mock data. When your code works, let the team leads know — we handle AWS deployment. Structure your code so AWS calls can be easily mocked.
 
 ---
 
 ## Repository Structure
 
+The [data repo](https://github.com/saayam-for-all/data) contains issues for both Data Engineering and Data Analytics, but the codebase is primarily Data Engineering work. Analytics work has generally been implemented directly into the application via Java or Python in other repos.
+
 ```
 data/
-├── README.md                          # This file — start here
-├── KNOWLEDGE_TRANSFER.md              # Team knowledge transfer document
-├── CONTRIBUTING.md                    # Contribution guidelines
-├── requirements.txt                   # Python dependencies
-├── .gitignore                         # Git ignore rules
-│
-├── src/                               # All source code
-│   ├── aggregator/                    # Organization aggregator Lambda (#98)
-│   ├── categorizer/                   # Help request auto-categorizer (#100)
-│   ├── scrapers/                      # Web scraping scripts
-│   │   ├── emergency_contacts/        # Emergency contact data extraction
-│   │   └── ngo/                       # NGO data scrapers (Afghanistan, India, Malaysia, etc.)
-│   ├── models/                        # SQLAlchemy models (FraudRequests, etc.)
-│   ├── translation/                   # Language detection and translation
-│   └── utils/                         # Shared utility functions
-│
-├── data/                              # Data files (CSVs, cleaned datasets)
-│   ├── raw/                           # Unprocessed source data
-│   └── cleaned/                       # Cleaned/processed data ready for use
-│
-├── notebooks/                         # Jupyter notebooks for analysis/EDA
-│
-├── tests/                             # Unit and integration tests
-│
-├── infrastructure/                    # Deployment configs
-│   ├── Dockerfile
-│   ├── docker-compose.yml
-│   ├── deployment.yaml
-│   └── service.yaml
-│
-└── docs/                              # Additional documentation, architecture diagrams
+├── README.md                    # This file
+├── KNOWLEDGE_TRANSFER.md        # Team knowledge transfer doc
+├── requirements.txt
+├── .gitignore
+├── src/                         # All source code
+│   ├── aggregator/              # Org aggregator Lambda (#98)
+│   ├── categorizer/             # Auto-categorizer Lambda (#100)
+│   ├── scrapers/                # Web scraping scripts
+│   │   ├── emergency_contacts/  # Emergency number data pipeline
+│   │   └── ngo/                 # NGO scrapers (Afghanistan, India, Malaysia)
+│   ├── models/                  # SQLAlchemy models
+│   ├── translation/             # Language detection & translation
+│   └── utils/                   # Shared utilities
+├── data/                        # Data files (raw/ and cleaned/)
+├── notebooks/                   # Jupyter notebooks
+├── tests/                       # Unit tests
+└── infrastructure/              # Dockerfile, K8s configs
 ```
 
-> **Note:** The repo is currently being restructured to match this layout. See [PROPOSED_REPO_STRUCTURE.md](./PROPOSED_REPO_STRUCTURE.md) for the migration plan.
+> **Note:** The repo is being restructured to this layout. See `PROPOSED_REPO_STRUCTURE.md` for the migration plan.
 
 ---
 
 ## How the Data Repo Connects to Other Repos
 
-Saayam has 40+ repos but only **7 are actively developed**. Here is how our data repo fits into the bigger picture:
+Only **7 of 40+ repos** are actively developed:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        USER FACING                              │
-│  webapp (React) ←──── api (AWS API Gateway) ←──── mobileapp    │
-└────────┬────────────────────────┬───────────────────────────────┘
-         │                        │
-         ▼                        ▼
-┌─────────────────┐    ┌─────────────────────┐
-│   volunteer      │    │     request          │
-│ (Java/Spring)    │    │  (Help request svc)  │
-│ User profiles    │    │                      │
-└────────┬─────────┘    └──────────┬───────────┘
-         │                         │
-         ▼                         ▼
-┌──────────────────────────────────────────────┐
-│              database (PostgreSQL)            │
-│         Schema, stored procedures            │
-└────────────────────┬─────────────────────────┘
-                     │
-                     ▼
-┌──────────────────────────────────────────────┐
-│         data (Python) ← YOU ARE HERE         │
-│  Scraping, cleaning, aggregation, pipelines  │
-│  Lambdas: org-aggregator, auto-categorizer   │
-└────────────────────┬─────────────────────────┘
-                     │
-                     ▼
-┌──────────────────────────────────────────────┐
-│              ai (Python/Flask)               │
-│  GenAI microservice: Gemini, ChatGPT, Grok  │
-│  Zero-shot classification, AI agent          │
-└──────────────────────────────────────────────┘
+webapp (React) ←── api (API Gateway) ←── mobileapp
+        │                  │
+        ▼                  ▼
+   volunteer          request
+  (Java/Spring)    (Help requests)
+        │                  │
+        ▼                  ▼
+      database (PostgreSQL)
+              │
+              ▼
+    data (Python) ← YOU ARE HERE
+              │
+              ▼
+       ai (Python/Flask — GenAI)
 
-        devsecops — CI/CD, infrastructure, deployment (all teams)
+   devsecops — CI/CD, infra (all teams)
 ```
 
-### Active Repos You Should Know
-
-| Repo | Team | What It Does | Why It Matters to Us |
-|------|------|-------------|---------------------|
-| **[data](https://github.com/saayam-for-all/data)** | Data Engineering | Data pipelines, scraping, Lambdas | **Our repo** |
-| **[webapp](https://github.com/saayam-for-all/webapp)** | Frontend | React web application | Consumes our Lambda endpoints (e.g., org-aggregator) |
-| **[ai](https://github.com/saayam-for-all/ai)** | GenAI | Multi-model AI assistant (Flask) | Downstream consumer — our vectorized data feeds their AI agent |
-| **[api](https://github.com/saayam-for-all/api)** | Backend | AWS API Gateway routing | Routes frontend requests to our Lambdas |
-| **[database](https://github.com/saayam-for-all/database)** | Database | PostgreSQL schema, stored procedures | Source of truth — we extract data from here |
-| **[volunteer](https://github.com/saayam-for-all/volunteer)** | Backend | User/volunteer profile APIs (Java/Spring) | Provides volunteer data we may need to aggregate |
-| **[devsecops](https://github.com/saayam-for-all/devsecops)** | Infrastructure | CI/CD, Docker, Kubernetes, AWS | Manages our deployment pipeline |
+| Repo | Why It Matters to Us |
+|------|---------------------|
+| **[webapp](https://github.com/saayam-for-all/webapp)** | Consumes our Lambda endpoints |
+| **[ai](https://github.com/saayam-for-all/ai)** | We invoke their GenAI Lambda; future: we feed vectorized data to their agent |
+| **[api](https://github.com/saayam-for-all/api)** | Routes frontend requests to our Lambdas |
+| **[database](https://github.com/saayam-for-all/database)** | Source of truth — we extract data from here |
+| **[volunteer](https://github.com/saayam-for-all/volunteer)** | Volunteer data we may aggregate |
+| **[devsecops](https://github.com/saayam-for-all/devsecops)** | Manages our deployment infra |
 
 ---
 
-## Getting Started — Setup & Access
+## Getting Started
 
-### Step 1: Get Access
+### 1. Get Access
 
-1. **Fill out the Access Hub form:** [https://forms.gle/Mg8J3fSvA7AAHVxq5](https://forms.gle/Mg8J3fSvA7AAHVxq5)
-   - This gets you added to the GitHub organization and relevant WhatsApp groups.
-   - Make sure your GitHub profile has your **real name and a profile picture** — this is required for task assignments.
+- Fill out the **[Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5)** to get added to GitHub and WhatsApp.
+- Make sure your GitHub profile has your **real name and profile picture** — required for task assignments.
 
-2. **Join WhatsApp groups:** You will be added to the main Software group and the Data Engineering team group. Introduce yourself with: your full name, qualifications, school, location, and hobbies/interests.
-
-3. **Attend the daily scrum:** 10:00 AM PST on Zoom. Even if you have nothing to report yet, attending helps you understand the org and meet the team.
-
-### Step 2: Set Up Your Local Environment
+### 2. Set Up Locally
 
 ```bash
-# 1. Clone the data repo
 git clone -b dev https://github.com/saayam-for-all/data.git
 cd data
-
-# 2. Create a virtual environment
 python -m venv venv
-source venv/bin/activate        # macOS/Linux
-# OR
-venv\Scripts\activate           # Windows
-
-# 3. Install dependencies
+source venv/bin/activate    # macOS/Linux — or venv\Scripts\activate on Windows
 pip install -r requirements.txt
-
-# 4. Verify your setup
-python --version                # Should be 3.10+
-pip list                        # Confirm packages installed
 ```
 
-### Step 3: Understand the Product
+### 3. Explore the Product
 
-- Visit [test-saayam.netlify.app](https://test-saayam.netlify.app/) and explore.
-- Create an account, submit a help request, see how categories work.
-- Read through the issues in the [data repo](https://github.com/saayam-for-all/data/issues) to understand what work has been done and what is in progress.
+Go to [test-saayam.netlify.app](https://test-saayam.netlify.app/). Submit a help request. Understand the categories.
 
-### Step 4: Complete the Beginner Task
+### 4. Complete the Beginner Task
 
-See the [Beginner Task](#beginner-task) section below. Complete it, submit a PR, and get it reviewed. This is your onboarding checkpoint.
+There is a **beginner task** you must complete before being assigned real work. Check the issues tab for the issue labeled `good first issue` or ask in the team WhatsApp group for the current beginner task.
+
+### 5. Attend the Tuesday Team Meeting
+
+Show up, introduce yourself, and you'll be guided from there.
 
 ---
 
 ## How to Contribute
 
-### Branch Naming Convention
+### Task Assignment
+
+**Do not self-assign tasks.** Do not edit issue descriptions or user stories. Task assignment and issue management are the responsibility of **team leads and project managers**. If you want to work on something, let us know in the team meeting or WhatsApp group and we will assign it to you.
+
+### Branch Naming
 
 ```
 <your_github_username>_<issue_number>_<brief_description>
 ```
-
-**Example:** `saquibb8_100_auto_categorize_requests`
+Example: `saquibb8_100_auto_categorize_requests`
 
 ### Workflow
 
-1. **Find a task:** Check the [Issues tab](https://github.com/saayam-for-all/data/issues) to see what is open. Only issues that are **explicitly marked as active** are available for work.
-2. **Express interest — do NOT self-assign:** Let the team lead know (in the weekly meeting or WhatsApp group) that you are interested in a task. **The team lead or PM will assign you.** Do not assign yourself to issues, and do not edit issue descriptions or user stories — that is the team lead's and PM's responsibility.
-3. **Once assigned, create a branch from `dev`:**
-   ```bash
-   git checkout dev
-   git pull origin dev
-   git checkout -b <your_branch_name>
-   ```
-4. **Develop locally:** Write your code, test with mock/sample data. Do not rely on AWS access.
-5. **Commit with clear messages:**
-   ```bash
-   git add .
-   git commit -m "#100: Add zero-shot classification for help request categorization"
-   ```
-   Always reference the issue number in your commit message.
-6. **Push and create a Pull Request:**
-   ```bash
-   git push origin <your_branch_name>
-   ```
-   Create a PR targeting the `dev` branch (never `main`). Assign reviewers.
-7. **Code review:** Address feedback. PRs require **at least 2 code reviews** before merging.
-8. **Merge:** A team lead or designated member will merge your PR into `dev` after approval.
+1. Get assigned a task by a team lead or PM.
+2. Branch off `dev`: `git checkout -b <your_branch_name>`
+3. Develop and test locally with mock data.
+4. Commit with issue references: `git commit -m "#100: Add classification logic"`
+5. Push and create a PR targeting `dev` (never `main`). Assign reviewers.
+6. Address code review feedback. PRs need **at least 2 reviews**.
+7. Team lead merges after approval.
 
 ### Code Standards
 
-- **Python 3.10+** — use type hints where practical.
-- **Follow PEP 8** — consistent formatting, meaningful variable names.
-- **Write docstrings** for all functions and classes.
-- **No credentials in code** — use environment variables or `.env` files (and add `.env` to `.gitignore`).
-- **No `__pycache__/` or `venv/` in commits** — these must be in `.gitignore`.
-- **Include a `requirements.txt`** update if you add new dependencies.
-- **Test your code** — at minimum, manual testing with sample data. Unit tests are strongly encouraged.
+- Python 3.10+, PEP 8, type hints where practical.
+- Docstrings for all functions and classes.
+- No credentials in code — use `.env` files.
+- Never commit `__pycache__/`, `venv/`, `.env`, or IDE files.
+- Update `requirements.txt` if you add dependencies.
 
 ### What NOT to Do
 
-- ❌ Do not push directly to `main` or `dev`.
-- ❌ Do not commit `__pycache__/`, `venv/`, `.env`, or any IDE-specific files.
-- ❌ Do not commit AWS credentials, API keys, or secrets of any kind.
-- ❌ Do not self-assign tasks. Express interest, and the team lead will assign you.
-- ❌ Do not edit issue descriptions, user stories, or acceptance criteria — that is the team lead's and PM's job.
-- ❌ Do not disappear after being assigned a task. If you cannot continue, let the team know.
+- ❌ Don't push directly to `main` or `dev`.
+- ❌ Don't self-assign tasks or edit issue descriptions.
+- ❌ Don't commit secrets, API keys, or AWS credentials.
+- ❌ Don't disappear after being assigned a task.
 
 ---
 
-## Beginner Task
+## Expectations
 
-### Nonprofit Data Cleaning Exercise
+### Accountability
 
-**Objective:** Demonstrate that you can set up the development environment, work with Python and pandas, and follow the contribution workflow.
+We'll be real with you: **97% of volunteers who join don't work consistently.** We're not trying to be harsh — we just need reliability. Here are the rules:
 
-#### What You Need to Do
-
-1. **Create a sample CSV file** called `sample_nonprofits.csv` with the following columns:
-   ```
-   name, city, state, category, website, phone
-   ```
-   Include at least **15 rows** of sample nonprofit data. Intentionally include these data quality issues:
-   - 3-4 duplicate rows (exact or near-duplicates with slight name variations like "Red Cross" vs "red cross" vs "The Red Cross")
-   - 2-3 rows with missing fields (empty city, missing phone, etc.)
-   - Inconsistent formatting (e.g., "CA" vs "California" vs "ca", phone numbers in different formats)
-   - Leading/trailing whitespace in some fields
-
-2. **Write a Python script** called `clean_nonprofits.py` that:
-   - Reads the sample CSV using pandas
-   - Normalizes text fields (consistent casing, strip whitespace)
-   - Standardizes state names (e.g., all to 2-letter abbreviations)
-   - Standardizes phone number formatting (e.g., all to `(XXX) XXX-XXXX`)
-   - Removes duplicate organizations (case-insensitive matching on name + city)
-   - Handles missing data appropriately (fill, flag, or drop with justification)
-   - Outputs a cleaned CSV called `cleaned_nonprofits.csv`
-   - Prints a summary: total rows before, total rows after, duplicates removed, missing values handled
-
-3. **Submit a PR** following the contribution guidelines above. Your branch should be named:
-   ```
-   <your_username>_beginner_task_data_cleaning
-   ```
-
-#### Why This Task?
-
-This exercise mirrors the real work our team does. For example, the `Emergency Contact/EDA.py` script in this repo does exactly this kind of work — cleaning raw scraped data, handling duplicates, normalizing formats, and preparing data for database insertion. If you can do this, you can contribute to real tasks.
-
-#### Acceptance Criteria
-
-- [ ] Script runs without errors on Python 3.10+
-- [ ] Sample CSV contains realistic data with intentional quality issues
-- [ ] All data quality issues are handled with clear logic
-- [ ] Output CSV is clean and consistent
-- [ ] Code follows PEP 8 and includes docstrings
-- [ ] PR follows the branch naming and commit message conventions
-- [ ] A brief summary is included in the PR description explaining your approach
-
----
-
-## Expectations & Formalities
-
-### Time Commitment
-
-This is a volunteer/intern position. We understand you have other commitments. However, **consistency matters more than hours**. We would rather you commit to 5 hours/week reliably than promise 20 and disappear.
+- **If you are assigned a task and have no updates, no heads up, and no valid reason — you will be removed from the task.**
+- **If you miss 4 weekly team meetings in a row — you will be removed from the group.**
+- If life gets in the way, just tell us. Communication is everything. Nobody will be upset if you need time off — what causes problems is silence.
 
 ### Timesheets
 
-All hours must be logged in the **Google Sheet** shared in the WhatsApp Organization group every Monday. Your entry must include:
-
-- Your name
-- Hours worked that week
-- Team name (Data Engineering)
-- A clickable GitHub issue URL for what you worked on
-- A brief description of tasks completed
-
-**Deadline:** All entries must be submitted by **Tuesday end of day**. The submission window closes **Wednesday at 12:00 AM EST**. Late submissions are not accepted.
-
-### Daily Scrum
-
-- **When:** 10:00 AM PST, every weekday
-- **Where:** Zoom (link posted in WhatsApp Organization group)
-- **What to share:** What you did since the last scrum, what you plan to do today, any blockers
-- **Mandatory** if you have an offer letter. If you cannot attend, send your status to the team WhatsApp group.
-- The meeting starts 2 minutes early for icebreaking and has a 2-minute grace period. If there is no quorum, it wraps up after 10 minutes.
-- **Show your face** — cameras on is encouraged.
+Log your hours weekly in the **Google Sheet** shared in the WhatsApp Organization group every Monday:
+- Your name, hours worked, team name, GitHub issue URL, brief task description.
+- **Deadline:** Tuesday EOD. Window closes **Wednesday 12:00 AM EST**. No late submissions.
 
 ### Pair Programming
 
-Saayam follows a **pair programming model**. Most tasks are assigned to 2 or more people. This means:
-
-- You are never working alone on a task — coordinate with your pair.
-- If you need to step away, inform your pair programmer and your team lead.
-- Never abandon a task without informing the team. This is taken seriously.
-
-### What Gets You Removed
-
-To be direct: **97% of volunteers who join do not work consistently.** People sign up, attend one meeting, pick up a task, and vanish. Here is what will get your offer letter voided:
-
-- Not attending scrum and not sending status updates for 1 week without prior notice.
-- Picking up a task and disappearing without informing anyone.
-- Not logging timesheets.
-
-We are not trying to be harsh — we just need reliability. If life gets in the way, just let us know. Communication is everything.
+Most tasks are assigned to 2+ people. Coordinate with your pair. If you need to step away, tell your pair and your team lead.
 
 ---
 
 ## Key Contacts
 
-| Role | Who | How to Reach |
-|------|-----|-------------|
-| **Org Lead / Daily Scrum** | Rao Bhethanabotla | WhatsApp: (408) 390-1725 — escalation only, try team group first |
-| **Data Engineering Team Lead** | _Ask in team WhatsApp group_ | Team WhatsApp group |
+| Role | Who | Reach Via |
+|------|-----|-----------|
+| **Data Engineering Leads** | **Saquib** · **Sana** | Team WhatsApp group |
+| **Data Analytics Leads** | **Prachi** · **Vighnesh** | Team WhatsApp group |
+| **Project Managers** | **Janhavi** · **Ritvik** | Team WhatsApp group |
+| **Org Lead / Scrum** | **Rao Bhethanabotla** | (408) 390-1725 — escalation only |
 | **Offer Letters** | Sri Tejaswi Vadapalli / Sharanya Domakonda | WhatsApp |
-| **GitHub/Access Issues** | Fill out [Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5) | Google Form |
-
-### Escalation Chain
-
-1. **Save it for the weekly team meeting** — this is your first stop for questions, clarifications, and blockers
-2. If it is urgent and cannot wait → post in your **Data Engineering team WhatsApp group**
-3. If no response in 24 hours → post in the **Software WhatsApp group**
-4. If still unresolved → escalate to **Rao Bhethanabotla**
-
----
-
-## FAQs
-
-**Q: I do not have AWS access. How do I test my Lambda code?**
-A: You develop and test locally using mock/sample data. Structure your code so that AWS-specific calls (boto3, Lambda invocations, S3 reads) can be easily swapped with local mocks. When your code works locally, the team lead will deploy it to AWS.
-
-**Q: I want to work on a task but it already has people assigned. Can I still join?**
-A: Yes — Saayam encourages pair programming, and tasks can have up to 10 assignees. Comment on the issue and ask in the team group.
-
-**Q: I need to take a break from volunteering. What should I do?**
-A: Just let your team lead and pair programmer know. Communicate proactively — nobody will be upset if you need time off. What causes problems is disappearing without a word.
-
-**Q: What branch should I work off of?**
-A: Always branch off `dev`. Never work directly on `main` (production) or push to it.
-
-**Q: How do I get my code deployed to AWS?**
-A: Once your PR is merged into `dev` and tested, notify the team lead. They will handle wrapping your code into a Lambda function and deploying it.
-
-**Q: What if I am stuck and need help?**
-A: Bring it up at the weekly team meeting — that is exactly what it is for. If it is truly urgent and cannot wait, post in the team WhatsApp group. But keep in mind that mid-week, people are heads-down on their own work, so responses may be slow. The daily 10 AM PST scrum with Rao is also a good place to raise blockers.
-
-**Q: I am interested in another team (frontend, AI, etc.). Can I switch?**
-A: Absolutely. Talk to your current team lead and the lead of the team you want to join. You can even be on multiple teams if you want.
+| **Access Issues** | [Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5) | Google Form |
 
 ---
 
@@ -471,15 +280,13 @@ A: Absolutely. Talk to your current team lead and the lead of the team you want 
 
 | Resource | Link |
 |----------|------|
-| Test App (latest features) | [test-saayam.netlify.app](https://test-saayam.netlify.app/) |
+| Test App | [test-saayam.netlify.app](https://test-saayam.netlify.app/) |
 | Production App | [saayam.netlify.app](https://saayam.netlify.app/) |
-| GitHub Organization | [github.com/saayam-for-all](https://github.com/saayam-for-all/) |
 | Data Repo Issues | [github.com/saayam-for-all/data/issues](https://github.com/saayam-for-all/data/issues) |
 | Onboarding Wiki | [New Volunteer Onboarding](https://github.com/saayam-for-all/docs/wiki/New-Volunteer-Onboarding) |
 | Access Hub Form | [Google Form](https://forms.gle/Mg8J3fSvA7AAHVxq5) |
 | Architecture Wiki | [Architecture](https://github.com/saayam-for-all/docs/wiki/Architecture) |
 | Saayam YouTube | [youtube.com/@SaayamForAll1](https://www.youtube.com/@SaayamForAll1) |
-| Saayam Proposal Slides | [Google Slides](https://docs.google.com/presentation/d/19Uju43jUDaeaPip7yW1x3tXl_Tkw1jVFP6LL-55psZU/edit#slide=id.p1) |
 
 ---
 
