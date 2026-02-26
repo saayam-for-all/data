@@ -1,5 +1,5 @@
 from datetime import datetime
-from extensions import db
+from src.extensions import db
 
 class FraudRequests(db.Model):
     __tablename__ = 'fraud_requests'
