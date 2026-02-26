@@ -47,14 +47,15 @@ The platform has four user roles: **Beneficiaries** (help seekers), **Volunteers
 ### Communication
 
 - **Daily Scrum Call:** Every weekday at **10:00 AM PST** on Zoom, led by **Rao Bhethanabotla**. The Zoom link is posted in the WhatsApp Organization group each morning. This is the single best way to get oriented and unblocked. **If you have received an offer letter, attending this call is mandatory.** If you cannot attend, send your status update to your team's WhatsApp group.
--**Weekly Team Meet⚠️:** Every week at **03:00 PM CST** 
-- **WhatsApp Groups:** This is the primary communication channel. You will be added to the main group and Data Engineering/Analytics group. Always post questions in Data Engineering/Analytics group first. If no response within 24 hours, escalate to the main group. First escalate to Team Leads and final escalation goes to Rao.
+- **Weekly Meeting — Your Go-To for Questions:** We have a weekly team meeting for a reason. **Save your questions for this meeting first.** Mid-week, people are busy with their own work and responses on WhatsApp can be slow. The meeting is where you get dedicated time with the team to ask questions, get clarifications, and discuss blockers. Use it.
+- **WhatsApp Groups:** This is the secondary communication channel for async updates. You will be added to the main Software group and your team-specific group. If you do have an urgent question mid-week, post in your team group — but set your expectations accordingly.
 - **Important:** Our volunteers are from different countries and time zones. Never call someone directly without checking their availability via WhatsApp first. Even a direct text message might cost money in some countries.
 
 ### Meetings & Recordings
 
 - All Zoom meetings are recorded and preserved.
 - All WhatsApp communications are preserved.
+- Product management meetings happen at 1:00 PM PST on Mondays and Fridays.
 
 ### Offer Letters
 
@@ -72,6 +73,16 @@ For more detailed information about the organization beyond what is covered here
 ### What We Do
 
 The Data Engineering team is responsible for building the **data pipeline** that powers Saayam's intelligent features. Our work sits at the center of the platform — we take raw data from various sources, clean and transform it, and make it available for the AI team and the frontend to consume.
+
+### Team Roles
+
+| Role | Responsibilities |
+|------|-----------------|
+| **Team Lead** | Owns the technical direction of the data team. Assigns tasks to volunteers, writes and manages issue descriptions/user stories, reviews and merges PRs, deploys code to AWS Lambda, and is the primary point of contact for cross-team coordination. If you need something, the team lead is your first stop (at the weekly meeting). |
+| **Product Manager (PM)** | Defines *what* we build and *why*. Writes requirement specs, prioritizes the backlog, coordinates with other PMs across the org, and ensures our work aligns with the MVP roadmap. PMs work closely with the team lead to scope tasks and write acceptance criteria. |
+| **Volunteer / Intern** | Does the hands-on development work — writing code, cleaning data, building scripts and Lambdas. Volunteers do **not** self-assign tasks, edit issue descriptions, or write user stories. You express interest in a task, and the team lead or PM assigns you. Your job is to build, test, submit PRs, attend meetings, and communicate your progress. |
+
+> **In short:** The team lead and PM decide *what* gets worked on and *how* it is scoped. You focus on *building* it. If you have ideas for new tasks or improvements, bring them up at the weekly meeting — we love initiative, we just need it to go through the right channel.
 
 ### Our Current Work
 
@@ -228,8 +239,6 @@ Saayam has 40+ repos but only **7 are actively developed**. Here is how our data
 
 3. **Attend the daily scrum:** 10:00 AM PST on Zoom. Even if you have nothing to report yet, attending helps you understand the org and meet the team.
 
-4. **Attend the weekly team meets:** 3:00 PM CST.
-
 ### Step 2: Set Up Your Local Environment
 
 ```bash
@@ -275,9 +284,9 @@ See the [Beginner Task](#beginner-task) section below. Complete it, submit a PR,
 
 ### Workflow
 
-1. **Pick an issue:** Check the [Issues tab](https://github.com/saayam-for-all/data/issues). Only work on issues that are **explicitly open and active**. If unsure, ask in the team WhatsApp group.
-2. **Assign yourself:** Comment on the issue that you are picking it up. Wait for confirmation from a team lead before starting.
-3. **Create a branch from `dev`:**
+1. **Find a task:** Check the [Issues tab](https://github.com/saayam-for-all/data/issues) to see what is open. Only issues that are **explicitly marked as active** are available for work.
+2. **Express interest — do NOT self-assign:** Let the team lead know (in the weekly meeting or WhatsApp group) that you are interested in a task. **The team lead or PM will assign you.** Do not assign yourself to issues, and do not edit issue descriptions or user stories — that is the team lead's and PM's responsibility.
+3. **Once assigned, create a branch from `dev`:**
    ```bash
    git checkout dev
    git pull origin dev
@@ -313,8 +322,9 @@ See the [Beginner Task](#beginner-task) section below. Complete it, submit a PR,
 - ❌ Do not push directly to `main` or `dev`.
 - ❌ Do not commit `__pycache__/`, `venv/`, `.env`, or any IDE-specific files.
 - ❌ Do not commit AWS credentials, API keys, or secrets of any kind.
-- ❌ Do not pick up a task without commenting on the issue first.
-- ❌ Do not disappear after picking up a task. If you cannot continue, let the team know.
+- ❌ Do not self-assign tasks. Express interest, and the team lead will assign you.
+- ❌ Do not edit issue descriptions, user stories, or acceptance criteria — that is the team lead's and PM's job.
+- ❌ Do not disappear after being assigned a task. If you cannot continue, let the team know.
 
 ---
 
@@ -425,9 +435,10 @@ We are not trying to be harsh — we just need reliability. If life gets in the 
 
 ### Escalation Chain
 
-1. Post in your **Data Engineering team WhatsApp group**
-2. If no response in 24 hours → post in the **Software WhatsApp group**
-3. If still unresolved → escalate to **Rao Bhethanabotla**
+1. **Save it for the weekly team meeting** — this is your first stop for questions, clarifications, and blockers
+2. If it is urgent and cannot wait → post in your **Data Engineering team WhatsApp group**
+3. If no response in 24 hours → post in the **Software WhatsApp group**
+4. If still unresolved → escalate to **Rao Bhethanabotla**
 
 ---
 
@@ -448,8 +459,8 @@ A: Always branch off `dev`. Never work directly on `main` (production) or push t
 **Q: How do I get my code deployed to AWS?**
 A: Once your PR is merged into `dev` and tested, notify the team lead. They will handle wrapping your code into a Lambda function and deploying it.
 
-**Q: What if I am stuck and nobody is responding?**
-A: Attend the daily 10 AM PST scrum call — it is the fastest way to get help. Rao personally helps unblock people during these calls.
+**Q: What if I am stuck and need help?**
+A: Bring it up at the weekly team meeting — that is exactly what it is for. If it is truly urgent and cannot wait, post in the team WhatsApp group. But keep in mind that mid-week, people are heads-down on their own work, so responses may be slow. The daily 10 AM PST scrum with Rao is also a good place to raise blockers.
 
 **Q: I am interested in another team (frontend, AI, etc.). Can I switch?**
 A: Absolutely. Talk to your current team lead and the lead of the team you want to join. You can even be on multiple teams if you want.
