@@ -26,8 +26,6 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 | **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi Deshpande** · **Vighnesh Sridhar** |
 | **Project Management** | Task planning, coordination, timelines | **Janhavi Chavan** · **Ruthwik Dhaipulle** |
 
-**This README is oriented toward the Data Engineering team.** If you are joining Data Analytics, connect with Prachi or Vighnesh for guidance on analytics-specific work.
-
 ---
 
 ## Meetings & Communication
