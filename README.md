@@ -66,11 +66,11 @@ One shared WhatsApp group for both Data Engineering and Data Analytics. This is 
 
 We build the **data pipeline** that powers Saayam's intelligent features — scraping, cleaning, aggregating, and serving data so the AI team and frontend can use it.
 
-For current tasks and roadmap, see **[TASK_TRACKER.md](TASK_TRACKER.md)**.
+For current tasks and roadmap, see **[TASK_TRACKER.md](data-engineering/TASK_TRACKER.md)**.
 
-For how to work in this codebase (setup, repo structure, code standards, where to put files), see **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+For how to work in this codebase (setup, repo structure, code standards, where to put files), see **[CONTRIBUTING.md](data-engineering/CONTRIBUTING.md)**.
 
-For deep technical context, architecture, and leadership handoff info, see **[KNOWLEDGE_TRANSFER.md](KNOWLEDGE_TRANSFER.md)**.
+For deep technical context, architecture, and leadership handoff info, see **[KNOWLEDGE_TRANSFER.md](data-engineering/KNOWLEDGE_TRANSFER.md)**.
 
 ---
 
