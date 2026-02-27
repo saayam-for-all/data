@@ -22,9 +22,9 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 
 | Sub-Team | Focus | Leads |
 |----------|-------|-------|
-| **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib** · **Sana** |
-| **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi** · **Vighnesh** |
-| **Project Management** | Task planning, coordination, timelines | **Janhavi** · **Ruthwik** |
+| **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib Baig** · **Sana Desai** |
+| **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi Deshpande** · **Vighnesh Sridhar** |
+| **Project Management** | Task planning, coordination, timelines | **Janhavi Chavan** · **Ruthwik Dhaipulle** |
 
 **This README is oriented toward the Data Engineering team.** If you are joining Data Analytics, connect with Prachi or Vighnesh for guidance on analytics-specific work.
 
@@ -36,7 +36,7 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 
 | | |
 |---|---|
-| **When** | Every **Tuesday** — **1:00 PM PST** · **3:00 PM CST** · **4:00 PM EST** |
+| **When** | Every **Tuesday** — **1:00 PM PST**|
 | **Who** | Both Data Engineering and Data Analytics |
 | **Where** | Zoom (link shared in WhatsApp group) |
 
