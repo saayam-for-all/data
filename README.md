@@ -127,11 +127,11 @@ Most tasks are assigned to 2+ people. Coordinate with your pair. If you need to 
 
 | Role | Who | Reach Via |
 |------|-----|-----------|
-| **Data Engineering Leads** | **Saquib** · **Sana** | Team WhatsApp group |
-| **Data Analytics Leads** | **Prachi** · **Vighnesh** | Team WhatsApp group |
-| **Project Managers** | **Janhavi** · **Ritvik** | Team WhatsApp group |
+| **Data Engineering Leads** | **Saquib Baig** · **Sana Desai** | Team WhatsApp group |
+| **Data Analytics Leads** | **Prachi Deshpande** · **Vighnesh Sridhar** | Team WhatsApp group |
+| **Project Managers** | **Janhavi Chavan** · **Ritvik Dhaipulle** | Team WhatsApp group |
 | **Org Lead / Scrum** | **Rao Bhethanabotla** | (408) 390-1725 — escalation only |
-| **Offer Letters** | Sri Tejaswi Vadapalli / Sharanya Domakonda | WhatsApp |
+| **Offer Letters** | **Sri Tejaswi Vadapalli** / **Sharanya Gowda** | WhatsApp |
 | **Access Issues** | [Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5) | Google Form |
 
 ---
