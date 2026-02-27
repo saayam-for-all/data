@@ -1,44 +1,170 @@
 # Contributing to Data Engineering
 
-Thank you for your interest in contributing to the Data Engineering project!
+> **This is your day-to-day reference for working in this codebase.** Repo structure, setup, code standards, where to put files, and how to submit work — it's all here.
 
-## Getting Started
+---
 
-1. Clone the repository
-2. Create a virtual environment: `python -m venv venv`
-3. Activate the virtual environment:
-   - Windows: `venv\Scripts\activate`
-   - Linux/Mac: `source venv/bin/activate`
-4. Install dependencies: `pip install -r requirements.txt`
-5. Copy `.env.example` to `.env` and fill in your environment variables
+## Local Setup
 
-## Project Structure
+```bash
+git clone -b dev https://github.com/saayam-for-all/data.git
+cd data
+python -m venv venv
+source venv/bin/activate    # macOS/Linux — or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+cp .env.example .env        # Fill in your environment variables
+```
+
+### Local Development First
+
+**You will not get AWS Lambda/S3 access.** You develop and test locally with mock data. When your code works, let the team leads know — they handle AWS deployment. Structure your code so AWS calls can be easily mocked.
+
+---
+
+## Tech Stack
+
+| Tech | Purpose |
+|------|---------|
+| **Python** | Primary language |
+| **AWS Lambda** | Serverless functions (team leads deploy — you don't get access) |
+| **AWS S3** | Data lake storage |
+| **PostgreSQL (Aurora)** | Primary database |
+| **boto3** | AWS SDK for Python |
+| **SQLAlchemy** | ORM for database interactions |
+| **pandas** | Data cleaning and manipulation |
+| **Docker** | Containerization |
+
+---
+
+## Repository Structure
 
 ```
 data-engineering/
-├── src/                    # Source code
-│   ├── aggregator/         # Org aggregator Lambda
-│   ├── categorizer/        # Auto-categorizer Lambda
-│   ├── scrapers/           # Web scrapers
-│   ├── models/             # Data models
-│   ├── translation/        # Translation utilities
-│   └── utils/              # Shared utilities
-├── datasets/               # Data files (gitignored)
-├── notebooks/              # Jupyter notebooks
-├── tests/                  # Test files
-├── infrastructure/         # Docker, K8s configs
-└── scripts/                # Deployment scripts
+├── .env.example
+├── .gitignore
+├── CONTRIBUTING.md
+├── KNOWLEDGE_TRANSFER.md
+├── README.md
+├── TASK_TRACKER.md
+├── requirements.txt
+│
+├── datasets/
+│   ├── cleaned/
+│   └── raw/
+│
+├── infrastructure/
+│   ├── deployment.yaml
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   └── service.yaml
+│
+├── notebooks/
+│   └── analytics_sql_and_visualizations.ipynb
+│
+├── scripts/
+│   └── deploy/
+│       ├── deploy_aggregator.sh
+│       └── deploy_categorizer.sh
+│
+├── src/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── config.py
+│   ├── extensions.py
+│   ├── main.py
+│   │
+│   ├── aggregator/
+│   │   ├── __init__.py
+│   │   ├── db_client.py
+│   │   ├── genai_client.py
+│   │   ├── handler.py
+│   │   ├── merger.py
+│   │   └── requirements.txt
+│   │
+│   ├── categorizer/
+│   │   ├── __init__.py
+│   │   ├── categories.py
+│   │   ├── classifier.py
+│   │   ├── handler.py
+│   │   └── requirements.txt
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── fraud_requests.py
+│   │
+│   ├── scrapers/
+│   │   ├── __init__.py
+│   │   ├── emergency_contacts/
+│   │   │   ├── __init__.py
+│   │   │   ├── cleaner.py
+│   │   │   ├── loader.py
+│   │   │   └── scraper.py
+│   │   └── ngo/
+│   │       ├── __init__.py
+│   │       ├── afghanistan.py
+│   │       ├── india.py
+│   │       └── malaysia.py
+│   │
+│   ├── translation/
+│   │   ├── __init__.py
+│   │   └── lang_detection.py
+│   │
+│   └── utils/
+│       └── __init__.py
+│
+└── tests/
+
+data-analytics/
+├── README.md
+└── notebooks/
 ```
 
-## Code Style
+---
 
-- Follow PEP 8 guidelines
-- Use snake_case for file names and functions
-- Add docstrings to functions and classes
+## How to Contribute
+
+### Task Assignment
+
+**Do not self-assign tasks.** Do not edit issue descriptions or user stories. Task assignment and issue management are the responsibility of **team leads and project managers**. If you want to work on something, let us know in the team meeting or WhatsApp group and we will assign it to you.
+
+### Branch Naming
+
+```
+<your_github_username>_<issue_number>_<brief_description>
+```
+Example: `saquibb8_100_auto_categorize_requests`
+
+### Workflow
+
+1. Get assigned a task by a team lead or PM.
+2. Branch off `dev`: `git checkout -b <your_branch_name>`
+3. Develop and test locally with mock data.
+4. Commit with issue references: `git commit -m "#100: Add classification logic"`
+5. Push and create a PR targeting `dev` (never `main`). Assign reviewers.
+6. Address code review feedback. PRs need **at least 2 reviews**.
+7. Team lead merges after approval.
+
+### What NOT to Do
+
+- ❌ Don't push directly to `main` or `dev`.
+- ❌ Don't self-assign tasks or edit issue descriptions.
+- ❌ Don't commit secrets, API keys, or AWS credentials.
+- ❌ Don't disappear after being assigned a task.
+
+---
+
+## Code Standards
+
+- Python 3.10+, PEP 8, type hints where practical.
+- `snake_case` for file names and functions, `PascalCase` for class names.
+- Docstrings for all functions and classes.
+- No credentials in code — use `.env` files.
+- Never commit `__pycache__/`, `venv/`, `.env`, or IDE files.
+- Update `requirements.txt` if you add dependencies.
+
+---
 
 ## Where to Create New Files
-
-To maintain a clean project structure, please follow these guidelines when adding new code.
 
 ### Adding a New Lambda Function
 
@@ -112,8 +238,6 @@ src/models/
 └── your_model.py        # Add new models here
 ```
 
-**Naming:** Use snake_case for filenames, PascalCase for class names.
-
 ### Working with the Database Layer (Future: Vector Store Migration)
 
 > **Heads up:** We're planning to migrate from PostgreSQL to a vector database (Redis, Pinecone, etc.) for certain use cases.
@@ -172,9 +296,6 @@ src/utils/
 | Deploy script | `scripts/deploy/` |
 | Docker/K8s config | `infrastructure/` |
 
-## Pull Request Process
+---
 
-1. Create a feature branch from `dev`
-2. Make your changes
-3. Update documentation if needed
-4. Submit a PR for review
+*Last updated: February 2026*
