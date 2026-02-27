@@ -80,6 +80,7 @@ For deep technical context, architecture, and leadership handoff info, see **[KN
 
 - Fill out the **[Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5)** to get added to GitHub and WhatsApp.
 - Make sure your GitHub profile has your **real name and profile picture** — required for task assignments.
+- The Repository name of Data Engineering/Analytics group is "Data"
 
 ### 2. Set Up the Repo
 
