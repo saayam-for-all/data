@@ -68,105 +68,11 @@ One shared WhatsApp group for both Data Engineering and Data Analytics. This is 
 
 We build the **data pipeline** that powers Saayam's intelligent features — scraping, cleaning, aggregating, and serving data so the AI team and frontend can use it.
 
-### Active Work
+For current tasks and roadmap, see **[TASK_TRACKER.md](TASK_TRACKER.md)**.
 
-| Issue | Title | Status |
-|-------|-------|--------|
-| [#98](https://github.com/saayam-for-all/data/issues/98) | Aggregate Organization Listings from Multiple Sources | ✅ Completed |
-| [#99](https://github.com/saayam-for-all/data/issues/99) | Integrate Org Aggregator into Frontend | 🔄 Open (cross-team: data + webapp) |
-| [#100](https://github.com/saayam-for-all/data/issues/100) | Auto-Categorize Help Requests Using Lambda | 🔄 Open |
+For how to work in this codebase (setup, repo structure, code standards, where to put files), see **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
-### Strategic Direction
-
-The long-term pipeline Rao has set:
-
-```
-PostgreSQL (RDBMS) → S3 Data Lake → Vectorize → Vector DB → AI Agent
-```
-
-Future tasks will align with building out this pipeline.
-
----
-
-## Tech Stack
-
-| Tech | Purpose |
-|------|---------|
-| **Python** | Primary language |
-| **AWS Lambda** | Serverless functions (team leads deploy — you don't get access) |
-| **AWS S3** | Data lake storage |
-| **PostgreSQL (Aurora)** | Primary database |
-| **boto3** | AWS SDK for Python |
-| **SQLAlchemy** | ORM for database interactions |
-| **pandas** | Data cleaning and manipulation |
-| **Docker** | Containerization |
-
-### Local Development First
-
-**You will not get AWS Lambda/S3 access.** You develop and test locally with mock data. When your code works, let the team leads know — we handle AWS deployment. Structure your code so AWS calls can be easily mocked.
-
----
-
-## Repository Structure
-
-The [data repo](https://github.com/saayam-for-all/data) contains issues for both Data Engineering and Data Analytics, but the codebase is primarily Data Engineering work. Analytics work has generally been implemented directly into the application via Java or Python in other repos.
-
-```
-data/
-├── README.md                    # This file
-├── KNOWLEDGE_TRANSFER.md        # Team knowledge transfer doc
-├── requirements.txt
-├── .gitignore
-├── src/                         # All source code
-│   ├── aggregator/              # Org aggregator Lambda (#98)
-│   ├── categorizer/             # Auto-categorizer Lambda (#100)
-│   ├── scrapers/                # Web scraping scripts
-│   │   ├── emergency_contacts/  # Emergency number data pipeline
-│   │   └── ngo/                 # NGO scrapers (Afghanistan, India, Malaysia)
-│   ├── models/                  # SQLAlchemy models
-│   ├── translation/             # Language detection & translation
-│   └── utils/                   # Shared utilities
-├── data/                        # Data files (raw/ and cleaned/)
-├── notebooks/                   # Jupyter notebooks
-├── tests/                       # Unit tests
-└── infrastructure/              # Dockerfile, K8s configs
-```
-
-> **Note:** The repo is being restructured to this layout. See `PROPOSED_REPO_STRUCTURE.md` for the migration plan.
-
----
-
-## How the Data Repo Connects to Other Repos
-
-Only **7 of 40+ repos** are actively developed:
-
-```
-webapp (React) ←── api (API Gateway) ←── mobileapp
-        │                  │
-        ▼                  ▼
-   volunteer          request
-  (Java/Spring)    (Help requests)
-        │                  │
-        ▼                  ▼
-      database (PostgreSQL)
-              │
-              ▼
-    data (Python) ← YOU ARE HERE
-              │
-              ▼
-       ai (Python/Flask — GenAI)
-
-   devsecops — CI/CD, infra (all teams)
-```
-
-| Repo | Why It Matters to Us |
-|------|---------------------|
-| **[webapp](https://github.com/saayam-for-all/webapp)** | Consumes our Lambda endpoints |
-| **[ai](https://github.com/saayam-for-all/ai)** | We invoke their GenAI Lambda; future: we feed vectorized data to their agent |
-| **[api](https://github.com/saayam-for-all/api)** | Routes frontend requests to our Lambdas |
-| **[database](https://github.com/saayam-for-all/database)** | Source of truth — we extract data from here |
-| **[volunteer](https://github.com/saayam-for-all/volunteer)** | Volunteer data we may aggregate |
-| **[devsecops](https://github.com/saayam-for-all/devsecops)** | Manages our deployment infra |
+For deep technical context, architecture, and leadership handoff info, see **[KNOWLEDGE_TRANSFER.md](KNOWLEDGE_TRANSFER.md)**.
 
 ---
 
@@ -177,15 +83,9 @@ webapp (React) ←── api (API Gateway) ←── mobileapp
 - Fill out the **[Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5)** to get added to GitHub and WhatsApp.
 - Make sure your GitHub profile has your **real name and profile picture** — required for task assignments.
 
-### 2. Set Up Locally
+### 2. Set Up the Repo
 
-```bash
-git clone -b dev https://github.com/saayam-for-all/data.git
-cd data
-python -m venv venv
-source venv/bin/activate    # macOS/Linux — or venv\Scripts\activate on Windows
-pip install -r requirements.txt
-```
+Follow the setup instructions in **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ### 3. Explore the Product
 
@@ -198,46 +98,6 @@ There is a **beginner task** you must complete before being assigned real work. 
 ### 5. Attend the Tuesday Team Meeting
 
 Show up, introduce yourself, and you'll be guided from there.
-
----
-
-## How to Contribute
-
-### Task Assignment
-
-**Do not self-assign tasks.** Do not edit issue descriptions or user stories. Task assignment and issue management are the responsibility of **team leads and project managers**. If you want to work on something, let us know in the team meeting or WhatsApp group and we will assign it to you.
-
-### Branch Naming
-
-```
-<your_github_username>_<issue_number>_<brief_description>
-```
-Example: `saquibb8_100_auto_categorize_requests`
-
-### Workflow
-
-1. Get assigned a task by a team lead or PM.
-2. Branch off `dev`: `git checkout -b <your_branch_name>`
-3. Develop and test locally with mock data.
-4. Commit with issue references: `git commit -m "#100: Add classification logic"`
-5. Push and create a PR targeting `dev` (never `main`). Assign reviewers.
-6. Address code review feedback. PRs need **at least 2 reviews**.
-7. Team lead merges after approval.
-
-### Code Standards
-
-- Python 3.10+, PEP 8, type hints where practical.
-- Docstrings for all functions and classes.
-- No credentials in code — use `.env` files.
-- Never commit `__pycache__/`, `venv/`, `.env`, or IDE files.
-- Update `requirements.txt` if you add dependencies.
-
-### What NOT to Do
-
-- ❌ Don't push directly to `main` or `dev`.
-- ❌ Don't self-assign tasks or edit issue descriptions.
-- ❌ Don't commit secrets, API keys, or AWS credentials.
-- ❌ Don't disappear after being assigned a task.
 
 ---
 
