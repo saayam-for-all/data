@@ -80,7 +80,7 @@ For deep technical context, architecture, and leadership handoff info, see **[KN
 
 - Fill out the **[Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5)** to get added to GitHub and WhatsApp.
 - Make sure your GitHub profile has your **real name and profile picture** — required for task assignments.
-- The Repository name of Data Engineering/Analytics group is "Data"
+- The Repository name of Data Engineering/Analytics group is **"Data"**
 
 ### 2. Set Up the Repo
 
@@ -114,6 +114,7 @@ Show up, introduce yourself, and you'll be guided from there.
 
 Log your hours weekly in the **Google Sheet** shared in the WhatsApp Organization group every Monday:
 - Your name, hours worked, team name, GitHub issue URL, brief task description.
+- The group name under Timesheet for Data Engineering/Analytics is **"Predictive ML"**
 - **Deadline:** Tuesday EOD. Window closes **Wednesday 12:00 AM EST**. No late submissions.
 
 ### Pair Programming
