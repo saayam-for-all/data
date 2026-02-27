@@ -13,7 +13,6 @@
 | Issue | Title | Assigned To | Status | Notes |
 |-------|-------|-------------|--------|-------|
 | [#102](https://github.com/saayam-for-all/data/issues/102) | Read and Review Data Engineering Onboarding Documentation | — | 🔄 Open | Before being assigned any development work, all new Data Engineering volunteers must read and understand the team's documentation. This is your first task. |
----
 
 ---
 
