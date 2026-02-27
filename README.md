@@ -36,7 +36,7 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 |---|---|
 | **When** | Every **Tuesday** — **1:00 PM PST**|
 | **Who** | Both Data Engineering and Data Analytics |
-| **Where** | Zoom (link shared in WhatsApp group) |
+| **Where** | Zoom link (**https://us04web.zoom.us/j/77345571053?pwd=0EfORCsIzoxdeP3Pio3Cvo6q8p5k9T.1**) |
 
 This is the most important meeting. This is where you give updates, ask questions, get unblocked, and sync with the team. **Save your questions for this meeting** — mid-week, people get busy and responses take time.
 
@@ -49,6 +49,7 @@ This is the most important meeting. This is where you give updates, ask question
 | **When** | Every weekday at **10:00 AM PST** |
 | **Who** | All Saayam tech volunteers |
 | **Led by** | **Rao Bhethanabotla** |
+|Zoom link - (**https://us05web.zoom.us/j/84510208580?pwd=Fay4wfByjXNiDyBbKyEaL5JYrPXyKI.1#success**) |
 
 This is an org-wide standup. Useful for getting context on what other teams are doing and for getting help from Rao directly. **Mandatory if you have an offer letter.** If you cannot attend, send your status to the WhatsApp group.
 
