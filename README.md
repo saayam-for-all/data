@@ -104,7 +104,7 @@ Show up, introduce yourself, and you'll be guided from there.
 
 ### Accountability
 
-We'll be real with you: **97% of volunteers who join don't work consistently.** We're not trying to be harsh — we just need reliability. Here are the rules:
+  Here are the rules:
 
 - **If you are assigned a task and have no updates, no heads up, and no valid reason — you will be removed from the task.**
 - **If you miss 4 weekly team meetings in a row — you will be removed from the group.**
