@@ -83,7 +83,7 @@ For deep technical context, architecture, and leadership handoff info, see **[KN
 
 ### 2. Set Up the Repo
 
-Follow the setup instructions in **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+Follow the setup instructions in **[CONTRIBUTING.md](data-engineering/CONTRIBUTING.md)**.
 
 ### 3. Explore the Product
 
