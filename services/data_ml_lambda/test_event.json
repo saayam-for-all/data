@@ -1,4 +1,0 @@
-{
-  "body": "{\"user_id\":\"123\",\"request_type\":\"create_request\",\"payload\":{\"text\":\"hi\"}}",
-  "requestContext": { "requestId": "test-req-1" }
-}
