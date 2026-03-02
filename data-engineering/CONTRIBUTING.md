@@ -174,19 +174,19 @@ All Lambda functions live under `src/`. Create a new folder for your Lambda:
 src/
 └── your_lambda_name/
     ├── __init__.py          # Required - makes it a Python package
-    ├── handler.py           # Entry point for the Lambda
-    ├── requirements.txt     # Lambda-specific dependencies
-    └── other_modules.py     # Supporting code (optional)
+    ├── lambda_function.py   # Entry point (must have lambda_handler function)
+    ├── helpers.py           # Supporting code (optional)
+    └── requirements.txt     # Lambda-specific dependencies (lightweight only)
 ```
 
 **Steps:**
 1. Create folder: `mkdir src/your_lambda_name`
 2. Add `__init__.py`: `touch src/your_lambda_name/__init__.py`
-3. Create `handler.py` with your Lambda entry point
-4. Add a `requirements.txt` with dependencies specific to this Lambda
-5. Add a deploy script: `scripts/deploy/deploy_your_lambda.sh`
+3. Create `lambda_function.py` with a `lambda_handler(event, context)` function
+4. Add a `requirements.txt` with lightweight dependencies (heavy packages like pandas should be Lambda Layers)
+5. Push via PR → auto-deploys on merge to main
 
-**Example:** See `src/aggregator/` or `src/categorizer/` for reference.
+**Reference:** See [`src/saayam-org-aggregator/`](src/saayam-org-aggregator/) for a complete working example.
 
 ### Adding a New Scraper
 
