@@ -1,6 +1,8 @@
 import json
 from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
 
+VERSION = "1.0.1"  # Test auto-deploy
+
 def lambda_handler(event, context):
     try:
         raw_body = event.get("body")
