@@ -1,100 +1,151 @@
 name: Deploy Lambda Function
 
-# WHEN: Only runs when you manually trigger it from the Actions tab.
-# Nobody can trigger this by pushing code or opening a PR.
 on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+    paths:
+      - 'data-engineering/src/saayam-org-*/**'
+
   workflow_dispatch:
     inputs:
       source_folder:
-        description: 'Source folder name under data-engineering/src/ (e.g., saayam-org-aggregator)'
+        description: 'Source folder under data-engineering/src/'
         required: true
         type: string
       lambda_function_name:
-        description: 'Exact AWS Lambda function name (e.g., saayam-org-aggregator)'
+        description: 'AWS Lambda function name'
         required: true
         type: string
 
+concurrency:
+  group: deploy-lambda-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  deploy:
+  detect-changes:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
+    outputs:
+      lambdas: ${{ steps.find-lambdas.outputs.lambdas }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # STEP 1: Security gate — only YOUR username gets through.
-      - name: Check if authorized to deploy
+      - name: Find changed Lambda folders
+        id: find-lambdas
+        run: |
+          CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} \
+            | grep '^data-engineering/src/saayam-org-' \
+            | cut -d'/' -f3 \
+            | sort -u)
+
+          if [ -z "$CHANGED" ]; then
+            echo "lambdas=[]" >> $GITHUB_OUTPUT
+          else
+            JSON=$(echo "$CHANGED" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "lambdas=$JSON" >> $GITHUB_OUTPUT
+            echo "📋 Lambdas to deploy: $JSON"
+          fi
+
+  deploy-auto:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.lambdas != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lambda: ${{ fromJson(needs.detect-changes.outputs.lambdas) }}
+    steps:
+      - name: Check if authorized
         run: |
           if [ "${{ github.actor }}" != "saquibb8" ]; then
             echo "❌ Unauthorized. Only saquibb8 can deploy."
             exit 1
           fi
-          echo "✅ Authorized: ${{ github.actor }}"
 
-      # STEP 2: Pull the latest code from the repo.
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: main  # Always deploy from main branch
+      - uses: actions/checkout@v4
 
-      # STEP 3: Set up Python (matches your repo's Python 3.10+ requirement).
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # STEP 4: Build the deployment package.
-      # This installs dependencies + copies source code into one folder.
       - name: Build deployment package
         run: |
           mkdir package
-
-          # Install Lambda-specific dependencies (if requirements.txt exists)
-          if [ -f data-engineering/src/${{ inputs.source_folder }}/requirements.txt ]; then
-            echo "📦 Installing dependencies..."
-            pip install -r data-engineering/src/${{ inputs.source_folder }}/requirements.txt -t package/ --quiet
+          if [ -f data-engineering/src/${{ matrix.lambda }}/requirements.txt ]; then
+            pip install -r data-engineering/src/${{ matrix.lambda }}/requirements.txt -t package/ --quiet
           fi
+          cp -r data-engineering/src/${{ matrix.lambda }}/* package/
+          [ -d data-engineering/src/utils ] && cp -r data-engineering/src/utils package/
+          [ -d data-engineering/src/models ] && cp -r data-engineering/src/models package/
 
-          # Copy the Lambda's source code
-          echo "📂 Copying data-engineering/src/${{ inputs.source_folder }}/ ..."
-          cp -r data-engineering/src/${{ inputs.source_folder }}/* package/
-
-          # Copy shared utilities (so imports like "from utils.db_client import ..." work)
-          if [ -d data-engineering/src/utils ]; then
-            echo "📂 Copying data-engineering/src/utils/ ..."
-            cp -r data-engineering/src/utils package/
-          fi
-
-          # Copy shared models (so imports like "from models.fraud_requests import ..." work)
-          if [ -d data-engineering/src/models ]; then
-            echo "📂 Copying data-engineering/src/models/ ..."
-            cp -r data-engineering/src/models package/
-          fi
-
-      # STEP 5: Zip everything up.
-      - name: Create zip file
+      - name: Create zip
         run: |
-          cd package
-          zip -r ../deployment.zip . --quiet
-          cd ..
-          echo "📦 Package size: $(du -h deployment.zip | cut -f1)"
+          cd package && zip -r ../deployment.zip . --quiet && cd ..
+          echo "📦 Size: $(du -h deployment.zip | cut -f1)"
 
-      # STEP 6: Set up AWS credentials from your GitHub Secrets.
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # STEP 7: Deploy to Lambda.
-      - name: Deploy to AWS Lambda
+      - name: Deploy to Lambda
         run: |
-          echo "🚀 Deploying to: ${{ inputs.lambda_function_name }}"
+          echo "🚀 Deploying: ${{ matrix.lambda }}"
+          aws lambda update-function-code \
+            --function-name "${{ matrix.lambda }}" \
+            --zip-file fileb://deployment.zip \
+            --publish --output table
+          echo "✅ Done!"
 
+  deploy-manual:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if authorized
+        run: |
+          if [ "${{ github.actor }}" != "saquibb8" ]; then
+            echo "❌ Unauthorized."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Build deployment package
+        run: |
+          mkdir package
+          if [ -f data-engineering/src/${{ inputs.source_folder }}/requirements.txt ]; then
+            pip install -r data-engineering/src/${{ inputs.source_folder }}/requirements.txt -t package/ --quiet
+          fi
+          cp -r data-engineering/src/${{ inputs.source_folder }}/* package/
+          [ -d data-engineering/src/utils ] && cp -r data-engineering/src/utils package/
+          [ -d data-engineering/src/models ] && cp -r data-engineering/src/models package/
+
+      - name: Create zip
+        run: |
+          cd package && zip -r ../deployment.zip . --quiet && cd ..
+          echo "📦 Size: $(du -h deployment.zip | cut -f1)"
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to Lambda
+        run: |
+          echo "🚀 Deploying: ${{ inputs.lambda_function_name }}"
           aws lambda update-function-code \
             --function-name "${{ inputs.lambda_function_name }}" \
             --zip-file fileb://deployment.zip \
-            --publish \
-            --output table
+            --publish --output table
+          echo "✅ Done!"
 
-          echo ""
-          echo "✅ ${{ inputs.lambda_function_name }} deployed successfully!"
