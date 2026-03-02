@@ -1,0 +1,101 @@
+name: Deploy Lambda Function
+
+# WHEN: Only runs when you manually trigger it from the Actions tab.
+# Nobody can trigger this by pushing code or opening a PR.
+on:
+  workflow_dispatch:
+    inputs:
+      source_folder:
+        description: 'Source folder name under src/ (e.g., aggregator)'
+        required: true
+        type: string
+      lambda_function_name:
+        description: 'Exact AWS Lambda function name (e.g., saayam-org-aggregator)'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # STEP 1: Security gate — only YOUR username gets through.
+      # Replace YOUR_GITHUB_USERNAME below with your actual GitHub username.
+      - name: Check if authorized to deploy
+        run: |
+          if [ "${{ github.actor }}" != "saquibb8" ]; then
+            echo "❌ Unauthorized. Only saquibb8 can deploy."
+            exit 1
+          fi
+          echo "✅ Authorized: ${{ github.actor }}"
+
+      # STEP 2: Pull the latest code from the repo.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main  # Always deploy from main branch
+
+      # STEP 3: Set up Python (matches your repo's Python 3.10+ requirement).
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # STEP 4: Build the deployment package.
+      # This installs dependencies + copies source code into one folder.
+      - name: Build deployment package
+        run: |
+          mkdir package
+
+          # Install Lambda-specific dependencies (if requirements.txt exists)
+          if [ -f src/${{ inputs.source_folder }}/requirements.txt ]; then
+            echo "📦 Installing dependencies..."
+            pip install -r src/${{ inputs.source_folder }}/requirements.txt -t package/ --quiet
+          fi
+
+          # Copy the Lambda's source code
+          echo "📂 Copying src/${{ inputs.source_folder }}/ ..."
+          cp -r src/${{ inputs.source_folder }}/* package/
+
+          # Copy shared utilities (so imports like "from utils.db_client import ..." work)
+          if [ -d src/utils ]; then
+            echo "📂 Copying src/utils/ ..."
+            cp -r src/utils package/
+          fi
+
+          # Copy shared models (so imports like "from models.fraud_requests import ..." work)
+          if [ -d src/models ]; then
+            echo "📂 Copying src/models/ ..."
+            cp -r src/models package/
+          fi
+
+      # STEP 5: Zip everything up.
+      - name: Create zip file
+        run: |
+          cd package
+          zip -r ../deployment.zip . --quiet
+          cd ..
+          echo "📦 Package size: $(du -h deployment.zip | cut -f1)"
+
+      # STEP 6: Set up AWS credentials from your GitHub Secrets.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # STEP 7: Deploy to Lambda.
+      - name: Deploy to AWS Lambda
+        run: |
+          echo "🚀 Deploying to: ${{ inputs.lambda_function_name }}"
+
+          aws lambda update-function-code \
+            --function-name "${{ inputs.lambda_function_name }}" \
+            --zip-file fileb://deployment.zip \
+            --publish \
+            --output table
+
+          echo ""
+          echo "✅ ${{ inputs.lambda_function_name }} deployed successfully!"
