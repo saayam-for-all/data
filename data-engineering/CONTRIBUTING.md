@@ -11,6 +11,7 @@ git clone -b main https://github.com/saayam-for-all/data.git
 cd data
 python -m venv venv
 source venv/bin/activate    # macOS/Linux — or venv\Scripts\activate on Windows
+cd data-engineering
 pip install -r requirements.txt
 cp .env.example .env        # Fill in your environment variables
 ```
