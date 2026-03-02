@@ -1,3 +1,3 @@
-aws-lambda-powertools>=2.0.0
-pandas>=2.0.0
-pg8000>=1.30.0
+# Heavy dependencies (pandas, aws-lambda-powertools, pg8000) should be
+# added as Lambda Layers on AWS - not bundled in the deployment package.
+# Only add lightweight packages here that aren't in your layers.
