@@ -7,7 +7,7 @@
 ## Local Setup
 
 ```bash
-git clone -b dev https://github.com/saayam-for-all/data.git
+git clone -b main https://github.com/saayam-for-all/data.git
 cd data
 python -m venv venv
 source venv/bin/activate    # macOS/Linux — or venv\Scripts\activate on Windows
