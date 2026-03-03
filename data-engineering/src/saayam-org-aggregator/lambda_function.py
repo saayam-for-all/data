@@ -1,8 +1,8 @@
 import json
 from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
+from concurrent.futures import ThreadPoolExecutor
 
-VERSION = "1.0.1"  # Test auto-deploy
-
+# handle the lambda function call
 def lambda_handler(event, context):
     try:
         raw_body = event.get("body")
@@ -19,13 +19,27 @@ def lambda_handler(event, context):
                 'body': json.dumps({'error': 'location and category are required fields'})
             }
 
-        db_organizations = get_orgs_from_db(location, category)
-        genAI_organizations = get_ai_orgs(subject, description, location)
+        # db_organizations = get_orgs_from_db(location, category)
+        # genAI_organizations = get_ai_orgs(subject, description, location)
+
+        #Implemented parallelization to speed up the reponse
+
+        with ThreadPoolExecutor() as executor:
+            db_future = executor.submit(get_orgs_from_db, location, category)
+            ai_future = executor.submit(get_ai_orgs, subject, description, location)
+
+            db_organizations = db_future.result()
+            genAI_organizations = ai_future.result()
+
         combined_list = merge_organizations(db_organizations, genAI_organizations)
 
         return {
             'statusCode': 200,
-            'body': combined_list.to_dict(orient='records')
+            'headers': {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*'
+            },
+            'body': json.dumps(combined_list.to_dict(orient='records'))
         }
 
     except json.JSONDecodeError as e:
