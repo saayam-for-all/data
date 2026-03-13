@@ -1,0 +1,1774 @@
+{
+  "schema": "virginia_dev_saayam_rdbms",
+  "tables": {
+    "action": {
+      "columns": [
+        {
+          "name": "action_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "action_desc",
+          "type": "character varying (30)",
+          "primary_key": false
+        },
+        {
+          "name": "created_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "created_by",
+          "type": "character varying (30)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_by",
+          "type": "character varying (30)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "city": {
+      "columns": [
+        {
+          "name": "city_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "state_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "city_name",
+          "type": "character varying (30)",
+          "primary_key": false
+        },
+        {
+          "name": "lattitude",
+          "type": "numeric (9)",
+          "primary_key": false
+        },
+        {
+          "name": "longitude",
+          "type": "numeric (9)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "country": {
+      "columns": [
+        {
+          "name": "country_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "country_name",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "phone_code",
+          "type": "character varying (5)",
+          "primary_key": false
+        },
+        {
+          "name": "country_code",
+          "type": "character varying (6)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "is_eu_member",
+          "type": "boolean",
+          "primary_key": false
+        }
+      ]
+    },
+    "emergency_numbers": {
+      "columns": [
+        {
+          "name": "en_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "country_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "state_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "en_name",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "is_country",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "police",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "ambulance",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "fire",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "non_emergency",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "cyber_police",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "medicare_support",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "gas_leak",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "electricity_outage",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "water_department",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "disaster_recovery",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "flood_help",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "earthquake_info",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "hurricane_info",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "emergency_mgmt",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "environmental_hazards",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "transportation_assistance",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "roadside_assistance",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "highway_patrol",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "suicide",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "help_women",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "child_abuse",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "domestic_abuse",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "mental_health",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "elderly_abuse",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "poison_control",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "animal_control",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "wildlife_rescue",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "homeless_services",
+          "type": "character varying (75)",
+          "primary_key": false
+        },
+        {
+          "name": "food_assistance",
+          "type": "character varying (75)",
+          "primary_key": false
+        }
+      ]
+    },
+    "fraud_requests": {
+      "columns": [
+        {
+          "name": "fraud_request_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "character varying  (255)",
+          "primary_key": false
+        },
+        {
+          "name": "request_datetime",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "reason",
+          "type": "character varying  (255)",
+          "primary_key": false
+        }
+      ]
+    },
+    "help_categories": {
+      "columns": [
+        {
+          "name": "cat_id",
+          "type": "character varying (50)",
+          "primary_key": true
+        },
+        {
+          "name": "cat_name",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "cat_desc",
+          "type": "character varying (150)",
+          "primary_key": false
+        }
+      ]
+    },
+    "help_categories_map": {
+      "columns": [
+        {
+          "name": "parent_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "child_id",
+          "type": "character varying (50)",
+          "primary_key": true
+        }
+      ]
+    },
+    "identity_type": {
+      "columns": [
+        {
+          "name": "identity_type_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "identity_value",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "identity_type_dsc",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "list_item_metadata": {
+      "columns": [
+        {
+          "name": "item_id",
+          "type": "character varying (100)",
+          "primary_key": true
+        },
+        {
+          "name": "field_id",
+          "type": "character varying (70)",
+          "primary_key": false
+        },
+        {
+          "name": "item_value",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "item_type",
+          "type": "character varying (20)",
+          "primary_key": false
+        }
+      ]
+    },
+    "meeting_participants": {
+      "columns": [
+        {
+          "name": "meeting_id",
+          "type": "int",
+          "primary_key": true
+        },
+        {
+          "name": "participant_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        }
+      ]
+    },
+    "meetings": {
+      "columns": [
+        {
+          "name": "meeting_id",
+          "type": "int",
+          "primary_key": true
+        },
+        {
+          "name": "meeting_date",
+          "type": "date",
+          "primary_key": false
+        },
+        {
+          "name": "start_time",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "end_time",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "cohost_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        }
+      ]
+    },
+    "news_snippets": {
+      "columns": [
+        {
+          "name": "news_id",
+          "type": "int",
+          "primary_key": true
+        },
+        {
+          "name": "headline",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "snippet_text",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "image_path",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "profile_links",
+          "type": "jsonb",
+          "primary_key": false
+        },
+        {
+          "name": "event_date",
+          "type": "date",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        }
+      ]
+    },
+    "notification_channels": {
+      "columns": [
+        {
+          "name": "channel_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "channel_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "primary_key": false
+        }
+      ]
+    },
+    "notification_types": {
+      "columns": [
+        {
+          "name": "type_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "type_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "primary_key": false
+        }
+      ]
+    },
+    "notifications": {
+      "columns": [
+        {
+          "name": "notification_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "type_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "channel_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "message",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "status",
+          "type": "USER-DEFINED",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "organizations": {
+      "columns": [
+        {
+          "name": "org_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "org_name",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "org_type",
+          "type": "org_type_enum",
+          "primary_key": false
+        },
+        {
+          "name": "street",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "city_name",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "state_code",
+          "type": "character varying (6)",
+          "primary_key": false
+        },
+        {
+          "name": "zip_code",
+          "type": "character varying (10)",
+          "primary_key": false
+        },
+        {
+          "name": "mission",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "web_url",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "phone",
+          "type": "character varying (20)",
+          "primary_key": false
+        },
+        {
+          "name": "email",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "size",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "rating",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "source",
+          "type": "source_enum",
+          "primary_key": false
+        },
+        {
+          "name": "cat_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "req_add_info": {
+      "columns": [
+        {
+          "name": "request_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "cat_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "field_name_key",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "field_value",
+          "type": "text",
+          "primary_key": false
+        }
+      ]
+    },
+    "req_add_info_metadata": {
+      "columns": [
+        {
+          "name": "field_id",
+          "type": "character varying (70)",
+          "primary_key": true
+        },
+        {
+          "name": "field_name_key",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "field_type",
+          "type": "character varying  (20)",
+          "primary_key": false
+        },
+        {
+          "name": "status",
+          "type": "character varying (10)",
+          "primary_key": false
+        },
+        {
+          "name": "cat_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_comments": {
+      "columns": [
+        {
+          "name": "comment_id",
+          "type": "bigint",
+          "primary_key": true
+        },
+        {
+          "name": "req_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "commenter_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "comment_desc",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "isdeleted",
+          "type": "boolean",
+          "primary_key": false
+        }
+      ]
+    },
+    "request": {
+      "columns": [
+        {
+          "name": "req_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "req_user_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "req_for_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "req_islead_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "req_cat_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "req_type_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "req_priority_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "req_status_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "req_loc",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "iscalamity",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "req_subj",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "req_desc",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "req_doc_link",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "audio_req_desc",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "submission_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "serviced_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "to_public",
+          "type": "boolean",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_for": {
+      "columns": [
+        {
+          "name": "req_for_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "req_for",
+          "type": "character varying (25)",
+          "primary_key": false
+        },
+        {
+          "name": "req_for_desc",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_guest_details": {
+      "columns": [
+        {
+          "name": "req_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "req_fname",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "req_lname",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "req_email",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "req_phone",
+          "type": "character varying (20)",
+          "primary_key": false
+        },
+        {
+          "name": "req_age",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "req_gender",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "req_pref_lang",
+          "type": "character varying (50)",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_isleadvol": {
+      "columns": [
+        {
+          "name": "req_islead_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "req_islead",
+          "type": "character varying (15)",
+          "primary_key": false
+        },
+        {
+          "name": "req_islead_desc",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_priority": {
+      "columns": [
+        {
+          "name": "req_priority_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "req_priority",
+          "type": "character varying (25)",
+          "primary_key": false
+        },
+        {
+          "name": "req_priority_desc",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_status": {
+      "columns": [
+        {
+          "name": "req_status_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "req_status",
+          "type": "character varying (25)",
+          "primary_key": false
+        },
+        {
+          "name": "req_status_desc",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "request_type": {
+      "columns": [
+        {
+          "name": "req_type_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "req_type",
+          "type": "character varying (25)",
+          "primary_key": false
+        },
+        {
+          "name": "req_type_desc",
+          "type": "character varying (125)",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "sla": {
+      "columns": [
+        {
+          "name": "sla_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "sla_hours",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "sla_description",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "no_of_cust_impct",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "state": {
+      "columns": [
+        {
+          "name": "state_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "country_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "state_name",
+          "type": "character varying (100)",
+          "primary_key": false
+        },
+        {
+          "name": "state_code",
+          "type": "character varying (6)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "supporting_languages": {
+      "columns": [
+        {
+          "name": "language_id",
+          "type": "bigint",
+          "primary_key": true
+        },
+        {
+          "name": "language_name",
+          "type": "character varying (64)",
+          "primary_key": false
+        },
+        {
+          "name": "iso_639_1_code",
+          "type": "character (2)",
+          "primary_key": false
+        },
+        {
+          "name": "locale_code",
+          "type": "character varying (10)",
+          "primary_key": false
+        },
+        {
+          "name": "writing_direction",
+          "type": "character varying (3)",
+          "primary_key": false
+        },
+        {
+          "name": "total_speakers_m",
+          "type": "numeric (10)",
+          "primary_key": false
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timest",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_additional_details": {
+      "columns": [
+        {
+          "name": "additional_detail_id",
+          "type": "bigint",
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "secondary_email_1",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "secondary_email_2",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "secondary_phone_1",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "secondary_phone_2",
+          "type": "character varying (255)",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_availability": {
+      "columns": [
+        {
+          "name": "user_availability_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "day_of_week",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "start_time",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        },
+        {
+          "name": "end_time",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_category": {
+      "columns": [
+        {
+          "name": "user_category_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "user_category",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "user_category_desc",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        },
+        {
+          "name": "user_access_level",
+          "type": "small int",
+          "primary_key": false
+        },
+        {
+          "name": "category_code",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "is_deprecated",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "permissions",
+          "type": "jsonb",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_locations": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "prev_loc",
+          "type": "geography",
+          "primary_key": false
+        },
+        {
+          "name": "curr_loc",
+          "type": "geography",
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_notification_preferences": {
+      "columns": [
+        {
+          "name": "user_notification_preferences_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "channel_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "preference",
+          "type": "USER-DEFINED",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_notification_status": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "last_accessed_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_org_map": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "org_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "user_role",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_signoff": {
+      "columns": [
+        {
+          "name": "signoff_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "reason",
+          "type": "character varying (250)",
+          "primary_key": false
+        },
+        {
+          "name": "is_external_auth",
+          "type": "boolean",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_skills": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "cat_id",
+          "type": "character varying (50)",
+          "primary_key": true
+        },
+        {
+          "name": "created_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "user_status": {
+      "columns": [
+        {
+          "name": "user_status_id",
+          "type": "bigint",
+          "primary_key": true
+        },
+        {
+          "name": "user_status",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "user_status_desc",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp with time zone (6)",
+          "primary_key": false
+        }
+      ]
+    },
+    "users": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "state_id",
+          "type": "character varying (50)",
+          "primary_key": false
+        },
+        {
+          "name": "country_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "user_status_id",
+          "type": "bigint",
+          "primary_key": false
+        },
+        {
+          "name": "user_category_id",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "full_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "first_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "middle_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "primary_email_address",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "primary_phone_number",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "addr_ln1",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "addr_ln2",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "addr_ln3",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "city_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "zip_code",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_location",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp with time zone (6)",
+          "primary_key": false
+        },
+        {
+          "name": "time_zone",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "profile_picture_path",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "gender",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "language_1",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "language_2",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "language_3",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "promotion_wizard_stage",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "promotion_wizard_last_update_date",
+          "type": "timestamp with time zone (6)",
+          "primary_key": false
+        },
+        {
+          "name": "external_auth_provider",
+          "type": "character varying (20)",
+          "primary_key": false
+        },
+        {
+          "name": "dob",
+          "type": "date",
+          "primary_key": false
+        }
+      ]
+    },
+    "volunteer_applications": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "terms_and_conditions",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "terms_accepted_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "govt_id_path",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "path_updated_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "skill_codes",
+          "type": "json",
+          "primary_key": false
+        },
+        {
+          "name": "availability",
+          "type": "jsonb",
+          "primary_key": false
+        },
+        {
+          "name": "current_page",
+          "type": "integer",
+          "primary_key": false
+        },
+        {
+          "name": "application_status",
+          "type": "User Defined",
+          "primary_key": false
+        },
+        {
+          "name": "is_completed",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp without timezone",
+          "primary_key": false
+        }
+      ]
+    },
+    "volunteer_details": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "terms_and_conditions",
+          "type": "boolean",
+          "primary_key": false
+        },
+        {
+          "name": "terms_accepted_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "govt_id_path1",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "govt_id_path2",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "path1_updated_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "path2_updated_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "availability_days",
+          "type": "jsonb",
+          "primary_key": false
+        },
+        {
+          "name": "availability_times",
+          "type": "jsonb",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated_at",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "volunteer_locations": {
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": true
+        },
+        {
+          "name": "prev_loc",
+          "type": "geography",
+          "primary_key": false
+        },
+        {
+          "name": "curr_loc",
+          "type": "geography",
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "volunteer_organizations": {
+      "columns": [
+        {
+          "name": "volunteer_organization_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "contact_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "city_name",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "addr_ln1",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "addr_ln2",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "addr_ln3",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "zip_code",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        },
+        {
+          "name": "time_zone",
+          "type": "character varying (255)",
+          "primary_key": false
+        }
+      ]
+    },
+    "volunteer_rating": {
+      "columns": [
+        {
+          "name": "volunteer_rating_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "request_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "rating",
+          "type": "enum",
+          "primary_key": false
+        },
+        {
+          "name": "feedback",
+          "type": "text",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    },
+    "volunteers_assigned": {
+      "columns": [
+        {
+          "name": "volunteers_assigned_id",
+          "type": "integer",
+          "primary_key": true
+        },
+        {
+          "name": "request_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "volunteer_id",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "volunteer_type",
+          "type": "character varying (255)",
+          "primary_key": false
+        },
+        {
+          "name": "last_update_date",
+          "type": "timestamp without time zone",
+          "primary_key": false
+        }
+      ]
+    }
+  }
+}
