@@ -1,0 +1,5 @@
+"channel_id","channel_name","description"
+1,"IN_APP","Notifications sent from application"
+2,"EMAIL","Notifications sent to the user registered email address"
+3,"PUSH","Real-time push notifications sent to the user mobile device"
+4,"SMS","Text messages sent to the user verified phone number"
