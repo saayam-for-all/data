@@ -13,7 +13,7 @@
 | Issue | Title | Assigned To | Status | Notes |
 |-------|-------|-------------|--------|-------|
 | [#102](https://github.com/saayam-for-all/data/issues/102) | Read and Review Data Engineering Onboarding Documentation | — | 🔄 Open | Before being assigned any development work, all new Data Engineering volunteers must read and understand the team's documentation. This is your first task. |
-| [#78](https://github.com/saayam-for-all/data/issues/78) | Beginner Task: Environment Check + Saayam Practice Dataset Exploration (Local Only)  | — | 🔄 Open | Before being assigned any development work, all new Data Engineering volunteers must complete the beginner-friendly local exercise. |
+| [#78](https://github.com/saayam-for-all/data/issues/78) | Beginner Task: Environment Check + Saayam Practice Dataset Exploration (Local Only) | — | 🔄 Open | Before being assigned any development work, all new Data Engineering volunteers must complete the beginner-friendly local exercise. |
 
 ---
 
@@ -23,8 +23,6 @@
 
 | Issue | Title | Assigned To | Status | Notes |
 |-------|-------|-------------|--------|-------|
-| [#100](https://github.com/saayam-for-all/data/issues/100) | Auto-Categorize Help Requests Using Lambda | ramumarrp77, anupbpote02, priya-2914, leoncorreia, sana-desai  | 🔄 Open | LLM-based classification. |
-| [#84](https://github.com/saayam-for-all/data/issues/84) | Super Admin Dashboard Application Analytics design : creation of Test data | Datavizz31, anagha0704, batluri08, kondurvaishnavi, lokesh-jeswani | 🔄 Open |  |
 | [#103](https://github.com/saayam-for-all/data/issues/103) | Daily Metrics Aggregation Lambda | Arjun2110exe, Keerthana19-p, Nitish0615, gauri-d, sanobarasna | 🔄 Open |  |
 | [#104](https://github.com/saayam-for-all/data/issues/104) | Homepage Metrics Display from S3 (Web App Team)| Neharik335, PallaviP31, Srilaxmi1616, Ujwalap910 | 🔄 Open |  |
 | [#114](https://github.com/saayam-for-all/data/issues/114) | Generate Synthetic CSV Data for "users" and "request" tables from Database Schema| AnushaDusakanti15, Sravy-Kolli, VeeraVSDeekshith, navyasri0820 | 🔄 Open |  |
@@ -56,6 +54,17 @@
 | — | Language Detection & Translation | 2025 | `langdetect` + `GoogleTranslator`. |
 | — | Fraud Detection Model (Schema Only) | 2025 | SQLAlchemy model only, no detection logic. |
 | [#99](https://github.com/saayam-for-all/data/issues/99) | Integrate Org Aggregator into Frontend | March 2026 | Cross-team (data + webapp). Lambda is done. Remaining work is React frontend integration. |
+[#100](https://github.com/saayam-for-all/data/issues/100) | Auto-Categorize Help Requests Using Lambda | March 2026 | LLM-based classification. |
+| [#84](https://github.com/saayam-for-all/data/issues/84) | Super Admin Dashboard Application Analytics design : creation of Test data | March 2026  |
+| [#89](https://github.com/saayam-for-all/data/issues/89) | Application Analytics Dashboard implmentation in Python using plotly libaray | March 2026  |
+| [#80](https://github.com/saayam-for-all/data/issues/80) | Prepare and Categorize ProPublica Nonprofit Data | March 2026  |
+| [#81](https://github.com/saayam-for-all/data/issues/81) | Creation of Super Admin Dashboard Analytics | March 2026  |
+| [#82](https://github.com/saayam-for-all/data/issues/82) | Design of Application Analytics tab under Super Admin Dashboard | March 2026  |
+| [#83](https://github.com/saayam-for-all/data/issues/83) | Design Infrastructure analytics wiki page under ML repo | March 2026  |
+| [#85](https://github.com/saayam-for-all/data/issues/85) | Work on Infrastructure analytics dashboard under Super Admin Dashboard Analytics tab | March 2026  |
+| [#87](https://github.com/saayam-for-all/data/issues/87) | Use Sentiment Analysis to detect Depressive or Threatening Language | March 2026  |
+| [#88](https://github.com/saayam-for-all/data/issues/88) | Design of Google Analytics tab under Super Admin Dashboard | March 2026  |
+| [#96](https://github.com/saayam-for-all/data/issues/96) | Design of Consolidated metrics of application analytics on the Saayam Home Page | March 2026  |
 
 ---
 
@@ -80,4 +89,4 @@ PostgreSQL (RDBMS) → S3 Data Lake → Vectorize → Vector DB → AI Agent
 
 ---
 
-*Last updated: February 2026*
+*Last updated: March 2026*
