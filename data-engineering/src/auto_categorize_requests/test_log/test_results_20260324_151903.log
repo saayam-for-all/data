@@ -1,0 +1,137 @@
+=================================================================
+  Auto-Categorizer Lambda Test Suite
+  Function : auto-categorizer
+  Region   : us-east-1
+  Account  : 944*******21
+  Run At   : 2026-03-24 15:19:03
+  Log File : test_results_20260324_151903.log
+=================================================================
+
+[Test 1] Clear Food Request
+  Subject     : Need groceries urgently
+  Description : I am a single mother and cannot afford groceries. My kids need food.
+  Category    : Food & Essentials
+  Subcategory : Food Assistance
+  Confidence  : 0.9
+  Reasoning   : The description indicates that the user is in need of food assistance, which falls under the 'Food &
+  Time        : 1.26s
+  Result      : PASS
+
+[Test 2] Housing - Looking for Rental
+  Subject     : Looking for an apartment to rent
+  Description : I recently moved to the city and need an affordable rental apartment.
+  Category    : Housing Assistance
+  Subcategory : Looking for Rental
+  Confidence  : 0.9
+  Reasoning   : The request is seeking help with finding a rental apartment, which falls under the Housing Assistanc
+  Time        : 1.34s
+  Result      : PASS
+
+[Test 3] Education - College Application
+  Subject     : Need help with college application
+  Description : I am a high school senior applying to universities and need help writing my SOP.
+  Category    : Education & Career Support
+  Subcategory : SOP & Essay Review
+  Confidence  : 0.9
+  Reasoning   : The request is for help with writing a Statement of Purpose (SOP) for college applications, which fa
+  Time        : 1.31s
+  Result      : PASS
+
+[Test 4] Healthcare - Medical Consultation
+  Subject     : I need to speak to a doctor
+  Description : I have been having chest pain for two days but cannot afford a hospital visit.
+  Category    : Healthcare & Wellness
+  Subcategory : Medical Consultation
+  Confidence  : 0.9
+  Reasoning   : The user is requesting medical assistance due to experiencing chest pain, which falls under the Heal
+  Time        : 1.23s
+  Result      : PASS
+
+[Test 5] Elderly Assistance
+  Subject     : Help for my elderly father
+  Description : My 80 year old father lives alone and needs help with daily errands and doctor a
+  Category    : Elderly Community Assistance
+  Subcategory : Errands, Events & Transportation
+  Confidence  : 0.9
+  Reasoning   : The description indicates the elderly father needs help with daily errands and transportation to doc
+  Time        : 1.43s
+  Result      : PASS
+
+[Test 6] Clothing Donation Request
+  Subject     : Need warm clothes for winter
+  Description : I lost my job and cannot buy winter clothes for myself and my two children.
+  Category    : Clothing Assistance
+  Subcategory : Emergency Clothing Assistance
+  Confidence  : 0.9
+  Reasoning   : The request indicates a need for winter clothes due to job loss, which aligns with the 'Emergency Cl
+  Time        : 1.21s
+  Result      : PASS
+
+[Test 7] Vague Request - edge case
+  Subject     : I need some help
+  Description : Things have been really tough lately and I just need some assistance.
+  Category    : General
+  Subcategory : None
+  Confidence  : 0.8
+  Reasoning   : The help request is very general and does not provide enough details to categorize it into a specifi
+  Time        : 1.29s
+  Result      : PASS
+
+[Test 8] Multilingual Spanish - edge case
+  Subject     : Necesito comida para mi familia
+  Description : No hemos comido en dos dias. Tengo tres hijos en casa y necesitamos ayuda.
+  Category    : Food & Essentials
+  Subcategory : Food Assistance
+  Confidence  : 0.9
+  Reasoning   : The request clearly indicates a need for food assistance for the family, which falls under the 'Food
+  Time        : 1.29s
+  Result      : PASS
+
+[Test 9] Missing Description - edge case
+  Subject     : Need help finding a roommate
+  Description : (empty)
+  Category    : Housing Assistance
+  Subcategory : Find a Roommate
+  Confidence  : 0.9
+  Reasoning   : The request is about finding a roommate, which falls under the 'Find a Roommate' subcategory of the 
+  Time        : 1.54s
+  Result      : PASS
+
+[Test 10] Both Fields Empty - edge case
+  Subject     : (empty)
+  Description : (empty)
+  Status      : 400 Bad Request (expected for empty input)
+  Result      : PASS  (0.04s)
+
+[Test 11] Career Guidance
+  Subject     : Confused about my career path
+  Description : I recently graduated with a CS degree but unsure which field to pursue. Need car
+  Category    : Education & Career Support
+  Subcategory : Career Guidance
+  Confidence  : 0.9
+  Reasoning   : The request is seeking career guidance and advice, which falls under the 'Education & Career Support
+  Time        : 1.49s
+  Result      : PASS
+
+[Test 12] Mental Health - edge case
+  Subject     : Feeling very anxious and depressed
+  Description : I have been struggling with anxiety for months and cannot afford therapy.
+  Category    : Healthcare & Wellness
+  Subcategory : Mental Wellbeing Support
+  Confidence  : 0.8
+  Reasoning   : The user is expressing feelings of anxiety and depression, which fall under the Mental Wellbeing Sup
+  Time        : 1.33s
+  Result      : PASS
+
+=================================================================
+  TEST SUMMARY
+=================================================================
+  Total   : 12
+  Passed  : 12
+  Failed  : 0
+  Slow    : 0
+  Avg Time: 1.23s
+  Account : 944*******21
+=================================================================
+
+Log saved to: test_results_20260324_151903.log
