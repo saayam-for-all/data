@@ -33,7 +33,36 @@ for i in range(1, 101):
 
 request_df = pd.DataFrame(requests)
 
+# NEW TABLE 1: volunteer_details
+volunteers = []
+
+for i in range(1, 101):
+    volunteers.append({
+        "volunteer_id": i,
+        "user_id": random.randint(1, 100),  # FK to users
+        "skills": fake.job(),
+        "rating": round(random.uniform(1, 5), 2)
+    })
+
+volunteers_df = pd.DataFrame(volunteers)
+
+
+# NEW TABLE 2: request_comments
+comments = []
+
+for i in range(1, 101):
+    comments.append({
+        "comment_id": i,
+        "request_id": random.randint(1, 100),  # FK to request
+        "user_id": random.randint(1, 100),     # FK to users
+        "comment": fake.sentence(),
+    })
+
+comments_df = pd.DataFrame(comments)
+
+
 users_df.to_csv("../mock_db/users.csv", index=False)
 request_df.to_csv("../mock_db/request.csv", index=False)
-
+volunteers_df.to_csv("../mock_db/volunteer_details.csv", index=False)
+comments_df.to_csv("../mock_db/request_comments.csv", index=False)
 print("CSV files generated successfully!")
