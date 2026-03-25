@@ -12,7 +12,9 @@ This is a suggestion engine only — it does not overwrite user-selected categor
 
 | File | Description |
 |------|-------------|
-| `lambda_function.py` | Lambda entry point — contains all classification logic |
+| `handler.py` | Lambda entry point — contains `lambda_handler` |
+| `categories.py` | Category config and system prompt |
+| `classifier.py` | Bedrock call and result validation logic |
 | `requirements.txt` | Lambda-specific dependencies |
 | `__init__.py` | Makes this folder a Python package |
 
@@ -79,7 +81,7 @@ This is a suggestion engine only — it does not overwrite user-selected categor
 
 ## Deployment
 
-Team leads handle deployment. The entry point is `lambda_function.lambda_handler`.
+Team leads handle deployment. The entry point is `handler.lambda_handler`.
 
 **IAM role requires:**
 - `AmazonBedrockFullAccess`
