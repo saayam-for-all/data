@@ -105,5 +105,5 @@ The script will:
 2. Assign **multiple skills per volunteer**
 3. Create matching rows in `user_skills`
 4. Maintain table relationships
-5. Save CSV files in `database/mock_db`
+5. Creates CSV files`
 
