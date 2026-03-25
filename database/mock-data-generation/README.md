@@ -38,10 +38,11 @@ Fields include:
 Each row represents a volunteer application.
 ---
 ## user_skills.py
-Generates data for the **user_skills** table.
-This table is derived from the `skill_codes` field in `volunteer_applications`.
+Generates data for the user_skills table.
+This table is derived from the skill_codes field in volunteer_applications.
 For each skill associated with a volunteer, a row is created.
-Because volunteers may have multiple skills, this table can contain **more than 100 rows**.
+Because volunteers may have multiple skills, this table can contain more than 100 rows.
+
 ---
 ## request_comments.py
 Generates synthetic data for the **request_comments** table.
