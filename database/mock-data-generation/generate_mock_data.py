@@ -3,89 +3,95 @@ import pandas as pd
 import random
 import os
 
-NUM_ROWS = 100
-
 fake = Faker()
 
-# ---------- USERS ----------
-def generate_users(n):
-    users = []
-    for i in range(1, n + 1):
-        users.append({
-            "user_id": i,
-            "name": fake.name(),
-            "email": fake.email(),
-            "state_id": random.randint(1, 5),
-            "country_id": random.randint(1, 3),
-            "user_status_id": random.randint(1, 3),
-            "user_category_id": random.randint(1, 3)
-        })
-    return pd.DataFrame(users)
+
+# CONFIG
+NUM_ROWS = 100
+OUTPUT_DIR = "../mock_db"
+
+# Create output directory if not exists
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Country-State Mapping
+country_state_map = {
+    1: [1, 2],     # Country 1 → States 1,2
+    2: [3, 4],     # Country 2 → States 3,4
+    3: [5]         # Country 3 → State 5
+}
+
+def get_country_state():
+    country_id = random.choice(list(country_state_map.keys()))
+    state_id = random.choice(country_state_map[country_id])
+    return country_id, state_id
 
 
-# REQUEST 
-def generate_requests(n):
-    requests = []
-    for i in range(1, n + 1):
-        requests.append({
-            "request_id": i,
-            "req_user_id": random.randint(1, n),
-            "req_title": fake.sentence(nb_words=5),
-            "req_description": fake.text(max_nb_chars=100),
-            "req_cat_id": random.randint(1, 5),
-            "req_priority_id": random.randint(1, 3),
-            "req_status_id": random.randint(1, 3)
-        })
-    return pd.DataFrame(requests)
+
+# USERS TABLE
+users = []
+
+for i in range(1, NUM_ROWS + 1):
+    country_id, state_id = get_country_state()  
+
+    users.append({
+        "user_id": i,
+        "name": fake.name(),
+        "email": fake.email(),
+        "state_id": state_id,
+        "country_id": country_id,
+        "user_status_id": random.randint(1, 3),
+        "user_category_id": random.randint(1, 3)
+    })
+
+users_df = pd.DataFrame(users)
 
 
-# VOLUNTEERS
-def generate_volunteers(n):
-    volunteers = []
-    for i in range(1, n + 1):
-        volunteers.append({
-            "volunteer_id": i,
-            "user_id": random.randint(1, n),
-            "skills": fake.job(),
-            "rating": round(random.uniform(1, 5), 2)
-        })
-    return pd.DataFrame(volunteers)
+# REQUEST TABLE
+requests = []
 
+for i in range(1, NUM_ROWS + 1):
+    requests.append({
+        "req_id": i,  
+        "req_user_id": random.randint(1, NUM_ROWS),
+        "req_subj": fake.sentence(nb_words=5), 
+        "req_desc": fake.text(max_nb_chars=100),
+        "req_cat_id": random.randint(1, 5),
+        "req_priority_id": random.randint(1, 3),
+        "req_status_id": random.randint(1, 3)
+    })
 
-# COMMENTS 
-def generate_comments(n):
-    comments = []
-    for i in range(1, n + 1):
-        comments.append({
-            "comment_id": i,
-            "request_id": random.randint(1, n),
-            "user_id": random.randint(1, n),
-            "comment": fake.sentence(),
-        })
-    return pd.DataFrame(comments)
+request_df = pd.DataFrame(requests)
 
+# VOLUNTEER DETAILS
+volunteers = []
 
-# MAIN 
-def main():
-    os.makedirs("../mock_db", exist_ok=True)
+for i in range(1, NUM_ROWS + 1):
+    volunteers.append({
+        "volunteer_id": i,
+        "user_id": random.randint(1, NUM_ROWS),  # FK to users
+        "skills": fake.job(),
+        "rating": round(random.uniform(1, 5), 2)
+    })
 
-    users_df = generate_users(NUM_ROWS)
-    request_df = generate_requests(NUM_ROWS)
-    volunteers_df = generate_volunteers(NUM_ROWS)
-    comments_df = generate_comments(NUM_ROWS)
+volunteers_df = pd.DataFrame(volunteers)
 
-    users_df.to_csv("../mock_db/users.csv", index=False)
-    print("Generated users.csv")
+# REQUEST COMMENTS
+comments = []
 
-    request_df.to_csv("../mock_db/request.csv", index=False)
-    print("Generated request.csv")
+for i in range(1, NUM_ROWS + 1):
+    comments.append({
+    "comment_id": i,
+    "req_id": random.randint(1, NUM_ROWS),  
+    "commenter_id": random.randint(1, NUM_ROWS), 
+    "comment_desc": fake.sentence(),         
+})
 
-    volunteers_df.to_csv("../mock_db/volunteer_details.csv", index=False)
-    print("Generated volunteer_details.csv")
+comments_df = pd.DataFrame(comments)
 
-    comments_df.to_csv("../mock_db/request_comments.csv", index=False)
-    print("Generated request_comments.csv")
+# SAVE FILES
+users_df.to_csv(f"{OUTPUT_DIR}/users.csv", index=False)
+request_df.to_csv(f"{OUTPUT_DIR}/request.csv", index=False)
+volunteers_df.to_csv(f"{OUTPUT_DIR}/volunteer_details.csv", index=False)
+comments_df.to_csv(f"{OUTPUT_DIR}/request_comments.csv", index=False)
 
-
-if __name__ == "__main__":
-    main()
+print("CSV files generated successfully with consistent data!")
