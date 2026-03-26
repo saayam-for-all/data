@@ -5,7 +5,6 @@ import os
 
 fake = Faker()
 
-
 # CONFIG
 NUM_ROWS = 100
 OUTPUT_DIR = "../mock_db"
@@ -25,8 +24,6 @@ def get_country_state():
     state_id = random.choice(country_state_map[country_id])
     return country_id, state_id
 
-
-
 # USERS TABLE
 users = []
 
@@ -44,7 +41,6 @@ for i in range(1, NUM_ROWS + 1):
     })
 
 users_df = pd.DataFrame(users)
-
 
 # REQUEST TABLE
 requests = []
