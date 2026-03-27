@@ -7,27 +7,49 @@ class CategoryOption(TypedDict):
     canonical_label: str
 
 
-# TODO: Replace with real categories/subcategories from test-saayam.netlify.app
+# Categories/subcategories captured from the current request form (General)
 RAW_CATEGORIES: Dict[str, List[str]] = {
-    "Shelter": [
-        "Emergency Shelter",
-        "Temporary Housing",
-        "Long-Term Housing",
+    "Clothing Assistance": [
+        "Donate Clothes",
+        "Borrow Clothes",
+        "Emergency Clothing Assistance",
+        "Tailoring",
     ],
-    "Food": [
-        "Food Pantry",
-        "Hot Meals",
-        "Food Vouchers",
+    "Education & Career Support": [
+        "College Application Help",
+        "SOP & Essay Review",
+        "Tutoring",
+        "Scholarship Knowledge",
+        "Study Group Formation",
+        "Career Guidance",
     ],
-    "Health": [
-        "Medical Assistance",
-        "Mental Health Support",
-        "Medication",
+    "Elderly Community Assistance": [
+        "Senior Relocation Support",
+        "Digital Support for Seniors",
+        "Medication Management",
+        "Medical Devices Setup",
+        "Errands, Events & Transportation",
+        "Transportation for Appointments",
     ],
-    "Employment": [
-        "Job Search Assistance",
-        "Skills Training",
-        "Resume Support",
+    "Food & Essentials": [
+        "Food Assistance",
+        "Grocery Shopping & Delivery",
+        "Cooking Help",
+    ],
+    "Healthcare & Wellness": [
+        "Medical Consultation",
+        "Medicine Delivery",
+        "Mental Wellbeing Support",
+        "Medication Reminders",
+        "Health Education Guidance",
+    ],
+    "Housing Assistance": [
+        "Lease Support",
+        "Tenant Rent Support",
+        "Repair & Maintenance Support",
+        "Utilities Setup Support",
+        "Looking for Rental",
+        "Find a Roommate",
     ],
     "Uncategorized": [
         "Uncategorized",
