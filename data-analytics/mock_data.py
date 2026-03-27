@@ -8,15 +8,13 @@ from datetime import datetime, timedelta
 fake = Faker()
 np.random.seed(42)
 
-# -------------------------------
+
 # Paths
-# -------------------------------
 LOOKUP_PATH = "database/lookup_tables/"
 OUTPUT_PATH = "database/mock_db/"
 
-# -------------------------------
+
 # Load Lookup Tables
-# -------------------------------
 state_df = pd.read_csv(LOOKUP_PATH + "state.csv")
 country_df = pd.read_csv(LOOKUP_PATH + "country.csv")
 user_status_df = pd.read_csv(LOOKUP_PATH + "user_status.csv")
@@ -28,9 +26,8 @@ request_type_df = pd.read_csv(LOOKUP_PATH + "request_type.csv")
 request_priority_df = pd.read_csv(LOOKUP_PATH + "request_priority.csv")
 request_status_df = pd.read_csv(LOOKUP_PATH + "request_status.csv")
 
-# -------------------------------
+
 # Generate Users Table
-# -------------------------------
 def generate_users(n=100):
     users = []
     for i in range(1, n+1):
@@ -50,9 +47,8 @@ users_df = generate_users()
 users_df.to_csv(OUTPUT_PATH + "users.csv", index=False)
 print("users.csv generated successfully!")
 
-# -------------------------------
+
 # Generate Requests Table
-# -------------------------------
 def generate_requests(n=100, users_df=users_df):
     requests = []
     for i in range(1, n+1):
