@@ -4,6 +4,10 @@ The scripts generate CSV files for the following tables:
 
 - `volunteer_applications`
 - `user_skills`
+- `users`
+- `request`
+- `request_comments`
+- `volunteer_rating`
 
 # Scripts Overview
 
@@ -55,6 +59,76 @@ Because volunteers may have multiple skills, this table can contain **more than 
 
 ---
 
+## users.py
+
+Generates synthetic data for the **users** table.
+
+Fields include:
+
+- `user_id`
+- `state_id`
+- `country_id`
+- `user_status_id`
+- `user_category_id`
+- `full_name`, `first_name`, `last_name`
+- `primary_email_address`, `primary_phone_number`
+- Address and profile-related fields
+- `created_at` and `last_update_date`
+
+This serves as a **parent table** for multiple dependent tables.
+
+---
+
+## request.py
+
+Generates synthetic data for the **request** table.
+
+Fields include:
+
+- `req_id`
+- `req_user_id`
+- `req_type_id`, `req_priority_id`, `req_status_id`
+- `req_subj`, `req_desc`
+- `submission_date`, `serviced_date`, `last_update_date`
+
+Each row represents a help request created by a user.
+
+---
+
+## request_comments.py
+
+Generates synthetic data for the **request_comments** table.
+
+Fields include:
+
+- `comment_id`
+- `req_id` (references `request.req_id`)
+- `commenter_id` (references `users.user_id`)
+- `comment_desc`
+- `created_at`, `last_updated_at`
+- `isdeleted`
+
+Maintains referential integrity with `users` and `request`.
+
+---
+
+## volunteer_rating.py
+
+Generates synthetic data for the **volunteer_rating** table.
+
+Fields include:
+
+- `volunteer_rating_id`
+- `user_id` (references `users.user_id`)
+- `request_id` (references `request.req_id`)
+- `rating`
+- `feedback`
+- `last_update_date`
+
+Represents feedback given for volunteer participation.
+
+---
+
 ## utils.py
 
 Contains shared helper functions used across scripts.
@@ -89,7 +163,23 @@ Contains skill mappings for volunteers based on `skill_codes`.
 
 Each skill produces a separate row.
 
----
+### users.csv
+
+Contains **100 user records** with realistic profile data.
+
+### request.csv
+
+Contains **100 help request records** linked to users.
+
+### request_comments.csv
+
+Contains **100 comment records** linked to requests and users.
+
+### volunteer_rating.csv
+
+Contains **100 rating records** linking users and requests.
+
+All files are generated in:
 
 # How to Run the Scripts
 
