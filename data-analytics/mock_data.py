@@ -30,23 +30,36 @@ request_status_df = pd.read_csv(LOOKUP_PATH + "request_status.csv")
 # Generate Users Table
 def generate_users(n=100):
     users = []
+
     for i in range(1, n+1):
+        # Picking a random state row
+        state_row = state_df.sample(1).iloc[0]
+
         users.append({
             "user_id": i,
             "name": fake.name(),
             "email": fake.email(),
             "phone": fake.phone_number(),
-            "state_id": np.random.choice(state_df["state_id"]),
-            "country_id": np.random.choice(country_df["country_id"]),
-            "user_status_id": np.random.choice(user_status_df["user_status_id"]),
-            "user_category_id": np.random.choice(user_category_df["user_category_id"])
+            "state_id": state_row["state_id"],
+            "country_id": state_row["country_id"],
+
+            "user_status_id": np.random.choice(user_status_df.iloc[:, 0]),
+            "user_category_id": np.random.choice(user_category_df.iloc[:, 0])
         })
+
     return pd.DataFrame(users)
 
 users_df = generate_users()
 users_df.to_csv(OUTPUT_PATH + "users.csv", index=False)
 print("users.csv generated successfully!")
 
+# Merge to verify correctness
+validation = users_df.merge(state_df, on="state_id", how="left")
+
+# Check mismatches
+invalid = validation[validation["country_id_x"] != validation["country_id_y"]]
+
+print("Invalid rows:", len(invalid))
 
 # Generate Requests Table
 def generate_requests(n=100, users_df=users_df):
