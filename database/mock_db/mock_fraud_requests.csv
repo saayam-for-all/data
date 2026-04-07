@@ -1,0 +1,101 @@
+fraud_request_id,user_id,request_datetime,reason
+1,U87,2026-03-17 11:37:03,Suspicious login from an unrecognised device and location.
+2,U61,2026-03-11 11:20:59,Volunteer requested cash payment outside the platform.
+3,U80,2026-02-12 07:09:21,User attempted to collect personal data from other members.
+4,U42,2026-03-21 21:47:07,Automated activity pattern detected on this account.
+5,U29,2026-03-05 17:17:38,User submitted the same help request multiple times.
+6,U82,2026-03-01 15:57:45,Request description contained misleading information.
+7,U90,2026-03-20 06:58:12,Volunteer marked request complete without providing any help.
+8,U84,2026-03-07 04:15:01,Duplicate account detected linked to same phone number.
+9,U15,2026-01-26 16:03:47,Profile photo and government ID do not match.
+10,U6,2026-03-23 22:48:35,Volunteer requested cash payment outside the platform.
+11,U39,2026-03-18 23:25:48,Request description contained misleading information.
+12,U15,2026-01-26 09:08:21,User submitted the same help request multiple times.
+13,U31,2026-02-05 03:44:26,User attempted to collect personal data from other members.
+14,U18,2026-02-20 04:04:17,Duplicate account detected linked to same phone number.
+15,U59,2026-01-24 19:41:21,User sent phishing links through in-app messaging.
+16,U86,2026-03-14 20:58:02,User attempted to collect personal data from other members.
+17,U54,2026-01-14 19:46:56,Automated activity pattern detected on this account.
+18,U96,2026-01-25 17:56:38,Profile photo and government ID do not match.
+19,U54,2026-01-24 11:13:44,User submitted the same help request multiple times.
+20,U63,2026-03-19 23:06:58,Automated activity pattern detected on this account.
+21,U53,2026-02-26 11:36:24,Volunteer marked request complete without providing any help.
+22,U5,2026-01-19 04:22:17,User sent phishing links through in-app messaging.
+23,U28,2026-02-13 05:11:33,Request description contained misleading information.
+24,U57,2026-01-11 12:56:29,Suspicious login from an unrecognised device and location.
+25,U47,2026-02-18 04:45:09,User submitted the same help request multiple times.
+26,U88,2026-02-03 16:38:08,User sent phishing links through in-app messaging.
+27,U70,2026-03-02 15:13:32,User sent phishing links through in-app messaging.
+28,U8,2026-02-02 05:58:47,Duplicate account detected linked to same phone number.
+29,U36,2026-01-20 05:20:02,Suspicious login from an unrecognised device and location.
+30,U16,2026-01-23 05:14:54,Request description contained misleading information.
+31,U12,2026-03-05 07:02:35,Suspicious login from an unrecognised device and location.
+32,U83,2026-03-30 17:36:46,Automated activity pattern detected on this account.
+33,U3,2026-02-01 08:29:15,Volunteer requested cash payment outside the platform.
+34,U43,2026-01-08 03:24:39,Suspicious login from an unrecognised device and location.
+35,U17,2026-02-08 16:31:26,Automated activity pattern detected on this account.
+36,U27,2026-02-21 20:53:15,User submitted the same help request multiple times.
+37,U98,2026-03-17 11:57:10,User attempted to collect personal data from other members.
+38,U27,2026-01-22 14:58:49,Automated activity pattern detected on this account.
+39,U28,2026-01-11 11:19:30,Suspicious login from an unrecognised device and location.
+40,U43,2026-01-22 12:24:42,Profile photo and government ID do not match.
+41,U77,2026-02-07 22:02:21,Volunteer requested cash payment outside the platform.
+42,U36,2026-03-06 13:05:20,Profile photo and government ID do not match.
+43,U17,2026-01-12 12:45:31,User attempted to collect personal data from other members.
+44,U33,2026-03-23 17:01:03,Profile photo and government ID do not match.
+45,U15,2026-03-09 07:28:00,Volunteer requested cash payment outside the platform.
+46,U17,2026-03-08 08:43:44,Volunteer requested cash payment outside the platform.
+47,U46,2026-03-30 10:54:55,Suspicious login from an unrecognised device and location.
+48,U76,2026-03-12 20:34:22,User sent phishing links through in-app messaging.
+49,U3,2026-02-05 19:59:54,Profile photo and government ID do not match.
+50,U34,2026-02-24 05:19:24,Volunteer requested cash payment outside the platform.
+51,U17,2026-03-25 06:52:35,Duplicate account detected linked to same phone number.
+52,U68,2026-03-04 04:41:27,User submitted the same help request multiple times.
+53,U96,2026-03-02 00:13:23,User submitted the same help request multiple times.
+54,U61,2026-02-11 08:39:24,Request description contained misleading information.
+55,U100,2026-01-14 16:04:53,User sent phishing links through in-app messaging.
+56,U66,2026-03-24 17:10:57,Automated activity pattern detected on this account.
+57,U14,2026-03-17 07:16:28,Request description contained misleading information.
+58,U65,2026-02-07 10:55:19,Suspicious login from an unrecognised device and location.
+59,U79,2026-02-27 14:30:58,Volunteer requested cash payment outside the platform.
+60,U94,2026-01-28 22:48:20,User attempted to collect personal data from other members.
+61,U39,2026-01-25 10:42:10,Request description contained misleading information.
+62,U83,2026-02-27 03:21:27,Volunteer requested cash payment outside the platform.
+63,U8,2026-01-14 05:07:10,Request description contained misleading information.
+64,U52,2026-03-24 22:22:17,Duplicate account detected linked to same phone number.
+65,U88,2026-02-25 15:19:09,User submitted the same help request multiple times.
+66,U63,2026-01-23 01:37:01,Request description contained misleading information.
+67,U10,2026-02-16 23:26:49,User submitted the same help request multiple times.
+68,U42,2026-03-01 07:43:31,Automated activity pattern detected on this account.
+69,U19,2026-02-28 17:38:29,User submitted the same help request multiple times.
+70,U17,2026-02-15 18:17:12,Volunteer marked request complete without providing any help.
+71,U80,2026-01-16 12:30:20,Automated activity pattern detected on this account.
+72,U71,2026-02-10 12:25:29,User sent phishing links through in-app messaging.
+73,U49,2026-01-29 01:41:08,Automated activity pattern detected on this account.
+74,U68,2026-04-03 08:43:13,Volunteer marked request complete without providing any help.
+75,U59,2026-01-28 07:24:26,User attempted to collect personal data from other members.
+76,U78,2026-03-12 23:56:17,Duplicate account detected linked to same phone number.
+77,U13,2026-02-08 19:36:05,User submitted the same help request multiple times.
+78,U84,2026-02-08 17:41:52,User attempted to collect personal data from other members.
+79,U93,2026-02-11 14:58:36,Suspicious login from an unrecognised device and location.
+80,U56,2026-02-05 02:20:05,Request description contained misleading information.
+81,U30,2026-01-28 19:16:16,Duplicate account detected linked to same phone number.
+82,U44,2026-03-21 16:04:18,Request description contained misleading information.
+83,U52,2026-03-08 14:57:18,Duplicate account detected linked to same phone number.
+84,U94,2026-02-28 02:24:32,User submitted the same help request multiple times.
+85,U41,2026-02-22 16:45:15,Duplicate account detected linked to same phone number.
+86,U41,2026-03-03 02:15:41,Volunteer marked request complete without providing any help.
+87,U48,2026-03-28 13:35:24,Profile photo and government ID do not match.
+88,U88,2026-03-21 14:51:20,Request description contained misleading information.
+89,U9,2026-03-11 15:14:09,User submitted the same help request multiple times.
+90,U11,2026-01-08 10:46:15,User submitted the same help request multiple times.
+91,U56,2026-01-18 17:34:42,User submitted the same help request multiple times.
+92,U96,2026-03-13 12:59:47,User sent phishing links through in-app messaging.
+93,U17,2026-02-10 04:30:44,User attempted to collect personal data from other members.
+94,U8,2026-02-19 20:44:12,Automated activity pattern detected on this account.
+95,U72,2026-01-30 22:18:29,User attempted to collect personal data from other members.
+96,U43,2026-04-05 09:53:11,User submitted the same help request multiple times.
+97,U53,2026-03-10 22:50:28,User sent phishing links through in-app messaging.
+98,U86,2026-03-08 04:17:02,Duplicate account detected linked to same phone number.
+99,U93,2026-04-06 18:46:01,Volunteer requested cash payment outside the platform.
+100,U37,2026-03-08 21:35:55,Automated activity pattern detected on this account.

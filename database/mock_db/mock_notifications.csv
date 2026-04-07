@@ -1,0 +1,101 @@
+notification_id,user_id,type_id,channel_id,message,status,created_at,last_update_date
+1,U14,11,2,A volunteer responded to your help post.,SENT,2025-11-25 22:34:25,2025-11-26 20:59:25
+2,U14,12,3,We need more documents to proceed with your application.,FAILED,2025-10-17 08:05:54,2025-10-17 20:38:54
+3,U74,1,2,Your password has not been changed in 90 days.,READ,2026-02-19 03:10:36,2026-02-19 22:19:36
+4,U78,13,3,You have clocked 25 volunteer hours.,PENDING,2026-03-30 13:43:56,2026-03-30 19:53:56
+5,U44,11,3,A volunteer responded to your help post.,PENDING,2025-12-10 21:55:54,2025-12-11 04:07:54
+6,U9,10,2,Your appointment is in less than 12 hours.,PENDING,2025-12-22 15:34:55,2025-12-22 18:42:55
+7,U49,13,4,Badge unlocked: First Responder.,READ,2026-04-05 10:48:41,2026-04-05 22:27:41
+8,U40,10,3,Please confirm your attendance for tomorrow session.,FAILED,2026-03-13 04:50:54,2026-03-14 01:12:54
+9,U20,1,2,Unusual sign-in detected on your account. Please verify it was you.,FAILED,2025-10-31 14:37:05,2025-10-31 16:19:05
+10,U57,1,4,Your password has not been changed in 90 days.,READ,2025-12-23 12:34:08,2025-12-24 09:18:08
+11,U35,12,2,Background verification completed.,FAILED,2025-11-28 10:03:20,2025-11-28 13:57:20
+12,U15,11,3,You have an unread message from a matched user.,FAILED,2026-01-22 11:56:43,2026-01-23 04:33:43
+13,U6,13,2,You helped 5 people this month.,READ,2026-02-27 04:13:40,2026-02-28 00:41:40
+14,U27,1,3,Unusual sign-in detected on your account. Please verify it was you.,SENT,2025-12-03 12:20:08,2025-12-03 17:02:08
+15,U42,11,1,A volunteer responded to your help post.,PENDING,2025-10-14 09:23:38,2025-10-15 02:22:38
+16,U17,12,4,We need more documents to proceed with your application.,FAILED,2026-04-04 13:23:24,2026-04-04 21:15:24
+17,U10,13,4,You helped 5 people this month.,PENDING,2026-01-17 23:02:08,2026-01-18 13:56:08
+18,U10,1,3,Complete your profile to continue using the platform.,FAILED,2026-03-18 05:33:46,2026-03-18 20:13:46
+19,U91,13,4,"One year on the platform, thank you.",DELIVERED,2026-03-08 05:01:14,2026-03-08 08:57:14
+20,U42,12,2,Your volunteer application has been approved.,FAILED,2025-12-21 09:41:17,2025-12-22 01:24:17
+21,U56,11,1,New message from a beneficiary on your active request.,SENT,2026-01-17 11:06:39,2026-01-18 01:59:39
+22,U68,13,1,"One year on the platform, thank you.",READ,2026-03-14 11:39:14,2026-03-14 22:15:14
+23,U43,11,2,A steward replied to your query.,PENDING,2026-01-16 09:08:11,2026-01-17 02:34:11
+24,U100,1,3,Scheduled platform downtime tonight from 1 AM to 3 AM.,DELIVERED,2026-01-04 02:42:09,2026-01-05 00:44:09
+25,U14,10,2,The community event you signed up for is this Saturday.,DELIVERED,2026-01-12 02:55:52,2026-01-12 09:40:52
+26,U98,10,1,The community event you signed up for is this Saturday.,SENT,2025-10-18 02:37:13,2025-10-19 00:04:13
+27,U97,12,4,Background verification completed.,FAILED,2025-12-06 03:44:21,2025-12-07 01:41:21
+28,U81,13,3,You helped 5 people this month.,SENT,2026-04-02 00:33:09,2026-04-02 15:34:09
+29,U57,1,3,Complete your profile to continue using the platform.,DELIVERED,2026-02-13 02:35:54,2026-02-13 22:47:54
+30,U65,1,1,Your password has not been changed in 90 days.,DELIVERED,2025-11-15 23:25:46,2025-11-16 15:11:46
+31,U8,12,3,Your volunteer application has been approved.,DELIVERED,2025-12-10 19:01:21,2025-12-10 21:39:21
+32,U60,1,1,Complete your profile to continue using the platform.,READ,2026-01-17 09:10:47,2026-01-18 04:41:47
+33,U78,10,4,Please confirm your attendance for tomorrow session.,FAILED,2025-10-25 14:00:52,2025-10-25 19:09:52
+34,U14,1,3,Complete your profile to continue using the platform.,PENDING,2025-10-28 05:26:46,2025-10-28 22:40:46
+35,U32,10,4,Your volunteer shift starts in 24 hours.,READ,2025-11-11 02:22:23,2025-11-11 20:16:23
+36,U47,13,3,Badge unlocked: First Responder.,DELIVERED,2026-03-08 18:10:56,2026-03-09 07:24:56
+37,U87,12,1,Your application is under review.,DELIVERED,2026-01-22 01:24:04,2026-01-22 03:39:04
+38,U72,11,4,New message from a beneficiary on your active request.,DELIVERED,2026-01-21 03:10:34,2026-01-21 11:47:34
+39,U43,13,1,Badge unlocked: First Responder.,FAILED,2025-10-11 00:25:11,2025-10-11 23:05:11
+40,U40,10,4,Please confirm your attendance for tomorrow session.,SENT,2026-02-08 07:58:36,2026-02-09 04:17:36
+41,U72,1,4,Your password has not been changed in 90 days.,DELIVERED,2025-10-22 07:22:39,2025-10-22 11:44:39
+42,U83,13,4,You have clocked 25 volunteer hours.,FAILED,2025-11-19 12:34:11,2025-11-20 00:56:11
+43,U40,1,2,Your password has not been changed in 90 days.,SENT,2026-02-16 18:14:42,2026-02-17 05:54:42
+44,U29,12,2,We need more documents to proceed with your application.,SENT,2026-02-08 20:00:25,2026-02-08 22:39:25
+45,U65,11,1,New message from a beneficiary on your active request.,DELIVERED,2026-03-08 19:24:41,2026-03-09 16:30:41
+46,U20,10,2,Your appointment is in less than 12 hours.,SENT,2025-11-19 23:43:30,2025-11-20 23:22:30
+47,U93,13,4,Badge unlocked: First Responder.,PENDING,2026-03-26 13:13:12,2026-03-27 03:15:12
+48,U57,11,3,A steward replied to your query.,READ,2026-02-19 16:28:35,2026-02-20 00:28:35
+49,U40,13,4,Badge unlocked: First Responder.,SENT,2025-12-30 23:12:58,2025-12-31 11:46:58
+50,U60,13,3,"One year on the platform, thank you.",READ,2026-03-20 20:44:18,2026-03-21 13:54:18
+51,U21,13,2,"One year on the platform, thank you.",FAILED,2025-10-29 18:35:27,2025-10-29 23:19:27
+52,U83,11,4,New message from a beneficiary on your active request.,DELIVERED,2025-11-18 12:19:37,2025-11-19 07:15:37
+53,U37,1,1,Unusual sign-in detected on your account. Please verify it was you.,SENT,2026-01-22 00:22:23,2026-01-22 09:41:23
+54,U56,12,1,We need more documents to proceed with your application.,SENT,2026-03-19 12:30:20,2026-03-20 03:54:20
+55,U54,11,1,New message from a beneficiary on your active request.,READ,2026-02-23 01:16:33,2026-02-23 18:25:33
+56,U50,11,1,A steward replied to your query.,DELIVERED,2026-03-29 05:00:11,2026-03-29 12:40:11
+57,U13,1,3,Your password has not been changed in 90 days.,SENT,2026-03-02 13:18:54,2026-03-02 18:00:54
+58,U61,1,2,Your password has not been changed in 90 days.,READ,2026-03-09 02:58:55,2026-03-09 18:17:55
+59,U11,13,1,You have clocked 25 volunteer hours.,DELIVERED,2026-01-02 02:36:42,2026-01-02 09:58:42
+60,U15,10,3,Your appointment is in less than 12 hours.,SENT,2026-02-12 03:27:01,2026-02-12 13:44:01
+61,U31,1,4,Unusual sign-in detected on your account. Please verify it was you.,FAILED,2026-03-17 04:36:29,2026-03-17 20:13:29
+62,U64,1,1,Unusual sign-in detected on your account. Please verify it was you.,FAILED,2025-10-23 14:21:46,2025-10-24 09:59:46
+63,U38,10,4,The community event you signed up for is this Saturday.,PENDING,2026-03-03 15:01:13,2026-03-04 12:01:13
+64,U74,11,4,A steward replied to your query.,SENT,2026-02-19 19:27:05,2026-02-20 18:08:05
+65,U9,1,1,Your password has not been changed in 90 days.,READ,2025-11-08 10:48:18,2025-11-09 02:51:18
+66,U48,1,3,Complete your profile to continue using the platform.,PENDING,2025-10-14 04:57:13,2025-10-14 17:09:13
+67,U31,1,1,Your password has not been changed in 90 days.,FAILED,2026-01-06 18:24:05,2026-01-07 05:45:05
+68,U46,10,3,Your volunteer shift starts in 24 hours.,SENT,2026-02-25 19:06:19,2026-02-26 18:29:19
+69,U81,12,2,Background verification completed.,SENT,2025-12-13 00:09:45,2025-12-13 02:19:45
+70,U38,12,2,Your volunteer application has been approved.,PENDING,2025-10-16 22:49:11,2025-10-17 05:38:11
+71,U40,1,4,Your password has not been changed in 90 days.,FAILED,2025-10-26 14:08:02,2025-10-27 06:18:02
+72,U97,11,2,New message from a beneficiary on your active request.,DELIVERED,2025-10-23 19:37:03,2025-10-24 07:49:03
+73,U35,1,1,Your password has not been changed in 90 days.,DELIVERED,2025-10-20 03:09:52,2025-10-20 18:04:52
+74,U50,12,3,Background verification completed.,SENT,2025-11-13 03:45:37,2025-11-13 20:42:37
+75,U67,12,3,Your application is under review.,PENDING,2026-03-12 19:33:58,2026-03-13 10:03:58
+76,U78,1,2,Complete your profile to continue using the platform.,FAILED,2025-11-27 12:13:59,2025-11-27 22:15:59
+77,U11,11,3,New message from a beneficiary on your active request.,DELIVERED,2026-01-25 23:07:04,2026-01-26 09:35:04
+78,U22,12,4,Background verification completed.,DELIVERED,2025-10-23 06:32:27,2025-10-23 21:48:27
+79,U79,1,4,Your password has not been changed in 90 days.,DELIVERED,2026-01-29 05:46:31,2026-01-30 03:36:31
+80,U86,1,4,Unusual sign-in detected on your account. Please verify it was you.,DELIVERED,2026-03-18 03:16:49,2026-03-18 20:47:49
+81,U19,10,4,Your volunteer shift starts in 24 hours.,PENDING,2025-11-22 19:09:44,2025-11-22 23:28:44
+82,U100,1,3,Scheduled platform downtime tonight from 1 AM to 3 AM.,DELIVERED,2026-04-04 11:45:43,2026-04-05 00:50:43
+83,U78,13,2,You have clocked 25 volunteer hours.,READ,2025-11-28 19:38:37,2025-11-29 08:18:37
+84,U98,11,1,You have an unread message from a matched user.,FAILED,2025-12-27 17:57:48,2025-12-27 22:39:48
+85,U51,13,3,You helped 5 people this month.,DELIVERED,2025-12-23 22:37:11,2025-12-24 07:09:11
+86,U95,1,2,Unusual sign-in detected on your account. Please verify it was you.,READ,2026-01-05 04:39:17,2026-01-05 22:20:17
+87,U34,12,3,Your volunteer application has been approved.,READ,2026-02-08 23:16:56,2026-02-09 06:36:56
+88,U89,13,4,You helped 5 people this month.,SENT,2025-12-27 03:07:16,2025-12-27 07:19:16
+89,U58,10,2,Your volunteer shift starts in 24 hours.,READ,2026-01-01 16:17:59,2026-01-01 19:17:59
+90,U91,11,1,A volunteer responded to your help post.,FAILED,2025-12-10 00:48:27,2025-12-10 19:19:27
+91,U21,11,2,A volunteer responded to your help post.,DELIVERED,2025-10-12 20:58:28,2025-10-13 14:20:28
+92,U26,10,2,Your volunteer shift starts in 24 hours.,SENT,2025-12-24 05:28:01,2025-12-24 22:20:01
+93,U71,1,3,Your password has not been changed in 90 days.,READ,2026-02-17 08:03:23,2026-02-18 02:53:23
+94,U9,10,3,Your volunteer shift starts in 24 hours.,READ,2025-11-01 13:36:06,2025-11-02 05:57:06
+95,U99,13,4,"One year on the platform, thank you.",FAILED,2026-01-21 10:45:56,2026-01-21 13:17:56
+96,U83,10,1,Please confirm your attendance for tomorrow session.,READ,2025-10-10 17:44:52,2025-10-11 09:39:52
+97,U17,13,2,You helped 5 people this month.,SENT,2026-02-11 03:30:12,2026-02-11 18:17:12
+98,U16,13,2,You have clocked 25 volunteer hours.,DELIVERED,2026-02-26 11:01:53,2026-02-26 16:39:53
+99,U91,10,2,Please confirm your attendance for tomorrow session.,DELIVERED,2026-02-06 15:58:25,2026-02-07 09:41:25
+100,U33,11,2,New message from a beneficiary on your active request.,FAILED,2025-10-21 20:57:55,2025-10-22 06:20:55
