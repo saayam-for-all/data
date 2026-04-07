@@ -1,0 +1,101 @@
+fraud_request_id,user_id,request_datetime,reason
+1,U57,2026-04-06 22:33:48,Suspected identity theft; someone created a duplicate profile of me.
+2,U97,2026-04-06 22:36:05,Suspected identity theft; someone created a duplicate profile of me.
+3,U57,2026-04-06 22:34:32,User refused to provide the agreed-upon assistance after I provided details.
+4,U78,2026-04-06 22:35:57,User refused to provide the agreed-upon assistance after I provided details.
+5,U16,2026-04-06 22:35:47,User refused to provide the agreed-upon assistance after I provided details.
+6,U84,2026-04-06 22:35:03,Suspected identity theft; someone created a duplicate profile of me.
+7,U81,2026-04-06 22:34:19,Another user requested sensitive financial information.
+8,U69,2026-04-06 22:33:31,My account details were modified without my consent.
+9,U100,2026-04-06 22:34:34,Received suspicious phishing links in my direct messages.
+10,U8,2026-04-06 22:34:45,Service was marked as completed but the volunteer never arrived.
+11,U49,2026-04-06 22:34:38,Received suspicious phishing links in my direct messages.
+12,U92,2026-04-06 22:35:53,Service was marked as completed but the volunteer never arrived.
+13,U76,2026-04-06 22:33:25,I believe this user profile is a bot or fake account.
+14,U29,2026-04-06 22:34:10,Service was marked as completed but the volunteer never arrived.
+15,U99,2026-04-06 22:34:09,Suspected identity theft; someone created a duplicate profile of me.
+16,U40,2026-04-06 22:34:55,Service was marked as completed but the volunteer never arrived.
+17,U29,2026-04-06 22:34:56,Unauthorized transaction detected on my account.
+18,U83,2026-04-06 22:33:54,I believe this user profile is a bot or fake account.
+19,U69,2026-04-06 22:34:55,The volunteer assigned to me asked for payment outside the platform.
+20,U18,2026-04-06 22:36:10,I believe this user profile is a bot or fake account.
+21,U100,2026-04-06 22:33:35,My account details were modified without my consent.
+22,U85,2026-04-06 22:34:53,User refused to provide the agreed-upon assistance after I provided details.
+23,U6,2026-04-06 22:34:31,Service was marked as completed but the volunteer never arrived.
+24,U56,2026-04-06 22:34:30,Inappropriate or abusive behavior from a matched user.
+25,U26,2026-04-06 22:35:59,I believe this user profile is a bot or fake account.
+26,U12,2026-04-06 22:35:11,I believe this user profile is a bot or fake account.
+27,U7,2026-04-06 22:36:07,Unauthorized transaction detected on my account.
+28,U95,2026-04-06 22:35:03,Service was marked as completed but the volunteer never arrived.
+29,U5,2026-04-06 22:35:37,Inappropriate or abusive behavior from a matched user.
+30,U68,2026-04-06 22:34:55,I believe this user profile is a bot or fake account.
+31,U51,2026-04-06 22:33:36,Suspected identity theft; someone created a duplicate profile of me.
+32,U98,2026-04-06 22:36:01,Inappropriate or abusive behavior from a matched user.
+33,U61,2026-04-06 22:35:42,Service was marked as completed but the volunteer never arrived.
+34,U6,2026-04-06 22:35:10,Suspected identity theft; someone created a duplicate profile of me.
+35,U47,2026-04-06 22:34:11,Unauthorized transaction detected on my account.
+36,U13,2026-04-06 22:34:49,User refused to provide the agreed-upon assistance after I provided details.
+37,U2,2026-04-06 22:33:46,Another user requested sensitive financial information.
+38,U12,2026-04-06 22:34:55,The volunteer assigned to me asked for payment outside the platform.
+39,U81,2026-04-06 22:34:48,Unauthorized transaction detected on my account.
+40,U100,2026-04-06 22:34:56,Unauthorized transaction detected on my account.
+41,U87,2026-04-06 22:35:31,User refused to provide the agreed-upon assistance after I provided details.
+42,U61,2026-04-06 22:34:45,User refused to provide the agreed-upon assistance after I provided details.
+43,U52,2026-04-06 22:34:07,I believe this user profile is a bot or fake account.
+44,U39,2026-04-06 22:36:18,Another user requested sensitive financial information.
+45,U75,2026-04-06 22:35:09,Suspected identity theft; someone created a duplicate profile of me.
+46,U75,2026-04-06 22:35:36,Received suspicious phishing links in my direct messages.
+47,U82,2026-04-06 22:35:11,Inappropriate or abusive behavior from a matched user.
+48,U38,2026-04-06 22:35:39,Unauthorized transaction detected on my account.
+49,U24,2026-04-06 22:34:54,Inappropriate or abusive behavior from a matched user.
+50,U54,2026-04-06 22:35:04,Another user requested sensitive financial information.
+51,U7,2026-04-06 22:35:36,Unauthorized transaction detected on my account.
+52,U95,2026-04-06 22:35:33,My account details were modified without my consent.
+53,U45,2026-04-06 22:35:11,I believe this user profile is a bot or fake account.
+54,U40,2026-04-06 22:35:22,My account details were modified without my consent.
+55,U32,2026-04-06 22:34:35,Service was marked as completed but the volunteer never arrived.
+56,U17,2026-04-06 22:33:54,The volunteer assigned to me asked for payment outside the platform.
+57,U7,2026-04-06 22:35:22,I believe this user profile is a bot or fake account.
+58,U36,2026-04-06 22:33:24,Received suspicious phishing links in my direct messages.
+59,U83,2026-04-06 22:36:18,My account details were modified without my consent.
+60,U2,2026-04-06 22:36:03,I believe this user profile is a bot or fake account.
+61,U45,2026-04-06 22:34:07,My account details were modified without my consent.
+62,U41,2026-04-06 22:35:15,Received suspicious phishing links in my direct messages.
+63,U72,2026-04-06 22:34:27,Service was marked as completed but the volunteer never arrived.
+64,U77,2026-04-06 22:36:23,Inappropriate or abusive behavior from a matched user.
+65,U70,2026-04-06 22:35:24,Unauthorized transaction detected on my account.
+66,U34,2026-04-06 22:35:29,User refused to provide the agreed-upon assistance after I provided details.
+67,U91,2026-04-06 22:35:14,My account details were modified without my consent.
+68,U82,2026-04-06 22:34:46,User refused to provide the agreed-upon assistance after I provided details.
+69,U77,2026-04-06 22:34:16,Suspected identity theft; someone created a duplicate profile of me.
+70,U22,2026-04-06 22:34:48,Another user requested sensitive financial information.
+71,U10,2026-04-06 22:33:47,Unauthorized transaction detected on my account.
+72,U5,2026-04-06 22:34:35,Inappropriate or abusive behavior from a matched user.
+73,U68,2026-04-06 22:36:13,Suspected identity theft; someone created a duplicate profile of me.
+74,U6,2026-04-06 22:34:28,The volunteer assigned to me asked for payment outside the platform.
+75,U99,2026-04-06 22:36:02,Service was marked as completed but the volunteer never arrived.
+76,U39,2026-04-06 22:35:29,Suspected identity theft; someone created a duplicate profile of me.
+77,U40,2026-04-06 22:36:08,I believe this user profile is a bot or fake account.
+78,U20,2026-04-06 22:33:31,I believe this user profile is a bot or fake account.
+79,U21,2026-04-06 22:33:28,Received suspicious phishing links in my direct messages.
+80,U25,2026-04-06 22:34:14,Another user requested sensitive financial information.
+81,U7,2026-04-06 22:35:40,Unauthorized transaction detected on my account.
+82,U37,2026-04-06 22:35:23,The volunteer assigned to me asked for payment outside the platform.
+83,U48,2026-04-06 22:34:17,Another user requested sensitive financial information.
+84,U29,2026-04-06 22:34:52,Suspected identity theft; someone created a duplicate profile of me.
+85,U72,2026-04-06 22:33:43,User refused to provide the agreed-upon assistance after I provided details.
+86,U71,2026-04-06 22:35:19,User refused to provide the agreed-upon assistance after I provided details.
+87,U29,2026-04-06 22:35:41,My account details were modified without my consent.
+88,U52,2026-04-06 22:34:57,Suspected identity theft; someone created a duplicate profile of me.
+89,U9,2026-04-06 22:36:20,Service was marked as completed but the volunteer never arrived.
+90,U48,2026-04-06 22:34:25,Received suspicious phishing links in my direct messages.
+91,U60,2026-04-06 22:36:14,Suspected identity theft; someone created a duplicate profile of me.
+92,U69,2026-04-06 22:34:09,Service was marked as completed but the volunteer never arrived.
+93,U14,2026-04-06 22:35:14,My account details were modified without my consent.
+94,U66,2026-04-06 22:34:20,Inappropriate or abusive behavior from a matched user.
+95,U30,2026-04-06 22:33:30,Service was marked as completed but the volunteer never arrived.
+96,U56,2026-04-06 22:35:43,Suspected identity theft; someone created a duplicate profile of me.
+97,U54,2026-04-06 22:34:23,The volunteer assigned to me asked for payment outside the platform.
+98,U94,2026-04-06 22:34:21,I believe this user profile is a bot or fake account.
+99,U82,2026-04-06 22:34:16,Inappropriate or abusive behavior from a matched user.
+100,U81,2026-04-06 22:35:20,User refused to provide the agreed-upon assistance after I provided details.
