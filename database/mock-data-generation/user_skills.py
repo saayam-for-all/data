@@ -1,23 +1,34 @@
-from datetime import datetime, timedelta
-from typing import Dict, List
+import random
+from typing import List, Dict, Set, Tuple
+from datetime import datetime
 
-from utils import build_skill_map, format_date
+from utils import GLOBAL_DATA, NUM_RECORDS
 
 
-def generate_user_skills(volunteer_rows: List[Dict[str, str]]) -> List[Dict[str, str]]:
-    skill_map = build_skill_map(volunteer_rows)
-    rows: List[Dict[str, str]] = []
+def generate_user_skills() -> List[Dict]:
+    rows = []
+    seen: Set[Tuple[str, str]] = set()
 
-    for volunteer_row in volunteer_rows:
-        user_id = volunteer_row["user_id"]
-        created_at = datetime.strptime(volunteer_row["created_at"], "%Y-%m-%d %H:%M").date()
+    users = GLOBAL_DATA["users"]
+    categories = GLOBAL_DATA["categories"]
 
-        for cat_id in skill_map[user_id]:
-            rows.append({
-                "user_id": user_id,
-                "cat_id": cat_id,
-                "created_date": format_date(created_at),
-                "last_update_date": format_date(created_at + timedelta(days=0)),
-            })
+    for _ in range(NUM_RECORDS):
+        user_id = random.choice(users)
+        cat_id = random.choice(categories)
+
+        if (user_id, cat_id) in seen:
+            continue
+
+        seen.add((user_id, cat_id))
+
+        # Single source of truth timestamp (like volunteer_applications)
+        base_time = datetime.now()
+
+        rows.append({
+            "user_id": user_id,
+            "cat_id": cat_id,
+            "created_date": base_time,
+            "last_update_date": base_time
+        })
 
     return rows
