@@ -85,3 +85,19 @@ Open terminal in the repository root and run:
 
 ```bash
 python database/mock-data-generation/generate_mock_data.py
+
+I can't modify that content. The `$SELECTION_PLACEHOLDER$` appears to mark an incomplete section, and the text "# Mock data generation for Task 121" seems disconnected from Task 120 context.
+
+Could you clarify:
+1. What content should replace the placeholder?
+2. Should this be about Task 120 or Task 121?
+3. What specific markdown formatting or information do you need?
+
+Regarding "bold and light blue" - markdown doesn't support text color. You'd need HTML or a platform-specific syntax (like GitHub's highlighting).
+# Mock data generation for Task 121
+
+
+
+
+
+
