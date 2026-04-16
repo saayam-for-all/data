@@ -1,87 +1,109 @@
-## Mock data generation for Task 120
+# Mock Data Generation
 
-This script generates synthetic CSV files for the following tables:
+The scripts generate CSV files for the following tables:
 
-- `request_guest_details`
-- `req_add_info`
+- `volunteer_applications`
+- `user_skills`
 
-# Script Overview
+# Scripts Overview
 
 ## generate_mock_data.py
 
-Main script responsible for generating mock data for Task 120.
+Main script responsible for generating mock data.
 
 Responsibilities:
 
-- Generates synthetic data for `request_guest_details`
-- Generates synthetic data for `req_add_info`
-- Uses lookup tables for valid reference values
+- Calls table-specific data generation scripts
 - Maintains relationships between tables
-- Writes generated data to CSV files
+- Writes generated data to CSV files 
 
 Run this script to generate all mock data.
 
 ---
 
-# Generated Tables
+## volunteer_applications.py
 
-## request_guest_details
-
-Generates synthetic data for the **request_guest_details** table.
+Generates synthetic data for the **volunteer_applications** table.
 
 Fields include:
 
-- `req_id`
-- `req_fname`
-- `req_lname`
-- `req_email`
-- `req_phone`
-- `req_age`
-- `req_gender`
-- `req_pref_lang`
+- `user_id`
+- `terms_and_conditions`
+- `terms_accepted_at`
+- `govt_id_path`
+- `skill_codes` (JSON array)
+- `availability` (JSON object)
+- `current_page`
+- `application_status`
+- `is_completed`
+- `created_at`
+- `last_updated_at`
 
-Each row represents guest details linked to a request.
+Each row represents a volunteer application.
 
 ---
 
-## req_add_info
+## user_skills.py
 
-Generates synthetic data for the **req_add_info** table.
+Generates data for the **user_skills** table.
 
-Fields include:
+This table is derived from the `skill_codes` field in `volunteer_applications`.
 
-- `request_id`
-- `cat_id`
-- `field_name_key`
-- `field_value`
+For each skill associated with a volunteer, a row is created.
 
-Each row represents additional request-related information.
+Because volunteers may have multiple skills, this table can contain **more than 100 rows**.
 
-The script uses lookup tables to generate valid category IDs and field names.
+---
+
+## utils.py
+
+Contains shared helper functions used across scripts.
+
+Includes:
+
+- Category ID constants
+- Availability options
+- Random data generators
+- JSON formatting helpers
+- Timestamp formatting
+- CSV writing utility functions
+- Random seed setup
+
+This keeps the code modular and reusable.
 
 ---
 
 # Output Files
 
-After running the script, CSV files will be created in:
-
-`database/mock_db/`
+After running the generator script, CSV files will be created 
 
 Generated files:
 
-### request_guest_details.csv
+### volunteer_applications.csv
 
-Contains **up to 100 synthetic records** for guest details.
+Contains **100 volunteer application records**.
 
-### req_add_info.csv
+### user_skills.csv
 
-Contains **up to 100 synthetic records** for additional request information.
+Contains skill mappings for volunteers based on `skill_codes`.
+
+Each skill produces a separate row.
 
 ---
 
-# How to Run the Script
+# How to Run the Scripts
 
-Open terminal in the repository root and run:
+Open terminal in VS Code and run: python generate_mock_data.py
 
-```bash
-python database/mock-data-generation/generate_mock_data.py
+---
+
+# What Happens When the Script Runs
+
+The script will:
+
+1. Generate **100 volunteer applications**
+2. Assign **multiple skills per volunteer**
+3. Create matching rows in `user_skills`
+4. Maintain table relationships
+5. Creates CSV files`
+
