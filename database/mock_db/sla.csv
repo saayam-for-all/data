@@ -1,0 +1,6 @@
+sla_id,sla_hours,sla_description,no_of_cust_impct,last_updated_date
+1,4,CRITICAL - 4 hours response,1,2024-06-26 16:44:51
+2,24,HIGH - 24 hours response,10,2024-12-04 14:18:25
+3,72,MEDIUM - 72 hours response,50,2025-12-23 09:43:24
+4,168,LOW - 7 days response,200,2025-02-02 01:27:26
+5,720,STANDARD - 30 days response,500,2025-07-27 01:24:32
