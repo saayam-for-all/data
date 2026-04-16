@@ -85,3 +85,126 @@ Open terminal in the repository root and run:
 
 ```bash
 python database/mock-data-generation/generate_mock_data.py
+
+
+# Mock data generation for Task 121
+
+This implementation generates synthetic CSV data for the following tables:
+
+* `fraud_requests`
+* `notifications`
+
+The data is generated using Python and pandas, ensuring schema consistency, realistic values, and logical relationships between fields.
+
+---
+
+## Script Overview
+
+### fraud_requests.ipynb
+
+Generates synthetic data for the `fraud_requests` table.
+
+Responsibilities:
+
+* Creates sequential `fraud_request_id` values
+* Uses valid `user_id` values in VARCHAR format (e.g., `U101`)
+* Generates realistic `request_datetime` timestamps
+* Assigns fraud-related reasons from a predefined list
+* Ensures correct data types and structure
+* Exports data to CSV
+
+---
+
+### notifications.ipynb
+
+Generates synthetic data for the `notifications` table.
+
+Responsibilities:
+
+* Creates sequential `notification_id` values
+* Uses valid `user_id` values
+* Samples `type_id` and `channel_id` from lookup tables
+* Generates realistic notification messages
+* Uses controlled values for `status`
+* Generates `created_at` timestamps
+* Ensures `last_update_date ≥ created_at`
+* Maintains logical consistency across all fields
+* Exports data to CSV
+
+---
+
+## Generated Tables
+
+### fraud_requests
+
+Fields:
+
+* `fraud_request_id` (integer, primary key)
+* `user_id` (character varying)
+* `request_datetime` (timestamp)
+* `reason` (text)
+
+Each row represents a fraud request associated with a user.
+
+---
+
+### notifications
+
+Fields:
+
+* `notification_id` (integer)
+* `user_id` (character varying)
+* `type_id` (integer)
+* `channel_id` (integer)
+* `message` (text)
+* `status` (user-defined)
+* `created_at` (timestamp)
+* `last_update_date` (timestamp)
+
+Each row represents a notification event.
+
+Key details:
+
+* `type_id` and `channel_id` are sampled from lookup tables
+* `status` uses controlled categorical values
+* `last_update_date` is always greater than or equal to `created_at`
+* Messages simulate real system-generated alerts
+
+---
+
+## Output Files
+
+CSV files are generated in:
+
+```
+database/mock_db/
+```
+
+Generated files:
+
+* `fraud_requests.csv` → up to 800 records
+* `notifications.csv` → up to 30000 records
+
+---
+
+## How to Run
+
+Open terminal in the repository root and run:
+
+```bash
+python database/mock-data-generation/generate_mock_data.py
+```
+
+---
+
+## Notes
+
+* Data maintains referential integrity using valid lookup values
+* All timestamps follow realistic temporal relationships
+* No null or invalid rows are included in final outputs
+* Suitable for testing, validation, and demonstration purposes
+
+
+
+
+
