@@ -1,0 +1,801 @@
+fraud_request_id,user_id,request_datetime,reason
+1,U428,2024-06-21 22:43,User submitted duplicate requests to obtain additional help
+2,U480,2025-03-03 05:50,User provided false information on their profile
+3,U215,2024-08-04 18:21,Automated bot-like activity detected on the account
+4,U153,2024-05-15 01:18,Multiple accounts detected sharing the same device fingerprint
+5,U317,2024-02-19 08:56,User submitted duplicate requests to obtain additional help
+6,U148,2024-12-05 15:24,User provided false information on their profile
+7,U359,2024-02-11 05:19,Account created with a disposable email address
+8,U202,2025-10-13 16:49,User provided false information on their profile
+9,U330,2025-03-08 03:42,User submitted duplicate requests to obtain additional help
+10,U489,2024-09-05 00:31,Automated bot-like activity detected on the account
+11,U317,2025-06-12 13:27,Unauthorized account access from an unrecognized device
+12,U180,2024-11-30 11:28,Reported for impersonating another verified user
+13,U153,2024-05-24 01:48,Suspicious pattern of repeated help request cancellations
+14,U150,2025-07-11 15:43,Reported for impersonating another verified user
+15,U410,2025-02-14 22:03,User submitted duplicate requests to obtain additional help
+16,U474,2025-12-14 16:36,Account created with a disposable email address
+17,U164,2025-08-11 00:47,Suspected identity theft - account credentials may be compromised
+18,U383,2025-03-31 10:28,User solicited off-platform transactions from volunteers
+19,U417,2025-07-15 18:43,Multiple accounts detected sharing the same device fingerprint
+20,U199,2024-04-18 01:12,User submitted duplicate requests to obtain additional help
+21,U439,2024-12-20 00:39,Unauthorized account access from an unrecognized device
+22,U141,2024-12-27 15:04,Suspected identity theft - account credentials may be compromised
+23,U295,2025-03-07 19:36,Payment or incentive fraud suspected
+24,U426,2025-07-20 17:55,Phishing attempt detected from this account
+25,U290,2025-07-05 21:27,User provided false information on their profile
+26,U444,2025-02-18 17:39,Automated bot-like activity detected on the account
+27,U580,2024-04-20 22:04,Multiple accounts detected sharing the same device fingerprint
+28,U426,2024-09-22 20:30,Account created with a disposable email address
+29,U474,2025-01-15 07:12,Phishing attempt detected from this account
+30,U337,2025-08-12 11:07,Unauthorized account access from an unrecognized device
+31,U574,2024-12-07 03:50,User solicited off-platform transactions from volunteers
+32,U267,2024-03-27 21:31,User provided false information on their profile
+33,U521,2024-02-19 20:47,Reported for impersonating another verified user
+34,U306,2025-02-19 22:06,Suspected identity theft - account credentials may be compromised
+35,U209,2025-05-03 20:02,User provided false information on their profile
+36,U436,2026-02-14 12:41,Suspicious pattern of repeated help request cancellations
+37,U553,2025-12-13 19:14,Phishing attempt detected from this account
+38,U236,2024-08-04 21:47,User provided false information on their profile
+39,U482,2025-02-12 03:43,Automated bot-like activity detected on the account
+40,U400,2025-10-27 13:10,Multiple accounts detected sharing the same device fingerprint
+41,U305,2025-07-16 08:12,User provided false information on their profile
+42,U171,2026-03-02 12:31,Payment or incentive fraud suspected
+43,U147,2024-03-14 04:37,Suspected identity theft - account credentials may be compromised
+44,U179,2024-09-05 12:33,User solicited off-platform transactions from volunteers
+45,U317,2024-04-08 16:29,Suspicious pattern of repeated help request cancellations
+46,U296,2025-12-28 02:09,Account created with a disposable email address
+47,U229,2024-01-18 20:02,User solicited off-platform transactions from volunteers
+48,U470,2024-06-26 22:47,User solicited off-platform transactions from volunteers
+49,U554,2025-02-18 11:57,User solicited off-platform transactions from volunteers
+50,U275,2024-06-22 06:57,Unauthorized account access from an unrecognized device
+51,U323,2024-09-02 16:32,Payment or incentive fraud suspected
+52,U102,2025-02-13 03:51,Account created with a disposable email address
+53,U491,2024-10-04 12:37,Account created with a disposable email address
+54,U568,2024-06-14 07:16,User solicited off-platform transactions from volunteers
+55,U253,2026-02-27 15:02,Multiple accounts detected sharing the same device fingerprint
+56,U202,2024-08-25 10:15,Reported for impersonating another verified user
+57,U491,2024-09-07 22:59,Account created with a disposable email address
+58,U589,2024-01-01 21:19,Multiple accounts detected sharing the same device fingerprint
+59,U266,2026-01-29 00:32,User submitted duplicate requests to obtain additional help
+60,U158,2025-07-17 20:54,Unauthorized account access from an unrecognized device
+61,U223,2024-03-30 23:36,User provided false information on their profile
+62,U550,2024-05-02 08:16,Suspected identity theft - account credentials may be compromised
+63,U475,2026-01-24 23:02,Suspected identity theft - account credentials may be compromised
+64,U490,2024-07-14 08:41,Phishing attempt detected from this account
+65,U438,2026-01-08 07:48,Account created with a disposable email address
+66,U185,2025-02-15 18:01,Account created with a disposable email address
+67,U547,2025-10-19 07:43,User provided false information on their profile
+68,U576,2024-11-08 11:27,Automated bot-like activity detected on the account
+69,U260,2025-09-11 19:30,User solicited off-platform transactions from volunteers
+70,U433,2025-08-03 02:07,Payment or incentive fraud suspected
+71,U561,2026-03-15 00:37,Payment or incentive fraud suspected
+72,U162,2025-01-20 02:35,User provided false information on their profile
+73,U133,2025-06-09 04:44,User submitted duplicate requests to obtain additional help
+74,U402,2024-12-23 11:17,Multiple accounts detected sharing the same device fingerprint
+75,U213,2024-01-12 04:05,Suspected identity theft - account credentials may be compromised
+76,U463,2024-04-01 10:58,User provided false information on their profile
+77,U135,2024-02-18 19:09,Reported for impersonating another verified user
+78,U137,2026-03-09 17:07,User provided false information on their profile
+79,U243,2026-01-24 01:33,User provided false information on their profile
+80,U377,2024-07-24 12:56,Automated bot-like activity detected on the account
+81,U579,2026-01-04 06:27,User provided false information on their profile
+82,U502,2026-01-04 17:42,Suspicious pattern of repeated help request cancellations
+83,U198,2024-05-26 12:43,Suspected identity theft - account credentials may be compromised
+84,U438,2025-10-31 14:45,Reported for impersonating another verified user
+85,U317,2025-09-30 15:00,Payment or incentive fraud suspected
+86,U543,2024-03-25 03:38,User solicited off-platform transactions from volunteers
+87,U435,2024-06-01 21:17,User submitted duplicate requests to obtain additional help
+88,U307,2025-06-11 02:07,Suspected identity theft - account credentials may be compromised
+89,U228,2024-10-24 14:59,User provided false information on their profile
+90,U375,2025-11-27 21:31,Phishing attempt detected from this account
+91,U317,2024-10-12 00:55,Unauthorized account access from an unrecognized device
+92,U337,2025-01-23 01:27,Suspected identity theft - account credentials may be compromised
+93,U327,2024-06-01 02:18,User submitted duplicate requests to obtain additional help
+94,U434,2024-01-23 22:12,Suspected identity theft - account credentials may be compromised
+95,U575,2025-01-02 04:51,Phishing attempt detected from this account
+96,U309,2026-01-24 10:00,Payment or incentive fraud suspected
+97,U210,2025-09-14 23:51,User submitted duplicate requests to obtain additional help
+98,U185,2025-08-11 17:08,User submitted duplicate requests to obtain additional help
+99,U300,2025-02-15 23:29,Payment or incentive fraud suspected
+100,U247,2025-10-19 02:51,Automated bot-like activity detected on the account
+101,U591,2026-01-26 00:25,Phishing attempt detected from this account
+102,U198,2025-04-05 22:04,User provided false information on their profile
+103,U596,2024-03-31 20:24,Multiple accounts detected sharing the same device fingerprint
+104,U477,2024-04-04 16:39,Automated bot-like activity detected on the account
+105,U261,2024-03-29 19:16,User submitted duplicate requests to obtain additional help
+106,U400,2026-01-10 15:57,Account created with a disposable email address
+107,U571,2024-09-01 13:31,User submitted duplicate requests to obtain additional help
+108,U592,2026-02-27 21:13,Suspected identity theft - account credentials may be compromised
+109,U536,2024-10-15 16:03,Suspected identity theft - account credentials may be compromised
+110,U405,2024-04-15 13:45,User solicited off-platform transactions from volunteers
+111,U542,2024-12-31 09:02,Suspicious pattern of repeated help request cancellations
+112,U162,2025-01-17 11:34,Multiple accounts detected sharing the same device fingerprint
+113,U405,2024-03-02 17:40,Multiple accounts detected sharing the same device fingerprint
+114,U142,2025-10-13 05:50,User solicited off-platform transactions from volunteers
+115,U399,2026-03-23 02:45,Reported for impersonating another verified user
+116,U579,2025-02-09 02:02,User provided false information on their profile
+117,U443,2025-05-03 01:37,User provided false information on their profile
+118,U236,2025-09-06 19:57,Phishing attempt detected from this account
+119,U444,2025-04-11 00:42,Payment or incentive fraud suspected
+120,U262,2024-04-22 16:36,User submitted duplicate requests to obtain additional help
+121,U335,2024-06-04 07:34,Suspected identity theft - account credentials may be compromised
+122,U376,2024-11-27 02:58,Account created with a disposable email address
+123,U236,2024-07-24 18:20,Reported for impersonating another verified user
+124,U552,2024-04-16 20:43,User provided false information on their profile
+125,U290,2025-03-18 17:06,Phishing attempt detected from this account
+126,U325,2025-04-14 22:39,Multiple accounts detected sharing the same device fingerprint
+127,U514,2024-01-13 03:39,User solicited off-platform transactions from volunteers
+128,U519,2025-04-10 01:38,User solicited off-platform transactions from volunteers
+129,U154,2024-07-27 14:44,Unauthorized account access from an unrecognized device
+130,U160,2024-06-15 06:35,Automated bot-like activity detected on the account
+131,U384,2024-08-29 11:31,Unauthorized account access from an unrecognized device
+132,U245,2024-11-23 04:50,Automated bot-like activity detected on the account
+133,U276,2024-11-12 06:39,User solicited off-platform transactions from volunteers
+134,U425,2025-02-14 02:01,Account created with a disposable email address
+135,U351,2025-01-25 02:28,User submitted duplicate requests to obtain additional help
+136,U148,2025-10-20 00:02,Unauthorized account access from an unrecognized device
+137,U123,2024-01-06 12:11,Reported for impersonating another verified user
+138,U495,2024-07-22 05:18,User solicited off-platform transactions from volunteers
+139,U235,2024-09-08 00:12,Automated bot-like activity detected on the account
+140,U327,2025-10-26 09:19,Account created with a disposable email address
+141,U105,2024-06-22 18:57,Suspected identity theft - account credentials may be compromised
+142,U584,2024-08-19 13:08,Account created with a disposable email address
+143,U119,2025-07-27 13:22,Multiple accounts detected sharing the same device fingerprint
+144,U383,2024-08-18 01:20,Suspicious pattern of repeated help request cancellations
+145,U166,2024-03-05 23:29,Unauthorized account access from an unrecognized device
+146,U287,2024-03-02 23:23,Reported for impersonating another verified user
+147,U208,2025-01-22 15:08,User solicited off-platform transactions from volunteers
+148,U153,2025-07-03 10:05,Account created with a disposable email address
+149,U553,2025-09-23 06:50,Multiple accounts detected sharing the same device fingerprint
+150,U484,2024-08-28 02:09,User provided false information on their profile
+151,U543,2024-09-09 10:30,Phishing attempt detected from this account
+152,U552,2025-10-02 11:26,User submitted duplicate requests to obtain additional help
+153,U192,2025-05-31 00:46,Suspicious pattern of repeated help request cancellations
+154,U511,2025-01-20 12:20,Unauthorized account access from an unrecognized device
+155,U182,2024-06-16 22:05,Suspicious pattern of repeated help request cancellations
+156,U547,2024-03-01 03:45,Payment or incentive fraud suspected
+157,U214,2024-11-06 00:36,Payment or incentive fraud suspected
+158,U280,2025-04-19 02:20,User provided false information on their profile
+159,U215,2024-02-06 18:16,User solicited off-platform transactions from volunteers
+160,U199,2025-09-10 23:53,Reported for impersonating another verified user
+161,U243,2024-04-17 20:11,Unauthorized account access from an unrecognized device
+162,U280,2026-03-02 08:01,Suspicious pattern of repeated help request cancellations
+163,U448,2025-05-29 10:09,User submitted duplicate requests to obtain additional help
+164,U160,2025-02-09 18:48,Phishing attempt detected from this account
+165,U398,2025-02-16 09:18,User submitted duplicate requests to obtain additional help
+166,U156,2025-11-06 01:42,Reported for impersonating another verified user
+167,U474,2025-05-02 06:44,Suspicious pattern of repeated help request cancellations
+168,U411,2026-03-05 11:14,Suspected identity theft - account credentials may be compromised
+169,U298,2024-10-22 06:39,Unauthorized account access from an unrecognized device
+170,U123,2025-11-08 09:24,User submitted duplicate requests to obtain additional help
+171,U367,2024-11-02 02:00,Reported for impersonating another verified user
+172,U321,2024-04-18 16:48,User solicited off-platform transactions from volunteers
+173,U572,2025-05-27 22:44,Multiple accounts detected sharing the same device fingerprint
+174,U261,2024-07-12 14:22,Automated bot-like activity detected on the account
+175,U561,2025-04-11 12:49,Account created with a disposable email address
+176,U259,2025-09-26 09:59,Reported for impersonating another verified user
+177,U307,2025-04-04 06:49,Account created with a disposable email address
+178,U166,2024-10-25 00:19,Suspicious pattern of repeated help request cancellations
+179,U441,2025-08-11 23:33,User solicited off-platform transactions from volunteers
+180,U484,2024-09-27 08:12,Multiple accounts detected sharing the same device fingerprint
+181,U392,2025-04-12 12:13,Suspicious pattern of repeated help request cancellations
+182,U381,2024-01-01 15:08,Unauthorized account access from an unrecognized device
+183,U247,2024-11-22 12:10,Suspicious pattern of repeated help request cancellations
+184,U503,2025-05-15 14:19,Payment or incentive fraud suspected
+185,U327,2025-11-17 20:54,User solicited off-platform transactions from volunteers
+186,U210,2026-03-05 01:56,Payment or incentive fraud suspected
+187,U507,2024-09-20 14:33,User solicited off-platform transactions from volunteers
+188,U144,2025-03-16 20:19,Account created with a disposable email address
+189,U440,2025-06-04 16:43,Suspected identity theft - account credentials may be compromised
+190,U520,2024-12-30 20:32,User solicited off-platform transactions from volunteers
+191,U259,2024-12-14 23:12,User provided false information on their profile
+192,U176,2024-02-07 22:38,User submitted duplicate requests to obtain additional help
+193,U226,2026-01-08 02:22,Multiple accounts detected sharing the same device fingerprint
+194,U536,2024-04-23 03:13,Payment or incentive fraud suspected
+195,U313,2024-10-29 01:04,Automated bot-like activity detected on the account
+196,U457,2025-08-19 11:45,Payment or incentive fraud suspected
+197,U305,2025-01-14 00:23,Phishing attempt detected from this account
+198,U436,2024-01-09 14:43,Suspected identity theft - account credentials may be compromised
+199,U499,2025-10-22 10:35,User provided false information on their profile
+200,U191,2026-03-15 14:51,Payment or incentive fraud suspected
+201,U126,2025-01-22 02:47,Suspected identity theft - account credentials may be compromised
+202,U334,2024-07-26 03:14,Payment or incentive fraud suspected
+203,U442,2025-05-07 21:43,Payment or incentive fraud suspected
+204,U414,2026-02-23 03:29,Suspicious pattern of repeated help request cancellations
+205,U526,2025-11-23 16:51,Phishing attempt detected from this account
+206,U481,2026-01-07 09:08,Payment or incentive fraud suspected
+207,U233,2025-01-19 01:45,User solicited off-platform transactions from volunteers
+208,U242,2026-03-20 19:27,Payment or incentive fraud suspected
+209,U421,2025-01-06 15:43,Unauthorized account access from an unrecognized device
+210,U326,2024-04-30 08:47,Automated bot-like activity detected on the account
+211,U247,2024-12-30 06:33,Unauthorized account access from an unrecognized device
+212,U272,2025-05-11 15:38,Account created with a disposable email address
+213,U142,2024-08-02 22:57,Phishing attempt detected from this account
+214,U219,2025-08-18 00:35,Automated bot-like activity detected on the account
+215,U179,2024-11-28 08:44,Suspected identity theft - account credentials may be compromised
+216,U313,2025-09-25 04:24,Reported for impersonating another verified user
+217,U378,2025-12-24 18:55,Suspicious pattern of repeated help request cancellations
+218,U132,2024-11-17 07:20,Suspicious pattern of repeated help request cancellations
+219,U300,2024-01-31 08:12,Multiple accounts detected sharing the same device fingerprint
+220,U295,2026-01-10 23:05,User submitted duplicate requests to obtain additional help
+221,U583,2025-06-30 10:31,Unauthorized account access from an unrecognized device
+222,U486,2025-08-28 19:45,Suspicious pattern of repeated help request cancellations
+223,U376,2024-12-08 14:16,Payment or incentive fraud suspected
+224,U213,2025-02-27 23:45,Suspicious pattern of repeated help request cancellations
+225,U349,2024-02-15 02:07,Suspicious pattern of repeated help request cancellations
+226,U273,2025-09-20 02:01,Automated bot-like activity detected on the account
+227,U185,2025-12-27 01:34,Phishing attempt detected from this account
+228,U419,2024-02-11 21:22,Suspicious pattern of repeated help request cancellations
+229,U404,2024-02-12 02:26,Suspected identity theft - account credentials may be compromised
+230,U430,2025-10-27 19:50,Phishing attempt detected from this account
+231,U544,2025-12-18 05:21,Phishing attempt detected from this account
+232,U126,2025-02-08 03:19,Suspicious pattern of repeated help request cancellations
+233,U268,2024-11-24 19:16,Payment or incentive fraud suspected
+234,U268,2025-06-08 06:55,Suspicious pattern of repeated help request cancellations
+235,U243,2025-10-16 21:04,Unauthorized account access from an unrecognized device
+236,U528,2024-05-07 05:41,Payment or incentive fraud suspected
+237,U110,2024-03-21 21:53,Reported for impersonating another verified user
+238,U215,2024-04-16 14:16,User solicited off-platform transactions from volunteers
+239,U121,2024-02-18 04:52,User provided false information on their profile
+240,U203,2024-02-01 15:49,Multiple accounts detected sharing the same device fingerprint
+241,U179,2025-01-05 13:36,Phishing attempt detected from this account
+242,U343,2024-06-26 16:44,Multiple accounts detected sharing the same device fingerprint
+243,U586,2024-12-04 14:18,Payment or incentive fraud suspected
+244,U459,2025-02-02 01:27,Reported for impersonating another verified user
+245,U186,2024-06-26 22:05,Phishing attempt detected from this account
+246,U594,2025-04-28 04:22,Suspected identity theft - account credentials may be compromised
+247,U397,2024-02-09 21:21,Unauthorized account access from an unrecognized device
+248,U395,2025-08-06 00:27,Suspicious pattern of repeated help request cancellations
+249,U583,2024-11-04 02:16,Suspected identity theft - account credentials may be compromised
+250,U404,2025-01-12 06:04,Suspected identity theft - account credentials may be compromised
+251,U457,2025-04-13 11:49,User solicited off-platform transactions from volunteers
+252,U408,2024-07-07 01:15,Multiple accounts detected sharing the same device fingerprint
+253,U501,2024-03-04 19:10,Reported for impersonating another verified user
+254,U373,2025-10-27 11:05,User solicited off-platform transactions from volunteers
+255,U290,2024-04-17 02:53,Account created with a disposable email address
+256,U432,2025-06-14 02:01,User submitted duplicate requests to obtain additional help
+257,U535,2025-10-14 12:55,Payment or incentive fraud suspected
+258,U155,2025-11-04 10:55,Reported for impersonating another verified user
+259,U426,2025-12-15 04:19,Automated bot-like activity detected on the account
+260,U179,2025-11-07 12:08,Phishing attempt detected from this account
+261,U476,2026-03-21 12:07,User solicited off-platform transactions from volunteers
+262,U239,2026-01-21 02:05,Payment or incentive fraud suspected
+263,U324,2025-02-20 22:30,Reported for impersonating another verified user
+264,U537,2025-01-16 08:43,Suspected identity theft - account credentials may be compromised
+265,U243,2025-12-01 07:07,User provided false information on their profile
+266,U485,2025-12-22 21:35,Multiple accounts detected sharing the same device fingerprint
+267,U413,2025-08-11 17:44,Reported for impersonating another verified user
+268,U115,2026-02-06 21:04,Reported for impersonating another verified user
+269,U194,2026-01-27 09:10,User provided false information on their profile
+270,U282,2025-02-05 08:04,Reported for impersonating another verified user
+271,U244,2025-03-05 04:02,Account created with a disposable email address
+272,U106,2026-03-13 13:15,User provided false information on their profile
+273,U144,2025-01-09 22:24,Automated bot-like activity detected on the account
+274,U309,2026-01-28 23:30,Account created with a disposable email address
+275,U489,2025-01-08 07:55,Automated bot-like activity detected on the account
+276,U344,2026-02-01 11:08,Payment or incentive fraud suspected
+277,U506,2024-01-27 18:52,Suspected identity theft - account credentials may be compromised
+278,U251,2024-12-10 05:42,Suspicious pattern of repeated help request cancellations
+279,U455,2025-01-12 23:04,Unauthorized account access from an unrecognized device
+280,U440,2025-07-27 06:04,Payment or incentive fraud suspected
+281,U384,2025-06-18 00:12,Suspicious pattern of repeated help request cancellations
+282,U482,2025-05-28 20:47,Reported for impersonating another verified user
+283,U460,2025-12-05 20:50,Unauthorized account access from an unrecognized device
+284,U257,2025-01-25 13:00,User provided false information on their profile
+285,U162,2024-10-26 04:03,Reported for impersonating another verified user
+286,U162,2024-10-14 14:53,User provided false information on their profile
+287,U211,2026-01-22 04:13,Unauthorized account access from an unrecognized device
+288,U471,2026-03-25 23:52,Multiple accounts detected sharing the same device fingerprint
+289,U245,2024-06-05 03:53,User provided false information on their profile
+290,U252,2024-12-19 09:11,Reported for impersonating another verified user
+291,U192,2025-04-14 13:21,User submitted duplicate requests to obtain additional help
+292,U463,2024-07-15 15:21,Unauthorized account access from an unrecognized device
+293,U124,2024-03-25 16:52,Account created with a disposable email address
+294,U250,2024-07-15 04:02,User solicited off-platform transactions from volunteers
+295,U545,2026-02-01 13:17,Suspected identity theft - account credentials may be compromised
+296,U547,2024-01-20 01:17,Multiple accounts detected sharing the same device fingerprint
+297,U246,2025-12-30 04:23,Payment or incentive fraud suspected
+298,U326,2025-06-13 06:26,Phishing attempt detected from this account
+299,U595,2024-03-20 19:27,Unauthorized account access from an unrecognized device
+300,U582,2026-01-12 03:02,Suspected identity theft - account credentials may be compromised
+301,U521,2024-04-11 12:10,Suspicious pattern of repeated help request cancellations
+302,U352,2024-04-25 01:59,Multiple accounts detected sharing the same device fingerprint
+303,U423,2024-03-24 06:41,Phishing attempt detected from this account
+304,U177,2025-04-16 23:48,Suspected identity theft - account credentials may be compromised
+305,U228,2024-07-03 00:11,Account created with a disposable email address
+306,U492,2025-10-08 12:05,Multiple accounts detected sharing the same device fingerprint
+307,U406,2024-12-16 14:13,Account created with a disposable email address
+308,U295,2025-11-30 20:23,Payment or incentive fraud suspected
+309,U253,2025-10-28 03:56,Unauthorized account access from an unrecognized device
+310,U392,2024-04-03 13:32,Multiple accounts detected sharing the same device fingerprint
+311,U592,2024-06-03 03:41,User provided false information on their profile
+312,U421,2024-11-23 19:35,Unauthorized account access from an unrecognized device
+313,U439,2024-05-06 02:53,Phishing attempt detected from this account
+314,U223,2024-09-27 00:14,Account created with a disposable email address
+315,U139,2024-08-31 03:57,User submitted duplicate requests to obtain additional help
+316,U310,2025-11-30 19:59,Automated bot-like activity detected on the account
+317,U405,2025-12-30 23:36,Unauthorized account access from an unrecognized device
+318,U117,2024-12-25 14:03,Unauthorized account access from an unrecognized device
+319,U462,2025-03-15 04:30,Automated bot-like activity detected on the account
+320,U541,2025-12-06 07:30,Suspected identity theft - account credentials may be compromised
+321,U452,2024-12-28 14:40,Unauthorized account access from an unrecognized device
+322,U504,2024-11-03 07:14,Suspicious pattern of repeated help request cancellations
+323,U159,2024-12-15 05:30,User solicited off-platform transactions from volunteers
+324,U177,2025-02-16 15:29,Phishing attempt detected from this account
+325,U137,2024-04-02 15:28,Phishing attempt detected from this account
+326,U506,2025-04-22 20:35,Multiple accounts detected sharing the same device fingerprint
+327,U484,2025-03-24 08:10,Payment or incentive fraud suspected
+328,U164,2025-12-29 02:19,Automated bot-like activity detected on the account
+329,U256,2025-09-17 06:36,Unauthorized account access from an unrecognized device
+330,U357,2026-02-06 02:01,Payment or incentive fraud suspected
+331,U142,2024-03-02 22:07,Suspicious pattern of repeated help request cancellations
+332,U477,2025-05-15 17:01,Multiple accounts detected sharing the same device fingerprint
+333,U229,2024-02-10 04:18,Suspected identity theft - account credentials may be compromised
+334,U218,2024-02-02 05:26,User solicited off-platform transactions from volunteers
+335,U521,2025-02-22 16:05,Multiple accounts detected sharing the same device fingerprint
+336,U121,2024-09-29 03:35,Payment or incentive fraud suspected
+337,U366,2025-11-17 23:30,Unauthorized account access from an unrecognized device
+338,U193,2025-11-08 02:58,User solicited off-platform transactions from volunteers
+339,U517,2026-02-02 20:51,Suspected identity theft - account credentials may be compromised
+340,U341,2025-06-24 12:55,Suspicious pattern of repeated help request cancellations
+341,U271,2025-05-13 17:55,User solicited off-platform transactions from volunteers
+342,U154,2024-09-06 19:59,Reported for impersonating another verified user
+343,U311,2026-02-08 16:25,Unauthorized account access from an unrecognized device
+344,U440,2025-09-14 01:56,Account created with a disposable email address
+345,U119,2025-12-07 13:08,Suspected identity theft - account credentials may be compromised
+346,U262,2025-01-27 02:06,Reported for impersonating another verified user
+347,U160,2025-09-19 20:44,Account created with a disposable email address
+348,U523,2024-01-02 18:54,User solicited off-platform transactions from volunteers
+349,U546,2025-12-18 15:43,Suspicious pattern of repeated help request cancellations
+350,U128,2024-10-18 09:35,Account created with a disposable email address
+351,U286,2026-02-13 09:10,User solicited off-platform transactions from volunteers
+352,U327,2024-03-21 04:13,User provided false information on their profile
+353,U237,2024-07-22 12:31,Unauthorized account access from an unrecognized device
+354,U325,2026-01-22 23:21,Suspected identity theft - account credentials may be compromised
+355,U115,2025-01-06 17:39,Automated bot-like activity detected on the account
+356,U182,2025-04-27 17:36,Account created with a disposable email address
+357,U108,2025-09-25 18:59,Suspected identity theft - account credentials may be compromised
+358,U216,2024-06-25 06:08,Payment or incentive fraud suspected
+359,U585,2024-07-01 11:27,User solicited off-platform transactions from volunteers
+360,U527,2024-08-27 04:27,Payment or incentive fraud suspected
+361,U578,2025-03-29 09:23,Account created with a disposable email address
+362,U462,2025-02-28 18:01,Suspicious pattern of repeated help request cancellations
+363,U528,2026-01-19 12:53,Payment or incentive fraud suspected
+364,U225,2025-12-10 14:14,Account created with a disposable email address
+365,U175,2025-08-18 21:07,User provided false information on their profile
+366,U572,2026-02-28 12:35,Automated bot-like activity detected on the account
+367,U551,2024-07-31 01:23,Suspected identity theft - account credentials may be compromised
+368,U242,2025-10-06 14:10,Reported for impersonating another verified user
+369,U579,2026-02-27 17:49,Unauthorized account access from an unrecognized device
+370,U521,2024-01-04 23:38,Unauthorized account access from an unrecognized device
+371,U472,2025-04-08 18:58,Multiple accounts detected sharing the same device fingerprint
+372,U397,2026-01-30 15:06,Phishing attempt detected from this account
+373,U329,2026-01-22 09:33,Reported for impersonating another verified user
+374,U271,2025-08-08 23:24,Payment or incentive fraud suspected
+375,U578,2025-05-14 20:43,User provided false information on their profile
+376,U458,2025-01-05 23:18,Multiple accounts detected sharing the same device fingerprint
+377,U297,2024-12-28 19:50,Suspicious pattern of repeated help request cancellations
+378,U123,2025-05-09 06:28,Automated bot-like activity detected on the account
+379,U343,2025-08-15 05:19,Suspicious pattern of repeated help request cancellations
+380,U440,2024-08-24 06:53,Payment or incentive fraud suspected
+381,U594,2024-02-27 12:11,Phishing attempt detected from this account
+382,U358,2025-05-30 17:39,Suspected identity theft - account credentials may be compromised
+383,U548,2025-11-14 23:48,Suspected identity theft - account credentials may be compromised
+384,U370,2025-12-10 19:30,User submitted duplicate requests to obtain additional help
+385,U470,2024-08-11 22:30,Suspicious pattern of repeated help request cancellations
+386,U546,2024-08-27 19:00,Suspected identity theft - account credentials may be compromised
+387,U341,2025-02-15 16:45,Reported for impersonating another verified user
+388,U420,2025-09-09 11:15,User solicited off-platform transactions from volunteers
+389,U142,2025-05-25 09:48,User solicited off-platform transactions from volunteers
+390,U540,2025-08-13 07:46,Reported for impersonating another verified user
+391,U421,2026-01-28 00:00,Account created with a disposable email address
+392,U119,2024-04-16 06:54,User provided false information on their profile
+393,U424,2025-03-22 10:15,User provided false information on their profile
+394,U483,2024-05-20 09:35,Suspicious pattern of repeated help request cancellations
+395,U151,2024-06-05 03:10,Payment or incentive fraud suspected
+396,U186,2025-04-10 04:54,User submitted duplicate requests to obtain additional help
+397,U124,2025-05-18 21:33,User submitted duplicate requests to obtain additional help
+398,U251,2025-07-10 20:28,Reported for impersonating another verified user
+399,U321,2024-08-14 03:14,User provided false information on their profile
+400,U372,2025-10-02 02:24,Multiple accounts detected sharing the same device fingerprint
+401,U450,2024-10-06 17:00,Phishing attempt detected from this account
+402,U190,2024-05-02 16:09,Multiple accounts detected sharing the same device fingerprint
+403,U546,2025-08-17 06:17,Multiple accounts detected sharing the same device fingerprint
+404,U450,2025-01-09 02:47,Payment or incentive fraud suspected
+405,U568,2024-08-10 07:48,User provided false information on their profile
+406,U337,2025-01-29 12:57,Payment or incentive fraud suspected
+407,U231,2024-01-15 14:21,Payment or incentive fraud suspected
+408,U562,2025-03-22 19:41,User solicited off-platform transactions from volunteers
+409,U380,2024-09-02 09:45,Suspected identity theft - account credentials may be compromised
+410,U327,2025-06-20 19:37,Multiple accounts detected sharing the same device fingerprint
+411,U254,2025-10-21 03:23,Automated bot-like activity detected on the account
+412,U229,2025-12-10 16:04,Unauthorized account access from an unrecognized device
+413,U202,2025-08-20 14:24,Payment or incentive fraud suspected
+414,U155,2025-01-03 11:40,Suspicious pattern of repeated help request cancellations
+415,U393,2025-07-11 14:58,Multiple accounts detected sharing the same device fingerprint
+416,U252,2025-04-03 15:00,User submitted duplicate requests to obtain additional help
+417,U525,2025-09-06 20:42,Unauthorized account access from an unrecognized device
+418,U105,2024-03-17 04:30,Multiple accounts detected sharing the same device fingerprint
+419,U482,2026-02-10 15:20,Unauthorized account access from an unrecognized device
+420,U498,2024-12-23 11:26,Multiple accounts detected sharing the same device fingerprint
+421,U511,2025-07-01 07:28,User provided false information on their profile
+422,U426,2024-10-22 08:38,Multiple accounts detected sharing the same device fingerprint
+423,U229,2024-07-31 11:29,User solicited off-platform transactions from volunteers
+424,U150,2024-03-02 05:46,Unauthorized account access from an unrecognized device
+425,U504,2025-11-15 19:04,User submitted duplicate requests to obtain additional help
+426,U397,2025-07-20 19:00,Automated bot-like activity detected on the account
+427,U168,2024-05-20 00:24,Unauthorized account access from an unrecognized device
+428,U268,2025-10-07 11:04,Phishing attempt detected from this account
+429,U203,2024-07-24 07:16,Account created with a disposable email address
+430,U549,2025-07-22 08:09,Account created with a disposable email address
+431,U357,2025-02-27 08:33,Phishing attempt detected from this account
+432,U232,2026-01-18 12:35,Unauthorized account access from an unrecognized device
+433,U483,2025-06-10 04:13,Suspected identity theft - account credentials may be compromised
+434,U340,2024-04-26 23:21,Phishing attempt detected from this account
+435,U487,2024-12-16 11:31,User solicited off-platform transactions from volunteers
+436,U471,2025-09-09 08:34,Account created with a disposable email address
+437,U288,2024-05-20 06:44,Suspicious pattern of repeated help request cancellations
+438,U108,2025-02-14 19:43,Account created with a disposable email address
+439,U164,2025-12-07 11:39,Reported for impersonating another verified user
+440,U445,2025-02-11 06:05,Multiple accounts detected sharing the same device fingerprint
+441,U296,2025-07-31 01:32,Suspected identity theft - account credentials may be compromised
+442,U446,2024-12-29 05:30,Payment or incentive fraud suspected
+443,U113,2025-05-24 12:57,Multiple accounts detected sharing the same device fingerprint
+444,U214,2024-04-08 04:54,User solicited off-platform transactions from volunteers
+445,U522,2025-12-22 05:08,Automated bot-like activity detected on the account
+446,U255,2025-09-26 06:22,Suspected identity theft - account credentials may be compromised
+447,U172,2024-03-11 10:39,User submitted duplicate requests to obtain additional help
+448,U256,2026-02-04 06:22,Suspected identity theft - account credentials may be compromised
+449,U150,2024-12-30 17:58,Account created with a disposable email address
+450,U170,2025-08-26 17:46,Payment or incentive fraud suspected
+451,U290,2025-10-13 02:10,Multiple accounts detected sharing the same device fingerprint
+452,U481,2024-08-28 01:01,Suspicious pattern of repeated help request cancellations
+453,U436,2024-06-02 19:47,Payment or incentive fraud suspected
+454,U416,2025-09-25 23:39,Unauthorized account access from an unrecognized device
+455,U117,2025-07-29 14:21,User provided false information on their profile
+456,U328,2025-11-21 19:27,User provided false information on their profile
+457,U538,2025-07-17 09:54,Suspected identity theft - account credentials may be compromised
+458,U452,2025-07-24 15:14,Account created with a disposable email address
+459,U562,2025-07-11 04:19,User submitted duplicate requests to obtain additional help
+460,U304,2025-03-04 13:36,User provided false information on their profile
+461,U596,2024-07-08 18:26,Payment or incentive fraud suspected
+462,U147,2024-11-25 11:52,User solicited off-platform transactions from volunteers
+463,U428,2024-02-03 04:15,User submitted duplicate requests to obtain additional help
+464,U503,2025-06-02 02:07,User provided false information on their profile
+465,U165,2024-11-14 18:37,Suspected identity theft - account credentials may be compromised
+466,U525,2024-11-17 19:23,Multiple accounts detected sharing the same device fingerprint
+467,U211,2024-12-27 22:49,Reported for impersonating another verified user
+468,U497,2024-08-17 05:13,Multiple accounts detected sharing the same device fingerprint
+469,U102,2025-03-06 17:33,Phishing attempt detected from this account
+470,U167,2025-01-24 09:03,Phishing attempt detected from this account
+471,U157,2024-02-10 01:09,Phishing attempt detected from this account
+472,U108,2025-07-10 12:14,User provided false information on their profile
+473,U402,2025-05-17 23:04,User submitted duplicate requests to obtain additional help
+474,U190,2025-02-16 05:37,User submitted duplicate requests to obtain additional help
+475,U165,2025-10-15 22:32,Account created with a disposable email address
+476,U159,2024-04-08 17:36,Payment or incentive fraud suspected
+477,U330,2025-07-16 09:47,Account created with a disposable email address
+478,U404,2024-06-18 09:49,Payment or incentive fraud suspected
+479,U358,2024-12-10 03:58,Multiple accounts detected sharing the same device fingerprint
+480,U123,2026-03-21 01:06,Unauthorized account access from an unrecognized device
+481,U335,2024-02-18 09:22,User submitted duplicate requests to obtain additional help
+482,U346,2025-09-15 21:22,Suspicious pattern of repeated help request cancellations
+483,U452,2024-06-16 17:06,Payment or incentive fraud suspected
+484,U465,2025-11-20 01:12,Suspected identity theft - account credentials may be compromised
+485,U561,2024-05-05 12:05,Reported for impersonating another verified user
+486,U412,2024-08-18 10:17,Suspected identity theft - account credentials may be compromised
+487,U165,2025-03-03 05:20,Multiple accounts detected sharing the same device fingerprint
+488,U425,2025-05-20 03:47,Suspicious pattern of repeated help request cancellations
+489,U406,2025-04-03 02:35,Payment or incentive fraud suspected
+490,U359,2025-10-30 06:59,Suspected identity theft - account credentials may be compromised
+491,U507,2024-06-26 17:39,User solicited off-platform transactions from volunteers
+492,U434,2024-11-30 00:38,Suspicious pattern of repeated help request cancellations
+493,U332,2024-12-20 22:51,Suspicious pattern of repeated help request cancellations
+494,U274,2025-12-05 11:39,Suspicious pattern of repeated help request cancellations
+495,U313,2024-05-27 17:03,Reported for impersonating another verified user
+496,U319,2025-04-30 11:43,User solicited off-platform transactions from volunteers
+497,U231,2025-08-04 10:57,Phishing attempt detected from this account
+498,U452,2026-01-06 17:59,Suspected identity theft - account credentials may be compromised
+499,U147,2024-05-12 14:36,Suspected identity theft - account credentials may be compromised
+500,U322,2024-05-30 00:10,Automated bot-like activity detected on the account
+501,U479,2025-08-01 21:16,Phishing attempt detected from this account
+502,U385,2024-04-03 04:15,Multiple accounts detected sharing the same device fingerprint
+503,U590,2025-05-27 02:05,User solicited off-platform transactions from volunteers
+504,U163,2025-09-30 04:03,Reported for impersonating another verified user
+505,U548,2025-10-19 00:13,Automated bot-like activity detected on the account
+506,U127,2025-03-22 19:36,Multiple accounts detected sharing the same device fingerprint
+507,U260,2025-06-30 06:19,Suspected identity theft - account credentials may be compromised
+508,U396,2026-02-27 05:42,User provided false information on their profile
+509,U180,2026-01-19 01:19,User provided false information on their profile
+510,U534,2024-06-17 02:40,Reported for impersonating another verified user
+511,U533,2025-07-24 23:40,Suspected identity theft - account credentials may be compromised
+512,U491,2025-03-08 17:46,Multiple accounts detected sharing the same device fingerprint
+513,U216,2025-10-28 14:28,Account created with a disposable email address
+514,U599,2024-02-10 18:48,Multiple accounts detected sharing the same device fingerprint
+515,U576,2025-02-19 11:10,User submitted duplicate requests to obtain additional help
+516,U193,2025-02-28 12:15,Automated bot-like activity detected on the account
+517,U491,2025-04-24 23:47,Reported for impersonating another verified user
+518,U280,2024-01-10 11:38,Phishing attempt detected from this account
+519,U546,2024-08-10 12:48,Multiple accounts detected sharing the same device fingerprint
+520,U437,2025-09-14 14:19,Suspected identity theft - account credentials may be compromised
+521,U173,2024-02-17 14:58,Suspected identity theft - account credentials may be compromised
+522,U483,2024-11-30 04:44,Suspicious pattern of repeated help request cancellations
+523,U315,2025-12-05 17:08,Reported for impersonating another verified user
+524,U181,2025-07-28 20:34,Unauthorized account access from an unrecognized device
+525,U470,2025-05-18 21:52,Multiple accounts detected sharing the same device fingerprint
+526,U406,2024-05-11 23:25,User submitted duplicate requests to obtain additional help
+527,U180,2024-09-01 12:39,Multiple accounts detected sharing the same device fingerprint
+528,U126,2024-05-06 17:34,Unauthorized account access from an unrecognized device
+529,U327,2025-10-20 16:24,Payment or incentive fraud suspected
+530,U411,2025-11-17 16:36,Suspicious pattern of repeated help request cancellations
+531,U240,2024-11-30 20:59,Account created with a disposable email address
+532,U159,2025-06-20 04:58,Suspicious pattern of repeated help request cancellations
+533,U157,2025-03-16 00:11,User solicited off-platform transactions from volunteers
+534,U448,2026-01-25 22:59,Account created with a disposable email address
+535,U442,2025-04-24 02:42,User submitted duplicate requests to obtain additional help
+536,U213,2025-09-06 00:29,Multiple accounts detected sharing the same device fingerprint
+537,U129,2024-01-12 22:35,User provided false information on their profile
+538,U255,2024-11-24 03:22,Phishing attempt detected from this account
+539,U492,2025-01-31 22:27,Unauthorized account access from an unrecognized device
+540,U268,2024-07-05 09:20,User submitted duplicate requests to obtain additional help
+541,U355,2025-10-30 23:58,Phishing attempt detected from this account
+542,U167,2025-08-13 15:09,Account created with a disposable email address
+543,U461,2024-12-23 11:08,Account created with a disposable email address
+544,U387,2025-07-04 04:18,Suspected identity theft - account credentials may be compromised
+545,U304,2024-03-06 17:08,Suspicious pattern of repeated help request cancellations
+546,U110,2025-12-15 04:52,Suspected identity theft - account credentials may be compromised
+547,U542,2025-05-01 07:44,Multiple accounts detected sharing the same device fingerprint
+548,U320,2025-09-20 05:58,Automated bot-like activity detected on the account
+549,U428,2025-10-10 20:45,Unauthorized account access from an unrecognized device
+550,U159,2025-09-21 04:41,User submitted duplicate requests to obtain additional help
+551,U595,2025-05-19 12:14,Phishing attempt detected from this account
+552,U511,2025-12-15 17:39,Automated bot-like activity detected on the account
+553,U571,2025-07-16 02:50,Suspected identity theft - account credentials may be compromised
+554,U324,2024-06-13 10:51,User provided false information on their profile
+555,U324,2025-09-14 01:51,Account created with a disposable email address
+556,U141,2025-09-06 19:15,Unauthorized account access from an unrecognized device
+557,U482,2025-06-11 09:58,User provided false information on their profile
+558,U271,2024-09-18 04:26,Suspected identity theft - account credentials may be compromised
+559,U362,2024-06-26 03:13,Account created with a disposable email address
+560,U362,2024-10-28 05:15,Reported for impersonating another verified user
+561,U280,2024-08-17 10:16,User provided false information on their profile
+562,U153,2024-08-15 11:50,Unauthorized account access from an unrecognized device
+563,U202,2024-09-26 12:30,Multiple accounts detected sharing the same device fingerprint
+564,U179,2024-04-27 01:22,Phishing attempt detected from this account
+565,U588,2026-02-06 14:01,Payment or incentive fraud suspected
+566,U487,2025-11-28 08:24,User solicited off-platform transactions from volunteers
+567,U574,2025-05-17 02:04,User solicited off-platform transactions from volunteers
+568,U262,2024-08-22 12:05,Payment or incentive fraud suspected
+569,U135,2025-12-29 10:38,Payment or incentive fraud suspected
+570,U424,2025-04-15 09:57,Unauthorized account access from an unrecognized device
+571,U403,2024-03-28 06:14,Reported for impersonating another verified user
+572,U360,2024-04-25 06:01,Unauthorized account access from an unrecognized device
+573,U337,2025-12-03 00:34,User submitted duplicate requests to obtain additional help
+574,U130,2025-07-26 19:32,Unauthorized account access from an unrecognized device
+575,U140,2024-05-20 06:29,Multiple accounts detected sharing the same device fingerprint
+576,U405,2026-02-26 16:51,Suspicious pattern of repeated help request cancellations
+577,U337,2024-03-04 17:26,Payment or incentive fraud suspected
+578,U566,2024-10-19 10:04,Reported for impersonating another verified user
+579,U410,2026-01-08 20:44,Account created with a disposable email address
+580,U178,2024-04-06 02:49,Payment or incentive fraud suspected
+581,U153,2025-06-17 12:17,Automated bot-like activity detected on the account
+582,U144,2026-02-22 18:57,User solicited off-platform transactions from volunteers
+583,U189,2024-03-01 19:19,User provided false information on their profile
+584,U463,2025-11-11 00:48,Payment or incentive fraud suspected
+585,U369,2026-03-23 01:27,Multiple accounts detected sharing the same device fingerprint
+586,U182,2025-07-19 07:05,Reported for impersonating another verified user
+587,U570,2025-03-15 11:02,Suspicious pattern of repeated help request cancellations
+588,U310,2025-06-09 15:14,User solicited off-platform transactions from volunteers
+589,U407,2024-03-22 08:19,User solicited off-platform transactions from volunteers
+590,U432,2025-06-03 20:37,Suspected identity theft - account credentials may be compromised
+591,U269,2024-05-26 19:26,Account created with a disposable email address
+592,U448,2025-08-23 12:09,Unauthorized account access from an unrecognized device
+593,U230,2024-08-21 14:19,Reported for impersonating another verified user
+594,U142,2024-08-07 16:49,Reported for impersonating another verified user
+595,U259,2025-08-31 21:15,Phishing attempt detected from this account
+596,U405,2024-05-11 14:33,Unauthorized account access from an unrecognized device
+597,U387,2025-08-08 03:37,User solicited off-platform transactions from volunteers
+598,U506,2025-05-25 06:29,Phishing attempt detected from this account
+599,U444,2026-03-28 17:21,Suspected identity theft - account credentials may be compromised
+600,U431,2025-10-19 17:44,Account created with a disposable email address
+601,U286,2024-01-29 07:41,Reported for impersonating another verified user
+602,U259,2024-10-07 00:41,User provided false information on their profile
+603,U275,2026-01-25 09:29,User provided false information on their profile
+604,U216,2024-08-01 16:48,Phishing attempt detected from this account
+605,U140,2025-04-04 11:55,Suspected identity theft - account credentials may be compromised
+606,U360,2026-03-28 22:31,User submitted duplicate requests to obtain additional help
+607,U439,2025-06-07 03:29,Multiple accounts detected sharing the same device fingerprint
+608,U168,2025-08-08 05:08,Phishing attempt detected from this account
+609,U184,2024-10-07 22:25,Automated bot-like activity detected on the account
+610,U495,2024-09-14 03:44,Automated bot-like activity detected on the account
+611,U325,2024-03-08 20:58,Suspicious pattern of repeated help request cancellations
+612,U287,2025-01-03 23:46,Payment or incentive fraud suspected
+613,U413,2025-03-18 14:52,Automated bot-like activity detected on the account
+614,U502,2025-11-28 09:14,User provided false information on their profile
+615,U374,2025-01-06 12:50,Unauthorized account access from an unrecognized device
+616,U595,2025-12-29 14:10,User provided false information on their profile
+617,U289,2025-11-15 10:39,Payment or incentive fraud suspected
+618,U494,2025-03-13 17:12,Suspicious pattern of repeated help request cancellations
+619,U358,2026-03-30 09:07,Suspicious pattern of repeated help request cancellations
+620,U595,2024-09-08 17:57,User provided false information on their profile
+621,U511,2024-08-02 23:52,Unauthorized account access from an unrecognized device
+622,U127,2026-01-16 13:43,Reported for impersonating another verified user
+623,U384,2024-06-08 08:49,Automated bot-like activity detected on the account
+624,U534,2026-03-12 10:29,Suspected identity theft - account credentials may be compromised
+625,U246,2024-05-10 07:05,Phishing attempt detected from this account
+626,U240,2025-11-28 23:50,Account created with a disposable email address
+627,U176,2025-11-10 14:09,Suspected identity theft - account credentials may be compromised
+628,U585,2024-12-10 22:10,Payment or incentive fraud suspected
+629,U553,2025-06-27 01:28,User submitted duplicate requests to obtain additional help
+630,U313,2024-03-23 17:33,Suspicious pattern of repeated help request cancellations
+631,U358,2025-08-03 22:17,User provided false information on their profile
+632,U298,2024-05-06 18:28,Reported for impersonating another verified user
+633,U215,2024-02-13 18:54,Reported for impersonating another verified user
+634,U577,2024-06-02 22:05,Automated bot-like activity detected on the account
+635,U433,2025-06-04 20:31,Phishing attempt detected from this account
+636,U171,2024-02-29 12:02,Unauthorized account access from an unrecognized device
+637,U570,2026-01-03 22:23,Automated bot-like activity detected on the account
+638,U526,2024-08-03 14:33,Automated bot-like activity detected on the account
+639,U341,2025-11-27 21:04,Multiple accounts detected sharing the same device fingerprint
+640,U103,2024-05-03 01:45,User submitted duplicate requests to obtain additional help
+641,U232,2024-12-01 00:11,Phishing attempt detected from this account
+642,U381,2026-03-30 20:44,Suspicious pattern of repeated help request cancellations
+643,U157,2025-03-23 13:12,User provided false information on their profile
+644,U255,2024-07-08 06:50,User submitted duplicate requests to obtain additional help
+645,U223,2025-10-14 04:13,User solicited off-platform transactions from volunteers
+646,U507,2025-12-11 02:25,Suspected identity theft - account credentials may be compromised
+647,U157,2026-02-15 10:59,Multiple accounts detected sharing the same device fingerprint
+648,U375,2024-01-26 12:45,User solicited off-platform transactions from volunteers
+649,U364,2025-01-10 20:06,Automated bot-like activity detected on the account
+650,U174,2025-03-28 11:24,Suspicious pattern of repeated help request cancellations
+651,U101,2025-07-02 01:56,User provided false information on their profile
+652,U393,2025-10-09 02:45,Phishing attempt detected from this account
+653,U441,2024-05-12 23:55,Account created with a disposable email address
+654,U600,2025-07-14 04:16,Suspected identity theft - account credentials may be compromised
+655,U589,2026-03-28 04:55,Account created with a disposable email address
+656,U360,2026-02-27 13:32,Account created with a disposable email address
+657,U111,2025-08-29 13:10,Payment or incentive fraud suspected
+658,U123,2025-08-23 23:58,Reported for impersonating another verified user
+659,U230,2024-01-26 05:33,Reported for impersonating another verified user
+660,U504,2024-04-14 22:48,Reported for impersonating another verified user
+661,U224,2024-06-10 00:52,Multiple accounts detected sharing the same device fingerprint
+662,U477,2025-05-31 13:11,Phishing attempt detected from this account
+663,U123,2025-07-01 06:39,Account created with a disposable email address
+664,U274,2024-09-28 23:47,User solicited off-platform transactions from volunteers
+665,U338,2026-01-13 08:56,User solicited off-platform transactions from volunteers
+666,U194,2024-07-28 11:40,Suspected identity theft - account credentials may be compromised
+667,U467,2025-12-11 23:31,User submitted duplicate requests to obtain additional help
+668,U251,2024-11-09 03:51,User submitted duplicate requests to obtain additional help
+669,U506,2024-11-05 20:46,User submitted duplicate requests to obtain additional help
+670,U262,2025-04-26 16:28,Account created with a disposable email address
+671,U304,2026-01-05 09:37,Unauthorized account access from an unrecognized device
+672,U119,2024-10-23 20:51,Unauthorized account access from an unrecognized device
+673,U283,2024-03-15 06:15,User solicited off-platform transactions from volunteers
+674,U270,2025-02-28 10:15,Suspected identity theft - account credentials may be compromised
+675,U510,2025-07-25 16:44,Suspicious pattern of repeated help request cancellations
+676,U556,2025-09-13 09:53,Automated bot-like activity detected on the account
+677,U326,2025-08-23 15:09,Reported for impersonating another verified user
+678,U599,2024-10-17 05:03,Payment or incentive fraud suspected
+679,U455,2026-02-11 21:00,Reported for impersonating another verified user
+680,U574,2026-03-17 16:00,Unauthorized account access from an unrecognized device
+681,U511,2024-05-08 07:58,Automated bot-like activity detected on the account
+682,U318,2024-05-02 14:36,Suspicious pattern of repeated help request cancellations
+683,U409,2024-10-07 07:54,Account created with a disposable email address
+684,U251,2025-05-13 23:37,Suspected identity theft - account credentials may be compromised
+685,U141,2025-05-24 09:44,User solicited off-platform transactions from volunteers
+686,U252,2025-04-21 02:59,Payment or incentive fraud suspected
+687,U409,2025-10-23 22:45,Phishing attempt detected from this account
+688,U454,2025-11-20 14:06,Reported for impersonating another verified user
+689,U329,2024-03-06 19:06,Automated bot-like activity detected on the account
+690,U546,2025-07-01 16:21,Multiple accounts detected sharing the same device fingerprint
+691,U323,2025-03-02 12:09,User solicited off-platform transactions from volunteers
+692,U506,2024-03-30 02:27,Suspected identity theft - account credentials may be compromised
+693,U444,2025-09-23 00:36,Reported for impersonating another verified user
+694,U363,2024-09-05 12:44,User submitted duplicate requests to obtain additional help
+695,U174,2025-11-11 16:16,User submitted duplicate requests to obtain additional help
+696,U165,2024-04-14 10:38,User provided false information on their profile
+697,U499,2025-07-23 01:42,Reported for impersonating another verified user
+698,U297,2024-02-20 07:24,Multiple accounts detected sharing the same device fingerprint
+699,U179,2025-11-29 22:19,Reported for impersonating another verified user
+700,U291,2025-11-20 15:15,Suspected identity theft - account credentials may be compromised
+701,U394,2024-08-01 21:38,Account created with a disposable email address
+702,U288,2025-09-10 07:47,Reported for impersonating another verified user
+703,U433,2025-03-08 22:18,User provided false information on their profile
+704,U592,2024-06-25 05:40,User submitted duplicate requests to obtain additional help
+705,U477,2024-10-16 00:22,Payment or incentive fraud suspected
+706,U366,2025-08-24 03:56,Account created with a disposable email address
+707,U161,2025-02-10 15:44,Unauthorized account access from an unrecognized device
+708,U461,2025-11-24 06:16,User provided false information on their profile
+709,U414,2025-03-19 15:04,Automated bot-like activity detected on the account
+710,U570,2026-02-02 01:16,User provided false information on their profile
+711,U163,2024-07-29 20:19,Suspected identity theft - account credentials may be compromised
+712,U332,2024-09-25 05:05,Automated bot-like activity detected on the account
+713,U328,2024-05-16 09:04,User solicited off-platform transactions from volunteers
+714,U596,2025-05-11 11:05,User solicited off-platform transactions from volunteers
+715,U278,2024-04-10 21:06,Account created with a disposable email address
+716,U378,2025-03-27 01:29,Unauthorized account access from an unrecognized device
+717,U536,2024-09-01 16:13,Automated bot-like activity detected on the account
+718,U464,2024-09-27 10:34,Reported for impersonating another verified user
+719,U361,2024-12-14 08:20,Suspected identity theft - account credentials may be compromised
+720,U203,2024-08-03 17:42,User provided false information on their profile
+721,U505,2026-02-06 10:28,User submitted duplicate requests to obtain additional help
+722,U285,2025-07-27 02:00,Payment or incentive fraud suspected
+723,U512,2024-07-20 14:13,Multiple accounts detected sharing the same device fingerprint
+724,U553,2024-05-13 22:20,Suspected identity theft - account credentials may be compromised
+725,U259,2025-09-10 12:28,Automated bot-like activity detected on the account
+726,U469,2026-01-13 13:55,Account created with a disposable email address
+727,U311,2025-09-28 00:47,Multiple accounts detected sharing the same device fingerprint
+728,U138,2024-07-13 16:31,Reported for impersonating another verified user
+729,U429,2024-04-25 05:04,Payment or incentive fraud suspected
+730,U339,2026-03-14 16:34,Reported for impersonating another verified user
+731,U166,2024-10-09 16:04,Phishing attempt detected from this account
+732,U322,2026-02-20 04:07,User submitted duplicate requests to obtain additional help
+733,U526,2024-07-11 21:03,Account created with a disposable email address
+734,U179,2025-04-17 10:35,Phishing attempt detected from this account
+735,U183,2025-05-16 05:39,Automated bot-like activity detected on the account
+736,U216,2025-06-21 12:40,Account created with a disposable email address
+737,U559,2025-03-17 06:05,Suspected identity theft - account credentials may be compromised
+738,U229,2024-10-31 22:39,User solicited off-platform transactions from volunteers
+739,U590,2025-03-02 08:16,Phishing attempt detected from this account
+740,U421,2025-04-15 10:07,Multiple accounts detected sharing the same device fingerprint
+741,U374,2024-05-25 03:15,Account created with a disposable email address
+742,U429,2024-09-18 23:12,Multiple accounts detected sharing the same device fingerprint
+743,U583,2024-08-27 12:46,Phishing attempt detected from this account
+744,U438,2025-06-08 11:22,Multiple accounts detected sharing the same device fingerprint
+745,U122,2024-02-14 01:50,Suspected identity theft - account credentials may be compromised
+746,U124,2025-02-15 03:05,User solicited off-platform transactions from volunteers
+747,U208,2025-10-09 03:28,Multiple accounts detected sharing the same device fingerprint
+748,U428,2024-02-17 01:08,Payment or incentive fraud suspected
+749,U556,2025-03-25 23:44,User solicited off-platform transactions from volunteers
+750,U590,2025-04-14 06:53,Payment or incentive fraud suspected
+751,U226,2025-09-22 20:13,Unauthorized account access from an unrecognized device
+752,U333,2024-04-23 08:37,Automated bot-like activity detected on the account
+753,U131,2024-09-02 13:39,Payment or incentive fraud suspected
+754,U313,2026-01-22 06:11,Payment or incentive fraud suspected
+755,U205,2025-06-12 11:17,Multiple accounts detected sharing the same device fingerprint
+756,U174,2025-04-30 13:55,Automated bot-like activity detected on the account
+757,U264,2025-06-20 12:20,Suspicious pattern of repeated help request cancellations
+758,U167,2025-07-29 14:44,Account created with a disposable email address
+759,U388,2024-06-13 22:49,Reported for impersonating another verified user
+760,U224,2025-12-25 15:21,Suspected identity theft - account credentials may be compromised
+761,U237,2025-11-29 10:09,User provided false information on their profile
+762,U173,2024-05-30 09:24,User submitted duplicate requests to obtain additional help
+763,U249,2025-08-19 18:08,Multiple accounts detected sharing the same device fingerprint
+764,U315,2025-01-20 16:11,Phishing attempt detected from this account
+765,U517,2025-05-23 15:41,Multiple accounts detected sharing the same device fingerprint
+766,U470,2025-04-30 18:51,User provided false information on their profile
+767,U491,2024-09-04 12:42,Payment or incentive fraud suspected
+768,U364,2025-12-26 04:07,Payment or incentive fraud suspected
+769,U551,2025-04-24 07:13,Payment or incentive fraud suspected
+770,U112,2024-05-19 21:16,Suspicious pattern of repeated help request cancellations
+771,U359,2025-12-11 06:47,User provided false information on their profile
+772,U211,2025-07-02 04:52,User submitted duplicate requests to obtain additional help
+773,U126,2025-03-13 01:43,Payment or incentive fraud suspected
+774,U406,2026-01-01 00:44,Unauthorized account access from an unrecognized device
+775,U375,2024-01-13 16:52,Suspected identity theft - account credentials may be compromised
+776,U321,2024-07-27 01:27,Unauthorized account access from an unrecognized device
+777,U473,2025-07-22 05:10,Suspicious pattern of repeated help request cancellations
+778,U288,2024-03-11 06:45,Suspicious pattern of repeated help request cancellations
+779,U127,2024-10-29 09:16,Reported for impersonating another verified user
+780,U384,2025-03-24 07:51,Suspected identity theft - account credentials may be compromised
+781,U298,2026-02-22 08:00,Payment or incentive fraud suspected
+782,U492,2025-03-10 12:44,Multiple accounts detected sharing the same device fingerprint
+783,U449,2024-07-03 13:35,Phishing attempt detected from this account
+784,U600,2024-05-30 04:32,Suspicious pattern of repeated help request cancellations
+785,U292,2025-06-10 18:00,Account created with a disposable email address
+786,U581,2025-07-21 22:47,Phishing attempt detected from this account
+787,U202,2026-03-01 21:27,Suspicious pattern of repeated help request cancellations
+788,U357,2024-03-03 12:48,User submitted duplicate requests to obtain additional help
+789,U120,2024-07-31 21:05,Automated bot-like activity detected on the account
+790,U271,2026-01-05 22:27,Account created with a disposable email address
+791,U334,2024-08-19 08:54,Multiple accounts detected sharing the same device fingerprint
+792,U558,2026-03-11 19:26,Phishing attempt detected from this account
+793,U268,2025-05-09 19:39,Phishing attempt detected from this account
+794,U302,2025-04-09 20:15,Multiple accounts detected sharing the same device fingerprint
+795,U273,2026-02-27 02:04,Account created with a disposable email address
+796,U373,2026-01-30 22:48,Automated bot-like activity detected on the account
+797,U389,2025-04-10 17:00,Payment or incentive fraud suspected
+798,U518,2024-01-26 20:16,Reported for impersonating another verified user
+799,U270,2024-06-19 06:21,Suspicious pattern of repeated help request cancellations
+800,U399,2025-04-22 23:03,Automated bot-like activity detected on the account
