@@ -8,11 +8,11 @@ from faker import Faker
 
 fake = Faker()
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT  = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-DB_DIR     = os.path.join(REPO_ROOT, "database")
-OUTPUT_DIR = os.path.join(DB_DIR, "mock_db")
-LOOKUP_DIR = os.path.join(DB_DIR, "lookup_tables")
+SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT   = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+DB_DIR      = os.path.join(REPO_ROOT, "database")
+OUTPUT_DIR  = os.path.join(DB_DIR, "mock_db")
+LOOKUP_DIR  = os.path.join(DB_DIR, "lookup_tables")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -29,34 +29,32 @@ TIME_ZONES        = [
 ]
 
 
-def set_seed(seed=42):
+def init_seed(seed=42):
     random.seed(seed)
     Faker.seed(seed)
     fake.seed_instance(seed)
 
 
-def format_ts(dt):
-    return dt.strftime("%Y-%m-%d %H:%M")
+def to_ts(dt):
+    return dt.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def format_date(d):
+def to_date(d):
     return d.strftime("%Y-%m-%d")
 
 
-def random_past_dt(days_back=365):
-    base = datetime(2026, 1, 1, 9, 0, 0)
-    return base - timedelta(
-        days=random.randint(0, days_back),
-        hours=random.randint(0, 23),
-        minutes=random.randint(0, 59),
-    )
+def generate_random_ts(days_back=365):
+    start = datetime(2023, 1, 1)
+    end   = datetime(2025, 12, 31)
+    delta = end - start
+    return start + timedelta(seconds=random.randint(0, int(delta.total_seconds())))
 
 
-def make_user_ids(count, start=101):
-    return [f"U{start + i}" for i in range(count)]
+def build_user_ids(count, start=101):
+    return [f"USR-{start + i}" for i in range(count)]
 
 
-def write_csv(filepath, rows):
+def save_to_csv(filepath, rows):
     if not rows:
         raise ValueError(f"No rows to write for {filepath}")
     with open(filepath, "w", newline="", encoding="utf-8") as f:
@@ -86,7 +84,7 @@ def load_states():
 def generate_users(count=100):
     print(f"Generating {count:,} users ...")
     states   = load_states()
-    user_ids = make_user_ids(count, start=101)
+    user_ids = build_user_ids(count, start=101)
     rows     = []
 
     for uid in user_ids:
@@ -96,7 +94,7 @@ def generate_users(count=100):
         middle = fake.first_name() if random.random() > 0.6 else ""
         full   = " ".join(p for p in [first, middle, last] if p)
 
-        last_upd   = random_past_dt(days_back=365)
+        last_upd   = generate_random_ts()
         wizard_upd = last_upd + timedelta(minutes=random.randint(0, 43200))
 
         lang1 = random.choice(LANGUAGE_IDS)
@@ -121,7 +119,7 @@ def generate_users(count=100):
             "city_name"                         : fake.city(),
             "zip_code"                          : fake.postcode(),
             "last_location"                     : f"{round(random.uniform(24.0, 49.0), 6)},{round(random.uniform(-125.0, -66.0), 6)}",
-            "last_update_date"                  : format_ts(last_upd) + "+00",
+            "last_update_date"                  : to_ts(last_upd) + "+00",
             "time_zone"                         : random.choice(TIME_ZONES),
             "profile_picture_path"              : f"/images/profiles/{uid}.jpg",
             "gender"                            : random.choice(GENDERS),
@@ -129,12 +127,12 @@ def generate_users(count=100):
             "language_2"                        : lang2,
             "language_3"                        : lang3,
             "promotion_wizard_stage"            : random.randint(1, 4),
-            "promotion_wizard_last_update_date" : format_ts(wizard_upd) + "+00",
+            "promotion_wizard_last_update_date" : to_ts(wizard_upd) + "+00",
             "external_auth_provider"            : random.choice(AUTH_PROVIDERS),
-            "dob"                               : format_date(fake.date_of_birth(minimum_age=18, maximum_age=80)),
+            "dob"                               : to_date(fake.date_of_birth(minimum_age=18, maximum_age=80)),
         })
 
-    write_csv(os.path.join(OUTPUT_DIR, "mock_users.csv"), rows)
+    save_to_csv(os.path.join(OUTPUT_DIR, "mock_users.csv"), rows)
     return rows
 
 
@@ -143,5 +141,5 @@ if __name__ == "__main__":
     parser.add_argument("--count", type=int, default=100)
     parser.add_argument("--seed",  type=int, default=42)
     args = parser.parse_args()
-    set_seed(args.seed)
+    init_seed(args.seed)
     generate_users(count=args.count)
