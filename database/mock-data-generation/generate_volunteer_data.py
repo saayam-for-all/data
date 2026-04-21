@@ -11,6 +11,7 @@ user_ids = list(range(1, 101))
 
 # volunteers_assigned
 va_data = []
+used_requests = random.sample(request_ids, NUM_ROWS)
 for i in range(NUM_ROWS):
     va_data.append({
         "id": i + 1,
