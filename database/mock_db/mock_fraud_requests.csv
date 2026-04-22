@@ -1,0 +1,801 @@
+fraud_request_id,user_id,request_datetime,reason
+1,USR-428,2023-06-22T22:43:23,Multiple help requests submitted to gain additional assistance
+2,USR-480,2024-03-03T05:50:10,Profile contains unverifiable or false information
+3,USR-215,2023-08-05T18:21:03,Account activity matches known bot behavior patterns
+4,USR-153,2025-11-17T05:11:07,Account activity matches known bot behavior patterns
+5,USR-557,2025-04-27T04:44:17,Account shows signs of identity compromise
+6,USR-403,2024-10-17T10:23:08,Multiple help requests submitted to gain additional assistance
+7,USR-116,2023-05-26T13:12:42,Profile contains unverifiable or false information
+8,USR-220,2025-02-24T01:00:38,Same device fingerprint found across multiple accounts
+9,USR-114,2025-05-21T20:43:57,Profile contains unverifiable or false information
+10,USR-467,2025-10-06T13:26:52,Account activity matches known bot behavior patterns
+11,USR-380,2024-10-13T16:49:57,Profile contains unverifiable or false information
+12,USR-330,2025-07-04T09:25:01,Login detected from an unrecognized device or location
+13,USR-515,2023-01-11T02:17:28,Phishing links shared from this account
+14,USR-458,2024-10-18T12:12:24,Account is impersonating a verified platform user
+15,USR-243,2023-08-30T12:41:45,Profile contains unverifiable or false information
+16,USR-591,2024-06-06T21:09:15,Account shows signs of identity compromise
+17,USR-148,2024-08-13T04:42:59,Account shows signs of identity compromise
+18,USR-284,2024-06-18T07:35:55,Same device fingerprint found across multiple accounts
+19,USR-236,2023-03-09T11:56:59,Account activity matches known bot behavior patterns
+20,USR-336,2025-04-13T00:01:56,Account shows signs of identity compromise
+21,USR-599,2024-08-11T00:47:04,Account shows signs of identity compromise
+22,USR-383,2024-03-31T10:28:42,User attempting to move transactions outside the platform
+23,USR-417,2024-07-15T18:43:51,Same device fingerprint found across multiple accounts
+24,USR-199,2025-12-30T12:20:31,Account shows signs of identity compromise
+25,USR-124,2025-10-24T05:41:00,Profile contains unverifiable or false information
+26,USR-496,2024-03-25T13:09:54,Account shows signs of identity compromise
+27,USR-538,2023-12-28T15:04:23,Account shows signs of identity compromise
+28,USR-295,2024-03-07T19:36:25,Incentive or reward manipulation detected
+29,USR-426,2024-07-20T17:55:46,Phishing links shared from this account
+30,USR-290,2024-07-05T21:27:06,Profile contains unverifiable or false information
+31,USR-444,2024-02-19T17:39:16,Account activity matches known bot behavior patterns
+32,USR-580,2025-11-27T20:30:14,User attempting to move transactions outside the platform
+33,USR-137,2025-08-04T06:02:59,User attempting to move transactions outside the platform
+34,USR-188,2025-04-09T18:10:40,Account activity matches known bot behavior patterns
+35,USR-226,2023-09-11T20:05:11,Incentive or reward manipulation detected
+36,USR-295,2024-02-24T08:23:03,User attempting to move transactions outside the platform
+37,USR-453,2025-05-15T04:35:29,Profile contains unverifiable or false information
+38,USR-451,2024-05-18T18:08:11,Multiple help requests submitted to gain additional assistance
+39,USR-218,2023-02-19T20:47:01,Account is impersonating a verified platform user
+40,USR-306,2024-02-20T22:06:12,Account shows signs of identity compromise
+41,USR-209,2025-05-31T02:00:17,Account activity matches known bot behavior patterns
+42,USR-262,2023-11-27T07:17:31,User attempting to move transactions outside the platform
+43,USR-356,2024-09-06T14:13:34,User attempting to move transactions outside the platform
+44,USR-335,2023-08-10T22:38:20,Login detected from an unrecognized device or location
+45,USR-172,2024-01-19T02:56:23,Account activity matches known bot behavior patterns
+46,USR-388,2025-04-17T06:31:47,Login detected from an unrecognized device or location
+47,USR-483,2025-06-27T02:56:43,Unusual pattern of creating and cancelling help requests
+48,USR-560,2025-06-25T11:41:03,Unusual pattern of creating and cancelling help requests
+49,USR-286,2023-12-07T16:52:13,Phishing links shared from this account
+50,USR-361,2025-02-05T15:36:14,Account shows signs of identity compromise
+51,USR-487,2023-03-15T04:37:32,Account shows signs of identity compromise
+52,USR-179,2025-09-01T16:53:02,Phishing links shared from this account
+53,USR-506,2025-11-23T02:10:42,Unusual pattern of creating and cancelling help requests
+54,USR-406,2023-04-09T16:29:04,Unusual pattern of creating and cancelling help requests
+55,USR-296,2025-07-14T16:19:50,Incentive or reward manipulation detected
+56,USR-371,2024-01-26T13:23:51,Registration email linked to a temporary mail service
+57,USR-541,2023-01-18T20:02:36,User attempting to move transactions outside the platform
+58,USR-470,2023-06-27T22:47:54,User attempting to move transactions outside the platform
+59,USR-554,2025-04-14T03:42:17,Login detected from an unrecognized device or location
+60,USR-494,2025-09-22T16:47:16,Account is impersonating a verified platform user
+61,USR-158,2024-03-31T22:28:40,Unusual pattern of creating and cancelling help requests
+62,USR-181,2024-12-05T20:02:45,Multiple help requests submitted to gain additional assistance
+63,USR-589,2024-02-14T03:51:19,Registration email linked to a temporary mail service
+64,USR-491,2023-10-05T12:37:29,Registration email linked to a temporary mail service
+65,USR-568,2023-06-15T07:16:58,User attempting to move transactions outside the platform
+66,USR-253,2025-09-19T13:45:49,Registration email linked to a temporary mail service
+67,USR-412,2023-11-05T23:56:36,Phishing links shared from this account
+68,USR-292,2023-09-08T22:59:04,Registration email linked to a temporary mail service
+69,USR-589,2025-04-03T21:01:04,Multiple help requests submitted to gain additional assistance
+70,USR-407,2024-05-18T13:24:49,Incentive or reward manipulation detected
+71,USR-110,2023-06-23T18:43:51,Account is impersonating a verified platform user
+72,USR-550,2024-04-22T16:57:27,Profile contains unverifiable or false information
+73,USR-130,2024-01-10T04:20:37,Same device fingerprint found across multiple accounts
+74,USR-585,2023-05-03T08:16:32,Account shows signs of identity compromise
+75,USR-475,2025-01-24T23:02:15,Account shows signs of identity compromise
+76,USR-490,2025-04-07T12:43:31,Phishing links shared from this account
+77,USR-166,2025-10-21T21:17:36,Incentive or reward manipulation detected
+78,USR-585,2025-05-04T02:09:49,Phishing links shared from this account
+79,USR-236,2025-03-30T17:06:16,Same device fingerprint found across multiple accounts
+80,USR-317,2023-11-26T00:24:33,Registration email linked to a temporary mail service
+81,USR-487,2025-12-07T16:07:46,Profile contains unverifiable or false information
+82,USR-466,2024-04-29T05:37:32,Unusual pattern of creating and cancelling help requests
+83,USR-444,2025-10-06T13:12:36,Account is impersonating a verified platform user
+84,USR-325,2025-03-15T00:37:33,Incentive or reward manipulation detected
+85,USR-162,2024-01-21T02:35:28,Profile contains unverifiable or false information
+86,USR-133,2024-06-09T04:44:36,Multiple help requests submitted to gain additional assistance
+87,USR-402,2025-05-10T11:41:28,Profile contains unverifiable or false information
+88,USR-402,2023-12-09T02:17:57,Multiple help requests submitted to gain additional assistance
+89,USR-137,2025-09-07T09:13:25,Multiple help requests submitted to gain additional assistance
+90,USR-218,2023-04-15T16:51:58,Multiple help requests submitted to gain additional assistance
+91,USR-541,2024-05-28T07:16:01,Account shows signs of identity compromise
+92,USR-364,2024-01-05T17:27:21,Login detected from an unrecognized device or location
+93,USR-443,2025-01-24T01:33:51,Profile contains unverifiable or false information
+94,USR-377,2023-07-25T12:56:35,Account activity matches known bot behavior patterns
+95,USR-579,2025-06-06T02:01:46,Same device fingerprint found across multiple accounts
+96,USR-343,2024-01-13T11:35:37,Incentive or reward manipulation detected
+97,USR-514,2024-09-24T08:17:43,Profile contains unverifiable or false information
+98,USR-149,2023-05-31T13:50:33,User attempting to move transactions outside the platform
+99,USR-321,2024-07-04T09:10:14,Unusual pattern of creating and cancelling help requests
+100,USR-311,2024-12-26T11:56:29,Account activity matches known bot behavior patterns
+101,USR-128,2025-11-12T00:50:59,User attempting to move transactions outside the platform
+102,USR-431,2023-06-02T21:17:03,Multiple help requests submitted to gain additional assistance
+103,USR-307,2024-06-11T02:07:04,Account shows signs of identity compromise
+104,USR-228,2023-10-25T14:59:44,Profile contains unverifiable or false information
+105,USR-375,2024-11-27T21:31:31,Phishing links shared from this account
+106,USR-317,2023-10-13T00:55:47,Login detected from an unrecognized device or location
+107,USR-337,2024-01-24T01:27:33,Account shows signs of identity compromise
+108,USR-327,2025-05-04T21:36:53,Account shows signs of identity compromise
+109,USR-126,2025-10-10T01:43:25,Registration email linked to a temporary mail service
+110,USR-529,2023-01-23T22:12:45,Account shows signs of identity compromise
+111,USR-575,2024-01-03T04:51:58,Phishing links shared from this account
+112,USR-309,2025-01-24T10:00:48,Incentive or reward manipulation detected
+113,USR-210,2024-09-14T23:51:56,Multiple help requests submitted to gain additional assistance
+114,USR-185,2024-08-11T17:08:31,Multiple help requests submitted to gain additional assistance
+115,USR-300,2024-02-16T23:29:11,Incentive or reward manipulation detected
+116,USR-247,2024-10-19T02:51:43,Account activity matches known bot behavior patterns
+117,USR-591,2025-05-13T08:32:41,User attempting to move transactions outside the platform
+118,USR-468,2025-01-26T00:25:31,Phishing links shared from this account
+119,USR-198,2024-04-05T22:04:10,Profile contains unverifiable or false information
+120,USR-596,2023-04-01T20:24:54,Same device fingerprint found across multiple accounts
+121,USR-477,2025-04-22T06:30:08,Multiple help requests submitted to gain additional assistance
+122,USR-483,2024-05-02T04:02:05,Multiple help requests submitted to gain additional assistance
+123,USR-126,2025-06-26T11:43:09,Incentive or reward manipulation detected
+124,USR-358,2025-04-05T01:49:03,Phishing links shared from this account
+125,USR-130,2025-02-27T21:13:07,Account shows signs of identity compromise
+126,USR-536,2023-10-16T16:03:24,Account shows signs of identity compromise
+127,USR-405,2023-04-16T13:45:52,User attempting to move transactions outside the platform
+128,USR-542,2024-01-01T09:02:12,Unusual pattern of creating and cancelling help requests
+129,USR-162,2025-06-03T23:02:19,Profile contains unverifiable or false information
+130,USR-397,2025-07-12T13:16:50,Multiple help requests submitted to gain additional assistance
+131,USR-418,2023-05-08T08:33:46,Unusual pattern of creating and cancelling help requests
+132,USR-437,2025-06-25T16:52:48,Same device fingerprint found across multiple accounts
+133,USR-368,2024-05-06T11:07:21,Login detected from an unrecognized device or location
+134,USR-205,2025-11-06T09:11:38,Account activity matches known bot behavior patterns
+135,USR-261,2024-01-06T18:51:26,Login detected from an unrecognized device or location
+136,USR-303,2023-07-23T07:29:45,User attempting to move transactions outside the platform
+137,USR-431,2024-04-11T00:42:06,Incentive or reward manipulation detected
+138,USR-262,2023-04-23T16:36:12,Multiple help requests submitted to gain additional assistance
+139,USR-335,2025-08-22T22:29:43,Same device fingerprint found across multiple accounts
+140,USR-152,2023-04-24T19:21:27,Registration email linked to a temporary mail service
+141,USR-210,2025-02-24T20:44:54,Login detected from an unrecognized device or location
+142,USR-168,2024-06-26T03:59:32,Account shows signs of identity compromise
+143,USR-551,2024-01-15T11:34:59,Account is impersonating a verified platform user
+144,USR-246,2023-09-03T01:13:41,Incentive or reward manipulation detected
+145,USR-527,2025-04-23T20:38:00,Account activity matches known bot behavior patterns
+146,USR-255,2025-08-08T04:59:59,User attempting to move transactions outside the platform
+147,USR-371,2023-01-13T03:39:59,User attempting to move transactions outside the platform
+148,USR-519,2025-05-11T13:04:18,Login detected from an unrecognized device or location
+149,USR-578,2025-10-27T12:55:26,Account shows signs of identity compromise
+150,USR-581,2023-07-28T14:44:08,Login detected from an unrecognized device or location
+151,USR-160,2023-06-16T06:35:25,Account activity matches known bot behavior patterns
+152,USR-384,2023-08-30T11:31:05,Login detected from an unrecognized device or location
+153,USR-245,2025-07-28T13:41:25,Profile contains unverifiable or false information
+154,USR-468,2024-06-16T15:30:13,Profile contains unverifiable or false information
+155,USR-452,2025-09-12T06:06:17,Login detected from an unrecognized device or location
+156,USR-359,2025-01-28T21:47:15,Login detected from an unrecognized device or location
+157,USR-564,2023-03-20T21:55:12,Account shows signs of identity compromise
+158,USR-425,2024-10-20T00:02:57,Login detected from an unrecognized device or location
+159,USR-123,2023-01-06T12:11:34,Account is impersonating a verified platform user
+160,USR-495,2023-07-23T05:18:37,User attempting to move transactions outside the platform
+161,USR-235,2023-09-09T00:12:45,Account activity matches known bot behavior patterns
+162,USR-327,2025-05-07T00:08:12,Account activity matches known bot behavior patterns
+163,USR-319,2025-05-21T08:07:25,Multiple help requests submitted to gain additional assistance
+164,USR-158,2023-04-27T21:17:39,Account activity matches known bot behavior patterns
+165,USR-563,2023-08-20T13:08:47,Registration email linked to a temporary mail service
+166,USR-119,2024-07-27T13:22:10,Same device fingerprint found across multiple accounts
+167,USR-383,2023-08-19T01:20:11,Unusual pattern of creating and cancelling help requests
+168,USR-166,2023-03-06T23:29:34,Login detected from an unrecognized device or location
+169,USR-287,2023-03-03T23:23:19,Account is impersonating a verified platform user
+170,USR-208,2025-11-25T13:17:21,Profile contains unverifiable or false information
+171,USR-442,2023-06-09T16:25:26,Account is impersonating a verified platform user
+172,USR-500,2025-05-19T17:58:13,Unusual pattern of creating and cancelling help requests
+173,USR-599,2025-08-22T03:56:17,Account activity matches known bot behavior patterns
+174,USR-180,2024-01-03T18:12:26,Phishing links shared from this account
+175,USR-600,2023-10-03T00:59:26,Unusual pattern of creating and cancelling help requests
+176,USR-113,2023-10-06T15:03:00,Account activity matches known bot behavior patterns
+177,USR-574,2024-05-31T00:46:18,Unusual pattern of creating and cancelling help requests
+178,USR-511,2025-11-06T15:56:52,Account activity matches known bot behavior patterns
+179,USR-516,2024-01-21T12:20:43,Login detected from an unrecognized device or location
+180,USR-182,2025-12-25T09:32:45,Account shows signs of identity compromise
+181,USR-296,2023-03-02T03:45:28,Incentive or reward manipulation detected
+182,USR-214,2023-11-07T00:36:51,Incentive or reward manipulation detected
+183,USR-280,2024-04-19T02:20:24,Profile contains unverifiable or false information
+184,USR-215,2023-02-06T18:16:26,User attempting to move transactions outside the platform
+185,USR-199,2024-09-10T23:53:18,Account is impersonating a verified platform user
+186,USR-243,2023-04-18T20:11:35,Login detected from an unrecognized device or location
+187,USR-280,2025-09-23T12:10:21,Registration email linked to a temporary mail service
+188,USR-305,2025-11-21T14:16:17,Registration email linked to a temporary mail service
+189,USR-270,2023-02-12T21:01:21,Account shows signs of identity compromise
+190,USR-550,2024-02-10T18:48:30,Phishing links shared from this account
+191,USR-398,2024-02-17T09:18:12,Multiple help requests submitted to gain additional assistance
+192,USR-156,2025-07-15T17:47:18,Unusual pattern of creating and cancelling help requests
+193,USR-277,2024-05-02T06:44:16,Unusual pattern of creating and cancelling help requests
+194,USR-411,2025-03-05T11:14:01,Account shows signs of identity compromise
+195,USR-298,2025-06-14T16:45:37,Profile contains unverifiable or false information
+196,USR-231,2023-03-10T22:50:59,Account activity matches known bot behavior patterns
+197,USR-324,2023-01-03T15:03:19,Registration email linked to a temporary mail service
+198,USR-574,2025-04-16T10:56:43,User attempting to move transactions outside the platform
+199,USR-469,2025-11-07T18:50:34,Profile contains unverifiable or false information
+200,USR-287,2024-10-31T23:55:57,Account shows signs of identity compromise
+201,USR-586,2025-10-28T20:34:32,Account is impersonating a verified platform user
+202,USR-420,2024-05-02T15:37:24,User attempting to move transactions outside the platform
+203,USR-535,2023-07-13T14:22:06,Account activity matches known bot behavior patterns
+204,USR-561,2024-04-11T12:49:32,Registration email linked to a temporary mail service
+205,USR-259,2025-11-01T23:34:10,Unusual pattern of creating and cancelling help requests
+206,USR-268,2024-09-17T02:34:25,Account activity matches known bot behavior patterns
+207,USR-252,2025-05-11T05:59:43,Phishing links shared from this account
+208,USR-199,2024-10-15T03:22:31,User attempting to move transactions outside the platform
+209,USR-582,2024-08-11T23:33:37,User attempting to move transactions outside the platform
+210,USR-484,2023-09-28T08:12:34,Same device fingerprint found across multiple accounts
+211,USR-392,2024-04-12T12:13:28,Unusual pattern of creating and cancelling help requests
+212,USR-381,2023-01-01T15:08:04,Login detected from an unrecognized device or location
+213,USR-247,2023-11-23T12:10:42,Unusual pattern of creating and cancelling help requests
+214,USR-503,2025-06-19T23:23:59,Same device fingerprint found across multiple accounts
+215,USR-436,2024-05-15T14:19:19,Incentive or reward manipulation detected
+216,USR-327,2024-11-17T20:54:43,User attempting to move transactions outside the platform
+217,USR-210,2025-03-05T01:56:52,Incentive or reward manipulation detected
+218,USR-507,2023-09-21T14:33:13,User attempting to move transactions outside the platform
+219,USR-144,2024-03-16T20:19:26,Registration email linked to a temporary mail service
+220,USR-440,2025-09-10T05:44:43,Same device fingerprint found across multiple accounts
+221,USR-272,2023-05-26T01:43:37,Profile contains unverifiable or false information
+222,USR-445,2024-04-27T05:16:35,Profile contains unverifiable or false information
+223,USR-513,2023-11-06T08:06:07,Phishing links shared from this account
+224,USR-113,2023-03-13T18:58:20,Profile contains unverifiable or false information
+225,USR-344,2025-08-07T13:56:43,Account shows signs of identity compromise
+226,USR-334,2024-10-05T19:28:50,User attempting to move transactions outside the platform
+227,USR-395,2023-10-30T01:04:15,Account activity matches known bot behavior patterns
+228,USR-457,2024-08-19T11:45:17,Incentive or reward manipulation detected
+229,USR-305,2024-01-15T00:23:57,Phishing links shared from this account
+230,USR-436,2025-12-04T04:25:18,Multiple help requests submitted to gain additional assistance
+231,USR-558,2023-06-15T13:51:44,Unusual pattern of creating and cancelling help requests
+232,USR-213,2023-10-01T05:31:50,Account activity matches known bot behavior patterns
+233,USR-366,2024-12-22T15:40:30,Multiple help requests submitted to gain additional assistance
+234,USR-386,2024-01-23T02:47:06,Account shows signs of identity compromise
+235,USR-334,2023-07-27T03:14:31,Incentive or reward manipulation detected
+236,USR-442,2025-04-05T02:01:54,Registration email linked to a temporary mail service
+237,USR-405,2024-05-07T21:43:30,Incentive or reward manipulation detected
+238,USR-414,2025-02-23T03:29:38,Unusual pattern of creating and cancelling help requests
+239,USR-526,2025-05-01T02:08:48,Incentive or reward manipulation detected
+240,USR-560,2023-09-05T05:50:12,Account activity matches known bot behavior patterns
+241,USR-542,2025-01-07T09:08:44,Incentive or reward manipulation detected
+242,USR-233,2024-01-20T01:45:55,User attempting to move transactions outside the platform
+243,USR-242,2025-03-20T19:27:56,Incentive or reward manipulation detected
+244,USR-421,2024-01-07T15:43:56,Login detected from an unrecognized device or location
+245,USR-326,2023-05-01T08:47:19,Account activity matches known bot behavior patterns
+246,USR-247,2023-12-31T06:33:15,Login detected from an unrecognized device or location
+247,USR-272,2024-05-11T15:38:11,Registration email linked to a temporary mail service
+248,USR-142,2023-08-03T22:57:32,Phishing links shared from this account
+249,USR-219,2024-08-18T00:35:26,Account activity matches known bot behavior patterns
+250,USR-179,2023-11-29T08:44:29,Account shows signs of identity compromise
+251,USR-313,2024-09-25T04:24:21,Account is impersonating a verified platform user
+252,USR-378,2024-12-24T18:55:01,Unusual pattern of creating and cancelling help requests
+253,USR-132,2023-11-18T07:20:41,Unusual pattern of creating and cancelling help requests
+254,USR-300,2025-06-26T08:03:31,Account activity matches known bot behavior patterns
+255,USR-111,2025-06-13T07:17:30,Unusual pattern of creating and cancelling help requests
+256,USR-345,2023-01-10T03:49:18,Account is impersonating a verified platform user
+257,USR-253,2024-08-28T19:45:21,Unusual pattern of creating and cancelling help requests
+258,USR-376,2025-04-28T09:17:17,Same device fingerprint found across multiple accounts
+259,USR-560,2023-12-09T14:16:42,Incentive or reward manipulation detected
+260,USR-213,2024-02-28T23:45:57,Unusual pattern of creating and cancelling help requests
+261,USR-349,2023-02-15T02:07:25,Unusual pattern of creating and cancelling help requests
+262,USR-273,2025-11-05T01:24:57,User attempting to move transactions outside the platform
+263,USR-509,2024-09-20T02:01:04,Account activity matches known bot behavior patterns
+264,USR-185,2024-12-27T01:34:03,Phishing links shared from this account
+265,USR-419,2025-04-09T17:34:20,Multiple help requests submitted to gain additional assistance
+266,USR-565,2024-09-04T02:08:23,Same device fingerprint found across multiple accounts
+267,USR-389,2025-10-26T22:25:21,Multiple help requests submitted to gain additional assistance
+268,USR-143,2025-09-25T11:26:37,Unusual pattern of creating and cancelling help requests
+269,USR-170,2024-12-18T05:21:56,Phishing links shared from this account
+270,USR-126,2024-02-09T03:19:49,Unusual pattern of creating and cancelling help requests
+271,USR-268,2023-11-25T19:16:02,Incentive or reward manipulation detected
+272,USR-268,2024-06-08T06:55:56,Unusual pattern of creating and cancelling help requests
+273,USR-243,2024-10-16T21:04:33,Login detected from an unrecognized device or location
+274,USR-528,2023-05-08T05:41:08,Incentive or reward manipulation detected
+275,USR-110,2025-04-17T22:59:59,Multiple help requests submitted to gain additional assistance
+276,USR-588,2024-06-27T15:28:02,Profile contains unverifiable or false information
+277,USR-433,2023-04-17T14:16:41,User attempting to move transactions outside the platform
+278,USR-121,2023-02-18T04:52:55,Profile contains unverifiable or false information
+279,USR-203,2023-02-01T15:49:19,Same device fingerprint found across multiple accounts
+280,USR-179,2024-01-06T13:36:00,Phishing links shared from this account
+281,USR-343,2025-11-05T23:14:05,Account shows signs of identity compromise
+282,USR-389,2023-12-05T14:18:25,Incentive or reward manipulation detected
+283,USR-459,2024-02-03T01:27:26,Account is impersonating a verified platform user
+284,USR-186,2025-07-30T05:19:00,Same device fingerprint found across multiple accounts
+285,USR-594,2023-06-27T22:05:41,Phishing links shared from this account
+286,USR-594,2024-04-28T04:22:17,Account shows signs of identity compromise
+287,USR-397,2023-02-09T21:21:39,Login detected from an unrecognized device or location
+288,USR-395,2025-11-18T05:20:13,Unusual pattern of creating and cancelling help requests
+289,USR-304,2023-11-05T02:16:12,Account shows signs of identity compromise
+290,USR-404,2025-12-08T19:58:17,User attempting to move transactions outside the platform
+291,USR-225,2023-06-08T07:09:21,Account activity matches known bot behavior patterns
+292,USR-496,2024-04-13T11:49:02,User attempting to move transactions outside the platform
+293,USR-408,2023-07-08T01:15:35,Same device fingerprint found across multiple accounts
+294,USR-501,2023-03-05T19:10:05,Account is impersonating a verified platform user
+295,USR-373,2024-10-27T11:05:23,User attempting to move transactions outside the platform
+296,USR-290,2023-04-18T02:53:36,Registration email linked to a temporary mail service
+297,USR-432,2024-06-14T02:01:13,Multiple help requests submitted to gain additional assistance
+298,USR-535,2024-10-14T12:55:29,Incentive or reward manipulation detected
+299,USR-155,2024-11-04T10:55:25,Account is impersonating a verified platform user
+300,USR-426,2024-12-15T04:19:30,Account activity matches known bot behavior patterns
+301,USR-179,2024-11-07T12:08:15,Phishing links shared from this account
+302,USR-476,2025-03-21T12:07:42,User attempting to move transactions outside the platform
+303,USR-239,2025-08-14T18:52:36,Registration email linked to a temporary mail service
+304,USR-497,2025-01-21T02:05:36,Incentive or reward manipulation detected
+305,USR-324,2025-07-09T09:03:17,Login detected from an unrecognized device or location
+306,USR-266,2024-01-17T08:43:23,Account shows signs of identity compromise
+307,USR-243,2024-12-01T07:07:00,Profile contains unverifiable or false information
+308,USR-485,2024-12-22T21:35:14,Same device fingerprint found across multiple accounts
+309,USR-413,2025-11-03T23:52:18,Unusual pattern of creating and cancelling help requests
+310,USR-273,2023-02-14T14:00:48,Incentive or reward manipulation detected
+311,USR-536,2024-05-19T21:24:23,Phishing links shared from this account
+312,USR-350,2023-11-26T12:24:04,Account is impersonating a verified platform user
+313,USR-509,2024-02-06T08:04:33,Account is impersonating a verified platform user
+314,USR-244,2025-07-15T02:16:10,Account activity matches known bot behavior patterns
+315,USR-551,2024-03-05T04:02:20,Registration email linked to a temporary mail service
+316,USR-106,2025-03-13T13:15:35,Profile contains unverifiable or false information
+317,USR-144,2024-01-10T22:24:20,Account activity matches known bot behavior patterns
+318,USR-309,2025-01-28T23:30:08,Registration email linked to a temporary mail service
+319,USR-489,2024-01-09T07:55:32,Account activity matches known bot behavior patterns
+320,USR-344,2025-09-30T09:00:19,Account activity matches known bot behavior patterns
+321,USR-352,2024-11-27T05:09:29,Multiple help requests submitted to gain additional assistance
+322,USR-148,2024-04-02T01:53:51,Profile contains unverifiable or false information
+323,USR-308,2025-12-10T15:41:40,Profile contains unverifiable or false information
+324,USR-257,2025-10-28T10:13:25,Same device fingerprint found across multiple accounts
+325,USR-289,2025-01-05T04:25:47,Registration email linked to a temporary mail service
+326,USR-372,2024-06-18T00:12:16,Unusual pattern of creating and cancelling help requests
+327,USR-482,2025-05-04T23:58:10,Account is impersonating a verified platform user
+328,USR-281,2025-12-27T20:19:53,Incentive or reward manipulation detected
+329,USR-239,2024-04-21T07:44:01,Login detected from an unrecognized device or location
+330,USR-219,2023-07-07T10:22:38,Account activity matches known bot behavior patterns
+331,USR-199,2024-05-05T04:28:48,Account shows signs of identity compromise
+332,USR-481,2025-04-12T10:27:23,Account activity matches known bot behavior patterns
+333,USR-195,2023-10-25T13:09:54,Profile contains unverifiable or false information
+334,USR-479,2025-01-22T04:13:54,Login detected from an unrecognized device or location
+335,USR-471,2025-07-04T21:23:34,Registration email linked to a temporary mail service
+336,USR-406,2024-03-15T14:57:22,Account shows signs of identity compromise
+337,USR-527,2023-10-29T13:13:40,Login detected from an unrecognized device or location
+338,USR-217,2024-07-14T14:37:17,Phishing links shared from this account
+339,USR-255,2023-01-22T23:29:21,Account activity matches known bot behavior patterns
+340,USR-374,2023-07-16T15:21:17,Login detected from an unrecognized device or location
+341,USR-124,2023-03-26T16:52:38,Registration email linked to a temporary mail service
+342,USR-250,2025-12-19T09:36:17,Phishing links shared from this account
+343,USR-427,2025-02-01T13:17:03,Account shows signs of identity compromise
+344,USR-547,2023-01-20T01:17:14,Same device fingerprint found across multiple accounts
+345,USR-246,2024-12-30T04:23:11,Incentive or reward manipulation detected
+346,USR-326,2024-06-13T06:26:16,Phishing links shared from this account
+347,USR-595,2023-03-21T19:27:46,Login detected from an unrecognized device or location
+348,USR-582,2025-01-12T03:02:06,Account shows signs of identity compromise
+349,USR-521,2023-04-12T12:10:47,Unusual pattern of creating and cancelling help requests
+350,USR-352,2023-04-26T01:59:00,Same device fingerprint found across multiple accounts
+351,USR-423,2025-12-02T08:44:56,Multiple help requests submitted to gain additional assistance
+352,USR-178,2023-08-20T18:29:20,Same device fingerprint found across multiple accounts
+353,USR-586,2024-04-16T23:48:32,Account shows signs of identity compromise
+354,USR-228,2023-07-04T00:11:39,Registration email linked to a temporary mail service
+355,USR-492,2024-10-08T12:05:31,Same device fingerprint found across multiple accounts
+356,USR-406,2025-08-18T16:18:26,Profile contains unverifiable or false information
+357,USR-498,2025-03-22T18:54:58,Unusual pattern of creating and cancelling help requests
+358,USR-331,2024-11-18T17:50:07,Login detected from an unrecognized device or location
+359,USR-541,2025-07-03T05:48:26,Unusual pattern of creating and cancelling help requests
+360,USR-257,2025-06-02T08:02:35,Same device fingerprint found across multiple accounts
+361,USR-131,2025-08-05T00:41:15,Account activity matches known bot behavior patterns
+362,USR-151,2023-11-19T18:53:40,User attempting to move transactions outside the platform
+363,USR-209,2024-02-16T02:43:21,User attempting to move transactions outside the platform
+364,USR-142,2023-09-01T23:30:46,Profile contains unverifiable or false information
+365,USR-189,2025-05-07T11:45:45,Account shows signs of identity compromise
+366,USR-181,2023-01-05T03:45:29,Unusual pattern of creating and cancelling help requests
+367,USR-331,2025-12-06T21:37:07,Same device fingerprint found across multiple accounts
+368,USR-341,2024-03-28T10:56:00,Multiple help requests submitted to gain additional assistance
+369,USR-219,2024-03-23T13:19:43,Account activity matches known bot behavior patterns
+370,USR-245,2025-12-28T01:16:32,Incentive or reward manipulation detected
+371,USR-137,2025-12-03T19:34:02,Profile contains unverifiable or false information
+372,USR-574,2024-02-15T23:18:40,User attempting to move transactions outside the platform
+373,USR-402,2025-10-24T02:41:25,Profile contains unverifiable or false information
+374,USR-318,2023-06-28T07:10:14,Registration email linked to a temporary mail service
+375,USR-216,2025-10-03T01:34:21,Phishing links shared from this account
+376,USR-566,2024-02-17T15:29:46,Phishing links shared from this account
+377,USR-137,2023-04-03T15:28:02,Phishing links shared from this account
+378,USR-506,2024-04-22T20:35:58,Same device fingerprint found across multiple accounts
+379,USR-484,2025-06-03T05:34:36,Login detected from an unrecognized device or location
+380,USR-325,2023-07-13T04:14:25,Incentive or reward manipulation detected
+381,USR-453,2024-04-17T09:20:28,Account activity matches known bot behavior patterns
+382,USR-307,2024-02-27T22:04:25,Registration email linked to a temporary mail service
+383,USR-377,2025-02-06T02:01:12,Incentive or reward manipulation detected
+384,USR-142,2025-07-18T00:25:22,Multiple help requests submitted to gain additional assistance
+385,USR-556,2024-11-02T03:11:45,Account activity matches known bot behavior patterns
+386,USR-266,2025-07-26T20:04:33,Login detected from an unrecognized device or location
+387,USR-114,2023-05-22T20:54:47,Profile contains unverifiable or false information
+388,USR-593,2025-11-13T11:39:54,Same device fingerprint found across multiple accounts
+389,USR-401,2023-02-02T05:26:47,User attempting to move transactions outside the platform
+390,USR-521,2024-02-23T16:05:57,Same device fingerprint found across multiple accounts
+391,USR-121,2023-09-30T03:35:01,Incentive or reward manipulation detected
+392,USR-366,2025-10-09T02:02:03,Incentive or reward manipulation detected
+393,USR-570,2024-03-08T02:25:43,Phishing links shared from this account
+394,USR-400,2024-11-08T02:58:12,User attempting to move transactions outside the platform
+395,USR-517,2025-02-02T20:51:59,Account shows signs of identity compromise
+396,USR-341,2024-06-24T12:55:42,Unusual pattern of creating and cancelling help requests
+397,USR-271,2024-05-13T17:55:09,User attempting to move transactions outside the platform
+398,USR-154,2023-09-07T19:59:06,Account is impersonating a verified platform user
+399,USR-311,2025-12-13T14:01:44,Incentive or reward manipulation detected
+400,USR-248,2025-10-26T06:54:16,Unusual pattern of creating and cancelling help requests
+401,USR-517,2025-05-04T13:05:17,Multiple help requests submitted to gain additional assistance
+402,USR-333,2023-05-17T19:06:25,Account is impersonating a verified platform user
+403,USR-230,2024-05-17T04:31:13,Account shows signs of identity compromise
+404,USR-597,2024-09-19T20:44:17,Registration email linked to a temporary mail service
+405,USR-523,2023-01-02T18:54:53,User attempting to move transactions outside the platform
+406,USR-546,2025-04-22T21:21:19,Incentive or reward manipulation detected
+407,USR-312,2023-03-26T04:52:29,Profile contains unverifiable or false information
+408,USR-366,2024-07-16T00:06:43,Same device fingerprint found across multiple accounts
+409,USR-488,2025-02-13T09:10:11,User attempting to move transactions outside the platform
+410,USR-327,2023-03-22T04:13:35,Profile contains unverifiable or false information
+411,USR-237,2025-05-03T04:23:32,Phishing links shared from this account
+412,USR-575,2024-03-23T10:30:17,Incentive or reward manipulation detected
+413,USR-551,2025-12-20T16:38:52,Incentive or reward manipulation detected
+414,USR-163,2023-02-14T20:19:50,User attempting to move transactions outside the platform
+415,USR-412,2024-01-07T17:39:21,Account activity matches known bot behavior patterns
+416,USR-182,2024-04-27T17:36:17,Registration email linked to a temporary mail service
+417,USR-108,2025-05-07T21:25:29,Unusual pattern of creating and cancelling help requests
+418,USR-148,2023-12-16T01:26:51,Account shows signs of identity compromise
+419,USR-337,2023-07-02T11:27:19,User attempting to move transactions outside the platform
+420,USR-527,2023-08-28T04:27:34,Incentive or reward manipulation detected
+421,USR-578,2024-03-29T09:23:15,Registration email linked to a temporary mail service
+422,USR-462,2024-02-29T18:01:08,Unusual pattern of creating and cancelling help requests
+423,USR-528,2025-01-19T12:53:16,Incentive or reward manipulation detected
+424,USR-225,2024-12-10T14:14:02,Registration email linked to a temporary mail service
+425,USR-175,2024-08-18T21:07:23,Profile contains unverifiable or false information
+426,USR-572,2025-07-20T02:24:59,Registration email linked to a temporary mail service
+427,USR-483,2023-08-01T01:23:59,Account shows signs of identity compromise
+428,USR-242,2024-10-06T14:10:29,Account is impersonating a verified platform user
+429,USR-579,2025-02-27T17:49:57,Login detected from an unrecognized device or location
+430,USR-521,2023-01-04T23:38:23,Login detected from an unrecognized device or location
+431,USR-472,2024-04-08T18:58:07,Same device fingerprint found across multiple accounts
+432,USR-397,2025-10-22T04:22:28,Incentive or reward manipulation detected
+433,USR-544,2023-08-19T20:02:19,Incentive or reward manipulation detected
+434,USR-376,2025-01-22T09:33:20,Account is impersonating a verified platform user
+435,USR-271,2025-05-07T08:58:21,Registration email linked to a temporary mail service
+436,USR-294,2024-12-08T08:28:39,Account is impersonating a verified platform user
+437,USR-546,2023-10-21T01:28:12,Account activity matches known bot behavior patterns
+438,USR-223,2025-06-07T06:09:40,Unusual pattern of creating and cancelling help requests
+439,USR-220,2024-09-30T02:48:20,Multiple help requests submitted to gain additional assistance
+440,USR-263,2025-01-04T17:49:57,Account activity matches known bot behavior patterns
+441,USR-568,2024-08-15T05:19:38,Unusual pattern of creating and cancelling help requests
+442,USR-440,2025-10-09T21:01:48,Phishing links shared from this account
+443,USR-354,2023-02-27T12:11:28,Phishing links shared from this account
+444,USR-358,2025-07-05T19:31:16,Account is impersonating a verified platform user
+445,USR-546,2023-06-05T21:51:48,Incentive or reward manipulation detected
+446,USR-152,2025-03-28T00:52:39,Incentive or reward manipulation detected
+447,USR-108,2023-08-12T22:30:12,Unusual pattern of creating and cancelling help requests
+448,USR-546,2025-10-14T04:01:01,Phishing links shared from this account
+449,USR-139,2024-12-30T07:52:41,Login detected from an unrecognized device or location
+450,USR-274,2025-08-26T04:47:40,Account activity matches known bot behavior patterns
+451,USR-304,2025-10-06T11:39:59,Account shows signs of identity compromise
+452,USR-537,2024-05-25T09:48:46,User attempting to move transactions outside the platform
+453,USR-540,2025-04-08T22:52:54,Unusual pattern of creating and cancelling help requests
+454,USR-589,2024-05-06T21:59:00,User attempting to move transactions outside the platform
+455,USR-468,2025-01-28T00:00:02,Registration email linked to a temporary mail service
+456,USR-119,2025-08-17T04:33:26,Account shows signs of identity compromise
+457,USR-221,2025-09-07T11:23:17,User attempting to move transactions outside the platform
+458,USR-572,2024-03-22T10:15:56,Profile contains unverifiable or false information
+459,USR-483,2023-05-21T09:35:08,Unusual pattern of creating and cancelling help requests
+460,USR-151,2025-09-11T11:49:53,Account activity matches known bot behavior patterns
+461,USR-547,2023-06-06T03:10:53,Incentive or reward manipulation detected
+462,USR-186,2025-12-14T02:14:19,Login detected from an unrecognized device or location
+463,USR-563,2023-02-14T23:13:54,Multiple help requests submitted to gain additional assistance
+464,USR-267,2023-03-29T04:16:35,Login detected from an unrecognized device or location
+465,USR-284,2024-08-05T07:05:19,Unusual pattern of creating and cancelling help requests
+466,USR-175,2024-01-15T08:20:24,Registration email linked to a temporary mail service
+467,USR-311,2025-05-29T03:19:38,User attempting to move transactions outside the platform
+468,USR-506,2023-10-07T17:00:26,Phishing links shared from this account
+469,USR-190,2023-05-03T16:09:12,Same device fingerprint found across multiple accounts
+470,USR-546,2024-08-17T06:17:06,Same device fingerprint found across multiple accounts
+471,USR-450,2024-01-10T02:47:07,Incentive or reward manipulation detected
+472,USR-568,2025-06-24T21:40:25,Phishing links shared from this account
+473,USR-219,2024-12-17T08:54:53,User attempting to move transactions outside the platform
+474,USR-231,2024-12-14T22:01:48,Login detected from an unrecognized device or location
+475,USR-442,2023-01-15T14:21:41,Incentive or reward manipulation detected
+476,USR-562,2024-03-22T19:41:08,User attempting to move transactions outside the platform
+477,USR-380,2023-09-03T09:45:29,Account shows signs of identity compromise
+478,USR-327,2024-06-20T19:37:12,Same device fingerprint found across multiple accounts
+479,USR-254,2025-09-19T13:21:40,Unusual pattern of creating and cancelling help requests
+480,USR-454,2024-01-24T12:20:15,Incentive or reward manipulation detected
+481,USR-533,2024-04-14T07:54:44,Profile contains unverifiable or false information
+482,USR-297,2025-01-20T15:18:08,Account shows signs of identity compromise
+483,USR-222,2024-08-15T10:17:29,Same device fingerprint found across multiple accounts
+484,USR-284,2025-06-11T22:32:31,Login detected from an unrecognized device or location
+485,USR-459,2024-04-03T15:00:01,Multiple help requests submitted to gain additional assistance
+486,USR-525,2025-10-19T12:35:10,Unusual pattern of creating and cancelling help requests
+487,USR-241,2023-01-13T13:54:50,Same device fingerprint found across multiple accounts
+488,USR-543,2025-12-01T08:27:29,Account activity matches known bot behavior patterns
+489,USR-599,2023-03-18T04:30:07,Same device fingerprint found across multiple accounts
+490,USR-482,2025-02-10T15:20:07,Login detected from an unrecognized device or location
+491,USR-498,2023-12-24T11:26:07,Same device fingerprint found across multiple accounts
+492,USR-511,2024-07-01T07:28:38,Profile contains unverifiable or false information
+493,USR-426,2023-10-23T08:38:03,Same device fingerprint found across multiple accounts
+494,USR-229,2025-11-18T20:53:25,Account activity matches known bot behavior patterns
+495,USR-493,2025-10-21T00:04:08,User attempting to move transactions outside the platform
+496,USR-530,2023-08-01T11:29:58,User attempting to move transactions outside the platform
+497,USR-150,2025-09-01T17:20:01,User attempting to move transactions outside the platform
+498,USR-121,2024-04-24T21:51:09,Incentive or reward manipulation detected
+499,USR-118,2025-06-19T08:04:39,Account is impersonating a verified platform user
+500,USR-475,2023-07-24T03:23:14,Account shows signs of identity compromise
+501,USR-566,2024-04-03T10:30:54,Account is impersonating a verified platform user
+502,USR-483,2024-10-07T11:04:41,Phishing links shared from this account
+503,USR-203,2023-07-25T07:16:27,Registration email linked to a temporary mail service
+504,USR-549,2024-07-22T08:09:26,Registration email linked to a temporary mail service
+505,USR-357,2024-02-28T08:33:21,Phishing links shared from this account
+506,USR-232,2025-01-18T12:35:20,Login detected from an unrecognized device or location
+507,USR-483,2024-06-10T04:13:11,Account shows signs of identity compromise
+508,USR-340,2023-04-27T23:21:49,Phishing links shared from this account
+509,USR-487,2023-12-17T11:31:31,User attempting to move transactions outside the platform
+510,USR-471,2025-11-13T15:41:11,Unusual pattern of creating and cancelling help requests
+511,USR-596,2025-05-15T18:07:13,Account is impersonating a verified platform user
+512,USR-147,2024-09-04T22:48:21,Multiple help requests submitted to gain additional assistance
+513,USR-236,2025-04-13T12:51:56,Account shows signs of identity compromise
+514,USR-333,2024-07-26T13:52:09,User attempting to move transactions outside the platform
+515,USR-484,2025-11-10T10:40:54,Login detected from an unrecognized device or location
+516,USR-400,2024-08-14T21:39:36,User attempting to move transactions outside the platform
+517,USR-582,2024-07-31T01:32:28,Account shows signs of identity compromise
+518,USR-446,2023-12-30T05:30:44,Incentive or reward manipulation detected
+519,USR-113,2025-08-20T10:22:52,Registration email linked to a temporary mail service
+520,USR-268,2025-08-05T17:30:46,Profile contains unverifiable or false information
+521,USR-432,2023-04-09T04:54:07,User attempting to move transactions outside the platform
+522,USR-522,2024-12-22T05:08:53,Account activity matches known bot behavior patterns
+523,USR-255,2025-10-05T13:24:03,Unusual pattern of creating and cancelling help requests
+524,USR-160,2023-08-06T03:15:53,Multiple help requests submitted to gain additional assistance
+525,USR-585,2023-02-27T19:22:07,Login detected from an unrecognized device or location
+526,USR-353,2023-06-30T09:17:07,Account shows signs of identity compromise
+527,USR-221,2025-04-15T01:11:24,Phishing links shared from this account
+528,USR-299,2024-12-05T17:03:54,Account is impersonating a verified platform user
+529,USR-444,2025-12-17T22:48:18,Registration email linked to a temporary mail service
+530,USR-315,2025-07-01T09:38:06,Account activity matches known bot behavior patterns
+531,USR-473,2023-08-29T01:01:52,Unusual pattern of creating and cancelling help requests
+532,USR-436,2023-06-03T19:47:38,Incentive or reward manipulation detected
+533,USR-416,2024-09-25T23:39:46,Login detected from an unrecognized device or location
+534,USR-117,2025-12-08T07:31:42,Account is impersonating a verified platform user
+535,USR-212,2024-11-19T18:31:10,Incentive or reward manipulation detected
+536,USR-587,2024-01-02T18:55:01,Account is impersonating a verified platform user
+537,USR-151,2025-12-01T04:00:47,Account is impersonating a verified platform user
+538,USR-379,2025-09-28T16:53:09,Account is impersonating a verified platform user
+539,USR-132,2024-09-10T11:43:18,Login detected from an unrecognized device or location
+540,USR-198,2023-07-09T18:26:39,Incentive or reward manipulation detected
+541,USR-147,2025-10-26T13:48:34,Profile contains unverifiable or false information
+542,USR-429,2025-09-20T10:01:26,Same device fingerprint found across multiple accounts
+543,USR-598,2023-02-03T04:15:49,Multiple help requests submitted to gain additional assistance
+544,USR-503,2024-06-02T02:07:21,Profile contains unverifiable or false information
+545,USR-165,2025-05-27T00:59:33,Profile contains unverifiable or false information
+546,USR-136,2025-05-10T22:21:50,Profile contains unverifiable or false information
+547,USR-401,2023-12-02T11:14:59,Profile contains unverifiable or false information
+548,USR-269,2023-08-18T05:13:06,Same device fingerprint found across multiple accounts
+549,USR-102,2024-03-06T17:33:19,Phishing links shared from this account
+550,USR-167,2025-04-19T04:41:31,Login detected from an unrecognized device or location
+551,USR-509,2023-09-29T01:43:27,Account shows signs of identity compromise
+552,USR-439,2023-02-10T01:09:13,Phishing links shared from this account
+553,USR-108,2024-07-10T12:14:24,Profile contains unverifiable or false information
+554,USR-402,2024-05-17T23:04:30,Multiple help requests submitted to gain additional assistance
+555,USR-190,2024-02-17T05:37:04,Multiple help requests submitted to gain additional assistance
+556,USR-165,2024-10-15T22:32:49,Registration email linked to a temporary mail service
+557,USR-159,2023-04-09T17:36:55,Incentive or reward manipulation detected
+558,USR-330,2024-07-16T09:47:28,Registration email linked to a temporary mail service
+559,USR-404,2023-06-19T09:49:41,Incentive or reward manipulation detected
+560,USR-358,2023-12-11T03:58:24,Same device fingerprint found across multiple accounts
+561,USR-123,2025-10-20T13:41:13,Registration email linked to a temporary mail service
+562,USR-255,2024-12-12T13:03:46,User attempting to move transactions outside the platform
+563,USR-594,2023-02-18T09:22:48,Multiple help requests submitted to gain additional assistance
+564,USR-346,2024-09-15T21:22:35,Unusual pattern of creating and cancelling help requests
+565,USR-452,2023-06-17T17:06:31,Incentive or reward manipulation detected
+566,USR-465,2024-11-20T01:12:08,Account shows signs of identity compromise
+567,USR-561,2023-05-06T12:05:14,Account is impersonating a verified platform user
+568,USR-412,2023-08-19T10:17:09,Account shows signs of identity compromise
+569,USR-165,2024-03-03T05:20:22,Same device fingerprint found across multiple accounts
+570,USR-425,2025-06-28T07:58:38,Registration email linked to a temporary mail service
+571,USR-465,2024-05-20T03:47:31,Unusual pattern of creating and cancelling help requests
+572,USR-406,2025-04-04T04:35:33,Login detected from an unrecognized device or location
+573,USR-333,2025-02-24T08:18:36,Same device fingerprint found across multiple accounts
+574,USR-321,2023-06-04T01:38:27,Account activity matches known bot behavior patterns
+575,USR-159,2025-10-14T01:28:05,User attempting to move transactions outside the platform
+576,USR-550,2025-05-06T11:16:01,Account activity matches known bot behavior patterns
+577,USR-544,2023-12-01T00:38:27,Unusual pattern of creating and cancelling help requests
+578,USR-332,2023-12-21T22:51:28,Unusual pattern of creating and cancelling help requests
+579,USR-274,2024-12-05T11:39:52,Unusual pattern of creating and cancelling help requests
+580,USR-313,2023-05-28T17:03:25,Account is impersonating a verified platform user
+581,USR-319,2024-04-30T11:43:23,User attempting to move transactions outside the platform
+582,USR-231,2024-08-04T10:57:12,Phishing links shared from this account
+583,USR-452,2025-01-06T17:59:18,Account shows signs of identity compromise
+584,USR-147,2023-05-13T14:36:50,Account shows signs of identity compromise
+585,USR-322,2023-05-31T00:10:58,Account activity matches known bot behavior patterns
+586,USR-479,2024-08-01T21:16:54,Phishing links shared from this account
+587,USR-385,2023-04-04T04:15:10,Same device fingerprint found across multiple accounts
+588,USR-590,2025-05-22T09:27:32,Registration email linked to a temporary mail service
+589,USR-269,2025-11-06T19:54:18,Account shows signs of identity compromise
+590,USR-311,2024-07-03T07:05:30,User attempting to move transactions outside the platform
+591,USR-582,2024-10-19T00:13:43,Account activity matches known bot behavior patterns
+592,USR-127,2024-03-22T19:36:05,Same device fingerprint found across multiple accounts
+593,USR-260,2024-06-30T06:19:12,Account shows signs of identity compromise
+594,USR-396,2025-02-27T05:42:39,Profile contains unverifiable or false information
+595,USR-180,2025-10-17T04:54:14,Incentive or reward manipulation detected
+596,USR-215,2023-06-18T02:40:25,Account is impersonating a verified platform user
+597,USR-533,2025-05-14T03:04:48,Account is impersonating a verified platform user
+598,USR-159,2024-03-08T17:46:32,Same device fingerprint found across multiple accounts
+599,USR-216,2024-10-28T14:28:12,Registration email linked to a temporary mail service
+600,USR-599,2025-08-23T19:32:36,Same device fingerprint found across multiple accounts
+601,USR-446,2025-09-25T09:33:41,Registration email linked to a temporary mail service
+602,USR-114,2025-08-04T00:58:33,User attempting to move transactions outside the platform
+603,USR-525,2025-12-13T06:28:47,Login detected from an unrecognized device or location
+604,USR-115,2023-10-08T06:23:55,Login detected from an unrecognized device or location
+605,USR-460,2024-04-24T23:47:02,Account is impersonating a verified platform user
+606,USR-280,2023-01-10T11:38:25,Phishing links shared from this account
+607,USR-546,2023-08-11T12:48:09,Same device fingerprint found across multiple accounts
+608,USR-437,2024-09-14T14:19:24,Account shows signs of identity compromise
+609,USR-173,2025-09-10T14:21:48,Multiple help requests submitted to gain additional assistance
+610,USR-147,2025-04-04T01:49:41,Profile contains unverifiable or false information
+611,USR-293,2024-10-14T04:29:23,Incentive or reward manipulation detected
+612,USR-275,2023-09-02T12:38:35,Account is impersonating a verified platform user
+613,USR-260,2024-05-18T21:52:14,Same device fingerprint found across multiple accounts
+614,USR-406,2023-05-12T23:25:40,Multiple help requests submitted to gain additional assistance
+615,USR-180,2023-09-02T12:39:58,Same device fingerprint found across multiple accounts
+616,USR-126,2025-11-12T23:22:29,Account shows signs of identity compromise
+617,USR-240,2024-11-19T08:26:56,User attempting to move transactions outside the platform
+618,USR-318,2025-01-24T10:46:50,Same device fingerprint found across multiple accounts
+619,USR-327,2024-10-05T09:53:20,Login detected from an unrecognized device or location
+620,USR-211,2025-03-06T21:39:17,Account shows signs of identity compromise
+621,USR-277,2024-10-29T20:20:31,Account shows signs of identity compromise
+622,USR-246,2025-11-19T13:47:44,User attempting to move transactions outside the platform
+623,USR-404,2025-01-25T22:59:02,Registration email linked to a temporary mail service
+624,USR-442,2024-04-24T02:42:30,Multiple help requests submitted to gain additional assistance
+625,USR-213,2024-09-06T00:29:14,Same device fingerprint found across multiple accounts
+626,USR-129,2023-01-12T22:35:43,Profile contains unverifiable or false information
+627,USR-255,2023-11-25T03:22:24,Phishing links shared from this account
+628,USR-492,2024-02-01T22:27:27,Login detected from an unrecognized device or location
+629,USR-268,2023-07-06T09:20:26,Multiple help requests submitted to gain additional assistance
+630,USR-355,2024-10-30T23:58:57,Phishing links shared from this account
+631,USR-167,2024-08-13T15:09:39,Registration email linked to a temporary mail service
+632,USR-461,2023-12-24T11:08:57,Registration email linked to a temporary mail service
+633,USR-387,2025-11-03T18:38:27,Account is impersonating a verified platform user
+634,USR-137,2024-09-08T19:53:10,Account activity matches known bot behavior patterns
+635,USR-122,2024-11-08T15:26:43,Multiple help requests submitted to gain additional assistance
+636,USR-336,2023-05-01T22:55:42,Account is impersonating a verified platform user
+637,USR-395,2024-10-28T20:52:41,Same device fingerprint found across multiple accounts
+638,USR-308,2025-09-21T10:12:40,Unusual pattern of creating and cancelling help requests
+639,USR-249,2023-06-28T21:58:28,Unusual pattern of creating and cancelling help requests
+640,USR-111,2024-05-19T12:14:07,Phishing links shared from this account
+641,USR-511,2025-08-18T05:22:48,Incentive or reward manipulation detected
+642,USR-526,2025-12-07T06:31:32,Account is impersonating a verified platform user
+643,USR-146,2024-11-09T09:47:42,Account shows signs of identity compromise
+644,USR-225,2024-11-07T19:11:53,Same device fingerprint found across multiple accounts
+645,USR-306,2025-03-24T22:44:22,Account shows signs of identity compromise
+646,USR-303,2024-04-26T23:52:26,Account activity matches known bot behavior patterns
+647,USR-274,2023-12-11T04:48:18,Account is impersonating a verified platform user
+648,USR-499,2023-09-19T04:26:30,Account shows signs of identity compromise
+649,USR-362,2025-09-10T16:19:36,Account shows signs of identity compromise
+650,USR-372,2025-03-03T04:23:27,Profile contains unverifiable or false information
+651,USR-564,2024-06-26T17:39:14,Account is impersonating a verified platform user
+652,USR-473,2025-09-29T15:51:29,Phishing links shared from this account
+653,USR-221,2023-06-09T16:49:50,Phishing links shared from this account
+654,USR-232,2023-11-03T10:49:33,Phishing links shared from this account
+655,USR-409,2023-08-26T11:23:55,User attempting to move transactions outside the platform
+656,USR-139,2023-10-03T04:29:10,User attempting to move transactions outside the platform
+657,USR-353,2024-12-21T17:25:26,Same device fingerprint found across multiple accounts
+658,USR-490,2025-06-19T04:08:10,Incentive or reward manipulation detected
+659,USR-449,2025-05-26T21:46:44,User attempting to move transactions outside the platform
+660,USR-426,2025-08-28T03:51:34,Account is impersonating a verified platform user
+661,USR-543,2025-09-01T08:21:35,Account is impersonating a verified platform user
+662,USR-178,2024-11-14T03:32:46,Account shows signs of identity compromise
+663,USR-341,2024-11-17T22:42:41,User attempting to move transactions outside the platform
+664,USR-256,2024-03-02T16:34:35,Same device fingerprint found across multiple accounts
+665,USR-129,2024-06-30T17:21:25,Registration email linked to a temporary mail service
+666,USR-138,2024-04-27T04:50:36,Incentive or reward manipulation detected
+667,USR-332,2023-02-28T10:05:59,Multiple help requests submitted to gain additional assistance
+668,USR-289,2024-03-21T23:00:27,Account shows signs of identity compromise
+669,USR-431,2023-05-21T06:29:51,Same device fingerprint found across multiple accounts
+670,USR-405,2025-02-26T16:51:30,Unusual pattern of creating and cancelling help requests
+671,USR-337,2025-06-20T12:14:54,Registration email linked to a temporary mail service
+672,USR-589,2023-03-05T17:26:15,Incentive or reward manipulation detected
+673,USR-566,2025-06-07T00:54:21,User attempting to move transactions outside the platform
+674,USR-197,2024-05-14T11:23:11,Same device fingerprint found across multiple accounts
+675,USR-344,2025-02-17T20:19:40,Phishing links shared from this account
+676,USR-591,2023-04-07T02:49:07,Incentive or reward manipulation detected
+677,USR-153,2024-06-17T12:17:17,Account activity matches known bot behavior patterns
+678,USR-144,2025-02-22T18:57:00,User attempting to move transactions outside the platform
+679,USR-189,2023-03-02T19:19:27,Profile contains unverifiable or false information
+680,USR-463,2024-11-11T00:48:40,Incentive or reward manipulation detected
+681,USR-369,2025-03-23T01:27:33,Same device fingerprint found across multiple accounts
+682,USR-182,2024-07-19T07:05:57,Account is impersonating a verified platform user
+683,USR-570,2024-03-15T11:02:13,Unusual pattern of creating and cancelling help requests
+684,USR-310,2024-06-09T15:14:29,User attempting to move transactions outside the platform
+685,USR-407,2023-03-23T08:19:40,User attempting to move transactions outside the platform
+686,USR-432,2024-06-03T20:37:55,Account shows signs of identity compromise
+687,USR-269,2023-05-27T19:26:13,Registration email linked to a temporary mail service
+688,USR-448,2024-08-23T12:09:29,Login detected from an unrecognized device or location
+689,USR-230,2025-10-16T22:28:59,Same device fingerprint found across multiple accounts
+690,USR-548,2023-08-22T14:19:26,Account is impersonating a verified platform user
+691,USR-142,2025-06-24T06:06:13,User attempting to move transactions outside the platform
+692,USR-173,2024-06-27T10:15:51,Login detected from an unrecognized device or location
+693,USR-596,2025-10-16T03:29:33,Account activity matches known bot behavior patterns
+694,USR-440,2024-08-31T21:15:10,Phishing links shared from this account
+695,USR-405,2023-05-12T14:33:13,Login detected from an unrecognized device or location
+696,USR-387,2024-08-08T03:37:20,User attempting to move transactions outside the platform
+697,USR-506,2024-05-25T06:29:36,Phishing links shared from this account
+698,USR-444,2025-12-27T19:26:02,Account activity matches known bot behavior patterns
+699,USR-451,2025-03-28T17:21:58,Account shows signs of identity compromise
+700,USR-431,2025-11-07T12:24:46,Unusual pattern of creating and cancelling help requests
+701,USR-361,2024-07-16T01:55:45,Multiple help requests submitted to gain additional assistance
+702,USR-286,2024-04-24T19:21:42,Phishing links shared from this account
+703,USR-587,2023-11-29T17:40:52,Account is impersonating a verified platform user
+704,USR-586,2025-01-25T09:29:38,Profile contains unverifiable or false information
+705,USR-216,2023-08-02T16:48:29,Phishing links shared from this account
+706,USR-140,2024-04-04T11:55:43,Account shows signs of identity compromise
+707,USR-360,2025-04-18T12:06:44,Account activity matches known bot behavior patterns
+708,USR-553,2025-03-28T22:31:19,Multiple help requests submitted to gain additional assistance
+709,USR-439,2024-06-07T03:29:08,Same device fingerprint found across multiple accounts
+710,USR-168,2025-07-16T18:57:40,Unusual pattern of creating and cancelling help requests
+711,USR-179,2023-09-10T01:00:52,Phishing links shared from this account
+712,USR-526,2025-12-12T07:09:27,Same device fingerprint found across multiple accounts
+713,USR-515,2023-09-15T03:44:50,Account activity matches known bot behavior patterns
+714,USR-325,2023-03-09T20:58:18,Unusual pattern of creating and cancelling help requests
+715,USR-287,2025-11-16T16:38:14,Account activity matches known bot behavior patterns
+716,USR-222,2024-11-21T00:55:41,Same device fingerprint found across multiple accounts
+717,USR-246,2024-11-28T09:14:51,Profile contains unverifiable or false information
+718,USR-374,2024-01-07T12:50:52,Login detected from an unrecognized device or location
+719,USR-595,2024-12-29T14:10:08,Profile contains unverifiable or false information
+720,USR-289,2025-11-19T17:06:40,Same device fingerprint found across multiple accounts
+721,USR-326,2024-12-18T04:40:37,Login detected from an unrecognized device or location
+722,USR-499,2024-08-16T05:14:10,Registration email linked to a temporary mail service
+723,USR-371,2024-10-12T08:48:24,Phishing links shared from this account
+724,USR-519,2023-11-07T05:16:15,Same device fingerprint found across multiple accounts
+725,USR-171,2024-01-24T08:47:43,Multiple help requests submitted to gain additional assistance
+726,USR-429,2025-01-16T13:43:05,Account is impersonating a verified platform user
+727,USR-384,2023-06-09T08:49:20,Account activity matches known bot behavior patterns
+728,USR-534,2025-03-12T10:29:45,Account shows signs of identity compromise
+729,USR-246,2023-05-11T07:05:28,Phishing links shared from this account
+730,USR-240,2024-11-28T23:50:04,Registration email linked to a temporary mail service
+731,USR-176,2024-11-10T14:09:33,Account shows signs of identity compromise
+732,USR-585,2023-12-11T22:10:36,Incentive or reward manipulation detected
+733,USR-553,2024-06-27T01:28:34,Multiple help requests submitted to gain additional assistance
+734,USR-313,2023-03-24T17:33:38,Unusual pattern of creating and cancelling help requests
+735,USR-358,2024-08-03T22:17:41,Profile contains unverifiable or false information
+736,USR-298,2023-05-07T18:28:16,Account is impersonating a verified platform user
+737,USR-215,2023-02-13T18:54:28,Account is impersonating a verified platform user
+738,USR-577,2023-06-03T22:05:11,Account activity matches known bot behavior patterns
+739,USR-433,2024-06-04T20:31:49,Phishing links shared from this account
+740,USR-171,2023-03-01T12:02:47,Login detected from an unrecognized device or location
+741,USR-570,2025-01-03T22:23:47,Account activity matches known bot behavior patterns
+742,USR-526,2023-08-04T14:33:59,Account activity matches known bot behavior patterns
+743,USR-341,2024-11-27T21:04:30,Same device fingerprint found across multiple accounts
+744,USR-103,2023-05-04T01:45:03,Multiple help requests submitted to gain additional assistance
+745,USR-232,2023-12-02T00:11:29,Phishing links shared from this account
+746,USR-381,2025-08-03T20:41:43,Registration email linked to a temporary mail service
+747,USR-317,2023-06-22T17:20:47,Login detected from an unrecognized device or location
+748,USR-222,2024-04-12T19:43:49,Account shows signs of identity compromise
+749,USR-125,2024-01-06T09:40:08,Unusual pattern of creating and cancelling help requests
+750,USR-428,2025-08-25T12:03:39,Incentive or reward manipulation detected
+751,USR-133,2023-06-22T05:04:54,Incentive or reward manipulation detected
+752,USR-406,2025-04-12T17:32:01,Multiple help requests submitted to gain additional assistance
+753,USR-424,2025-03-11T14:35:59,Same device fingerprint found across multiple accounts
+754,USR-224,2023-08-12T00:55:57,Login detected from an unrecognized device or location
+755,USR-320,2023-01-03T10:19:21,Same device fingerprint found across multiple accounts
+756,USR-281,2024-01-09T16:53:05,Same device fingerprint found across multiple accounts
+757,USR-314,2023-10-18T23:34:07,User attempting to move transactions outside the platform
+758,USR-443,2023-05-13T23:55:10,Registration email linked to a temporary mail service
+759,USR-600,2024-07-14T04:16:57,Account shows signs of identity compromise
+760,USR-589,2025-03-28T04:55:03,Registration email linked to a temporary mail service
+761,USR-360,2025-02-27T13:32:30,Registration email linked to a temporary mail service
+762,USR-111,2024-08-29T13:10:12,Incentive or reward manipulation detected
+763,USR-123,2025-09-14T11:31:29,Unusual pattern of creating and cancelling help requests
+764,USR-292,2024-01-30T00:46:01,Account activity matches known bot behavior patterns
+765,USR-109,2024-07-08T17:25:28,Account shows signs of identity compromise
+766,USR-277,2024-01-10T13:49:33,Account activity matches known bot behavior patterns
+767,USR-437,2025-09-02T23:07:02,Account shows signs of identity compromise
+768,USR-496,2025-06-22T22:55:41,Account activity matches known bot behavior patterns
+769,USR-488,2024-05-31T13:11:32,Phishing links shared from this account
+770,USR-123,2024-07-01T06:39:37,Registration email linked to a temporary mail service
+771,USR-274,2025-09-25T13:09:27,Phishing links shared from this account
+772,USR-526,2025-11-29T14:48:58,Incentive or reward manipulation detected
+773,USR-457,2025-01-13T08:56:06,User attempting to move transactions outside the platform
+774,USR-194,2023-07-29T11:40:07,Account shows signs of identity compromise
+775,USR-467,2024-12-11T23:31:53,Multiple help requests submitted to gain additional assistance
+776,USR-251,2023-11-10T03:51:25,Multiple help requests submitted to gain additional assistance
+777,USR-506,2023-11-06T20:46:27,Multiple help requests submitted to gain additional assistance
+778,USR-262,2024-04-26T16:28:00,Registration email linked to a temporary mail service
+779,USR-304,2025-04-23T13:39:06,Incentive or reward manipulation detected
+780,USR-230,2023-02-26T21:19:16,User attempting to move transactions outside the platform
+781,USR-198,2024-03-20T10:59:14,Account is impersonating a verified platform user
+782,USR-542,2023-03-16T06:15:48,User attempting to move transactions outside the platform
+783,USR-270,2024-02-29T10:15:12,Account shows signs of identity compromise
+784,USR-510,2024-07-25T16:44:57,Unusual pattern of creating and cancelling help requests
+785,USR-556,2024-09-13T09:53:33,Account activity matches known bot behavior patterns
+786,USR-326,2024-08-23T15:09:42,Account is impersonating a verified platform user
+787,USR-599,2023-10-18T05:03:02,Incentive or reward manipulation detected
+788,USR-455,2025-02-11T21:00:59,Account is impersonating a verified platform user
+789,USR-574,2025-03-17T16:00:25,Login detected from an unrecognized device or location
+790,USR-511,2023-05-09T07:58:48,Account activity matches known bot behavior patterns
+791,USR-318,2023-05-03T14:36:43,Unusual pattern of creating and cancelling help requests
+792,USR-409,2023-10-08T07:54:19,Registration email linked to a temporary mail service
+793,USR-251,2024-05-13T23:37:48,Account shows signs of identity compromise
+794,USR-141,2024-05-24T09:44:24,User attempting to move transactions outside the platform
+795,USR-252,2024-04-21T02:59:37,Incentive or reward manipulation detected
+796,USR-409,2024-10-23T22:45:31,Phishing links shared from this account
+797,USR-454,2024-11-20T14:06:14,Account is impersonating a verified platform user
+798,USR-329,2023-03-07T19:06:53,Account activity matches known bot behavior patterns
+799,USR-546,2024-07-01T16:21:49,Same device fingerprint found across multiple accounts
+800,USR-323,2024-03-02T12:09:56,User attempting to move transactions outside the platform
