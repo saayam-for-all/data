@@ -75,13 +75,13 @@ This keeps the code modular and reusable.
 
 # Output Files
 
-After running the generator script, CSV files will be created 
+After running the generator script, CSV files will be created in `../mock_db` directory.
 
 Generated files:
 
 ### volunteer_applications.csv
 
-Contains **100 volunteer application records**.
+Contains **2000 volunteer application records**.
 
 ### user_skills.csv
 
@@ -101,9 +101,9 @@ Open terminal in VS Code and run: python generate_mock_data.py
 
 The script will:
 
-1. Generate **100 volunteer applications**
+1. Generate **2000 volunteer applications**
 2. Assign **multiple skills per volunteer**
-3. Create matching rows in `user_skills`
+3. Create matching rows in `user_skills` (approximately 6000)
 4. Maintain table relationships
-5. Creates CSV files`
+5. Creates CSV files` in `../mock_db`
 
