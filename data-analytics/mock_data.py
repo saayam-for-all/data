@@ -28,7 +28,7 @@ request_status_df = pd.read_csv(LOOKUP_PATH + "request_status.csv")
 
 
 # Generate Users Table
-def generate_users(n=100):
+def generate_users(n=5000):
     users = []
 
     for i in range(1, n+1):
@@ -62,7 +62,7 @@ invalid = validation[validation["country_id_x"] != validation["country_id_y"]]
 print("Invalid rows:", len(invalid))
 
 # Generate Requests Table
-def generate_requests(n=100, users_df=users_df):
+def generate_requests(n=20000, users_df=users_df):
     requests = []
     for i in range(1, n+1):
         created = fake.date_time_this_year()
