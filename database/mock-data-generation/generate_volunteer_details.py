@@ -27,6 +27,7 @@ TIME_WINDOWS = [
 ]
 
 
+
 def parse_args() -> argparse.Namespace:
     """Parse CLI arguments for volunteer_details generation.
 
