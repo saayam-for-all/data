@@ -107,3 +107,77 @@ The script will:
 4. Maintain table relationships
 5. Creates CSV files`
 
+
+---
+
+# 🔹 Additional Contribution (#119): request_comments & volunteer_rating
+
+## Overview
+This module extends the mock data generation to include:
+
+- `request_comments`
+- `volunteer_rating`
+
+These tables simulate user interactions such as comments on requests and volunteer feedback ratings.
+
+---
+
+## Script: generate_request_data.py
+
+This script generates synthetic data for:
+
+### request_comments
+Fields:
+- `comment_id` (Primary Key)
+- `req_id` (Foreign Key → request)
+- `commenter_id` (Foreign Key → users)
+- `comment_desc`
+- `created_at`
+- `last_updated_at`
+- `isdeleted`
+
+---
+
+### volunteer_rating
+Fields:
+- `volunteer_rating_id` (Primary Key)
+- `user_id` (Foreign Key → users)
+- `request_id` (Foreign Key → request)
+- `rating` (Enum: 1–5)
+- `feedback`
+- `last_update_date`
+
+---
+
+## Features
+- Generates realistic text using Faker
+- Maintains referential integrity for user_id and request_id
+- Ensures logical timestamp ordering (created_at ≤ last_updated_at)
+- Supports boolean and enum fields
+- Easily scalable for large datasets
+
+---
+
+## How to Run
+
+Navigate to: database/mock-data-generation
+Run : python generate_request_data.py
+
+---
+
+## output Files:
+
+Genereated files will be in :
+database/mock_db/
+
+
+Files:
+- `request_comments.csv`
+- `volunteer_rating.csv`
+
+---
+
+## Notes
+- Currently generates 100 rows per table (as per acceptance criteria)
+- Can be scaled to 40,000+ rows by adjusting configuration
+- Data structure follows schema defined in `db_info.json`
