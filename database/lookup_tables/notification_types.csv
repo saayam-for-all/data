@@ -1,0 +1,6 @@
+"type_id","type_name","description"
+1,"ALERT","Critical alerts"
+10,"EVENT_REMINDER","Reminders for upcoming registered volunteer events"
+11,"MESSAGE_RECEIVED","Notification for a new direct message from another user"
+12,"APPLICATION_UPDATE","Updates regarding the status of a volunteer application"
+13,"MILESTONE_REACHED","Celebratory notification for reaching a volunteer hour goal"
