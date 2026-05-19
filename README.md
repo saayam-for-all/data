@@ -23,7 +23,7 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 | Sub-Team | Focus | Leads |
 |----------|-------|-------|
 | **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib Baig** · **Sana Desai** |
-| **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi Deshpande** · **Vighnesh Sridhar** |
+| **Data Analytics** | Dashboards, analytics, insights, reporting | **Sahil Mane** · **Vighnesh Sridhar** |
 | **Project Management** | Task planning, coordination, timelines | **Janhavi Chavan** · **Ruthwik Dhaipulle** |
 
 ---
