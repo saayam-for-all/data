@@ -1,143 +1,185 @@
-import os
 import json
 import psycopg2
-import pandas as pd
-from datetime import date, datetime
+import os 
 
-
-def json_serializer(obj):
-    if isinstance(obj, (datetime, date)):
-        return obj.isoformat()
-    return str(obj)
-
+REAL_TABLE_STATE ="virginia_dev_saayam_rdbms.state"
+REAL_TABLE_USERS ="virginia_dev_saayam_rdbms.users"
+REAL_TABLE_VOLUNTEER_DETAILS ="virginia_dev_saayam_rdbms.volunteer_details"
+REAL_TABLE_CITY ="virginia_dev_saayam_rdbms.city"
+REAL_TABLE_USER_SKILLS ="virginia_dev_saayam_rdbms.user_skills"
+REAL_TABLE_VOLUNTEER_LOCATIONS ="virginia_dev_saayam_rdbms.volunteer_locations"
+REAL_TABLE_USER_LOCATIONS ="virginia_dev_saayam_rdbms.user_locations"
+REAL_TABLE_COUNTRY ="virginia_dev_saayam_rdbms.country"
+REAL_TABLE_HELP_CATEGORIES = "virginia_dev_saayam_rdbms.help_categories"
 
 def lambda_handler(event, context):
-
-    DB_CONFIG = {
-        "host": os.environ["host"],
-        "port": os.environ["port"],
-        "dbname": os.environ["dbname"],
-        "user": os.environ["user"],
-        "password": os.environ["password"],
-    }
-
-    REAL_TABLE_VOLUNTEERS = "virginia_dev_saayam_rdbms.volunteers_assigned"
-    REAL_TABLE_USERS = "virginia_dev_saayam_rdbms.users"
-    REAL_TABLE_COUNTRY = "virginia_dev_saayam_rdbms.country"
-
-    # UPDATE THIS IF NEEDED
-    DATE_COLUMN = "created_date"   # or assigned_date
-
     conn = None
+    cursor = None
 
+    safe_response = {
+        "volunteer_activity_trend":{
+        "new_volunteers": [],
+        "active_volunteers": [],
+        "total_volunteers": []}
+    }
+    DB_CONFIG = {
+        "host": os.environ['host'],
+        "port": os.environ['port'],
+        "dbname": os.environ['dbname'],
+        "user": os.environ['user'],
+        "password": os.environ['password']
+    }
     try:
+        # Connects to database
         conn = psycopg2.connect(**DB_CONFIG)
         cursor = conn.cursor()
+        print ("Successfully connected to the databases")
 
-        # ---------------------------------------------------
-        # 1. Volunteer Activity Trend
-        # ---------------------------------------------------
-        def get_volunteer_trend(interval, group_by="month"):
-            query = f"""
-                SELECT volunteer_id, {DATE_COLUMN}
-                FROM {REAL_TABLE_VOLUNTEERS}
-                WHERE {DATE_COLUMN} > CURRENT_TIMESTAMP - INTERVAL %s
-                  AND {DATE_COLUMN} IS NOT NULL
-            """
-            cursor.execute(query, (interval,))
-            rows = cursor.fetchall()
+        country = event.get("country", "All Countries")
+        chart_type = event.get("chart_type", "Bar Chart")
+        skill = event.get("skill", "All Skills")
 
-            if not rows:
-                return []
-
-            df = pd.DataFrame(rows, columns=["volunteer_id", "date"])
-            df["date"] = pd.to_datetime(df["date"])
-
-            if df.empty:
-                return []
-
-            # New volunteers per period
-            if group_by == "month":
-                df_grouped = (
-                    df.groupby(df["date"].dt.to_period("M"))
-                    .agg({"volunteer_id": "nunique"})
-                    .reset_index()
-                )
-                df_grouped["Date"] = df_grouped["date"].apply(
-                    lambda x: x.to_timestamp().isoformat()
-                )
-
-            else:
-                df_grouped = (
-                    df.groupby(df["date"].dt.date)
-                    .agg({"volunteer_id": "nunique"})
-                    .reset_index()
-                )
-                df_grouped["Date"] = df_grouped["date"].apply(
-                    lambda x: pd.Timestamp(x).isoformat()
-                )
-
-            df_grouped.rename(columns={"volunteer_id": "New"}, inplace=True)
-
-            # Total volunteers (cumulative)
-            df_grouped["Total"] = df_grouped["New"].cumsum()
-
-            # Active volunteers (approx: same as new here — can improve later)
-            df_grouped["Active"] = df_grouped["New"]
-
-            return df_grouped[["Date", "New", "Active", "Total"]].to_dict("records")
-
-        # ---------------------------------------------------
-        # 2. Volunteers by Location
-        # ---------------------------------------------------
-        def get_volunteers_by_country():
-            query = f"""
-                SELECT DISTINCT v.volunteer_id, c.country_name
-                FROM {REAL_TABLE_VOLUNTEERS} v
-                INNER JOIN {REAL_TABLE_USERS} u
-                    ON v.volunteer_id = u.user_id
-                INNER JOIN {REAL_TABLE_COUNTRY} c
-                    ON u.country_id = c.country_id
-                WHERE c.country_name IS NOT NULL
-            """
-            cursor.execute(query)
-            rows = cursor.fetchall()
-
-            if not rows:
-                return []
-
-            df = pd.DataFrame(rows, columns=["volunteer_id", "country"])
-            df_grouped = df.groupby("country").size().reset_index(name="Count")
-
-            return df_grouped.to_dict("records")
-
-        # ---------------------------------------------------
-        # Response
-        # ---------------------------------------------------
-        response_body = {
-            "volunteer_activity_trend": get_volunteer_trend("1 year", "month"),
-            "volunteers_by_location": get_volunteers_by_country(),
-
-            # Optional KPIs (static for now — can improve later)
-            "kpis": {
-                "churn_rate": "~5-8%",
-                "inactive_volunteers": 50,
-                "retention_rate": "~90%"
-            }
+        response_data = {
+             "volunteer_activity_trend": get_volunteer_activity_trend(cursor),
+             "volunteers_by_location": get_volunteers_by_location(cursor, 
+            country, 
+            chart_type, 
+            skill)
         }
 
         return {
             "statusCode": 200,
-            "body": json.dumps(response_body, default=json_serializer)
+            "body": json.dumps(response_data)
         }
-
     except Exception as e:
-        print(f"Volunteer analytics failed: {str(e)}")
+        # Catches an error if connection fails
+        print("ERROR:", str(e))
         return {
-            "statusCode": 500,
-            "body": json.dumps({"error": "Volunteer analytics failed"})
+            'statusCode': 500,
+            'body': json.dumps(safe_response)
         }
-
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             conn.close()
+        print("Database connection closed")
+
+   
+
+
+def get_volunteer_activity_trend(cursor):
+    try: 
+        query1 = f"""SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        COUNT(DISTINCT u.user_id) AS count 
+        FROM {REAL_TABLE_USERS} u 
+        JOIN {REAL_TABLE_VOLUNTEER_DETAILS} vd ON u.user_id = vd.user_id 
+        WHERE vd.created_at IS NOT NULL 
+        GROUP BY 1 
+        ORDER BY 1 ASC"""
+        cursor.execute(query1)
+
+    
+        new_volunteers = cursor.fetchall()
+        new_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in new_volunteers]
+
+        query2 = f""" 
+        SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        COUNT(DISTINCT u.user_id) AS count FROM {REAL_TABLE_USERS} u 
+        JOIN {REAL_TABLE_VOLUNTEER_DETAILS} vd ON u.user_id = vd.user_id
+        WHERE vd.created_at IS NOT NULL
+        AND u.user_status_id = 1 
+        GROUP BY 1
+        ORDER BY 1 ASC
+        """
+        cursor.execute(query2)
+        active_volunteers = cursor.fetchall()
+        active_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in active_volunteers]
+
+        query3 = f"""
+        SELECT month, SUM(count) OVER (ORDER BY month) AS count
+        FROM ( SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        COUNT(DISTINCT u.user_id) AS count
+        FROM {REAL_TABLE_USERS} u
+        JOIN {REAL_TABLE_VOLUNTEER_DETAILS} vd
+        ON u.user_id = vd.user_id
+        WHERE vd.created_at IS NOT NULL
+        GROUP BY 1 ) sub
+        ORDER BY month ASC;
+        """
+        
+        cursor.execute(query3)
+        total_volunteers = cursor.fetchall()
+        total_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in total_volunteers]
+        return {
+            "new_volunteers": new_volunteers_final,
+            "active_volunteers": active_volunteers_final,
+            "total_volunteers": total_volunteers_final
+}
+
+    except Exception as e:
+        print("Error in get_volunteer_activity_trend:", str(e))
+        return {
+            "new_volunteers": [],
+            "active_volunteers": [],
+            "total_volunteers": []
+        }
+
+def get_volunteers_by_location(cursor, country='All Countries', chart_type="Bar Chart",skill="All Skills"):
+    try: 
+        query= f"""SELECT
+                COALESCE(c.country_name, 'Unknown') AS country,
+                COUNT(DISTINCT u.user_id) AS count
+            FROM {REAL_TABLE_USERS} u
+            JOIN {REAL_TABLE_VOLUNTEER_DETAILS} vd
+                ON u.user_id = vd.user_id
+            LEFT JOIN {REAL_TABLE_COUNTRY} c
+                ON u.country_id = c.country_id
+            LEFT JOIN {REAL_TABLE_STATE} s 
+            ON u.state_id = s.state_id
+            WHERE 1=1
+            """
+        
+        params = []
+
+        
+        if country != "All Countries":
+            query += " AND c.country_name = %s"
+            params.append(country)
+
+        if skill != 'All Skills':
+            query += f""" 
+            AND EXISTS (SELECT 1 
+            FROM {REAL_TABLE_USER_SKILLS} us JOIN
+            {REAL_TABLE_HELP_CATEGORIES} h ON 
+            us.cat_id = h.cat_id 
+            WHERE us.user_id = u.user_id 
+            AND h.cat_name = %s)""" 
+            params.append(skill)
+        
+        query += """
+            GROUP BY COALESCE(c.country_name, 'Unknown')
+            ORDER BY count DESC;
+        """
+
+
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+
+        return [
+            {"country": row[0], "count": int(row[1])}
+            for row in rows
+        ]
+
+    except Exception as e:
+        print("Error in get_volunteers_by_location:", str(e))
+        return []
+
+    
+if __name__ == "__main__":
+    test_event = {"skill":"COOKING_HELP"}
+    print(lambda_handler(test_event, None))
+    
+
+
+  
