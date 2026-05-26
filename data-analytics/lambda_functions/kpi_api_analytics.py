@@ -18,6 +18,19 @@ def lambda_handler(event, context):
     conn = None
     cursor = None
 
+    # Safe default response returned on any unrecoverable error
+    safe_response = {
+        "request_status_distribution": [],
+        "total_requests": 0,
+        "average_resolution_time_by_category": [],
+        "sla": {
+            "target_days": SLA_TARGET_DAYS,
+            "target_hours": SLA_TARGET_HOURS,
+            "warning_days": SLA_WARNING_DAYS,
+            "warning_hours": SLA_WARNING_HOURS
+        }
+    }
+
     DB_CONFIG = {
         "host": os.environ['host'],
         "port": os.environ['port'],
@@ -55,7 +68,7 @@ def lambda_handler(event, context):
         print("ERROR:", str(e))
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": "Could not connect to database"})
+            "body": json.dumps(safe_response)
         }
 
     finally:
