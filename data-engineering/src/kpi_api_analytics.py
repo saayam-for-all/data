@@ -1,7 +1,10 @@
 import json
-import os
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from aws_lambda_powertools.utilities import parameters
+
+SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
 
 SLA = {
@@ -12,12 +15,13 @@ SLA = {
 }
 
 
-DEFAULT_RESPONSE = {
-    "request_status_distribution": [],
-    "total_requests": 0,
-    "average_resolution_time_by_category": [],
-    "sla": SLA
-}
+def get_default_response():
+    return {
+        "request_status_distribution": [],
+        "total_requests": 0,
+        "average_resolution_time_by_category": [],
+        "sla": SLA
+    }
 
 
 def build_response(status_code, body):
@@ -32,22 +36,30 @@ def build_response(status_code, body):
 
 
 def get_db_connection():
+    creds = json.loads(parameters.get_parameter(
+        "/dev/saayam/db/Virginia/Analytics/user",
+        decrypt=True,
+        max_age=3600
+    ))
+
+    db_name = creds["DATABASE NAME"]
+
     return psycopg2.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        database=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        port=os.getenv("DB_PORT", "5432")
+        host=creds["HOST"],
+        database=db_name,
+        user=creds["USERNAME"],
+        password=creds["PASSWORD"],
+        port=creds["PORT"],
+        sslmode="require"
     )
 
-
 def fetch_request_status_distribution(cursor):
-    query = """
+    query = f"""
         SELECT
             rs.req_status AS status,
             COUNT(r.req_id) AS count
-        FROM request r
-        JOIN request_status rs
+        FROM {SCHEMA_NAME}.request r
+        JOIN {SCHEMA_NAME}.request_status rs
             ON r.req_status_id = rs.req_status_id
         GROUP BY rs.req_status
         ORDER BY rs.req_status;
@@ -66,9 +78,9 @@ def fetch_request_status_distribution(cursor):
 
 
 def fetch_total_requests(cursor):
-    query = """
+    query = f"""
         SELECT COUNT(req_id) AS total_requests
-        FROM request;
+        FROM {SCHEMA_NAME}.request;
     """
 
     cursor.execute(query)
@@ -78,7 +90,7 @@ def fetch_total_requests(cursor):
 
 
 def fetch_average_resolution_time_by_category(cursor):
-    query = """
+    query = f"""
         SELECT
             hc.cat_name AS category,
             ROUND(
@@ -87,12 +99,15 @@ def fetch_average_resolution_time_by_category(cursor):
                 )::numeric,
                 2
             ) AS avg_hours
-        FROM request r
-        JOIN help_category hc
+        FROM {SCHEMA_NAME}.request r
+        JOIN {SCHEMA_NAME}.help_categories hc
             ON r.req_cat_id = hc.cat_id
+        JOIN {SCHEMA_NAME}.request_status rs
+            ON r.req_status_id = rs.req_status_id
         WHERE r.submission_date IS NOT NULL
           AND r.serviced_date IS NOT NULL
           AND r.serviced_date >= r.submission_date
+          AND UPPER(rs.req_status) IN ('COMPLETED', 'RESOLVED')
         GROUP BY hc.cat_name
         ORDER BY avg_hours DESC;
     """
@@ -108,22 +123,11 @@ def fetch_average_resolution_time_by_category(cursor):
         for row in rows
     ]
 
-    cursor.execute(query)
-    rows = cursor.fetchall()
-
-    return [
-        {
-            "category": str(row["category"]),
-            "avg_hours": float(row["avg_hours"]) if row["avg_hours"] is not None else 0
-        }
-        for row in rows
-    ]
-
 
 def lambda_handler(event, context):
     conn = None
     cursor = None
-    response_body = DEFAULT_RESPONSE.copy()
+    response_body = get_default_response()
 
     try:
         conn = get_db_connection()
