@@ -1,8 +1,8 @@
 import json
-import os
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
+from aws_lambda_powertools.utilities import parameters
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
@@ -36,14 +36,22 @@ def build_response(status_code, body):
 
 
 def get_db_connection():
-    return psycopg2.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        database=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        port=os.getenv("DB_PORT", "5432")
-    )
+    creds = json.loads(parameters.get_parameter(
+        "/dev/saayam/db/Virginia/Analytics/user",
+        decrypt=True,
+        max_age=3600
+    ))
 
+    db_name = creds["DATABASE NAME"]
+
+    return psycopg2.connect(
+        host=creds["HOST"],
+        database=db_name,
+        user=creds["USERNAME"],
+        password=creds["PASSWORD"],
+        port=creds["PORT"],
+        sslmode="require"
+    )
 
 def fetch_request_status_distribution(cursor):
     query = f"""
