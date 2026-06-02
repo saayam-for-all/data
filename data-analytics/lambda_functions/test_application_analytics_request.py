@@ -6,16 +6,21 @@ Run with:
     python test_local.py
 """
 
+import sys
 import json
-import os
 import unittest
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 
-# Dummy env vars so os.environ["host"] etc. don't crash during tests
-MOCK_ENV = {
+# boto3 is provided by the AWS Lambda runtime, not bundled. Stub it so the
+# module imports locally even when boto3 isn't installed. get_db_config is
+# mocked in every test, so the real client is never exercised.
+sys.modules.setdefault("boto3", MagicMock())
+
+# Dummy DB config returned in place of the Parameter Store lookup during tests
+MOCK_CONFIG = {
     "host": "localhost",
-    "port": "5432",
+    "port": 5432,
     "dbname": "testdb",
     "user": "testuser",
     "password": "testpass",
@@ -69,7 +74,7 @@ def make_mock_conn(cursor):
 
 # ── test cases ─────────────────────────────────────────────────────────────
 
-@patch.dict(os.environ, MOCK_ENV)
+@patch("application_analytics_request.get_db_config", lambda db: MOCK_CONFIG)
 class TestAllKeysPresent(unittest.TestCase):
     """All 5 required keys must always be in the response body."""
 
@@ -88,7 +93,7 @@ class TestAllKeysPresent(unittest.TestCase):
         result = lambda_handler({}, None)
 
         self.assertEqual(result["statusCode"], 200)
-        body = json.loads(result["body"])
+        body = result["body"]
         for key in REQUIRED_KEYS:
             self.assertIn(key, body, f"Missing key: {key}")
 
@@ -101,12 +106,12 @@ class TestAllKeysPresent(unittest.TestCase):
         result = lambda_handler({}, None)
 
         self.assertEqual(result["statusCode"], 200)
-        body = json.loads(result["body"])
+        body = result["body"]
         for key in REQUIRED_KEYS:
             self.assertIn(key, body, f"Missing key on empty DB: {key}")
 
 
-@patch.dict(os.environ, MOCK_ENV)
+@patch("application_analytics_request.get_db_config", lambda db: MOCK_CONFIG)
 class TestEachKeyReturnsList(unittest.TestCase):
     """Every key must return a list (either populated or [])."""
 
@@ -122,7 +127,7 @@ class TestEachKeyReturnsList(unittest.TestCase):
         mock_connect.return_value = make_mock_conn(cursor)
 
         from application_analytics_request import lambda_handler
-        body = json.loads(lambda_handler({}, None)["body"])
+        body = lambda_handler({}, None)["body"]
         for key in REQUIRED_KEYS:
             self.assertIsInstance(body[key], list, f"{key} is not a list")
 
@@ -132,12 +137,12 @@ class TestEachKeyReturnsList(unittest.TestCase):
         mock_connect.return_value = make_mock_conn(cursor)
 
         from application_analytics_request import lambda_handler
-        body = json.loads(lambda_handler({}, None)["body"])
+        body = lambda_handler({}, None)["body"]
         for key in REQUIRED_KEYS:
             self.assertEqual(body[key], [], f"{key} should be [] on empty DB")
 
 
-@patch.dict(os.environ, MOCK_ENV)
+@patch("application_analytics_request.get_db_config", lambda db: MOCK_CONFIG)
 class TestNoCrashOnEmptyDB(unittest.TestCase):
     """Lambda must not raise — returns 200 with empty lists on empty DB."""
 
@@ -164,12 +169,12 @@ class TestNoCrashOnEmptyDB(unittest.TestCase):
         from application_analytics_request import lambda_handler
         result = lambda_handler({}, None)
         self.assertEqual(result["statusCode"], 200)
-        body = json.loads(result["body"])
+        body = result["body"]
         for key in REQUIRED_KEYS:
             self.assertEqual(body[key], [])
 
 
-@patch.dict(os.environ, MOCK_ENV)
+@patch("application_analytics_request.get_db_config", lambda db: MOCK_CONFIG)
 class TestFilters(unittest.TestCase):
     """Filters passed via event should not crash and return valid structure."""
 
@@ -187,7 +192,7 @@ class TestFilters(unittest.TestCase):
         from application_analytics_request import lambda_handler
         result = lambda_handler({"filter_category": "Education"}, None)
         self.assertEqual(result["statusCode"], 200)
-        body = json.loads(result["body"])
+        body = result["body"]
         self.assertIsInstance(body["requests_by_category_region"], list)
 
     @patch("psycopg2.connect")
@@ -204,7 +209,7 @@ class TestFilters(unittest.TestCase):
         from application_analytics_request import lambda_handler
         result = lambda_handler({"filter_country": "India"}, None)
         self.assertEqual(result["statusCode"], 200)
-        body = json.loads(result["body"])
+        body = result["body"]
         self.assertIsInstance(body["requests_by_category_region"], list)
 
     @patch("psycopg2.connect")
@@ -223,7 +228,7 @@ class TestFilters(unittest.TestCase):
         self.assertEqual(result["statusCode"], 200)
 
 
-@patch.dict(os.environ, MOCK_ENV)
+@patch("application_analytics_request.get_db_config", lambda db: MOCK_CONFIG)
 class TestDBConnectionFailure(unittest.TestCase):
     """If DB connection fails, return 500 with error message — no crash."""
 
@@ -232,7 +237,7 @@ class TestDBConnectionFailure(unittest.TestCase):
         from application_analytics_request import lambda_handler
         result = lambda_handler({}, None)
         self.assertEqual(result["statusCode"], 500)
-        body = json.loads(result["body"])
+        body = result["body"]
         self.assertIn("error", body)
 
     @patch("psycopg2.connect", side_effect=Exception("could not connect"))
@@ -244,7 +249,7 @@ class TestDBConnectionFailure(unittest.TestCase):
             self.fail(f"lambda_handler crashed on DB failure: {e}")
 
 
-@patch.dict(os.environ, MOCK_ENV)
+@patch("application_analytics_request.get_db_config", lambda db: MOCK_CONFIG)
 class TestConnectionCloses(unittest.TestCase):
     """Cursor and connection must be closed in the finally block."""
 

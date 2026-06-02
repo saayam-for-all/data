@@ -1,8 +1,16 @@
-import os
 import json
+import boto3
 import psycopg2
 import pandas as pd
 from datetime import date, datetime
+
+
+# CORS headers — required for the response to be consumed by the webapp.
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+}
 
 
 def json_serializer(obj):
@@ -12,15 +20,43 @@ def json_serializer(obj):
     return str(obj)
 
 
+def get_db_config(db):
+    """Fetch DB credentials from AWS Systems Manager Parameter Store.
+
+    Uses the same shared parameter as the other analytics Lambdas so the
+    credential format/naming stays consistent across the team.
+    """
+    ssm = boto3.client("ssm", region_name="us-east-1")
+
+    if db == "Virginia":
+        response = ssm.get_parameter(
+            Name="/dev/saayam/db/Virginia/Analytics/user",
+            WithDecryption=True,
+        )
+    else:
+        return None
+
+    config = response["Parameter"]["Value"]
+    config_list = [line.strip() for line in config.splitlines()]
+
+    host = config_list[1].split()[1][1:-2]
+    port = int(config_list[5].split()[1][:-1])
+    dbname = config_list[4].split()[2][1:-2]
+    user = config_list[2].split()[1][1:-2]
+    password = config_list[3].split()[1][1:-2]
+
+    return {
+        "host": host,
+        "port": port,
+        "dbname": dbname,
+        "user": user,
+        "password": password,
+    }
+
+
 def lambda_handler(event, context):
 
-    DB_CONFIG = {
-        "host": os.environ["host"],
-        "port": os.environ["port"],
-        "dbname": os.environ["dbname"],
-        "user": os.environ["user"],
-        "password": os.environ["password"],
-    }
+    DB_CONFIG = get_db_config("Virginia")
 
     SCHEMA = "virginia_dev_saayam_rdbms"
     TABLE_REQUEST = f"{SCHEMA}.request"
@@ -86,12 +122,12 @@ def lambda_handler(event, context):
             """Return request counts grouped by category and country, with optional filters."""
             try:
                 query = f"""
-                    SELECT cat.cat_name, c.country_name, COUNT(*) AS count
+                    SELECT cat.cat_name, c.country_code, COUNT(*) AS count
                     FROM {TABLE_REQUEST} r
                     INNER JOIN {TABLE_USERS} u ON r.req_user_id = u.user_id
                     INNER JOIN {TABLE_COUNTRY} c ON u.country_id = c.country_id
                     INNER JOIN {TABLE_CATEGORY} cat ON r.req_cat_id = cat.cat_id
-                    WHERE c.country_name IS NOT NULL
+                    WHERE c.country_code IS NOT NULL
                       AND cat.cat_name IS NOT NULL
                 """
                 params = []
@@ -99,15 +135,15 @@ def lambda_handler(event, context):
                     query += " AND cat.cat_name = %s"
                     params.append(filter_category)
                 if filter_country:
-                    query += " AND c.country_name = %s"
+                    query += " AND UPPER(c.country_code) = %s"
                     params.append(filter_country)
 
-                query += " GROUP BY cat.cat_name, c.country_name"
+                query += " GROUP BY cat.cat_name, c.country_code"
 
                 if sort_by == "category":
                     query += " ORDER BY cat.cat_name"
                 elif sort_by == "country":
-                    query += " ORDER BY c.country_name"
+                    query += " ORDER BY c.country_code"
                 else:
                     query += " ORDER BY count DESC"
 
@@ -131,12 +167,12 @@ def lambda_handler(event, context):
             """Return top 5 countries ranked by total request count."""
             try:
                 query = f"""
-                    SELECT c.country_name, COUNT(*) AS count
+                    SELECT c.country_code, COUNT(*) AS count
                     FROM {TABLE_REQUEST} r
                     INNER JOIN {TABLE_USERS} u ON r.req_user_id = u.user_id
                     INNER JOIN {TABLE_COUNTRY} c ON u.country_id = c.country_id
-                    WHERE c.country_name IS NOT NULL
-                    GROUP BY c.country_name
+                    WHERE c.country_code IS NOT NULL
+                    GROUP BY c.country_code
                     ORDER BY count DESC
                     LIMIT 5
                 """
@@ -156,8 +192,8 @@ def lambda_handler(event, context):
         # -------------------------------------------------------
         # Parse optional filters from event
         # -------------------------------------------------------
-        filter_category = event.get("filter_category") if event else None
-        filter_country = event.get("filter_country") if event else None
+        filter_category = event.get("category") if event else None
+        filter_country = event.get("country") if event else None
         sort_by = event.get("sort_by", "count") if event else "count"
 
         response_body = {
@@ -172,6 +208,7 @@ def lambda_handler(event, context):
 
         return {
             "statusCode": 200,
+            "headers": CORS_HEADERS,
             "body": json.dumps(response_body, default=json_serializer),
         }
 
@@ -179,6 +216,7 @@ def lambda_handler(event, context):
         print(f"Application analytics failed: {str(e)}")
         return {
             "statusCode": 500,
+            "headers": CORS_HEADERS,
             "body": json.dumps({"error": "Failed to connect to database"}),
         }
 
