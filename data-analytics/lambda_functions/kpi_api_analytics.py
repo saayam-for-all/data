@@ -146,3 +146,6 @@ def get_average_resolution_time_by_category(cursor):
     except Exception as e:
         print("Error in get_average_resolution_time_by_category:", str(e))
         return []
+    
+if __name__ == "__main__":
+    print(lambda_handler({}, None))
