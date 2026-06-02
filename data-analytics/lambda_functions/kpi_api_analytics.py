@@ -31,15 +31,15 @@ def lambda_handler(event, context):
         }
     }
 
-    DB_CONFIG = {
-        "host": os.environ['host'],
-        "port": os.environ['port'],
-        "dbname": os.environ['dbname'],
-        "user": os.environ['user'],
-        "password": os.environ['password']
-    }
-
     try:
+        DB_CONFIG = {
+            "host": os.environ['host'],
+            "port": os.environ['port'],
+            "dbname": os.environ['dbname'],
+            "user": os.environ['user'],
+            "password": os.environ['password']
+        }
+
         conn = psycopg2.connect(**DB_CONFIG)
         cursor = conn.cursor()
         print("Successfully connected to the database")
@@ -146,6 +146,7 @@ def get_average_resolution_time_by_category(cursor):
     except Exception as e:
         print("Error in get_average_resolution_time_by_category:", str(e))
         return []
-    
+
+
 if __name__ == "__main__":
     print(lambda_handler({}, None))
