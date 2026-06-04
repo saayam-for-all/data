@@ -37,11 +37,12 @@ REQUIRED_KEYS = {
     "requests_by_category_region",
 }
 
+# SQL now does the GROUP BY DATE_TRUNC + COUNT itself, so rows come back
+# as (truncated_date, count) tuples rather than raw submission_date values.
 SAMPLE_DATES = [
-    (datetime(2026, 4, 1),),
-    (datetime(2026, 4, 5),),
-    (datetime(2026, 4, 5),),
-    (datetime(2026, 3, 10),),
+    (datetime(2026, 3, 10), 1),
+    (datetime(2026, 4, 1), 1),
+    (datetime(2026, 4, 5), 2),
 ]
 
 SAMPLE_CATEGORY_REGION = [
@@ -127,7 +128,7 @@ class TestEachKeyReturnsList(unittest.TestCase):
         mock_connect.return_value = make_mock_conn(cursor)
 
         from application_analytics_request import lambda_handler
-        body = lambda_handler({}, None)["body"]
+        body = json.loads(lambda_handler({}, None)["body"])
         for key in REQUIRED_KEYS:
             self.assertIsInstance(body[key], list, f"{key} is not a list")
 
@@ -137,7 +138,7 @@ class TestEachKeyReturnsList(unittest.TestCase):
         mock_connect.return_value = make_mock_conn(cursor)
 
         from application_analytics_request import lambda_handler
-        body = lambda_handler({}, None)["body"]
+        body = json.loads(lambda_handler({}, None)["body"])
         for key in REQUIRED_KEYS:
             self.assertEqual(body[key], [], f"{key} should be [] on empty DB")
 
@@ -169,7 +170,7 @@ class TestNoCrashOnEmptyDB(unittest.TestCase):
         from application_analytics_request import lambda_handler
         result = lambda_handler({}, None)
         self.assertEqual(result["statusCode"], 200)
-        body = result["body"]
+        body = json.loads(result["body"])
         for key in REQUIRED_KEYS:
             self.assertEqual(body[key], [])
 
@@ -190,9 +191,9 @@ class TestFilters(unittest.TestCase):
         mock_connect.return_value = make_mock_conn(cursor)
 
         from application_analytics_request import lambda_handler
-        result = lambda_handler({"filter_category": "Education"}, None)
+        result = lambda_handler({"category": "Education"}, None)
         self.assertEqual(result["statusCode"], 200)
-        body = result["body"]
+        body = json.loads(result["body"])
         self.assertIsInstance(body["requests_by_category_region"], list)
 
     @patch("psycopg2.connect")
@@ -207,9 +208,9 @@ class TestFilters(unittest.TestCase):
         mock_connect.return_value = make_mock_conn(cursor)
 
         from application_analytics_request import lambda_handler
-        result = lambda_handler({"filter_country": "India"}, None)
+        result = lambda_handler({"country": "INDIA"}, None)
         self.assertEqual(result["statusCode"], 200)
-        body = result["body"]
+        body = json.loads(result["body"])
         self.assertIsInstance(body["requests_by_category_region"], list)
 
     @patch("psycopg2.connect")

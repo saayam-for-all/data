@@ -1,7 +1,6 @@
 import json
 import boto3
 import psycopg2
-import pandas as pd
 from datetime import date, datetime
 
 
@@ -75,15 +74,23 @@ def lambda_handler(event, context):
         # 1. Request Volume Trend
         # -------------------------------------------------------
         def get_request_volume_trend(interval, group_by="day"):
-            """Return request counts grouped by day or month over a given interval."""
+            """Return request counts grouped by day or month over a given interval.
+
+            Aggregation is done in SQL via DATE_TRUNC() + COUNT(*) so no
+            data is pulled into Python for grouping.
+            """
             try:
+                trunc_unit = "month" if group_by == "month" else "day"
                 query = f"""
-                    SELECT submission_date
+                    SELECT DATE_TRUNC(%s, submission_date) AS date,
+                           COUNT(*) AS count
                     FROM {TABLE_REQUEST}
                     WHERE submission_date > CURRENT_TIMESTAMP - INTERVAL %s
                       AND submission_date IS NOT NULL
+                    GROUP BY DATE_TRUNC(%s, submission_date)
+                    ORDER BY date
                 """
-                cursor.execute(query, (interval,))
+                cursor.execute(query, (trunc_unit, interval, trunc_unit))
                 rows = cursor.fetchall()
             except Exception:
                 return []
@@ -91,29 +98,10 @@ def lambda_handler(event, context):
             if not rows:
                 return []
 
-            df = pd.DataFrame(rows, columns=["submission_date"])
-            df["submission_date"] = pd.to_datetime(df["submission_date"])
-
-            if group_by == "month":
-                df_grouped = (
-                    df.groupby(df["submission_date"].dt.to_period("M"))
-                    .size()
-                    .reset_index(name="count")
-                )
-                df_grouped["date"] = df_grouped["submission_date"].apply(
-                    lambda x: x.to_timestamp().isoformat()
-                )
-            else:
-                df_grouped = (
-                    df.groupby(df["submission_date"].dt.date)
-                    .size()
-                    .reset_index(name="count")
-                )
-                df_grouped["date"] = df_grouped["submission_date"].apply(
-                    lambda x: pd.Timestamp(x).isoformat()
-                )
-
-            return df_grouped[["date", "count"]].to_dict("records")
+            return [
+                {"date": row[0].isoformat(), "count": row[1]}
+                for row in rows
+            ]
 
         # -------------------------------------------------------
         # 2. Requests by Category and Region
