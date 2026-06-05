@@ -23,8 +23,11 @@
 
 | Issue | Title | Assigned To | Status | Notes |
 |-------|-------|-------------|--------|-------|
-| [#103](https://github.com/saayam-for-all/data/issues/103) | Daily Metrics Aggregation Lambda | Arjun2110exe, Keerthana19-p, Nitish0615, gauri-d, sanobarasna | 🔄 Open |  |
-| [#104](https://github.com/saayam-for-all/data/issues/104) | Homepage Metrics Display from S3 (Web App Team)| Neharik335, PallaviP31, Srilaxmi1616, Ujwalap910 | 🔄 Open |  |
+| [#138](https://github.com/saayam-for-all/data/issues/138) | Implement real API for beneficiary_trend_analysis.py - Complete,test & deploy | |🔄 Open |  |
+| [#146](https://github.com/saayam-for-all/data/issues/146) | Implement real API for application_analytics_request.py - Complete,test & deploy| | 🔄 Open |  |
+| [#151](https://github.com/saayam-for-all/data/issues/151) | Implement real API for volunteer_application_analytics.py - Complete,test & deploy| | 🔄 Open |  |
+| [#160](https://github.com/saayam-for-all/data/issues/160) | Implement real API for KPI_API_analytics.py - Complete,test & deploy| | 🔄 Open |  |
+| [#175](https://github.com/saayam-for-all/data/issues/175) | Design Doc: Periodic Archival of requests Table to S3 | | 🔄 Open |  |
 | [#114](https://github.com/saayam-for-all/data/issues/114) | Generate Synthetic CSV Data for "users" and "request" tables from Database Schema| AnushaDusakanti15, Sravy-Kolli, VeeraVSDeekshith, navyasri0820 | 🔄 Open |  |
 | [#117](https://github.com/saayam-for-all/data/issues/117) | Generate Synthetic CSV Data for "volunteers_assigned"and "volunteer_details" tables from Database Schema| jeevanbanoth, priyankarao89, trikotrsh, vamisaigarapati | 🔄 Open |  |
 | [#118](https://github.com/saayam-for-all/data/issues/118) | Generate Synthetic CSV Data for "volunteer_applications" and "user_skills" tables from Database Schema| emmax07, harshinianubrolu-12, sagarikapatha, shendu-95 | 🔄 Open |  |
@@ -43,6 +46,8 @@
 | Issue | Title | Completed | Notes |
 |-------|-------|-----------|-------|
 | [#98](https://github.com/saayam-for-all/data/issues/98) | Aggregate Organization Listings from Multiple Sources | Feb 2026 | Lambda deployed. See [KNOWLEDGE_TRANSFER.md](KNOWLEDGE_TRANSFER.md) for specs. |
+| [#103](https://github.com/saayam-for-all/data/issues/103) | Daily Metrics Aggregation Lambda | April 2026 | 
+| [#104](https://github.com/saayam-for-all/data/issues/104) | Homepage Metrics Display from S3 (Web App Team) | April 2026 | 
 | [#57](https://github.com/saayam-for-all/data/issues/57) | ETL Architecture Design | 2025 | Informed current pipeline. |
 | [#56](https://github.com/saayam-for-all/data/issues/56) | Aurora Schema for Nonprofits | 2025 | Schema defined. |
 | [#55](https://github.com/saayam-for-all/data/issues/55) | AWS Architecture Document | 2025 | Informed current pipeline. |
