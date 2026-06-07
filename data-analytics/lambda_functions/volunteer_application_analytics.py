@@ -23,6 +23,25 @@ REAL_TABLE_USER_LOCATIONS_IRELAND ="ireland_dev_saayam_rdbms.user_locations"
 REAL_TABLE_COUNTRY_IRELAND ="ireland_dev_saayam_rdbms.country"
 REAL_TABLE_HELP_CATEGORIES_IRELAND = "ireland_dev_saayam_rdbms.help_categories"
 
+def parse_event_body(event):
+    if not event:
+        return {}
+
+    body = event.get("body")
+
+    if body is None : 
+        return event
+    
+    if isinstance(body,str):
+        try:
+            return json.loads(body)
+        except json.JSONDecodeError:
+            return {}
+    if isinstance(body,dict):
+        return body
+
+    return {}
+
 def lambda_handler(event, context):
     conn_V = None
     cursor_V = None
@@ -48,9 +67,10 @@ def lambda_handler(event, context):
         cursor_I = conn_I.cursor()
         print ("Ireland database connected succcessfully.")
 
-        country = event.get("country", "All Countries")
-        chart_type = event.get("chart_type", "Bar Chart")
-        skill = event.get("skill", "All Skills")
+        request_body = parse_event_body(event)
+        country = request_body.get("country", "All Countries")
+        chart_type = request_body.get("chart_type", "Bar Chart")
+        skill = request_body.get("skill", "All Skills")
      
         volunteer_activity_trend_virginia = get_volunteer_activity_trend(cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA)
         volunteers_by_location_virginia =  get_volunteers_by_location(cursor_V,REAL_TABLE_USERS_VIRGINIA,REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,REAL_TABLE_COUNTRY_VIRGINIA,REAL_TABLE_USER_SKILL_VIRGINIA,REAL_TABLE_HELP_CATEGORIES_VIRGINIA,country,chart_type,skill)
@@ -198,7 +218,7 @@ def merge_volunteer_by_location(list1, list2):
 def get_volunteers_by_location( cursor, users, volunteer_details, country_table, user_skills,help_categories,country='All Countries',chart_type="Bar Chart",skill="All Skills"):
     try: 
         query= f"""SELECT
-                COALESCE(c.country_name, 'Unknown') AS country,
+                COALESCE(c.country_code, 'Unknown') AS country,
                 COUNT(DISTINCT u.user_id) AS count
             FROM {users} u
             JOIN {volunteer_details} vd
@@ -212,7 +232,7 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
 
         
         if country != "All Countries":
-            query += " AND c.country_name = %s"
+            query += " AND UPPER(c.country_code) = %s"
             params.append(country)
 
         if skill != 'All Skills':
@@ -226,7 +246,7 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
             params.append(skill)
         
         query += """
-            GROUP BY COALESCE(c.country_name, 'Unknown')
+            GROUP BY COALESCE(c.country_code, 'Unknown')
             ORDER BY count DESC;
         """
 
