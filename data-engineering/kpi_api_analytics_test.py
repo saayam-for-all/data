@@ -4,8 +4,6 @@ import pandas as pd
 import os
 
 
-# LOAD CSV FILES
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 REQUEST_CSV = os.path.join(
@@ -68,7 +66,7 @@ def get_request_status_distribution(request_df, status_df):
         if request_df.empty or status_df.empty:
             return [], 0
 
-        # Merge request table with status lookup table
+        # Merging request table with status lookup table
         merged_df = request_df.merge(
             status_df,
             on="req_status_id",
@@ -113,13 +111,11 @@ def get_average_resolution_time_by_category(request_df, category_df):
         df["submission_date"] = pd.to_datetime(df["submission_date"], errors="coerce")
         df["serviced_date"] = pd.to_datetime(df["serviced_date"], errors="coerce")
 
-        # keep only valid rows
         df = df.dropna(subset=["submission_date", "serviced_date"])
 
         if df.empty:
             return []
 
-        # absolute difference (data is inconsistent)
         df["resolution_hours"] = (
             (df["serviced_date"] - df["submission_date"]).dt.total_seconds().abs() / 3600
         )
