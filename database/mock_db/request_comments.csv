@@ -1,0 +1,101 @@
+comment_id,req_id,commenter_id,comment_desc,created_at,last_updated_at,isdeleted
+1,REQ1017,U195,Updating status: we are currently working on this request.,2026-01-06 10:01,2026-01-06 10:01,FALSE
+2,REQ1011,U128,This request has been forwarded to the appropriate volunteer team.,2026-01-07 17:05,2026-01-07 17:05,FALSE
+3,REQ1069,U154,This request has been forwarded to the appropriate volunteer team.,2026-01-07 09:35,2026-01-07 09:35,FALSE
+4,REQ1035,U120,Please provide more details about your location so we can connect you with nearby resources.,2026-01-07 13:51,2026-01-08 01:35,FALSE
+5,REQ1044,U178,I spoke with the requester and they need assistance by end of this week.,2026-01-07 10:05,2026-01-07 10:05,FALSE
+6,REQ1010,U171,We have a volunteer available in your area. They will reach out soon.,2026-01-06 16:34,2026-01-06 16:34,TRUE
+7,REQ1084,U130,Volunteer has been matched. Awaiting confirmation from requester.,2026-01-12 14:36,2026-01-12 14:36,FALSE
+8,REQ1035,U159,The requester mentioned they also need help with transportation.,2026-01-10 10:54,2026-01-10 10:54,FALSE
+9,REQ1089,U188,The requester mentioned they also need help with transportation.,2026-01-11 11:23,2026-01-11 11:23,FALSE
+10,REQ1048,U135,The requester mentioned they also need help with transportation.,2026-01-10 11:34,2026-01-10 11:34,FALSE
+11,REQ1099,U108,This request has been forwarded to the appropriate volunteer team.,2026-01-16 17:14,2026-01-16 17:14,FALSE
+12,REQ1072,U192,Can someone with expertise in this category please take a look?,2026-01-12 14:25,2026-01-12 14:25,FALSE
+13,REQ1017,U132,Please note the requester prefers communication in Spanish.,2026-01-14 16:25,2026-01-16 10:54,FALSE
+14,REQ1074,U152,The requester has been contacted and we are working on a solution.,2026-01-18 17:16,2026-01-18 17:16,FALSE
+15,REQ1014,U120,The requester mentioned they also need help with transportation.,2026-01-16 11:32,2026-01-16 11:32,FALSE
+16,REQ1059,U168,I spoke with the requester and they need assistance by end of this week.,2026-01-17 15:38,2026-01-17 15:38,FALSE
+17,REQ1068,U197,I spoke with the requester and they need assistance by end of this week.,2026-01-21 09:43,2026-01-21 09:43,FALSE
+18,REQ1000,U193,Please note the requester prefers communication in Spanish.,2026-01-23 14:07,2026-01-23 14:07,FALSE
+19,REQ1080,U139,The requester mentioned they also need help with transportation.,2026-01-21 17:48,2026-01-21 17:48,FALSE
+20,REQ1099,U168,I can help with this request. Please reach out to me.,2026-01-24 12:09,2026-01-24 12:09,FALSE
+21,REQ1039,U131,Have you tried contacting your local community center for assistance?,2026-01-25 14:31,2026-01-25 14:31,TRUE
+22,REQ1097,U169,Volunteer has been matched. Awaiting confirmation from requester.,2026-01-23 10:05,2026-01-23 10:05,FALSE
+23,REQ1033,U168,Coordinating with local shelter to arrange temporary housing.,2026-01-24 11:42,2026-01-24 11:42,FALSE
+24,REQ1025,U192,We have a volunteer available in your area. They will reach out soon.,2026-01-27 12:59,2026-01-27 12:59,FALSE
+25,REQ1008,U144,I can help with this request. Please reach out to me.,2026-01-28 14:28,2026-01-29 19:35,FALSE
+26,REQ1090,U181,Have you tried contacting your local community center for assistance?,2026-01-30 17:14,2026-01-30 17:14,FALSE
+27,REQ1065,U131,I spoke with the requester and they need assistance by end of this week.,2026-01-28 10:57,2026-01-28 10:57,FALSE
+28,REQ1073,U174,Requester confirmed they received the help. Marking as resolved.,2026-02-02 16:13,2026-02-02 16:13,FALSE
+29,REQ1084,U156,The requester has been contacted and we are working on a solution.,2026-01-30 16:51,2026-01-30 16:51,FALSE
+30,REQ1082,U113,Have you tried contacting your local community center for assistance?,2026-02-02 15:29,2026-02-02 20:12,FALSE
+31,REQ1057,U118,Just checking in — has anyone been able to help with this request yet?,2026-02-03 14:51,2026-02-04 07:03,FALSE
+32,REQ1056,U171,Updating status: we are currently working on this request.,2026-02-02 13:29,2026-02-02 13:29,TRUE
+33,REQ1096,U131,I have experience with this type of request. Happy to assist.,2026-02-02 17:53,2026-02-02 17:53,FALSE
+34,REQ1007,U122,I recommend reaching out to the Salvation Army for immediate assistance.,2026-02-06 16:30,2026-02-06 16:30,FALSE
+35,REQ1093,U172,Great work team! This request was handled very efficiently.,2026-02-04 15:16,2026-02-05 21:34,FALSE
+36,REQ1007,U175,Please note the requester prefers communication in Spanish.,2026-02-10 16:09,2026-02-10 16:09,FALSE
+37,REQ1061,U165,We need more volunteers for this type of request in this region.,2026-02-10 09:47,2026-02-10 09:47,FALSE
+38,REQ1076,U109,Great work team! This request was handled very efficiently.,2026-02-08 09:32,2026-02-08 09:32,FALSE
+39,REQ1005,U180,I know a few organizations in the area that can help with this.,2026-02-09 15:07,2026-02-11 04:22,FALSE
+40,REQ1030,U134,I recommend reaching out to the Salvation Army for immediate assistance.,2026-02-12 17:20,2026-02-13 08:02,FALSE
+41,REQ1009,U102,I will be visiting the area tomorrow and can provide in-person support.,2026-02-11 13:29,2026-02-11 13:29,FALSE
+42,REQ1016,U145,I know a few organizations in the area that can help with this.,2026-02-15 10:04,2026-02-15 10:04,FALSE
+43,REQ1090,U139,Coordinating with local shelter to arrange temporary housing.,2026-02-13 14:18,2026-02-13 14:18,FALSE
+44,REQ1084,U114,Thank you for submitting this request. A volunteer will be assigned shortly.,2026-02-18 17:00,2026-02-18 17:00,FALSE
+45,REQ1034,U137,Coordinating with local shelter to arrange temporary housing.,2026-02-16 10:56,2026-02-16 10:56,FALSE
+46,REQ1064,U163,I spoke with the requester and they need assistance by end of this week.,2026-02-16 14:13,2026-02-16 14:13,FALSE
+47,REQ1000,U143,Volunteer has been matched. Awaiting confirmation from requester.,2026-02-16 10:40,2026-02-16 10:40,FALSE
+48,REQ1054,U172,I can help with this request. Please reach out to me.,2026-02-18 13:10,2026-02-18 13:10,FALSE
+49,REQ1004,U148,This is a high priority request. Please prioritize accordingly.,2026-02-18 10:56,2026-02-18 10:56,FALSE
+50,REQ1005,U146,Please provide more details about your location so we can connect you with nearby resources.,2026-02-23 11:27,2026-02-23 11:27,FALSE
+51,REQ1052,U180,Please note the requester prefers communication in Spanish.,2026-02-25 12:42,2026-02-25 12:42,FALSE
+52,REQ1022,U153,I can help with this request. Please reach out to me.,2026-02-22 12:55,2026-02-22 12:55,FALSE
+53,REQ1031,U135,I have experience with this type of request. Happy to assist.,2026-02-23 14:50,2026-02-25 10:45,FALSE
+54,REQ1058,U145,We have a volunteer available in your area. They will reach out soon.,2026-02-28 10:24,2026-03-01 17:38,FALSE
+55,REQ1035,U109,Volunteer has been matched. Awaiting confirmation from requester.,2026-02-25 12:01,2026-02-25 12:01,FALSE
+56,REQ1068,U143,I can help with this request. Please reach out to me.,2026-02-27 14:41,2026-02-27 14:41,FALSE
+57,REQ1004,U114,Coordinating with local shelter to arrange temporary housing.,2026-02-26 13:11,2026-02-26 13:11,TRUE
+58,REQ1014,U150,This is a high priority request. Please prioritize accordingly.,2026-03-02 14:46,2026-03-03 19:24,TRUE
+59,REQ1068,U188,Please note the requester prefers communication in Spanish.,2026-03-01 13:02,2026-03-01 13:02,FALSE
+60,REQ1042,U180,Can someone with expertise in this category please take a look?,2026-03-06 12:23,2026-03-06 12:23,TRUE
+61,REQ1041,U152,I have attached some useful resources for the requester.,2026-03-07 10:46,2026-03-08 20:05,FALSE
+62,REQ1048,U187,Please note the requester prefers communication in Spanish.,2026-03-05 17:08,2026-03-05 17:08,FALSE
+63,REQ1036,U127,Just checking in — has anyone been able to help with this request yet?,2026-03-05 13:25,2026-03-05 13:25,FALSE
+64,REQ1065,U161,Please note the requester prefers communication in Spanish.,2026-03-09 14:29,2026-03-09 14:29,FALSE
+65,REQ1042,U112,Volunteer has been matched. Awaiting confirmation from requester.,2026-03-07 10:18,2026-03-07 10:18,FALSE
+66,REQ1060,U179,Volunteer has been matched. Awaiting confirmation from requester.,2026-03-08 13:14,2026-03-08 23:15,FALSE
+67,REQ1049,U164,I recommend reaching out to the Salvation Army for immediate assistance.,2026-03-08 16:26,2026-03-10 05:38,FALSE
+68,REQ1098,U114,Volunteer has been matched. Awaiting confirmation from requester.,2026-03-10 11:41,2026-03-10 11:41,FALSE
+69,REQ1071,U132,Updating status: we are currently working on this request.,2026-03-13 12:11,2026-03-15 09:44,FALSE
+70,REQ1071,U177,Can someone with expertise in this category please take a look?,2026-03-14 11:51,2026-03-14 11:51,FALSE
+71,REQ1095,U161,I will be visiting the area tomorrow and can provide in-person support.,2026-03-15 17:27,2026-03-17 05:55,FALSE
+72,REQ1066,U163,The requester mentioned they also need help with transportation.,2026-03-15 12:53,2026-03-15 12:53,FALSE
+73,REQ1034,U143,Can someone with expertise in this category please take a look?,2026-03-15 13:28,2026-03-15 13:28,FALSE
+74,REQ1019,U191,Please provide more details about your location so we can connect you with nearby resources.,2026-03-19 10:08,2026-03-19 10:08,FALSE
+75,REQ1007,U127,Just checking in — has anyone been able to help with this request yet?,2026-03-16 15:26,2026-03-16 15:26,FALSE
+76,REQ1045,U139,Volunteer has been matched. Awaiting confirmation from requester.,2026-03-20 09:54,2026-03-21 23:18,FALSE
+77,REQ1077,U129,Requester confirmed they received the help. Marking as resolved.,2026-03-21 15:34,2026-03-21 15:34,FALSE
+78,REQ1085,U187,I recommend reaching out to the Salvation Army for immediate assistance.,2026-03-20 13:27,2026-03-20 13:27,FALSE
+79,REQ1079,U169,I can help with this request. Please reach out to me.,2026-03-25 11:53,2026-03-25 11:53,FALSE
+80,REQ1059,U124,Have you tried contacting your local community center for assistance?,2026-03-24 09:05,2026-03-24 09:05,FALSE
+81,REQ1097,U149,I spoke with the requester and they need assistance by end of this week.,2026-03-24 15:20,2026-03-24 15:20,FALSE
+82,REQ1069,U107,The requester has been contacted and we are working on a solution.,2026-03-26 13:53,2026-03-26 13:53,FALSE
+83,REQ1031,U126,I can help with this request. Please reach out to me.,2026-03-25 10:49,2026-03-25 14:37,FALSE
+84,REQ1072,U128,I will be visiting the area tomorrow and can provide in-person support.,2026-03-29 11:15,2026-03-29 11:15,FALSE
+85,REQ1095,U192,Updating status: we are currently working on this request.,2026-03-31 13:49,2026-03-31 13:49,FALSE
+86,REQ1073,U187,I recommend reaching out to the Salvation Army for immediate assistance.,2026-03-28 13:06,2026-03-28 13:06,TRUE
+87,REQ1031,U114,I have attached some useful resources for the requester.,2026-03-31 12:04,2026-03-31 12:04,FALSE
+88,REQ1084,U148,I know a few organizations in the area that can help with this.,2026-03-31 10:50,2026-03-31 14:12,FALSE
+89,REQ1046,U182,I will be visiting the area tomorrow and can provide in-person support.,2026-04-03 14:00,2026-04-04 22:06,FALSE
+90,REQ1083,U135,Coordinating with local shelter to arrange temporary housing.,2026-04-05 11:27,2026-04-05 11:27,FALSE
+91,REQ1034,U142,This request has been forwarded to the appropriate volunteer team.,2026-04-05 16:29,2026-04-05 16:29,FALSE
+92,REQ1072,U179,Great work team! This request was handled very efficiently.,2026-04-02 13:56,2026-04-02 13:56,FALSE
+93,REQ1062,U128,The requester has been contacted and we are working on a solution.,2026-04-06 14:01,2026-04-06 14:01,FALSE
+94,REQ1001,U167,Please provide more details about your location so we can connect you with nearby resources.,2026-04-06 14:17,2026-04-08 12:13,FALSE
+95,REQ1030,U189,Requester confirmed they received the help. Marking as resolved.,2026-04-05 12:46,2026-04-05 12:46,FALSE
+96,REQ1088,U132,We have a volunteer available in your area. They will reach out soon.,2026-04-11 16:28,2026-04-11 22:46,FALSE
+97,REQ1095,U171,Can someone with expertise in this category please take a look?,2026-04-12 14:30,2026-04-12 14:30,FALSE
+98,REQ1092,U125,Can someone with expertise in this category please take a look?,2026-04-10 16:17,2026-04-10 16:17,FALSE
+99,REQ1094,U162,I spoke with the requester and they need assistance by end of this week.,2026-04-09 17:48,2026-04-09 17:48,FALSE
+100,REQ1024,U138,This request has been forwarded to the appropriate volunteer team.,2026-04-15 17:38,2026-04-15 17:38,FALSE
