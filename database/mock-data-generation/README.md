@@ -1,109 +1,146 @@
-# Mock Data Generation
+# Mock Data Generation — Saayam Database
 
-The scripts generate CSV files for the following tables:
-
-- `volunteer_applications`
-- `user_skills`
-
-# Scripts Overview
-
-## generate_mock_data.py
-
-Main script responsible for generating mock data.
-
-Responsibilities:
-
-- Calls table-specific data generation scripts
-- Maintains relationships between tables
-- Writes generated data to CSV files 
-
-Run this script to generate all mock data.
+This folder contains Python scripts to generate synthetic (mock) CSV data for the Saayam platform database tables. The generated CSVs are stored in `/database/mock_db/`.
 
 ---
 
-## volunteer_applications.py
+## 📁 Files in This Folder
 
-Generates synthetic data for the **volunteer_applications** table.
-
-Fields include:
-
-- `user_id`
-- `terms_and_conditions`
-- `terms_accepted_at`
-- `govt_id_path`
-- `skill_codes` (JSON array)
-- `availability` (JSON object)
-- `current_page`
-- `application_status`
-- `is_completed`
-- `created_at`
-- `last_updated_at`
-
-Each row represents a volunteer application.
+| File | Description |
+|------|-------------|
+| `generate_fraud_requests.py` | Generates mock data for the `fraud_requests` table |
+| `generate_notifications.py` | Generates mock data for the `notifications` table |
+| `db_info.json` | Full schema definition for all Saayam database tables |
+| `README.md` | This file |
 
 ---
 
-## user_skills.py
+## 📦 Prerequisites
 
-Generates data for the **user_skills** table.
+Python 3.8+ required. Install dependencies:
 
-This table is derived from the `skill_codes` field in `volunteer_applications`.
-
-For each skill associated with a volunteer, a row is created.
-
-Because volunteers may have multiple skills, this table can contain **more than 100 rows**.
+```bash
+pip install faker pandas
+```
 
 ---
 
-## utils.py
+## 🚀 How to Run
 
-Contains shared helper functions used across scripts.
+### Generate `fraud_requests.csv` (default: 800 rows)
 
-Includes:
+```bash
+python generate_fraud_requests.py
+```
 
-- Category ID constants
-- Availability options
-- Random data generators
-- JSON formatting helpers
-- Timestamp formatting
-- CSV writing utility functions
-- Random seed setup
-
-This keeps the code modular and reusable.
+**Options:**
+```bash
+python generate_fraud_requests.py --rows 800 --output fraud_requests.csv
+```
 
 ---
 
-# Output Files
+### Generate `notifications.csv` (default: 30,000 rows)
 
-After running the generator script, CSV files will be created 
+```bash
+python generate_notifications.py
+```
 
-Generated files:
+**Options:**
+```bash
+python generate_notifications.py --rows 30000 --output notifications.csv
+```
 
-### volunteer_applications.csv
-
-Contains **100 volunteer application records**.
-
-### user_skills.csv
-
-Contains skill mappings for volunteers based on `skill_codes`.
-
-Each skill produces a separate row.
-
----
-
-# How to Run the Scripts
-
-Open terminal in VS Code and run: python generate_mock_data.py
+To scale up to 40,000+ rows:
+```bash
+python generate_notifications.py --rows 40000 --output notifications_40k.csv
+```
 
 ---
 
-# What Happens When the Script Runs
+## 📊 Output Files
 
-The script will:
+All generated CSVs should be saved to `/database/mock_db/`.
 
-1. Generate **100 volunteer applications**
-2. Assign **multiple skills per volunteer**
-3. Create matching rows in `user_skills`
-4. Maintain table relationships
-5. Creates CSV files`
+| File | Rows | Columns | Table |
+|------|------|---------|-------|
+| `fraud_requests.csv` | 800 | 4 | `fraud_requests` |
+| `notifications.csv` | 30,000 | 8 | `notifications` |
 
+---
+
+## 🗂️ Schema Details
+
+### `fraud_requests`
+| Column | Type | Notes |
+|--------|------|-------|
+| `fraud_request_id` | integer | Primary key, auto-incremented |
+| `user_id` | varchar(255) | FK → users table |
+| `request_datetime` | timestamp | Range: 2022–2025 |
+| `reason` | varchar(255) | 20 realistic fraud reason templates |
+
+### `notifications`
+| Column | Type | Notes |
+|--------|------|-------|
+| `notification_id` | integer | Primary key, auto-incremented |
+| `user_id` | varchar(255) | FK → users table |
+| `type_id` | integer | FK → notification_types (1–6) |
+| `channel_id` | integer | FK → notification_channels (1–4) |
+| `message` | text | Type-specific realistic message templates |
+| `status` | enum | sent / delivered / read / failed |
+| `created_at` | timestamp | Range: 2022–2025 |
+| `last_update_date` | timestamp | Always ≥ created_at |
+
+---
+
+## 🔗 Foreign Key References
+
+### notification_types (type_id)
+| ID | Name |
+|----|------|
+| 1 | Volunteer Match |
+| 2 | Help Request Update |
+| 3 | System Alert |
+| 4 | New Message |
+| 5 | Account Activity |
+| 6 | Community Announcement |
+
+### notification_channels (channel_id)
+| ID | Name |
+|----|------|
+| 1 | Email |
+| 2 | SMS |
+| 3 | Push Notification |
+| 4 | In-App |
+
+---
+
+## 🔁 Scalability
+
+Both scripts are parameterized and can be scaled up easily:
+
+```bash
+# Scale fraud_requests to 5,000 rows
+python generate_fraud_requests.py --rows 5000
+
+# Scale notifications to 40,000 rows
+python generate_notifications.py --rows 40000
+```
+
+Scripts use `random.seed(42)` and `Faker.seed(42)` for reproducibility — running the same command twice produces the same output.
+
+---
+
+## ✅ Data Quality Notes
+
+- **Zero nulls** across all generated fields
+- **FK integrity**: user_ids are drawn from a consistent pool of 500 synthetic users
+- **Realistic distributions**: notification status weighted (55% read, 25% delivered, 15% sent, 5% failed)
+- **Date consistency**: `last_update_date` is always equal to or after `created_at`
+- **Message content**: type-specific templates ensure messages are contextually appropriate
+
+---
+
+## 📌 Schema Source
+
+Full schema available in `db_info.json` in this folder, and in `Saayam_Table_column_names_data.xlsx` in the `/database/` folder.
