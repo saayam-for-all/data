@@ -120,51 +120,100 @@ def lambda_handler(event, context):
             conn_I.close()
         print("Ireland Database connection closed")
    
+def get_grouping(time_range):
+    
+    period = ""
+    date_string = ""
+
+    if time_range == '7D':
+        period = "day"
+        date_string = "YYYY-MM-DD"
+    elif time_range == '30D':
+        period = "day"
+        date_string = "YYYY-MM-DD"
+    elif time_range == '1Y':
+        period = "month"
+        date_string = "YYYY-MM"
+    elif time_range == 'All':
+        period = "month"
+        date_string = "YYYY-MM"
+    elif time_range == 'Custom':
+        period = "day"
+        date_string = "YYYY-MM-DD"
+    else:
+        raise ValueError("Invalid time range. Must be one of: '7D', '30D', '1Y', or 'Custom'.")
+
+    return period, date_string
+
+def build_date_filter_trend(time_range, start_date=None, end_date=None):
+    where_clause = ""
+
+    if time_range == '7D':
+        where_clause = "AND vd.created_at >= CURRENT_DATE - INTERVAL '7 days'"
+    elif time_range == '30D':
+        where_clause = "AND vd.created_at >= CURRENT_DATE - INTERVAL '30 days'"
+    elif time_range == '1Y':
+        where_clause = "AND vd.created_at >= CURRENT_DATE - INTERVAL '1 year'"
+    elif time_range == 'Custom':
+        if start_date and end_date:
+            where_clause = f"AND vd.created_at BETWEEN '{start_date}' AND '{end_date}'"
+        elif start_date:
+            where_clause = f"AND vd.created_at >= '{start_date}'"
+        elif end_date:
+            where_clause = f"AND vd.created_at <= '{end_date}'"
+
+    return where_clause
 
 
-def get_volunteer_activity_trend(cursor,users,volunteer_details):
+
+def get_volunteer_activity_trend(cursor,users,volunteer_details, time_range='All', start_date=None, end_date=None):
+    period, date_string = get_grouping(time_range)
+    date_where_clause = build_date_filter_trend(time_range, start_date, end_date)
+
     try: 
-        query1 = f"""SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        query1 = f"""SELECT TO_CHAR(DATE_TRUNC('{period}', vd.created_at), '{date_string}') AS period,
         COUNT(DISTINCT u.user_id) AS count 
         FROM {users} u 
         JOIN {volunteer_details} vd ON u.user_id = vd.user_id 
         WHERE vd.created_at IS NOT NULL 
+        {date_where_clause}
         GROUP BY 1 
         ORDER BY 1 ASC"""
         cursor.execute(query1)
 
-    
         new_volunteers = cursor.fetchall()
-        new_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in new_volunteers]
+        new_volunteers_final = [{"period": row[0], "count": int(row[1])} for row in new_volunteers]
 
         query2 = f""" 
-        SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        SELECT TO_CHAR(DATE_TRUNC('{period}', vd.created_at), '{date_string}') AS period,
         COUNT(DISTINCT u.user_id) AS count FROM {users} u 
         JOIN {volunteer_details} vd ON u.user_id = vd.user_id
         WHERE vd.created_at IS NOT NULL
         AND u.user_status_id = 1 
+        {date_where_clause}
         GROUP BY 1
         ORDER BY 1 ASC
         """
         cursor.execute(query2)
         active_volunteers = cursor.fetchall()
-        active_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in active_volunteers]
+        active_volunteers_final = [{"period": row[0], "count": int(row[1])} for row in active_volunteers]
 
         query3 = f"""
-        SELECT month, SUM(count) OVER (ORDER BY month) AS count
-        FROM ( SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        SELECT period, SUM(count) OVER (ORDER BY period) AS count
+        FROM ( SELECT TO_CHAR(DATE_TRUNC('{period}', vd.created_at), '{date_string}') AS period,
         COUNT(DISTINCT u.user_id) AS count
         FROM {users} u
         JOIN {volunteer_details} vd
         ON u.user_id = vd.user_id
         WHERE vd.created_at IS NOT NULL
+        {date_where_clause}
         GROUP BY 1 ) sub
-        ORDER BY month ASC;
+        ORDER BY period ASC;
         """
         
         cursor.execute(query3)
         total_volunteers = cursor.fetchall()
-        total_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in total_volunteers]
+        total_volunteers_final = [{"period": row[0], "count": int(row[1])} for row in total_volunteers]
         return {
             "new_volunteers": new_volunteers_final,
             "active_volunteers": active_volunteers_final,
