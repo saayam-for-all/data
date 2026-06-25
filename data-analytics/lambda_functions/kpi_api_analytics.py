@@ -53,9 +53,26 @@ def get_db_connection():
         sslmode="require"
     )
 
+def build_date_filter(time_range, start_date=None, end_date=None):
+    sql_date_condition = ""
+    sql_params = ()
 
+    if time_range == "Custom" and start_date and end_date:
+        sql_date_condition = f"r.submission_date BETWEEN %s AND %s"
+        sql_params = (start_date, end_date)
+    elif time_range == "7D":
+        sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '7 days'"
+    elif time_range == "30D":
+        sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '30 days'"
+    elif time_range == "1Y":
+        sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '1 year'"
+    
+    return sql_date_condition, sql_params
 
-def fetch_request_status_distribution(cursor):
+def fetch_request_status_distribution(cursor, time_range="All", start_date=None, end_date=None):
+    date_filter, params = build_date_filter(time_range, start_date, end_date)
+    date_filter_clause = f"WHERE {date_filter}" if date_filter else ""
+
     query = f"""
         SELECT
             rs.req_status AS status,
@@ -63,11 +80,12 @@ def fetch_request_status_distribution(cursor):
         FROM {SCHEMA_NAME}.request r
         JOIN {SCHEMA_NAME}.request_status rs
             ON r.req_status_id = rs.req_status_id
+        {date_filter_clause}
         GROUP BY rs.req_status
         ORDER BY rs.req_status;
     """
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     rows = cursor.fetchall()
 
     return [
@@ -78,19 +96,26 @@ def fetch_request_status_distribution(cursor):
         for row in rows
     ]
 
-def fetch_total_requests(cursor):
+def fetch_total_requests(cursor, time_range="All", start_date=None, end_date=None):
+    date_filter, params = build_date_filter(time_range, start_date, end_date)
+    date_filter_clause = f"WHERE {date_filter}" if date_filter else ""
+
     query = f"""
-        SELECT COUNT(req_id) AS total_requests
-        FROM {SCHEMA_NAME}.request;
+        SELECT COUNT(r.req_id) AS total_requests
+        FROM {SCHEMA_NAME}.request r
+        {date_filter_clause};
     """
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     row = cursor.fetchone()
 
     return int(row["total_requests"]) if row and row["total_requests"] is not None else 0
 
 
-def fetch_average_resolution_time_by_category(cursor):
+def fetch_average_resolution_time_by_category(cursor, time_range="All", start_date=None, end_date=None):
+    date_filter, params = build_date_filter(time_range, start_date, end_date)
+    date_filter_clause = f"AND {date_filter}" if date_filter else ""
+
     query = f"""
         SELECT
             hc.cat_name AS category,
@@ -109,11 +134,12 @@ def fetch_average_resolution_time_by_category(cursor):
           AND r.serviced_date IS NOT NULL
           AND r.serviced_date >= r.submission_date
           AND UPPER(rs.req_status) IN ('COMPLETED', 'RESOLVED')
+          {date_filter_clause}
         GROUP BY hc.cat_name
         ORDER BY avg_hours DESC;
     """
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     rows = cursor.fetchall()
 
     return [
@@ -128,25 +154,29 @@ def lambda_handler(event, context):
     conn = None
     cursor = None
     response_body = get_default_response()
+    
+    time_range = event.get("time_range", "All")
+    start_date = event.get("start_date", None)
+    end_date = event.get("end_date", None)
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         try:
-            response_body["request_status_distribution"] = fetch_request_status_distribution(cursor)
+            response_body["request_status_distribution"] = fetch_request_status_distribution(cursor, time_range, start_date, end_date)
         except Exception as error:
             print(f"Status distribution query failed: {error}")
             response_body["request_status_distribution"] = []
 
         try:
-            response_body["total_requests"] = fetch_total_requests(cursor)
+            response_body["total_requests"] = fetch_total_requests(cursor, time_range, start_date, end_date)
         except Exception as error:
             print(f"Total request count query failed: {error}")
             response_body["total_requests"] = 0
 
         try:
-            response_body["average_resolution_time_by_category"] = fetch_average_resolution_time_by_category(cursor)
+            response_body["average_resolution_time_by_category"] = fetch_average_resolution_time_by_category(cursor, time_range, start_date, end_date)
         except Exception as error:
             print(f"Average resolution time query failed: {error}")
             response_body["average_resolution_time_by_category"] = []
@@ -165,4 +195,6 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    result = lambda_handler({}, None)
+    result_default = lambda_handler({}, None)
+    print(json.dumps(result_default, indent=2))
+
