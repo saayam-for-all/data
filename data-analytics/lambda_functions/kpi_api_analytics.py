@@ -1,5 +1,6 @@
 import json
-
+import os
+import boto3 
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from aws_lambda_powertools.utilities import parameters
@@ -25,7 +26,6 @@ def get_default_response():
         "sla": SLA
     }
 
-
 def build_response(status_code, body):
     return {
         "statusCode": status_code,
@@ -36,16 +36,16 @@ def build_response(status_code, body):
         "body": json.dumps(body, default=str)
     }
 
-
 def get_db_connection():
-    creds = json.loads(parameters.get_parameter(
-        "/dev/saayam/db/Virginia/Analytics/user",
-        decrypt=True,
-        max_age=3600
-    ))
+    ssm = boto3.client("ssm", region_name="us-east-1")
 
+    response = ssm.get_parameter(
+    Name="/dev/saayam/db/Virginia/Analytics/user",
+    WithDecryption=True
+    )
+
+    creds = json.loads(response["Parameter"]["Value"])
     db_name = creds["DATABASE NAME"]
-
     return psycopg2.connect(
         host=creds["HOST"],
         database=db_name,
@@ -85,6 +85,9 @@ def fetch_request_status_distribution(cursor, time_range, start_date=None, end_d
     # If a filter exists, add a WHERE block right before the GROUP BY
     where_clause = f"WHERE {date_clause}" if date_clause else ""
 
+
+
+def fetch_request_status_distribution(cursor):
     query = f"""
         SELECT
             rs.req_status AS status,
@@ -114,6 +117,7 @@ def fetch_total_requests(cursor, time_range, start_date=None, end_date=None):
     date_clause, params = build_date_filter(time_range, start_date, end_date)
     where_clause = f"WHERE {date_clause}" if date_clause else ""
 
+def fetch_total_requests(cursor):
     query = f"""
         SELECT COUNT(r.req_id) AS total_requests
         FROM {SCHEMA_NAME}.request r
@@ -165,7 +169,6 @@ def fetch_average_resolution_time_by_category(cursor, time_range, start_date=Non
         }
         for row in rows
     ]
-
 
 def lambda_handler(event, context):
     conn = None
@@ -231,3 +234,4 @@ if __name__ == "__main__":
     
     result = lambda_handler(test_event, None)
     print(json.dumps(result, indent=2))  
+    result = lambda_handler({}, None)
