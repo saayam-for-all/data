@@ -55,7 +55,34 @@ def get_db_connection():
 
 
 
-def fetch_request_status_distribution(cursor):
+def build_date_filter(time_range, start_date=None, end_date=None):
+    """Build a SQL WHERE-clause snippet for filtering by r.submission_date.
+
+    Supported time_range values: "7D", "30D", "1Y", "All", "Custom".
+    Unknown / missing values are treated as "All" (no filter applied).
+
+    Returns:
+        (sql_snippet, params): The snippet is prefixed with "AND " and is
+        intended to be appended into an existing WHERE clause. params is a
+        list of values for psycopg2 to substitute (empty for the relative
+        ranges, two values for "Custom").
+    """
+    time_range = (time_range or "All").strip()
+
+    if time_range == "7D":
+        return ("AND r.submission_date > CURRENT_TIMESTAMP - INTERVAL '7 days'", [])
+    if time_range == "30D":
+        return ("AND r.submission_date > CURRENT_TIMESTAMP - INTERVAL '30 days'", [])
+    if time_range == "1Y":
+        return ("AND r.submission_date > CURRENT_TIMESTAMP - INTERVAL '1 year'", [])
+    if time_range == "Custom" and start_date and end_date:
+        return ("AND r.submission_date BETWEEN %s AND %s", [start_date, end_date])
+    # "All" or anything else → no filter
+    return ("", [])
+
+
+def fetch_request_status_distribution(cursor, time_range="All", start_date=None, end_date=None):
+    date_filter, params = build_date_filter(time_range, start_date, end_date)
     query = f"""
         SELECT
             rs.req_status AS status,
@@ -63,11 +90,13 @@ def fetch_request_status_distribution(cursor):
         FROM {SCHEMA_NAME}.request r
         JOIN {SCHEMA_NAME}.request_status rs
             ON r.req_status_id = rs.req_status_id
+        WHERE 1=1
+          {date_filter}
         GROUP BY rs.req_status
         ORDER BY rs.req_status;
     """
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     rows = cursor.fetchall()
 
     return [
@@ -78,19 +107,23 @@ def fetch_request_status_distribution(cursor):
         for row in rows
     ]
 
-def fetch_total_requests(cursor):
+def fetch_total_requests(cursor, time_range="All", start_date=None, end_date=None):
+    date_filter, params = build_date_filter(time_range, start_date, end_date)
     query = f"""
-        SELECT COUNT(req_id) AS total_requests
-        FROM {SCHEMA_NAME}.request;
+        SELECT COUNT(r.req_id) AS total_requests
+        FROM {SCHEMA_NAME}.request r
+        WHERE 1=1
+          {date_filter};
     """
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     row = cursor.fetchone()
 
     return int(row["total_requests"]) if row and row["total_requests"] is not None else 0
 
 
-def fetch_average_resolution_time_by_category(cursor):
+def fetch_average_resolution_time_by_category(cursor, time_range="All", start_date=None, end_date=None):
+    date_filter, params = build_date_filter(time_range, start_date, end_date)
     query = f"""
         SELECT
             hc.cat_name AS category,
@@ -109,11 +142,12 @@ def fetch_average_resolution_time_by_category(cursor):
           AND r.serviced_date IS NOT NULL
           AND r.serviced_date >= r.submission_date
           AND UPPER(rs.req_status) IN ('COMPLETED', 'RESOLVED')
+          {date_filter}
         GROUP BY hc.cat_name
         ORDER BY avg_hours DESC;
     """
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     rows = cursor.fetchall()
 
     return [
@@ -129,24 +163,36 @@ def lambda_handler(event, context):
     cursor = None
     response_body = get_default_response()
 
+    # Parse optional date filter parameters from event
+    event = event or {}
+    time_range = event.get("time_range", "All")
+    start_date = event.get("start_date")
+    end_date = event.get("end_date")
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         try:
-            response_body["request_status_distribution"] = fetch_request_status_distribution(cursor)
+            response_body["request_status_distribution"] = fetch_request_status_distribution(
+                cursor, time_range, start_date, end_date
+            )
         except Exception as error:
             print(f"Status distribution query failed: {error}")
             response_body["request_status_distribution"] = []
 
         try:
-            response_body["total_requests"] = fetch_total_requests(cursor)
+            response_body["total_requests"] = fetch_total_requests(
+                cursor, time_range, start_date, end_date
+            )
         except Exception as error:
             print(f"Total request count query failed: {error}")
             response_body["total_requests"] = 0
 
         try:
-            response_body["average_resolution_time_by_category"] = fetch_average_resolution_time_by_category(cursor)
+            response_body["average_resolution_time_by_category"] = fetch_average_resolution_time_by_category(
+                cursor, time_range, start_date, end_date
+            )
         except Exception as error:
             print(f"Average resolution time query failed: {error}")
             response_body["average_resolution_time_by_category"] = []
