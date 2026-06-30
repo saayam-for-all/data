@@ -1,8 +1,9 @@
 import json
-
+import os
+import boto3 
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from aws_lambda_powertools.utilities import parameters
+
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
@@ -23,7 +24,6 @@ def get_default_response():
         "sla": SLA
     }
 
-
 def build_response(status_code, body):
     return {
         "statusCode": status_code,
@@ -34,16 +34,16 @@ def build_response(status_code, body):
         "body": json.dumps(body, default=str)
     }
 
-
 def get_db_connection():
-    creds = json.loads(parameters.get_parameter(
-        "/dev/saayam/db/Virginia/Analytics/user",
-        decrypt=True,
-        max_age=3600
-    ))
+    ssm = boto3.client("ssm", region_name="us-east-1")
 
+    response = ssm.get_parameter(
+    Name="/dev/saayam/db/Virginia/Analytics/user",
+    WithDecryption=True
+    )
+
+    creds = json.loads(response["Parameter"]["Value"])
     db_name = creds["DATABASE NAME"]
-
     return psycopg2.connect(
         host=creds["HOST"],
         database=db_name,
@@ -52,6 +52,8 @@ def get_db_connection():
         port=creds["PORT"],
         sslmode="require"
     )
+
+
 
 def fetch_request_status_distribution(cursor):
     query = f"""
@@ -75,7 +77,6 @@ def fetch_request_status_distribution(cursor):
         }
         for row in rows
     ]
-
 
 def fetch_total_requests(cursor):
     query = f"""
@@ -123,7 +124,6 @@ def fetch_average_resolution_time_by_category(cursor):
         for row in rows
     ]
 
-
 def lambda_handler(event, context):
     conn = None
     cursor = None
@@ -166,4 +166,3 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     result = lambda_handler({}, None)
-    print(json.dumps(result, indent=2))
