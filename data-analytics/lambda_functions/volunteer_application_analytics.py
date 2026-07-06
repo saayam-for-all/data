@@ -1,4 +1,5 @@
 import json
+import os
 import psycopg2
 import boto3
 
@@ -41,6 +42,42 @@ def parse_event_body(event):
         return body
 
     return {}
+
+
+def build_date_filter_trend(time_range, start_date=None, end_date=None):
+    """
+    Returns (sql_fragment, params) for the vd.created_at date filter used by
+    get_volunteer_activity_trend(). sql_fragment is meant to be appended
+    directly after an existing WHERE clause (it starts with "AND ...").
+    Custom dates are always passed as query params, never interpolated
+    directly into the SQL string.
+    """
+    if time_range == "7D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '7 days'", []
+    if time_range == "30D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '30 days'", []
+    if time_range == "1Y":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '1 year'", []
+    if time_range == "Custom":
+        if not start_date or not end_date:
+            raise ValueError("start_date and end_date are required when time_range is 'Custom'")
+        return "AND vd.created_at BETWEEN %s AND %s", [start_date, end_date]
+    # "All" (or anything unrecognized) -> no date filter
+    return "", []
+
+
+def get_grouping(time_range):
+    """
+    Determines how the Volunteer Activity Trend chart groups its data.
+    7D / 30D / Custom -> daily   (TO_CHAR format: YYYY-MM-DD)
+    1Y / All          -> monthly (TO_CHAR format: YYYY-MM)
+    Returns a dict so callers get both the DATE_TRUNC unit and the matching
+    TO_CHAR format in one place, keeping them from drifting apart.
+    """
+    if time_range in ("7D", "30D", "Custom"):
+        return {"trunc_unit": "day", "format": "YYYY-MM-DD"}
+    return {"trunc_unit": "month", "format": "YYYY-MM"}
+
 
 def lambda_handler(event, context):
     conn_V = None
@@ -299,7 +336,3 @@ def get_db_config(db):
 if __name__ == "__main__":
     test_event = {}
     print(lambda_handler(test_event, None))
-    
-
-
-  
