@@ -9,8 +9,8 @@ SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
 
 def get_default_response(request_id):
-    return {"request_id": request_id,
-        "add_info": []
+    return {"requestId": request_id,
+        "additionalFields": {}
     }
 
 def build_response(status_code, body):
@@ -54,14 +54,25 @@ def fetch_additional_request_info(cursor, request_id):
     rows = cursor.fetchall()
 
 
-    return [
-        {
-            "field_id": row["field_id"],
-            "item_id": row["item_id"],
-            "field_value": row["field_value"]
-        }
-        for row in rows
-    ]
+    response = {}
+
+    for row in rows:
+        if row['field_id'] in response:
+            if row['item_id'] and not row['field_value']:
+                response[row['field_id']].append(row['item_id'])
+            elif row['item_id'] and row['field_value']:
+                response[row['field_id']][row['item_id']] = row['field_value']
+            elif not row['item_id'] and row['field_value']:
+                response[row['field_id']] = row['field_value']
+        else:
+            if row['item_id'] and not row['field_value']:
+                response[row['field_id']] = [row['item_id']]
+            elif row['item_id'] and row['field_value']:
+                response[row['field_id']] = {row['item_id']: row['field_value']}
+            elif not row['item_id'] and row['field_value']:
+                response[row['field_id']] = row['field_value']
+    
+    return response
 
 
 def lambda_handler(event, context):
@@ -76,11 +87,11 @@ def lambda_handler(event, context):
 
         try:
             response = fetch_additional_request_info(cursor, request_id)
-            full_response["add_info"] = response
+            full_response["additionalFields"] = response
 
         except Exception as error:
             print(f"Additional request info query failed: {error}")
-            full_response["add_info"] = []
+            full_response["additionalFields"] = {}
 
         return build_response(200, full_response)
 
