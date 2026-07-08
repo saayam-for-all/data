@@ -57,9 +57,15 @@ def build_date_filter(time_range, start_date=None, end_date=None):
     sql_date_condition = ""
     sql_params = ()
 
-    if time_range == "Custom" and start_date and end_date:
-        sql_date_condition = f"r.submission_date BETWEEN %s AND %s"
-        sql_params = (start_date, end_date)
+    if time_range == "Custom":
+      if not start_date or not end_date:
+        raise ValueError(
+            "Custom time range requires start_date and end_date."
+        )
+      return (
+        "r.submission_date BETWEEN %s AND %s",
+        (start_date, end_date)
+        )
     elif time_range == "7D":
         sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '7 days'"
     elif time_range == "30D":
