@@ -280,8 +280,22 @@ def merge_volunteer_by_location(list1, list2):
     return [ {"country": country, "count": merged[country]} for country in sorted(merged.keys()) ]
 
 
-def get_volunteers_by_location( cursor, users, volunteer_details, country_table, user_skills,help_categories,country='All Countries',chart_type="Bar Chart",skill="All Skills"):
-    try: 
+def get_volunteers_by_location(
+    cursor, users, volunteer_details, country_table, user_skills, help_categories,
+    country='All Countries', chart_type="Bar Chart", skill="All Skills",
+    time_range_location="All", location_start_date=None, location_end_date=None
+):
+    try:
+        date_filter_sql, date_params = build_date_filter_location(
+            time_range_location, location_start_date, location_end_date
+        )
+
+        # NOTE: this groups/filters by c.country_code (e.g. "USA"), not
+        # c.country_name (e.g. "UNITED_STATES_OF_AMERICA"). That mismatch
+        # against the issue's example response and the country-filter test
+        # case (Test Case 10) is a known, pre-existing issue -- confirmed
+        # with Sahil (data analytics lead) to leave untouched for this PR,
+        # since the ask here is date filtering only, not aggregation logic.
         query= f"""SELECT
                 COALESCE(c.country_code, 'Unknown') AS country,
                 COUNT(DISTINCT u.user_id) AS count
@@ -291,9 +305,10 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
             LEFT JOIN {country_table} c
                 ON u.country_id = c.country_id
             WHERE 1=1
+            {date_filter_sql}
             """
         
-        params = []
+        params = list(date_params)
 
         
         if country != "All Countries":
