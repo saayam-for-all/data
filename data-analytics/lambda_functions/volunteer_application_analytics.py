@@ -78,6 +78,29 @@ def get_grouping(time_range):
         return {"trunc_unit": "day", "format": "YYYY-MM-DD"}
     return {"trunc_unit": "month", "format": "YYYY-MM"}
 
+def build_date_filter_location(time_range_location, location_start_date=None, location_end_date=None):
+    """
+    Returns (sql_fragment, params) for the vd.created_at date filter used by
+    get_volunteers_by_location(). Kept as its own function (mirrors
+    build_date_filter_trend) so the two widgets' date filters stay fully
+    independent, per the issue spec.
+    """
+    if time_range_location == "7D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '7 days'", []
+    if time_range_location == "30D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '30 days'", []
+    if time_range_location == "1Y":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '1 year'", []
+    if time_range_location == "Custom":
+        if not location_start_date or not location_end_date:
+            raise ValueError(
+                "location_start_date and location_end_date are required when time_range_location is 'Custom'"
+            )
+        return "AND vd.created_at BETWEEN %s AND %s", [location_start_date, location_end_date]
+    return "", []
+
+
+
 
 def lambda_handler(event, context):
     conn_V = None
