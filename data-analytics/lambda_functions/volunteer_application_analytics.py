@@ -78,6 +78,7 @@ def get_grouping(time_range):
         return {"trunc_unit": "day", "format": "YYYY-MM-DD"}
     return {"trunc_unit": "month", "format": "YYYY-MM"}
 
+
 def build_date_filter_location(time_range_location, location_start_date=None, location_end_date=None):
     """
     Returns (sql_fragment, params) for the vd.created_at date filter used by
@@ -98,8 +99,6 @@ def build_date_filter_location(time_range_location, location_start_date=None, lo
             )
         return "AND vd.created_at BETWEEN %s AND %s", [location_start_date, location_end_date]
     return "", []
-
-
 
 
 def lambda_handler(event, context):
@@ -182,49 +181,55 @@ def lambda_handler(event, context):
    
 
 
-def get_volunteer_activity_trend(cursor,users,volunteer_details):
-    try: 
-        query1 = f"""SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+def get_volunteer_activity_trend(cursor, users, volunteer_details, time_range="All", start_date=None, end_date=None):
+    try:
+        date_filter_sql, date_params = build_date_filter_trend(time_range, start_date, end_date)
+        grouping = get_grouping(time_range)
+        trunc_unit = grouping["trunc_unit"]
+        date_format = grouping["format"]
+
+        query1 = f"""SELECT TO_CHAR(DATE_TRUNC('{trunc_unit}', vd.created_at), '{date_format}') AS period,
         COUNT(DISTINCT u.user_id) AS count 
         FROM {users} u 
         JOIN {volunteer_details} vd ON u.user_id = vd.user_id 
         WHERE vd.created_at IS NOT NULL 
+        {date_filter_sql}
         GROUP BY 1 
         ORDER BY 1 ASC"""
-        cursor.execute(query1)
+        cursor.execute(query1, date_params)
 
-    
         new_volunteers = cursor.fetchall()
-        new_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in new_volunteers]
+        new_volunteers_final = [{"period": row[0], "count": int(row[1])} for row in new_volunteers]
 
         query2 = f""" 
-        SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        SELECT TO_CHAR(DATE_TRUNC('{trunc_unit}', vd.created_at), '{date_format}') AS period,
         COUNT(DISTINCT u.user_id) AS count FROM {users} u 
         JOIN {volunteer_details} vd ON u.user_id = vd.user_id
         WHERE vd.created_at IS NOT NULL
         AND u.user_status_id = 1 
+        {date_filter_sql}
         GROUP BY 1
         ORDER BY 1 ASC
         """
-        cursor.execute(query2)
+        cursor.execute(query2, date_params)
         active_volunteers = cursor.fetchall()
-        active_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in active_volunteers]
+        active_volunteers_final = [{"period": row[0], "count": int(row[1])} for row in active_volunteers]
 
         query3 = f"""
-        SELECT month, SUM(count) OVER (ORDER BY month) AS count
-        FROM ( SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
+        SELECT period, SUM(count) OVER (ORDER BY period) AS count
+        FROM ( SELECT TO_CHAR(DATE_TRUNC('{trunc_unit}', vd.created_at), '{date_format}') AS period,
         COUNT(DISTINCT u.user_id) AS count
         FROM {users} u
         JOIN {volunteer_details} vd
         ON u.user_id = vd.user_id
         WHERE vd.created_at IS NOT NULL
+        {date_filter_sql}
         GROUP BY 1 ) sub
-        ORDER BY month ASC;
+        ORDER BY period ASC;
         """
-        
-        cursor.execute(query3)
+        cursor.execute(query3, date_params)
         total_volunteers = cursor.fetchall()
-        total_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in total_volunteers]
+        total_volunteers_final = [{"period": row[0], "count": int(row[1])} for row in total_volunteers]
         return {
             "new_volunteers": new_volunteers_final,
             "active_volunteers": active_volunteers_final,
@@ -239,29 +244,29 @@ def get_volunteer_activity_trend(cursor,users,volunteer_details):
             "total_volunteers": []
         }
 
-def merge_monthly_data(list1, list2):
+def merge_period_data(list1, list2):
     merged= {}
     for row in list1 + list2 : 
-        month = row['month']
+        period = row['period']
         count = row['count']
 
-        merged[month] = merged.get(month,0) + count
+        merged[period] = merged.get(period,0) + count
 
     return [
-        {'month': month, 'count': merged[month]}
-        for month in sorted(merged.keys())] 
+        {'period': period, 'count': merged[period]}
+        for period in sorted(merged.keys())] 
 
 def merge_volunteer_activity_trend(volunteer_activity_trend_virginia, volunteer_activity_trend_ireland):
     return {
-        "new_volunteers": merge_monthly_data(
+        "new_volunteers": merge_period_data(
             volunteer_activity_trend_virginia.get("new_volunteers", []),
             volunteer_activity_trend_ireland.get("new_volunteers", [])
         ),
-        "active_volunteers": merge_monthly_data(
+        "active_volunteers": merge_period_data(
             volunteer_activity_trend_virginia.get("active_volunteers", []),
             volunteer_activity_trend_ireland.get("active_volunteers", [])
         ),
-        "total_volunteers": merge_monthly_data(
+        "total_volunteers": merge_period_data(
             volunteer_activity_trend_virginia.get("total_volunteers", []),
             volunteer_activity_trend_ireland.get("total_volunteers", [])
         )
