@@ -12,7 +12,6 @@ REAL_TABLE_USER_LOCATIONS_VIRGINIA ="virginia_dev_saayam_rdbms.user_locations"
 REAL_TABLE_COUNTRY_VIRGINIA ="virginia_dev_saayam_rdbms.country"
 REAL_TABLE_HELP_CATEGORIES_VIRGINIA = "virginia_dev_saayam_rdbms.help_categories"
 
-
 REAL_TABLE_STATE_IRELAND ="ireland_dev_saayam_rdbms.state"
 REAL_TABLE_USERS_IRELAND ="ireland_dev_saayam_rdbms.users"
 REAL_TABLE_VOLUNTEER_DETAILS_IRELAND ="ireland_dev_saayam_rdbms.volunteer_details"
@@ -49,11 +48,41 @@ def lambda_handler(event, context):
     cursor_I = None
 
     safe_response = {
-        "volunteer_activity_trend":{
-        "new_volunteers": [],
-        "active_volunteers": [],
-        "total_volunteers": []},
-        "volunteers_by_location":[]
+        "7D": {
+            "volunteer_activity_trend":{
+                "new_volunteers": [],
+                "active_volunteers": [],
+                "total_volunteers": []},
+            "volunteers_by_location":[]
+        },
+        "30D": {
+            "volunteer_activity_trend":{
+                "new_volunteers": [],
+                "active_volunteers": [],
+                "total_volunteers": []},
+            "volunteers_by_location":[]
+        },
+        "1Y": {
+            "volunteer_activity_trend":{
+                "new_volunteers": [],
+                "active_volunteers": [],
+                "total_volunteers": []},
+            "volunteers_by_location":[]
+        },
+        "All": {
+            "volunteer_activity_trend":{
+                "new_volunteers": [],
+                "active_volunteers": [],
+                "total_volunteers": []},
+            "volunteers_by_location":[]
+        },
+        "Custom": {
+            "volunteer_activity_trend":{
+                "new_volunteers": [],
+                "active_volunteers": [],
+                "total_volunteers": []},
+            "volunteers_by_location":[]
+        }
     }
 
     try:
@@ -72,23 +101,64 @@ def lambda_handler(event, context):
         chart_type = request_body.get("chart_type", "Bar Chart")
         skill = request_body.get("skill", "All Skills")
         
-        time_range = request_body.get("time_range", "All")
         start_date = request_body.get("start_date", None)
         end_date = request_body.get("end_date", None)
 
-        time_range_loc = request_body.get("time_range_location", "All")
         start_date_loc = request_body.get("location_start_date", None)
         end_date_loc = request_body.get("location_end_date", None)
-     
-        volunteer_activity_trend_virginia = get_volunteer_activity_trend(cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA, time_range, start_date, end_date)
-        volunteers_by_location_virginia =  get_volunteers_by_location(cursor_V,REAL_TABLE_USERS_VIRGINIA,REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,REAL_TABLE_COUNTRY_VIRGINIA,REAL_TABLE_USER_SKILL_VIRGINIA,REAL_TABLE_HELP_CATEGORIES_VIRGINIA, country, chart_type, skill, time_range_loc, start_date_loc, end_date_loc)
 
-        volunteer_activity_trend_ireland = get_volunteer_activity_trend(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND, time_range, start_date, end_date)
-        volunteers_by_location_ireland =  get_volunteers_by_location(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND, REAL_TABLE_COUNTRY_IRELAND, REAL_TABLE_USER_SKILLS_IRELAND, REAL_TABLE_HELP_CATEGORIES_IRELAND,country, chart_type,skill, time_range_loc, start_date_loc, end_date_loc)
+        # -------- 7D -------
+        vat_7D = get_volunteer_activity_by_time_range_VI_combined(cursor_V, cursor_I, "7D")
+        vbl_7D = get_volunteer_locations_by_time_range_VI_combined(cursor_V, cursor_I, country, chart_type, skill, "7D")
+
+        # -------- 30D -------  
+        vat_30D = get_volunteer_activity_by_time_range_VI_combined(cursor_V, cursor_I, "30D")
+        vbl_30D = get_volunteer_locations_by_time_range_VI_combined(cursor_V, cursor_I, country, chart_type, skill, "30D")
+
+        # -------- 1Y -------
+        vat_1Y = get_volunteer_activity_by_time_range_VI_combined(cursor_V, cursor_I, "1Y")
+        vbl_1Y = get_volunteer_locations_by_time_range_VI_combined(cursor_V, cursor_I, country, chart_type, skill, "1Y")
+
+        # -------- All -------
+        vat_All = get_volunteer_activity_by_time_range_VI_combined(cursor_V, cursor_I, "All")
+        vbl_All = get_volunteer_locations_by_time_range_VI_combined(cursor_V, cursor_I, country, chart_type, skill, "All")
+
+        # -------- Custom -------
+        custom = {"volunteer_activity_trend": 
+                  {"new_volunteers": [], 
+                   "active_volunteers": [], 
+                   "total_volunteers": []}, 
+                  "volunteers_by_location": []}
+        
+        vat_Custom = None
+        if start_date and end_date:
+            vat_Custom = get_volunteer_activity_by_time_range_VI_combined(cursor_V, cursor_I, "Custom", start_date, end_date)
+            custom["volunteer_activity_trend"] = vat_Custom
+        
+        vbl_Custom = None
+        if start_date_loc and end_date_loc:
+            vbl_Custom = get_volunteer_locations_by_time_range_VI_combined(cursor_V, cursor_I, country, chart_type, skill, "Custom", start_date_loc, end_date_loc)
+            custom["volunteers_by_location"] = vbl_Custom
 
         response_data = {
-            "volunteer_activity_trend" : merge_volunteer_activity_trend(volunteer_activity_trend_virginia, volunteer_activity_trend_ireland ),
-            "volunteers_by_location" : merge_volunteer_by_location(volunteers_by_location_virginia, volunteers_by_location_ireland)
+            "7D": {
+                "volunteer_activity_trend": vat_7D,
+                "volunteers_by_location": vbl_7D
+            },
+            "30D": {
+                "volunteer_activity_trend": vat_30D,
+                "volunteers_by_location": vbl_30D
+            },
+            "1Y": {
+                "volunteer_activity_trend": vat_1Y,
+                "volunteers_by_location": vbl_1Y
+            },
+            "All": {
+                "volunteer_activity_trend": vat_All,
+                "volunteers_by_location": vbl_All
+            },
+            "Custom": custom
+
         }
 
         return {
@@ -127,7 +197,28 @@ def lambda_handler(event, context):
         if conn_I:
             conn_I.close()
         print("Ireland Database connection closed")
-   
+
+def get_volunteer_activity_by_time_range_VI_combined(cursor_V, cursor_I, time_range, start_date=None, end_date=None):
+    """
+    Fetches volunteer activity trend data for both Virginia and Ireland databases, merges the results, and returns the combined data.
+    """
+    volunteer_activity_trend_virginia = get_volunteer_activity_trend(cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA, time_range, start_date, end_date)
+    volunteer_activity_trend_ireland = get_volunteer_activity_trend(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND, time_range, start_date, end_date)
+
+    vat = merge_volunteer_activity_trend(volunteer_activity_trend_virginia, volunteer_activity_trend_ireland)
+    return vat
+
+def get_volunteer_locations_by_time_range_VI_combined(cursor_V, cursor_I, country, chart_type, skill, time_range_loc, location_start_date=None, location_end_date=None):
+    """
+    Fetches volunteer location data for both Virginia and Ireland databases, merges the results, and returns
+    the combined data.
+    """
+    volunteers_by_location_virginia = get_volunteers_by_location(cursor_V,REAL_TABLE_USERS_VIRGINIA,REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,REAL_TABLE_COUNTRY_VIRGINIA,REAL_TABLE_USER_SKILL_VIRGINIA,REAL_TABLE_HELP_CATEGORIES_VIRGINIA, country, chart_type, skill, time_range_loc, location_start_date, location_end_date)
+    volunteers_by_location_ireland = get_volunteers_by_location(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND, REAL_TABLE_COUNTRY_IRELAND, REAL_TABLE_USER_SKILLS_IRELAND, REAL_TABLE_HELP_CATEGORIES_IRELAND,country, chart_type,skill, time_range_loc, location_start_date, location_end_date)
+
+    vbl = merge_volunteer_by_location(volunteers_by_location_virginia, volunteers_by_location_ireland)
+    return vbl
+
 def get_grouping(time_range):
     
     period = ""
