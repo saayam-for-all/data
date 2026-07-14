@@ -1,12 +1,12 @@
 import json
 import os
-import boto3 
+import boto3
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
-SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
+SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
 SLA = {
     "target_days": 10,
@@ -24,6 +24,7 @@ def get_default_response():
         "sla": SLA
     }
 
+
 def build_response(status_code, body):
     return {
         "statusCode": status_code,
@@ -35,11 +36,29 @@ def build_response(status_code, body):
     }
 
 def get_db_connection():
+    """
+    Uses AWS SSM Parameter Store in deployed (Lambda) environments.
+
+    For local testing, set LOCAL_DB=1 and provide DB_HOST / DB_NAME /
+    DB_USER / DB_PASSWORD / DB_PORT as environment variables (e.g. via
+    a local .env file). No production credentials are hardcoded in
+    either path.
+    """
+    if os.environ.get("LOCAL_DB") == "1":
+        return psycopg2.connect(
+            host=os.environ["DB_HOST"],
+            database=os.environ["DB_NAME"],
+            user=os.environ["DB_USER"],
+            password=os.environ["DB_PASSWORD"],
+            port=os.environ.get("DB_PORT", "5432"),
+            sslmode="require"
+        )
+
     ssm = boto3.client("ssm", region_name="us-east-1")
 
     response = ssm.get_parameter(
-    Name="/dev/saayam/db/Virginia/Analytics/user",
-    WithDecryption=True
+        Name="/dev/saayam/db/Virginia/Analytics/user",
+        WithDecryption=True
     )
 
     creds = json.loads(response["Parameter"]["Value"])
@@ -54,25 +73,33 @@ def get_db_connection():
     )
 
 def build_date_filter(time_range, start_date=None, end_date=None):
-    sql_date_condition = ""
-    sql_params = ()
+    """
+    Returns (sql_condition, params) for filtering on r.submission_date.
 
-    if time_range == "Custom" and start_date and end_date:
-        sql_date_condition = f"r.submission_date BETWEEN %s AND %s"
-        sql_params = (start_date, end_date)
-    elif time_range == "7D":
-        sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '7 days'"
+    sql_condition is always a valid boolean SQL expression ("1=1" as a
+    no-op when no filter applies), so callers can always write
+    `WHERE {sql_condition}` or `AND {sql_condition}` with no extra
+    branching required.
+
+    Raises ValueError if time_range is "Custom" and either start_date
+    or end_date is missing.
+    """
+    if time_range == "7D":
+        return "r.submission_date >= CURRENT_DATE - INTERVAL '7 days'", ()
     elif time_range == "30D":
-        sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '30 days'"
+        return "r.submission_date >= CURRENT_DATE - INTERVAL '30 days'", ()
     elif time_range == "1Y":
-        sql_date_condition = "r.submission_date >= CURRENT_DATE - INTERVAL '1 year'"
-    
-    return sql_date_condition, sql_params
+        return "r.submission_date >= CURRENT_DATE - INTERVAL '1 year'", ()
+    elif time_range == "Custom":
+        if not start_date or not end_date:
+            raise ValueError("Custom time_range requires both start_date and end_date")
+        return "r.submission_date BETWEEN %s AND %s", (start_date, end_date)
+
+    # "All" or any unrecognized value -> no-op filter
+    return "1=1", ()
 
 def fetch_request_status_distribution(cursor, time_range="All", start_date=None, end_date=None):
-    date_filter, params = build_date_filter(time_range, start_date, end_date)
-    date_filter_clause = f"WHERE {date_filter}" if date_filter else ""
-
+    date_condition, params = build_date_filter(time_range, start_date, end_date)
     query = f"""
         SELECT
             rs.req_status AS status,
@@ -80,14 +107,12 @@ def fetch_request_status_distribution(cursor, time_range="All", start_date=None,
         FROM {SCHEMA_NAME}.request r
         JOIN {SCHEMA_NAME}.request_status rs
             ON r.req_status_id = rs.req_status_id
-        {date_filter_clause}
+        WHERE {date_condition}
         GROUP BY rs.req_status
         ORDER BY rs.req_status;
     """
-
     cursor.execute(query, params)
     rows = cursor.fetchall()
-
     return [
         {
             "status": row["status"],
@@ -97,25 +122,19 @@ def fetch_request_status_distribution(cursor, time_range="All", start_date=None,
     ]
 
 def fetch_total_requests(cursor, time_range="All", start_date=None, end_date=None):
-    date_filter, params = build_date_filter(time_range, start_date, end_date)
-    date_filter_clause = f"WHERE {date_filter}" if date_filter else ""
-
+    date_condition, params = build_date_filter(time_range, start_date, end_date)
     query = f"""
         SELECT COUNT(r.req_id) AS total_requests
         FROM {SCHEMA_NAME}.request r
-        {date_filter_clause};
+        WHERE {date_condition};
     """
-
     cursor.execute(query, params)
     row = cursor.fetchone()
-
     return int(row["total_requests"]) if row and row["total_requests"] is not None else 0
 
 
 def fetch_average_resolution_time_by_category(cursor, time_range="All", start_date=None, end_date=None):
-    date_filter, params = build_date_filter(time_range, start_date, end_date)
-    date_filter_clause = f"AND {date_filter}" if date_filter else ""
-
+    date_condition, params = build_date_filter(time_range, start_date, end_date)
     query = f"""
         SELECT
             hc.cat_name AS category,
@@ -131,17 +150,15 @@ def fetch_average_resolution_time_by_category(cursor, time_range="All", start_da
         JOIN {SCHEMA_NAME}.request_status rs
             ON r.req_status_id = rs.req_status_id
         WHERE r.submission_date IS NOT NULL
-          AND r.serviced_date IS NOT NULL
-          AND r.serviced_date >= r.submission_date
-          AND UPPER(rs.req_status) IN ('COMPLETED', 'RESOLVED')
-          {date_filter_clause}
+            AND r.serviced_date IS NOT NULL
+            AND r.serviced_date >= r.submission_date
+            AND UPPER(rs.req_status) IN ('COMPLETED', 'RESOLVED')
+            AND {date_condition}
         GROUP BY hc.cat_name
         ORDER BY avg_hours DESC;
     """
-
     cursor.execute(query, params)
     rows = cursor.fetchall()
-
     return [
         {
             "category": row["category"],
@@ -154,29 +171,35 @@ def lambda_handler(event, context):
     conn = None
     cursor = None
     response_body = get_default_response()
-    
+
     time_range = event.get("time_range", "All")
-    start_date = event.get("start_date", None)
-    end_date = event.get("end_date", None)
+    start_date = event.get("start_date")
+    end_date = event.get("end_date")
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         try:
-            response_body["request_status_distribution"] = fetch_request_status_distribution(cursor, time_range, start_date, end_date)
+            response_body["request_status_distribution"] = fetch_request_status_distribution(
+                cursor, time_range, start_date, end_date
+            )
         except Exception as error:
             print(f"Status distribution query failed: {error}")
             response_body["request_status_distribution"] = []
 
         try:
-            response_body["total_requests"] = fetch_total_requests(cursor, time_range, start_date, end_date)
+            response_body["total_requests"] = fetch_total_requests(
+                cursor, time_range, start_date, end_date
+            )
         except Exception as error:
             print(f"Total request count query failed: {error}")
             response_body["total_requests"] = 0
 
         try:
-            response_body["average_resolution_time_by_category"] = fetch_average_resolution_time_by_category(cursor, time_range, start_date, end_date)
+            response_body["average_resolution_time_by_category"] = fetch_average_resolution_time_by_category(
+                cursor, time_range, start_date, end_date
+            )
         except Exception as error:
             print(f"Average resolution time query failed: {error}")
             response_body["average_resolution_time_by_category"] = []
@@ -193,8 +216,17 @@ def lambda_handler(event, context):
         if conn:
             conn.close()
 
-
 if __name__ == "__main__":
-    result_default = lambda_handler({}, None)
-    print(json.dumps(result_default, indent=2))
+    test_payloads = [
+        {},
+        {"time_range": "7D"},
+        {"time_range": "30D"},
+        {"time_range": "1Y"},
+        {"time_range": "All"},
+        {"time_range": "Custom", "start_date": "2026-05-01", "end_date": "2026-05-31"},
+    ]
+    for payload in test_payloads:
+        print(f"\n--- Testing payload: {payload} ---")
+        result = lambda_handler(payload, None)
+        print(json.dumps(result, indent=2))
 
