@@ -520,7 +520,7 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
     end_date
 )
         query= f"""SELECT
-                COALESCE(c.country_name, 'Unknown') AS country,
+                COALESCE(c.country_code, 'Unknown') AS country,
                 COUNT(DISTINCT u.user_id) AS count
             FROM {users} u
             JOIN {volunteer_details} vd
@@ -535,7 +535,7 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
 
         
         if country != "All Countries":
-            query += " AND c.country_name = %s"
+            query += " AND UPPER(c.country_code) = %s"
             params.append(country)
 
         if skill != 'All Skills':
@@ -549,7 +549,7 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
             params.append(skill)
         
         query += """
-            GROUP BY COALESCE(c.country_name, 'Unknown')
+            GROUP BY COALESCE(c.country_code, 'Unknown')
             ORDER BY count DESC;
         """
 
