@@ -72,12 +72,62 @@ def lambda_handler(event, context):
         chart_type = request_body.get("chart_type", "Bar Chart")
         skill = request_body.get("skill", "All Skills")
      
-        volunteer_activity_trend_virginia = get_volunteer_activity_trend(cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA)
-        volunteers_by_location_virginia =  get_volunteers_by_location(cursor_V,REAL_TABLE_USERS_VIRGINIA,REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,REAL_TABLE_COUNTRY_VIRGINIA,REAL_TABLE_USER_SKILL_VIRGINIA,REAL_TABLE_HELP_CATEGORIES_VIRGINIA,country,chart_type,skill)
+        time_range = request_body.get("time_range", "All")
+        start_date = request_body.get("start_date")
+        end_date = request_body.get("end_date")
 
-        volunteer_activity_trend_ireland = get_volunteer_activity_trend(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND)
-        volunteers_by_location_ireland =  get_volunteers_by_location(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND, REAL_TABLE_COUNTRY_IRELAND, REAL_TABLE_USER_SKILLS_IRELAND, REAL_TABLE_HELP_CATEGORIES_IRELAND,country, chart_type,skill)
+        time_range_location = request_body.get("time_range_location", "All")
+        location_start_date = request_body.get("location_start_date")
+        location_end_date = request_body.get("location_end_date")
 
+
+        volunteer_activity_trend_virginia = get_volunteer_activity_trend(
+            cursor_V,
+            REAL_TABLE_USERS_VIRGINIA,
+            REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,
+            time_range,
+            start_date,
+            end_date
+        )
+
+        volunteers_by_location_virginia = get_volunteers_by_location(
+            cursor_V,
+            REAL_TABLE_USERS_VIRGINIA,
+            REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,
+            REAL_TABLE_COUNTRY_VIRGINIA,
+            REAL_TABLE_USER_SKILL_VIRGINIA,
+            REAL_TABLE_HELP_CATEGORIES_VIRGINIA,
+            country,
+            chart_type,
+            skill,
+            time_range_location,
+            location_start_date,
+            location_end_date
+        )
+
+        volunteer_activity_trend_ireland = get_volunteer_activity_trend(
+            cursor_I,
+            REAL_TABLE_USERS_IRELAND,
+            REAL_TABLE_VOLUNTEER_DETAILS_IRELAND,
+            time_range,
+            start_date,
+            end_date
+        )
+
+        volunteers_by_location_ireland = get_volunteers_by_location(
+            cursor_I,
+            REAL_TABLE_USERS_IRELAND,
+            REAL_TABLE_VOLUNTEER_DETAILS_IRELAND,
+            REAL_TABLE_COUNTRY_IRELAND,
+            REAL_TABLE_USER_SKILLS_IRELAND,
+            REAL_TABLE_HELP_CATEGORIES_IRELAND,
+            country,
+            chart_type,
+            skill,
+            time_range_location,
+            location_start_date,
+            location_end_date
+        )
         response_data = {
             "volunteer_activity_trend" : merge_volunteer_activity_trend(volunteer_activity_trend_virginia, volunteer_activity_trend_ireland ),
             "volunteers_by_location" : merge_volunteer_by_location(volunteers_by_location_virginia, volunteers_by_location_ireland)
@@ -121,50 +171,135 @@ def lambda_handler(event, context):
         print("Ireland Database connection closed")
    
 
+def build_date_filter_trend(time_range):
+    if time_range == "7D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '7 days'"
 
-def get_volunteer_activity_trend(cursor,users,volunteer_details):
+    if time_range == "30D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '30 days'"
+
+    if time_range == "1Y":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '1 year'"
+
+    if time_range == "Custom":
+        return "AND vd.created_at::date BETWEEN %s AND %s"
+
+    return ""
+
+
+def build_date_filter_location(time_range):
+    if time_range == "7D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '7 days'"
+
+    if time_range == "30D":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '30 days'"
+
+    if time_range == "1Y":
+        return "AND vd.created_at >= CURRENT_DATE - INTERVAL '1 year'"
+
+    if time_range == "Custom":
+        return "AND vd.created_at::date BETWEEN %s AND %s"
+
+    return ""
+
+
+def get_grouping(time_range):
+    if time_range in ("7D", "30D", "Custom"):
+        return "day", "YYYY-MM-DD"
+
+    return "month", "YYYY-MM"
+
+
+def get_volunteer_activity_trend(
+    cursor,
+    users,
+    volunteer_details,
+    time_range="All",
+    start_date=None,
+    end_date=None
+):
     try: 
-        query1 = f"""SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
-        COUNT(DISTINCT u.user_id) AS count 
-        FROM {users} u 
-        JOIN {volunteer_details} vd ON u.user_id = vd.user_id 
-        WHERE vd.created_at IS NOT NULL 
-        GROUP BY 1 
-        ORDER BY 1 ASC"""
-        cursor.execute(query1)
+        date_filter = build_date_filter_trend(time_range)
+        grouping, date_format = get_grouping(time_range)
+        params = []
+
+        if time_range == "Custom":
+            if not start_date or not end_date:
+                raise ValueError("start_date and end_date are required for Custom range")
+
+            params = [start_date, end_date]
+        query1 = f"""
+            SELECT
+                TO_CHAR(
+                    DATE_TRUNC('{grouping}', vd.created_at),
+                    '{date_format}'
+                ) AS period,
+                COUNT(DISTINCT u.user_id) AS count
+            FROM {users} u
+            JOIN {volunteer_details} vd
+                ON u.user_id = vd.user_id
+            WHERE vd.created_at IS NOT NULL
+            {date_filter}
+            GROUP BY 1
+            ORDER BY 1 ASC
+        """
+        cursor.execute(query1, params)
 
     
         new_volunteers = cursor.fetchall()
-        new_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in new_volunteers]
-
+        new_volunteers_final = [
+            {"period": row[0], "count": int(row[1])}
+            for row in new_volunteers
+        ]
         query2 = f""" 
-        SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
-        COUNT(DISTINCT u.user_id) AS count FROM {users} u 
-        JOIN {volunteer_details} vd ON u.user_id = vd.user_id
-        WHERE vd.created_at IS NOT NULL
-        AND u.user_status_id = 1 
-        GROUP BY 1
-        ORDER BY 1 ASC
+            SELECT
+                TO_CHAR(
+                    DATE_TRUNC('{grouping}', vd.created_at),
+                    '{date_format}'
+                ) AS period,
+                COUNT(DISTINCT u.user_id) AS count
+            FROM {users} u
+            JOIN {volunteer_details} vd
+                ON u.user_id = vd.user_id
+            WHERE vd.created_at IS NOT NULL
+                AND u.user_status_id = 1
+            {date_filter}
+            GROUP BY 1
+            ORDER BY 1 ASC
         """
-        cursor.execute(query2)
+        cursor.execute(query2, params)
         active_volunteers = cursor.fetchall()
-        active_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in active_volunteers]
-
+        active_volunteers_final = [
+        {"period": row[0], "count": int(row[1])}
+        for row in active_volunteers
+    ]
         query3 = f"""
-        SELECT month, SUM(count) OVER (ORDER BY month) AS count
-        FROM ( SELECT TO_CHAR(DATE_TRUNC('month', vd.created_at), 'YYYY-MM') AS month,
-        COUNT(DISTINCT u.user_id) AS count
-        FROM {users} u
-        JOIN {volunteer_details} vd
-        ON u.user_id = vd.user_id
-        WHERE vd.created_at IS NOT NULL
-        GROUP BY 1 ) sub
-        ORDER BY month ASC;
+            SELECT
+                period,
+                SUM(count) OVER (ORDER BY period) AS count
+            FROM (
+                SELECT
+                    TO_CHAR(
+                        DATE_TRUNC('{grouping}', vd.created_at),
+                        '{date_format}'
+                    ) AS period,
+                    COUNT(DISTINCT u.user_id) AS count
+                FROM {users} u
+                JOIN {volunteer_details} vd
+                    ON u.user_id = vd.user_id
+                WHERE vd.created_at IS NOT NULL
+                {date_filter}
+                GROUP BY 1
+            ) sub
+            ORDER BY period ASC
         """
         
-        cursor.execute(query3)
+        cursor.execute(query3, params)
         total_volunteers = cursor.fetchall()
-        total_volunteers_final = [{"month": row[0], "count": int(row[1])} for row in total_volunteers]
+        total_volunteers_final = [
+          {"period": row[0], "count": int(row[1])}
+          for row in total_volunteers
+]
         return {
             "new_volunteers": new_volunteers_final,
             "active_volunteers": active_volunteers_final,
@@ -180,16 +315,18 @@ def get_volunteer_activity_trend(cursor,users,volunteer_details):
         }
 
 def merge_monthly_data(list1, list2):
-    merged= {}
-    for row in list1 + list2 : 
-        month = row['month']
-        count = row['count']
+    merged = {}
 
-        merged[month] = merged.get(month,0) + count
+    for row in list1 + list2:
+        period = row["period"]
+        count = row["count"]
+        merged[period] = merged.get(period, 0) + count
+
 
     return [
-        {'month': month, 'count': merged[month]}
-        for month in sorted(merged.keys())] 
+        {"period": period, "count": merged[period]}
+        for period in sorted(merged)
+    ]
 
 def merge_volunteer_activity_trend(volunteer_activity_trend_virginia, volunteer_activity_trend_ireland):
     return {
@@ -215,8 +352,32 @@ def merge_volunteer_by_location(list1, list2):
     return [ {"country": country, "count": merged[country]} for country in sorted(merged.keys()) ]
 
 
-def get_volunteers_by_location( cursor, users, volunteer_details, country_table, user_skills,help_categories,country='All Countries',chart_type="Bar Chart",skill="All Skills"):
+def get_volunteers_by_location(
+    cursor,
+    users,
+    volunteer_details,
+    country_table,
+    user_skills,
+    help_categories,
+    country="All Countries",
+    chart_type="Bar Chart",
+    skill="All Skills",
+    time_range_location="All",
+    location_start_date=None,
+    location_end_date=None
+):
     try: 
+        date_filter = build_date_filter_location(time_range_location)
+        params = []
+
+        if time_range_location == "Custom":
+            if not location_start_date or not location_end_date:
+                raise ValueError(
+                    "location_start_date and location_end_date are required "
+                    "for Custom range"
+                )
+
+            params = [location_start_date, location_end_date]
         query= f"""SELECT
                 COALESCE(c.country_code, 'Unknown') AS country,
                 COUNT(DISTINCT u.user_id) AS count
@@ -226,9 +387,9 @@ def get_volunteers_by_location( cursor, users, volunteer_details, country_table,
             LEFT JOIN {country_table} c
                 ON u.country_id = c.country_id
             WHERE 1=1
+            {date_filter}
             """
         
-        params = []
 
         
         if country != "All Countries":
