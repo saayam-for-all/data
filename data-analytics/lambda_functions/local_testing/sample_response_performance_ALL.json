@@ -1,0 +1,362 @@
+{
+  "request": {
+    "dashboard_type": "performance",
+    "time_filter": "ALL"
+  },
+  "statusCode": 200,
+  "response": {
+    "organization_performance": {
+      "summary": {
+        "average_rating": 3.83,
+        "rated_organizations": 107,
+        "unrated_organizations": 13,
+        "five_star_organizations": 34
+      },
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 5
+        },
+        {
+          "rating": 2,
+          "count": 8
+        },
+        {
+          "rating": 3,
+          "count": 21
+        },
+        {
+          "rating": 4,
+          "count": 39
+        },
+        {
+          "rating": 5,
+          "count": 34
+        }
+      ],
+      "top_rated_organizations": [
+        {
+          "org_id": "ORG-00-000-000-093",
+          "org_name": "Anchor Collective 93",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "California",
+          "city": "San Jose"
+        },
+        {
+          "org_id": "ORG-00-000-000-007",
+          "org_name": "Anchor Partners 7",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Washington",
+          "city": "Seattle"
+        },
+        {
+          "org_id": "ORG-00-000-000-090",
+          "org_name": "Beacon Collective 90",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Jersey City"
+        },
+        {
+          "org_id": "ORG-00-000-000-069",
+          "org_name": "Beacon Trust 69",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "Buffalo"
+        },
+        {
+          "org_id": "ORG-00-000-000-059",
+          "org_name": "Beacon Works 59",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "New York City"
+        },
+        {
+          "org_id": "ORG-00-000-000-016",
+          "org_name": "Bridge Group 16",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "Albany"
+        },
+        {
+          "org_id": "ORG-00-000-000-086",
+          "org_name": "Bridge Network 86",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Texas",
+          "city": "Dallas"
+        },
+        {
+          "org_id": "ORG-00-000-000-008",
+          "org_name": "Bridge Partners 8",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        },
+        {
+          "org_id": "ORG-00-000-000-106",
+          "org_name": "Care Foundation 106",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        },
+        {
+          "org_id": "ORG-00-000-000-058",
+          "org_name": "Care Group 58",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "New York City"
+        }
+      ],
+      "top_collaborator_organizations": [
+        {
+          "org_id": "ORG-00-000-000-106",
+          "org_name": "Care Foundation 106",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        },
+        {
+          "org_id": "ORG-00-000-000-071",
+          "org_name": "Care Network 71",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "Buffalo"
+        },
+        {
+          "org_id": "ORG-00-000-000-114",
+          "org_name": "Harvest Alliance 114",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Virginia",
+          "city": "Arlington"
+        },
+        {
+          "org_id": "ORG-00-000-000-055",
+          "org_name": "Lumen Alliance 55",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        },
+        {
+          "org_id": "ORG-00-000-000-031",
+          "org_name": "Nova Labs 31",
+          "org_type": "for_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        },
+        {
+          "org_id": "ORG-00-000-000-089",
+          "org_name": "Nova Partners 89",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "Buffalo"
+        },
+        {
+          "org_id": "ORG-00-000-000-041",
+          "org_name": "Pioneer Initiative 41",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Texas",
+          "city": "Dallas"
+        },
+        {
+          "org_id": "ORG-00-000-000-120",
+          "org_name": "Unity Trust 120",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "New York City"
+        },
+        {
+          "org_id": "ORG-00-000-000-024",
+          "org_name": "Beacon Labs 24",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 4,
+          "state": "Washington",
+          "city": "Tacoma"
+        },
+        {
+          "org_id": "ORG-00-000-000-082",
+          "org_name": "Bridge Foundation 82",
+          "org_type": "for_profit",
+          "org_size": "medium",
+          "org_rating": 4,
+          "state": "California",
+          "city": "San Jose"
+        }
+      ],
+      "top_contributor_organizations": [
+        {
+          "org_id": "ORG-00-000-000-093",
+          "org_name": "Anchor Collective 93",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "California",
+          "city": "San Jose"
+        },
+        {
+          "org_id": "ORG-00-000-000-007",
+          "org_name": "Anchor Partners 7",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Washington",
+          "city": "Seattle"
+        },
+        {
+          "org_id": "ORG-00-000-000-069",
+          "org_name": "Beacon Trust 69",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "Buffalo"
+        },
+        {
+          "org_id": "ORG-00-000-000-059",
+          "org_name": "Beacon Works 59",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "New York City"
+        },
+        {
+          "org_id": "ORG-00-000-000-016",
+          "org_name": "Bridge Group 16",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "New York",
+          "city": "Albany"
+        },
+        {
+          "org_id": "ORG-00-000-000-086",
+          "org_name": "Bridge Network 86",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Texas",
+          "city": "Dallas"
+        },
+        {
+          "org_id": "ORG-00-000-000-008",
+          "org_name": "Bridge Partners 8",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        },
+        {
+          "org_id": "ORG-00-000-000-013",
+          "org_name": "Care Trust 13",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Virginia",
+          "city": "Richmond"
+        },
+        {
+          "org_id": "ORG-00-000-000-067",
+          "org_name": "Care Trust 67",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Texas",
+          "city": "Dallas"
+        },
+        {
+          "org_id": "ORG-00-000-000-055",
+          "org_name": "Lumen Alliance 55",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "Newark"
+        }
+      ],
+      "ratings_by_organization_type": [
+        {
+          "type": "non_profit",
+          "average_rating": 3.88,
+          "rated_organizations": 78,
+          "five_star_organizations": 27
+        },
+        {
+          "type": "for_profit",
+          "average_rating": 3.69,
+          "rated_organizations": 29,
+          "five_star_organizations": 7
+        }
+      ],
+      "ratings_by_organization_size": [
+        {
+          "size": "small",
+          "average_rating": 3.91,
+          "rated_organizations": 45,
+          "five_star_organizations": 13
+        },
+        {
+          "size": "large",
+          "average_rating": 3.81,
+          "rated_organizations": 26,
+          "five_star_organizations": 10
+        },
+        {
+          "size": "medium",
+          "average_rating": 3.75,
+          "rated_organizations": 36,
+          "five_star_organizations": 11
+        }
+      ]
+    },
+    "filters_applied": {
+      "time_filter": "ALL",
+      "start_date": null,
+      "end_date": null,
+      "org_type": null,
+      "org_size": null,
+      "state_id": null,
+      "city_name": null,
+      "org_rating": null,
+      "is_collaborator": null,
+      "is_contributor": null,
+      "group_by": "daily"
+    }
+  }
+}

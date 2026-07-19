@@ -1,0 +1,183 @@
+{
+  "request": {
+    "dashboard_type": "overview",
+    "time_filter": "30D",
+    "group_by": "daily"
+  },
+  "statusCode": 200,
+  "response": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 14,
+        "non_profit_organizations": 14,
+        "for_profit_organizations": 0,
+        "collaborator_organizations": 4,
+        "non_collaborator_organizations": 10,
+        "contributor_organizations": 9,
+        "non_contributor_organizations": 5
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2026-06-21",
+          "new_organizations": 1,
+          "total_organizations": 1
+        },
+        {
+          "period": "2026-06-22",
+          "new_organizations": 3,
+          "total_organizations": 4
+        },
+        {
+          "period": "2026-06-23",
+          "new_organizations": 1,
+          "total_organizations": 5
+        },
+        {
+          "period": "2026-06-26",
+          "new_organizations": 1,
+          "total_organizations": 6
+        },
+        {
+          "period": "2026-06-27",
+          "new_organizations": 1,
+          "total_organizations": 7
+        },
+        {
+          "period": "2026-06-28",
+          "new_organizations": 1,
+          "total_organizations": 8
+        },
+        {
+          "period": "2026-07-04",
+          "new_organizations": 1,
+          "total_organizations": 9
+        },
+        {
+          "period": "2026-07-06",
+          "new_organizations": 1,
+          "total_organizations": 10
+        },
+        {
+          "period": "2026-07-07",
+          "new_organizations": 1,
+          "total_organizations": 11
+        },
+        {
+          "period": "2026-07-09",
+          "new_organizations": 1,
+          "total_organizations": 12
+        },
+        {
+          "period": "2026-07-14",
+          "new_organizations": 1,
+          "total_organizations": 13
+        },
+        {
+          "period": "2026-07-17",
+          "new_organizations": 1,
+          "total_organizations": 14
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "type": "non_profit",
+          "count": 14
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "size": "small",
+          "count": 8
+        },
+        {
+          "size": "medium",
+          "count": 4
+        },
+        {
+          "size": "large",
+          "count": 2
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state": "New Jersey",
+          "city": "Newark",
+          "count": 3
+        },
+        {
+          "state": "New Jersey",
+          "city": "Jersey City",
+          "count": 3
+        },
+        {
+          "state": "New York",
+          "city": "Buffalo",
+          "count": 2
+        },
+        {
+          "state": "Virginia",
+          "city": "Norfolk",
+          "count": 1
+        },
+        {
+          "state": "Virginia",
+          "city": "Arlington",
+          "count": 1
+        },
+        {
+          "state": "California",
+          "city": "San Jose",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Houston",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Dallas",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Austin",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "category": "collaborator",
+          "count": 4
+        },
+        {
+          "category": "non_collaborator",
+          "count": 10
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "category": "contributor",
+          "count": 9
+        },
+        {
+          "category": "non_contributor",
+          "count": 5
+        }
+      ]
+    },
+    "filters_applied": {
+      "time_filter": "30D",
+      "start_date": null,
+      "end_date": null,
+      "org_type": null,
+      "org_size": null,
+      "state_id": null,
+      "city_name": null,
+      "org_rating": null,
+      "is_collaborator": null,
+      "is_contributor": null,
+      "group_by": "daily"
+    }
+  }
+}
