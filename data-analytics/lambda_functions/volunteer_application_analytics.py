@@ -44,6 +44,21 @@ def parse_event_body(event):
     return {}
 
 
+def resolve_time_range(time_range, start_date, end_date):
+    """
+    Some callers send start_date/end_date without an explicit
+    "time_range": "Custom" field (see Test Cases 5 and 9 in the
+    acceptance-criteria doc). If both dates are present and no explicit
+    range was given, treat it as Custom. An explicitly-provided time_range
+    always wins.
+    """
+    if time_range:
+        return time_range
+    if start_date and end_date:
+        return "Custom"
+    return "All"
+
+
 def build_date_filter_trend(time_range, start_date=None, end_date=None):
     """
     Returns (sql_fragment, params) for the vd.created_at date filter used by
@@ -130,12 +145,43 @@ def lambda_handler(event, context):
         country = request_body.get("country", "All Countries")
         chart_type = request_body.get("chart_type", "Bar Chart")
         skill = request_body.get("skill", "All Skills")
-     
-        volunteer_activity_trend_virginia = get_volunteer_activity_trend(cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA)
-        volunteers_by_location_virginia =  get_volunteers_by_location(cursor_V,REAL_TABLE_USERS_VIRGINIA,REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,REAL_TABLE_COUNTRY_VIRGINIA,REAL_TABLE_USER_SKILL_VIRGINIA,REAL_TABLE_HELP_CATEGORIES_VIRGINIA,country,chart_type,skill)
 
-        volunteer_activity_trend_ireland = get_volunteer_activity_trend(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND)
-        volunteers_by_location_ireland =  get_volunteers_by_location(cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND, REAL_TABLE_COUNTRY_IRELAND, REAL_TABLE_USER_SKILLS_IRELAND, REAL_TABLE_HELP_CATEGORIES_IRELAND,country, chart_type,skill)
+        # --- Volunteer Activity Trend date filter ---
+        start_date = request_body.get("start_date")
+        end_date = request_body.get("end_date")
+        time_range = resolve_time_range(request_body.get("time_range"), start_date, end_date)
+
+        # --- Volunteers by Location date filter (independent of the trend filter) ---
+        # Accept both naming conventions in circulation:
+        #   issue spec:      location_start_date / location_end_date
+        #   test-cases doc:  start_date_location / end_date_location
+        location_start_date = request_body.get("location_start_date") or request_body.get("start_date_location")
+        location_end_date = request_body.get("location_end_date") or request_body.get("end_date_location")
+        time_range_location = resolve_time_range(
+            request_body.get("time_range_location"), location_start_date, location_end_date
+        )
+
+        volunteer_activity_trend_virginia = get_volunteer_activity_trend(
+            cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,
+            time_range, start_date, end_date
+        )
+        volunteers_by_location_virginia = get_volunteers_by_location(
+            cursor_V, REAL_TABLE_USERS_VIRGINIA, REAL_TABLE_VOLUNTEER_DETAILS_VIRGINIA,
+            REAL_TABLE_COUNTRY_VIRGINIA, REAL_TABLE_USER_SKILL_VIRGINIA, REAL_TABLE_HELP_CATEGORIES_VIRGINIA,
+            country, chart_type, skill,
+            time_range_location, location_start_date, location_end_date
+        )
+
+        volunteer_activity_trend_ireland = get_volunteer_activity_trend(
+            cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND,
+            time_range, start_date, end_date
+        )
+        volunteers_by_location_ireland = get_volunteers_by_location(
+            cursor_I, REAL_TABLE_USERS_IRELAND, REAL_TABLE_VOLUNTEER_DETAILS_IRELAND,
+            REAL_TABLE_COUNTRY_IRELAND, REAL_TABLE_USER_SKILLS_IRELAND, REAL_TABLE_HELP_CATEGORIES_IRELAND,
+            country, chart_type, skill,
+            time_range_location, location_start_date, location_end_date
+        )
 
         response_data = {
             "volunteer_activity_trend" : merge_volunteer_activity_trend(volunteer_activity_trend_virginia, volunteer_activity_trend_ireland ),
