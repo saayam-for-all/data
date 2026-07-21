@@ -1,0 +1,12 @@
+{
+  "trend": {
+    "time_range": "7D",
+    "start_date": null,
+    "end_date": null
+  },
+  "location": {
+    "time_range_location": "30D",
+    "location_start_date": null,
+    "location_end_date": null
+  }
+}
