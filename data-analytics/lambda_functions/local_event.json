@@ -1,0 +1,12 @@
+{
+  "trend": {
+    "time_range": "custom",
+    "start_date": "2026-05-01",
+    "end_date": "2026-07-31"
+  },
+  "location": {
+    "time_range_location": "custom",
+    "location_start_date": "2026-05-01",
+    "location_end_date": "2026-07-31"
+  }
+}
