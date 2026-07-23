@@ -20,9 +20,10 @@ This file tracks the status and details of tasks completed or in progress within
 
 ### [Issue #203] Real Database Integration for Additional Request Details Lambda
 * **Branch**: `203-implement-additional-request-details`
+* **Pull Request**: [#235](https://github.com/saayam-for-all/data/pull/235)
 * **Date Started**: July 22, 2026
 * **Date Completed**: July 22, 2026
-* **Status**: 🟢 Complete (Verified Locally)
+* **Status**: 🟢 Complete (PR Submitted)
 * **Description**: Created a new Lambda function `additional_request_details.py` to query Virginia's `req_add_info` table and format additional fields dynamically based on field types (text, checkboxes, dropdowns, and ISO timestamps).
 * **Key Changes**:
   * Created [additional_request_details.py](file:///Users/antarangsharma/Desktop/Saayam/data-analytics/lambda_functions/additional_request_details.py) querying `req_add_info` for the given `request_id`.
