@@ -19,8 +19,8 @@ This file tracks the status and details of tasks completed or in progress within
   * Added a local offline test simulator utilizing `unittest.mock`.
 
 ### [Issue #203] Real Database Integration for Additional Request Details Lambda
-* **Branch**: `203-implement-additional-request-details`
-* **Pull Request**: [#235](https://github.com/saayam-for-all/data/pull/235)
+* **Branch**: `203-request-details`
+* **Pull Request**: [#236](https://github.com/saayam-for-all/data/pull/236)
 * **Date Started**: July 22, 2026
 * **Date Completed**: July 22, 2026
 * **Status**: 🟢 Complete (PR Submitted)
