@@ -160,10 +160,21 @@ def lambda_handler(event, context):
     Main Lambda entry point. Handles request validation, DB connection,
     data fetching, mapping, and error handling.
     """
-    # Check request_id in event payload
+    # Check request_id in event payload (handling both direct invocation and API Gateway string/dict body wrapper)
+    payload = event
+    if isinstance(event, dict) and "body" in event:
+        body = event["body"]
+        if isinstance(body, str):
+            try:
+                payload = json.loads(body)
+            except Exception:
+                pass
+        elif isinstance(body, dict):
+            payload = body
+
     request_id = None
-    if isinstance(event, dict):
-        request_id = event.get("request_id")
+    if isinstance(payload, dict):
+        request_id = payload.get("request_id")
         
     if not request_id:
         # Error DE 1002: request_id missing from payload
@@ -303,5 +314,14 @@ if __name__ == "__main__":
         body = json.loads(result["body"])
         assert body == {"requestId": "REQ-NOT-EXIST", "additionalFields": {}}
         print("Success: Non-existent request_id returned empty additionalFields!")
+
+        # Test Case 5: API Gateway payload wrapper format
+        print("\n--- Test Case 5: API Gateway body wrapper ---")
+        result = lambda_handler({"body": "{\"request_id\": \"REQ-00-000-000-015x\"}"}, None)
+        assert result["statusCode"] == 200
+        body = json.loads(result["body"])
+        assert body["requestId"] == "REQ-00-000-000-015x"
+        assert body["additionalFields"] == {"2.2.x": "shirt", "2.2.x1": ["2.2.B.x"]}
+        print("Success: API Gateway body wrapper parsed successfully!")
 
         print("\nAll assertions passed successfully!")
