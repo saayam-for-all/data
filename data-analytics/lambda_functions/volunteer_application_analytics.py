@@ -390,6 +390,24 @@ def get_volunteers_by_location(
         return []
 
 def get_db_config(db):
+    # --- Commit #6: LOCAL_TESTING toggle ---
+    # When LOCAL_TESTING=true is set in the environment, skip SSM entirely
+    # and connect to a local Postgres instance instead. This lets both the
+    # "Virginia" and "Ireland" branches point at local schemas
+    # (virginia_dev_saayam_rdbms / ireland_dev_saayam_rdbms) inside the same
+    # local database, so none of the table-reference constants above need
+    # to change for local testing.
+    if os.environ.get("LOCAL_TESTING", "false").lower() == "true":
+        if db not in ("Virginia", "Ireland"):
+            raise ValueError("Database must be either Virginia or Ireland")
+        return {
+            "host": os.environ.get("LOCAL_DB_HOST", "localhost"),
+            "port": int(os.environ.get("LOCAL_DB_PORT", 5432)),
+            "dbname": os.environ.get("LOCAL_DB_NAME", "saayam_local"),
+            "user": os.environ.get("LOCAL_DB_USER", "postgres"),
+            "password": os.environ.get("LOCAL_DB_PASSWORD", "postgres"),
+        }
+
     ssm = boto3.client("ssm", region_name="us-east-1")
 
     if db == "Virginia":
