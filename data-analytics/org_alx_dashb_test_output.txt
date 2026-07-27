@@ -1,0 +1,1310 @@
+
+=== 1. Overview - defaults (no filters) ===
+Request: {}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 8,
+      "non_profit_organizations": 6,
+      "for_profit_organizations": 2,
+      "collaborator_organizations": 4,
+      "non_collaborator_organizations": 4,
+      "contributor_organizations": 4,
+      "non_contributor_organizations": 4
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-06-29",
+        "count": 1
+      },
+      {
+        "period": "2026-07-05",
+        "count": 1
+      },
+      {
+        "period": "2026-07-09",
+        "count": 1
+      },
+      {
+        "period": "2026-07-17",
+        "count": 1
+      },
+      {
+        "period": "2026-07-21",
+        "count": 1
+      },
+      {
+        "period": "2026-07-22",
+        "count": 1
+      },
+      {
+        "period": "2026-07-24",
+        "count": 1
+      },
+      {
+        "period": "2026-07-26",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 6
+      },
+      {
+        "type": "for_profit",
+        "count": 2
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 4
+      },
+      {
+        "is_collaborator": false,
+        "count": 4
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 4
+      },
+      {
+        "is_contributor": false,
+        "count": 4
+      }
+    ]
+  }
+}
+
+=== 2. Overview - time_filter=7D ===
+Request: {"time_filter": "7D"}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 4,
+      "non_profit_organizations": 3,
+      "for_profit_organizations": 1,
+      "collaborator_organizations": 2,
+      "non_collaborator_organizations": 2,
+      "contributor_organizations": 2,
+      "non_contributor_organizations": 2
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-07-21",
+        "count": 1
+      },
+      {
+        "period": "2026-07-22",
+        "count": 1
+      },
+      {
+        "period": "2026-07-24",
+        "count": 1
+      },
+      {
+        "period": "2026-07-26",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 3
+      },
+      {
+        "type": "for_profit",
+        "count": 1
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 2
+      },
+      {
+        "is_collaborator": false,
+        "count": 2
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 2
+      },
+      {
+        "is_contributor": false,
+        "count": 2
+      }
+    ]
+  }
+}
+
+=== 3. Overview - time_filter=1Y, group_by=yearly ===
+Request: {"time_filter": "1Y", "group_by": "yearly"}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 16,
+      "non_profit_organizations": 11,
+      "for_profit_organizations": 5,
+      "collaborator_organizations": 8,
+      "non_collaborator_organizations": 8,
+      "contributor_organizations": 9,
+      "non_contributor_organizations": 7
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2025",
+        "count": 2
+      },
+      {
+        "period": "2026",
+        "count": 14
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 11
+      },
+      {
+        "type": "for_profit",
+        "count": 5
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 5
+      },
+      {
+        "size": "medium",
+        "count": 7
+      },
+      {
+        "size": "large",
+        "count": 4
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Naperville",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Rochester",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Dallas",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Houston",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Alexandria",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 8
+      },
+      {
+        "is_collaborator": false,
+        "count": 8
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 9
+      },
+      {
+        "is_contributor": false,
+        "count": 7
+      }
+    ]
+  }
+}
+
+=== 4. Overview - time_filter=ALL, group_by=weekly ===
+Request: {"time_filter": "ALL", "group_by": "weekly"}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 20,
+      "non_profit_organizations": 14,
+      "for_profit_organizations": 6,
+      "collaborator_organizations": 10,
+      "non_collaborator_organizations": 10,
+      "contributor_organizations": 11,
+      "non_contributor_organizations": 9
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2024-W49",
+        "count": 1
+      },
+      {
+        "period": "2025-W11",
+        "count": 1
+      },
+      {
+        "period": "2025-W18",
+        "count": 1
+      },
+      {
+        "period": "2025-W25",
+        "count": 1
+      },
+      {
+        "period": "2025-W40",
+        "count": 1
+      },
+      {
+        "period": "2025-W47",
+        "count": 1
+      },
+      {
+        "period": "2026-W02",
+        "count": 1
+      },
+      {
+        "period": "2026-W09",
+        "count": 1
+      },
+      {
+        "period": "2026-W13",
+        "count": 1
+      },
+      {
+        "period": "2026-W18",
+        "count": 1
+      },
+      {
+        "period": "2026-W21",
+        "count": 1
+      },
+      {
+        "period": "2026-W24",
+        "count": 1
+      },
+      {
+        "period": "2026-W27",
+        "count": 2
+      },
+      {
+        "period": "2026-W28",
+        "count": 1
+      },
+      {
+        "period": "2026-W29",
+        "count": 1
+      },
+      {
+        "period": "2026-W30",
+        "count": 4
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 14
+      },
+      {
+        "type": "for_profit",
+        "count": 6
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 7
+      },
+      {
+        "size": "medium",
+        "count": 8
+      },
+      {
+        "size": "large",
+        "count": 5
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Naperville",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "San Antonio",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Alexandria",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "San Jose",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Rochester",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Syracuse",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Houston",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Peoria",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Dallas",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 10
+      },
+      {
+        "is_collaborator": false,
+        "count": 10
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 11
+      },
+      {
+        "is_contributor": false,
+        "count": 9
+      }
+    ]
+  }
+}
+
+=== 5. Overview - org_type=for_profit ===
+Request: {"time_filter": "ALL", "org_type": "for_profit"}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 6,
+      "non_profit_organizations": 0,
+      "for_profit_organizations": 6,
+      "collaborator_organizations": 0,
+      "non_collaborator_organizations": 6,
+      "contributor_organizations": 3,
+      "non_contributor_organizations": 3
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2025-03-14",
+        "count": 1
+      },
+      {
+        "period": "2025-09-30",
+        "count": 1
+      },
+      {
+        "period": "2026-02-27",
+        "count": 1
+      },
+      {
+        "period": "2026-05-18",
+        "count": 1
+      },
+      {
+        "period": "2026-07-05",
+        "count": 1
+      },
+      {
+        "period": "2026-07-21",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "for_profit",
+        "count": 6
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "San Antonio",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": false,
+        "count": 6
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 3
+      },
+      {
+        "is_contributor": false,
+        "count": 3
+      }
+    ]
+  }
+}
+
+=== 6. Overview - org_size=large + state_id=CA ===
+Request: {"time_filter": "ALL", "org_size": "large", "state_id": "CA"}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 3,
+      "non_profit_organizations": 3,
+      "for_profit_organizations": 0,
+      "collaborator_organizations": 2,
+      "non_collaborator_organizations": 1,
+      "contributor_organizations": 2,
+      "non_contributor_organizations": 1
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2025-05-03",
+        "count": 1
+      },
+      {
+        "period": "2026-06-29",
+        "count": 1
+      },
+      {
+        "period": "2026-07-22",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 3
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 3
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "San Jose",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 2
+      },
+      {
+        "is_collaborator": false,
+        "count": 1
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 2
+      },
+      {
+        "is_contributor": false,
+        "count": 1
+      }
+    ]
+  }
+}
+
+=== 7. Overview - city_name=chicago (lowercase, tests ILIKE) ===
+Request: {"time_filter": "ALL", "city_name": "chicago"}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 1,
+      "non_profit_organizations": 1,
+      "for_profit_organizations": 0,
+      "collaborator_organizations": 1,
+      "non_collaborator_organizations": 0,
+      "contributor_organizations": 1,
+      "non_contributor_organizations": 0
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-07-17",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 1
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 1
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 1
+      }
+    ]
+  }
+}
+
+=== 8. Overview - is_collaborator=false + is_contributor=true ===
+Request: {"time_filter": "ALL", "is_collaborator": false, "is_contributor": true}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 5,
+      "non_profit_organizations": 2,
+      "for_profit_organizations": 3,
+      "collaborator_organizations": 0,
+      "non_collaborator_organizations": 5,
+      "contributor_organizations": 5,
+      "non_contributor_organizations": 0
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2025-09-30",
+        "count": 1
+      },
+      {
+        "period": "2026-02-27",
+        "count": 1
+      },
+      {
+        "period": "2026-05-18",
+        "count": 1
+      },
+      {
+        "period": "2026-07-09",
+        "count": 1
+      },
+      {
+        "period": "2026-07-22",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 2
+      },
+      {
+        "type": "for_profit",
+        "count": 3
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": false,
+        "count": 5
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 5
+      }
+    ]
+  }
+}
+
+=== 9. Performance - org_rating=5 ===
+Request: {"dashboard_type": "performance", "time_filter": "ALL", "org_rating": 5}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 5.0,
+      "rated_organizations": 5,
+      "unrated_organizations": 0,
+      "five_star_organizations": 5
+    },
+    "rating_distribution": [
+      {
+        "rating": 5,
+        "count": 5
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      }
+    ],
+    "top_contributor_organizations": [
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      }
+    ],
+    "ratings_by_organization_type": [
+      {
+        "type": "non_profit",
+        "average_rating": 5.0,
+        "count": 5
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "size": "small",
+        "average_rating": 5.0,
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "average_rating": 5.0,
+        "count": 2
+      }
+    ]
+  }
+}
+
+=== 10. Performance - time_filter=CUSTOM (last 30 days) + is_collaborator=true ===
+Request: {"dashboard_type": "performance", "time_filter": "CUSTOM", "start_date": "2026-06-27", "end_date": "2026-07-27", "is_collaborator": true}
+Local database connected successfully.
+Local database connection closed
+statusCode: 200
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 4.5,
+      "rated_organizations": 4,
+      "unrated_organizations": 0,
+      "five_star_organizations": 2
+    },
+    "rating_distribution": [
+      {
+        "rating": 4,
+        "count": 2
+      },
+      {
+        "rating": 5,
+        "count": 2
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-002",
+        "org_name": "Community Bridge NY",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-008",
+        "org_name": "Golden State Aid CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-002",
+        "org_name": "Community Bridge NY",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-008",
+        "org_name": "Golden State Aid CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      }
+    ],
+    "top_contributor_organizations": [
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      }
+    ],
+    "ratings_by_organization_type": [
+      {
+        "type": "non_profit",
+        "average_rating": 4.5,
+        "count": 4
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "size": "small",
+        "average_rating": 5.0,
+        "count": 2
+      },
+      {
+        "size": "medium",
+        "average_rating": 4.0,
+        "count": 1
+      },
+      {
+        "size": "large",
+        "average_rating": 4.0,
+        "count": 1
+      }
+    ]
+  }
+}
