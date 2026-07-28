@@ -34,9 +34,10 @@ This file tracks the status and details of tasks completed or in progress within
 
 ### [Issue #228] Create Organization Analytics API for the Organization Dashboard
 * **Branch**: `228-org-analytics`
+* **Pull Request**: [#245](https://github.com/saayam-for-all/data/pull/245)
 * **Date Started**: July 28, 2026
 * **Date Completed**: July 28, 2026
-* **Status**: 🟢 Complete (Verified Locally)
+* **Status**: 🟢 Complete (PR Submitted)
 * **Description**: Developed the Organization Analytics API serving both Organization Overview and Organization Performance dashboards with support for all time filters, geo filters, organization attributes, and dynamic schema safety for the missing `is_contributor` column.
 * **Key Changes**:
   * Created [organization_analytics.py](file:///Users/antarangsharma/Desktop/Saayam/data-analytics/lambda_functions/organization_analytics.py) containing POST endpoints logic for `/analytics/organizations`.
