@@ -1,0 +1,150 @@
+{
+  "request": {
+    "dashboard_type": "overview",
+    "time_filter": "30D",
+    "group_by": "daily"
+  },
+  "response": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 9,
+        "non_profit_organizations": 7,
+        "for_profit_organizations": 2,
+        "collaborator_organizations": 5,
+        "non_collaborator_organizations": 4,
+        "contributor_organizations": 5,
+        "non_contributor_organizations": 4
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2026-06-27",
+          "count": 1
+        },
+        {
+          "period": "2026-06-30",
+          "count": 1
+        },
+        {
+          "period": "2026-07-05",
+          "count": 1
+        },
+        {
+          "period": "2026-07-10",
+          "count": 1
+        },
+        {
+          "period": "2026-07-15",
+          "count": 1
+        },
+        {
+          "period": "2026-07-20",
+          "count": 1
+        },
+        {
+          "period": "2026-07-21",
+          "count": 1
+        },
+        {
+          "period": "2026-07-22",
+          "count": 1
+        },
+        {
+          "period": "2026-07-23",
+          "count": 1
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "org_type": "non_profit",
+          "count": 7
+        },
+        {
+          "org_type": "for_profit",
+          "count": 2
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "large",
+          "count": 4
+        },
+        {
+          "org_size": "medium",
+          "count": 3
+        },
+        {
+          "org_size": "small",
+          "count": 2
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state_id": "CA",
+          "state_name": "California",
+          "count": 3
+        },
+        {
+          "state_id": "VA",
+          "state_name": "Virginia",
+          "count": 3
+        },
+        {
+          "state_id": "TX",
+          "state_name": "Texas",
+          "count": 2
+        },
+        {
+          "state_id": "NY",
+          "state_name": "New York",
+          "count": 1
+        }
+      ],
+      "organizations_by_city": [
+        {
+          "city_name": "Austin",
+          "count": 2
+        },
+        {
+          "city_name": "Richmond",
+          "count": 2
+        },
+        {
+          "city_name": "San Diego",
+          "count": 2
+        },
+        {
+          "city_name": "New York",
+          "count": 1
+        },
+        {
+          "city_name": "Norfolk",
+          "count": 1
+        },
+        {
+          "city_name": "Los Angeles",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "label": "collaborator",
+          "count": 5
+        },
+        {
+          "label": "non_collaborator",
+          "count": 4
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "label": "contributor",
+          "count": 5
+        },
+        {
+          "label": "non_contributor",
+          "count": 4
+        }
+      ]
+    }
+  }
+}
