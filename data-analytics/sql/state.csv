@@ -1,0 +1,11 @@
+state_id,country_id,state_name,state_code,last_update_date
+ST-001,233,California,CA,
+ST-002,233,Texas,TX,
+ST-003,233,New York,NY,
+ST-004,233,Florida,FL,
+ST-005,233,Illinois,IL,
+ST-006,233,Pennsylvania,PA,
+ST-007,233,Ohio,OH,
+ST-008,233,Georgia,GA,
+ST-009,233,Virginia,VA,
+ST-010,233,Washington,WA,

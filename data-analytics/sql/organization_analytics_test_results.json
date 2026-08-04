@@ -1,0 +1,1847 @@
+{
+  "time_filter=7D, group_by=daily": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 0,
+        "non_profit_organizations": 0,
+        "for_profit_organizations": 0,
+        "collaborator_organizations": 0,
+        "non_collaborator_organizations": 0,
+        "contributor_organizations": 0,
+        "non_contributor_organizations": 0
+      },
+      "organization_activity_trend": [],
+      "organizations_by_type": [],
+      "organizations_by_size": [],
+      "organizations_by_location": [],
+      "collaborator_distribution": [
+        {
+          "type": "collaborator",
+          "count": 0
+        },
+        {
+          "type": "non_collaborator",
+          "count": 0
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "type": "contributor",
+          "count": 0
+        },
+        {
+          "type": "non_contributor",
+          "count": 0
+        }
+      ]
+    },
+    "organization_performance": {
+      "summary": {
+        "average_rating": 0,
+        "rated_organizations": 0,
+        "unrated_organizations": 0,
+        "five_star_organizations": 0
+      },
+      "rating_distribution": [],
+      "top_rated_organizations": [],
+      "top_collaborator_organizations": [],
+      "top_contributor_organizations": [],
+      "ratings_by_organization_type": [],
+      "ratings_by_organization_size": []
+    }
+  },
+  "time_filter=30D, group_by=daily": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 0,
+        "non_profit_organizations": 0,
+        "for_profit_organizations": 0,
+        "collaborator_organizations": 0,
+        "non_collaborator_organizations": 0,
+        "contributor_organizations": 0,
+        "non_contributor_organizations": 0
+      },
+      "organization_activity_trend": [],
+      "organizations_by_type": [],
+      "organizations_by_size": [],
+      "organizations_by_location": [],
+      "collaborator_distribution": [
+        {
+          "type": "collaborator",
+          "count": 0
+        },
+        {
+          "type": "non_collaborator",
+          "count": 0
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "type": "contributor",
+          "count": 0
+        },
+        {
+          "type": "non_contributor",
+          "count": 0
+        }
+      ]
+    },
+    "organization_performance": {
+      "summary": {
+        "average_rating": 0,
+        "rated_organizations": 0,
+        "unrated_organizations": 0,
+        "five_star_organizations": 0
+      },
+      "rating_distribution": [],
+      "top_rated_organizations": [],
+      "top_collaborator_organizations": [],
+      "top_contributor_organizations": [],
+      "ratings_by_organization_type": [],
+      "ratings_by_organization_size": []
+    }
+  },
+  "time_filter=1Y, group_by=monthly": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 89,
+        "non_profit_organizations": 67,
+        "for_profit_organizations": 22,
+        "collaborator_organizations": 32,
+        "non_collaborator_organizations": 57,
+        "contributor_organizations": 50,
+        "non_contributor_organizations": 39
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2025-08",
+          "count": 7
+        },
+        {
+          "period": "2025-09",
+          "count": 10
+        },
+        {
+          "period": "2025-10",
+          "count": 9
+        },
+        {
+          "period": "2025-11",
+          "count": 6
+        },
+        {
+          "period": "2025-12",
+          "count": 9
+        },
+        {
+          "period": "2026-01",
+          "count": 12
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 7
+        },
+        {
+          "period": "2026-04",
+          "count": 8
+        },
+        {
+          "period": "2026-05",
+          "count": 8
+        },
+        {
+          "period": "2026-06",
+          "count": 9
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "org_type": "non_profit",
+          "count": 67
+        },
+        {
+          "org_type": "for_profit",
+          "count": 22
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "medium",
+          "count": 44
+        },
+        {
+          "org_size": "small",
+          "count": 30
+        },
+        {
+          "org_size": "large",
+          "count": 15
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state": "Ohio",
+          "city": "Cincinnati",
+          "count": 7
+        },
+        {
+          "state": "California",
+          "city": "San Diego",
+          "count": 5
+        },
+        {
+          "state": "Virginia",
+          "city": "Virginia Beach",
+          "count": 5
+        },
+        {
+          "state": "Georgia",
+          "city": "Augusta",
+          "count": 4
+        },
+        {
+          "state": "Illinois",
+          "city": "Peoria",
+          "count": 4
+        },
+        {
+          "state": "Florida",
+          "city": "Tampa",
+          "count": 4
+        },
+        {
+          "state": "Ohio",
+          "city": "Cleveland",
+          "count": 4
+        },
+        {
+          "state": "Florida",
+          "city": "Miami",
+          "count": 4
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Erie",
+          "count": 4
+        },
+        {
+          "state": "Texas",
+          "city": "Dallas",
+          "count": 4
+        },
+        {
+          "state": "Washington",
+          "city": "Tacoma",
+          "count": 4
+        },
+        {
+          "state": "Virginia",
+          "city": "Norfolk",
+          "count": 4
+        },
+        {
+          "state": "Texas",
+          "city": "Houston",
+          "count": 3
+        },
+        {
+          "state": "Virginia",
+          "city": "Charlottesville",
+          "count": 3
+        },
+        {
+          "state": "New York",
+          "city": "Rochester",
+          "count": 3
+        },
+        {
+          "state": "Illinois",
+          "city": "Springfield",
+          "count": 3
+        },
+        {
+          "state": "Washington",
+          "city": "Seattle",
+          "count": 3
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Philadelphia",
+          "count": 2
+        },
+        {
+          "state": "Georgia",
+          "city": "Savannah",
+          "count": 2
+        },
+        {
+          "state": "Georgia",
+          "city": "Macon",
+          "count": 2
+        },
+        {
+          "state": "Georgia",
+          "city": "Atlanta",
+          "count": 2
+        },
+        {
+          "state": "California",
+          "city": "Los Angeles",
+          "count": 2
+        },
+        {
+          "state": "Illinois",
+          "city": "Chicago",
+          "count": 2
+        },
+        {
+          "state": "California",
+          "city": "Sacramento",
+          "count": 1
+        },
+        {
+          "state": "New York",
+          "city": "Buffalo",
+          "count": 1
+        },
+        {
+          "state": "Florida",
+          "city": "Orlando",
+          "count": 1
+        },
+        {
+          "state": "Ohio",
+          "city": "Toledo",
+          "count": 1
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Pittsburgh",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "San Antonio",
+          "count": 1
+        },
+        {
+          "state": "Virginia",
+          "city": "Richmond",
+          "count": 1
+        },
+        {
+          "state": "Washington",
+          "city": "Olympia",
+          "count": 1
+        },
+        {
+          "state": "Washington",
+          "city": "Spokane",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "type": "collaborator",
+          "count": 32
+        },
+        {
+          "type": "non_collaborator",
+          "count": 57
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "type": "contributor",
+          "count": 50
+        },
+        {
+          "type": "non_contributor",
+          "count": 39
+        }
+      ]
+    },
+    "organization_performance": {
+      "summary": {
+        "average_rating": 4.11,
+        "rated_organizations": 74,
+        "unrated_organizations": 15,
+        "five_star_organizations": 28
+      },
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "rating": 2,
+          "count": 2
+        },
+        {
+          "rating": 3,
+          "count": 13
+        },
+        {
+          "rating": 4,
+          "count": 30
+        },
+        {
+          "rating": 5,
+          "count": 28
+        }
+      ],
+      "top_rated_organizations": [
+        {
+          "org_id": "ORG-00-000-048-583",
+          "org_name": "Animal Rescue League TX",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-096-142",
+          "org_name": "Bright Future Alliance WA",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-078-932",
+          "org_name": "Education First Trust OH",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-030-955",
+          "org_name": "Environmental Defense Fund CA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-013-270",
+          "org_name": "Environmental Defense Fund TX",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-060-730",
+          "org_name": "Environmental Defense Fund VA",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-002-263",
+          "org_name": "Family Services Network VA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-010-562",
+          "org_name": "Food Bank United VA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-051-258",
+          "org_name": "Green Earth Initiative GA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "large"
+        },
+        {
+          "org_id": "ORG-00-000-054-261",
+          "org_name": "Green Earth Initiative GA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        }
+      ],
+      "top_collaborator_organizations": [
+        {
+          "org_id": "ORG-00-000-048-583",
+          "org_name": "Animal Rescue League TX",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-078-932",
+          "org_name": "Education First Trust OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-016-174",
+          "org_name": "Hope Foundation IL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-018-973",
+          "org_name": "Housing Aid Foundation VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-025-915",
+          "org_name": "Prison Reform Alliance PA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-056-775",
+          "org_name": "Substance Recovery Center FL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-032-153",
+          "org_name": "Urban Renewal Initiative OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-072-275",
+          "org_name": "Workforce Development Center OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-001-658",
+          "org_name": "Youth Empowerment League TX",
+          "rating": 5,
+          "org_type": "non_profit"
+        }
+      ],
+      "top_contributor_organizations": [
+        {
+          "org_id": "ORG-00-000-096-142",
+          "org_name": "Bright Future Alliance WA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-060-730",
+          "org_name": "Environmental Defense Fund VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-002-263",
+          "org_name": "Family Services Network VA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-010-562",
+          "org_name": "Food Bank United VA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-061-193",
+          "org_name": "Homeless Outreach Program PA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-016-174",
+          "org_name": "Hope Foundation IL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-018-973",
+          "org_name": "Housing Aid Foundation VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-037-761",
+          "org_name": "Microfinance Partners FL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-069-895",
+          "org_name": "Peace Building Institute VA",
+          "rating": 5,
+          "org_type": "non_profit"
+        }
+      ],
+      "ratings_by_organization_type": [
+        {
+          "org_type": "for_profit",
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 3,
+          "count": 4
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 4,
+          "count": 8
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 5,
+          "count": 5
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 3,
+          "count": 9
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 4,
+          "count": 22
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 5,
+          "count": 23
+        }
+      ],
+      "ratings_by_organization_size": [
+        {
+          "org_size": "large",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_size": "large",
+          "rating": 3,
+          "count": 1
+        },
+        {
+          "org_size": "large",
+          "rating": 4,
+          "count": 7
+        },
+        {
+          "org_size": "large",
+          "rating": 5,
+          "count": 4
+        },
+        {
+          "org_size": "medium",
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "org_size": "medium",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_size": "medium",
+          "rating": 3,
+          "count": 8
+        },
+        {
+          "org_size": "medium",
+          "rating": 4,
+          "count": 16
+        },
+        {
+          "org_size": "medium",
+          "rating": 5,
+          "count": 9
+        },
+        {
+          "org_size": "small",
+          "rating": 3,
+          "count": 4
+        },
+        {
+          "org_size": "small",
+          "rating": 4,
+          "count": 7
+        },
+        {
+          "org_size": "small",
+          "rating": 5,
+          "count": 15
+        }
+      ]
+    }
+  },
+  "time_filter=ALL, group_by=monthly": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 100,
+        "non_profit_organizations": 76,
+        "for_profit_organizations": 24,
+        "collaborator_organizations": 33,
+        "non_collaborator_organizations": 67,
+        "contributor_organizations": 57,
+        "non_contributor_organizations": 43
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2025-06",
+          "count": 3
+        },
+        {
+          "period": "2025-07",
+          "count": 8
+        },
+        {
+          "period": "2025-08",
+          "count": 7
+        },
+        {
+          "period": "2025-09",
+          "count": 10
+        },
+        {
+          "period": "2025-10",
+          "count": 9
+        },
+        {
+          "period": "2025-11",
+          "count": 6
+        },
+        {
+          "period": "2025-12",
+          "count": 9
+        },
+        {
+          "period": "2026-01",
+          "count": 12
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 7
+        },
+        {
+          "period": "2026-04",
+          "count": 8
+        },
+        {
+          "period": "2026-05",
+          "count": 8
+        },
+        {
+          "period": "2026-06",
+          "count": 9
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "org_type": "non_profit",
+          "count": 76
+        },
+        {
+          "org_type": "for_profit",
+          "count": 24
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "medium",
+          "count": 47
+        },
+        {
+          "org_size": "small",
+          "count": 35
+        },
+        {
+          "org_size": "large",
+          "count": 18
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state": "Ohio",
+          "city": "Cincinnati",
+          "count": 8
+        },
+        {
+          "state": "California",
+          "city": "San Diego",
+          "count": 6
+        },
+        {
+          "state": "Florida",
+          "city": "Tampa",
+          "count": 5
+        },
+        {
+          "state": "Virginia",
+          "city": "Virginia Beach",
+          "count": 5
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Erie",
+          "count": 4
+        },
+        {
+          "state": "Illinois",
+          "city": "Peoria",
+          "count": 4
+        },
+        {
+          "state": "Illinois",
+          "city": "Springfield",
+          "count": 4
+        },
+        {
+          "state": "Florida",
+          "city": "Miami",
+          "count": 4
+        },
+        {
+          "state": "Georgia",
+          "city": "Augusta",
+          "count": 4
+        },
+        {
+          "state": "Ohio",
+          "city": "Cleveland",
+          "count": 4
+        },
+        {
+          "state": "Texas",
+          "city": "Dallas",
+          "count": 4
+        },
+        {
+          "state": "Washington",
+          "city": "Tacoma",
+          "count": 4
+        },
+        {
+          "state": "Virginia",
+          "city": "Norfolk",
+          "count": 4
+        },
+        {
+          "state": "California",
+          "city": "Los Angeles",
+          "count": 3
+        },
+        {
+          "state": "Virginia",
+          "city": "Charlottesville",
+          "count": 3
+        },
+        {
+          "state": "New York",
+          "city": "Rochester",
+          "count": 3
+        },
+        {
+          "state": "Georgia",
+          "city": "Savannah",
+          "count": 3
+        },
+        {
+          "state": "Washington",
+          "city": "Seattle",
+          "count": 3
+        },
+        {
+          "state": "Texas",
+          "city": "Houston",
+          "count": 3
+        },
+        {
+          "state": "Illinois",
+          "city": "Chicago",
+          "count": 2
+        },
+        {
+          "state": "Washington",
+          "city": "Olympia",
+          "count": 2
+        },
+        {
+          "state": "Georgia",
+          "city": "Atlanta",
+          "count": 2
+        },
+        {
+          "state": "Florida",
+          "city": "Orlando",
+          "count": 2
+        },
+        {
+          "state": "Georgia",
+          "city": "Macon",
+          "count": 2
+        },
+        {
+          "state": "New York",
+          "city": "Buffalo",
+          "count": 2
+        },
+        {
+          "state": "Ohio",
+          "city": "Toledo",
+          "count": 2
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Philadelphia",
+          "count": 2
+        },
+        {
+          "state": "Illinois",
+          "city": "Naperville",
+          "count": 1
+        },
+        {
+          "state": "California",
+          "city": "Sacramento",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "San Antonio",
+          "count": 1
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Pittsburgh",
+          "count": 1
+        },
+        {
+          "state": "Virginia",
+          "city": "Richmond",
+          "count": 1
+        },
+        {
+          "state": "Washington",
+          "city": "Spokane",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "type": "collaborator",
+          "count": 33
+        },
+        {
+          "type": "non_collaborator",
+          "count": 67
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "type": "contributor",
+          "count": 57
+        },
+        {
+          "type": "non_contributor",
+          "count": 43
+        }
+      ]
+    },
+    "organization_performance": {
+      "summary": {
+        "average_rating": 4.08,
+        "rated_organizations": 80,
+        "unrated_organizations": 20,
+        "five_star_organizations": 29
+      },
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "rating": 2,
+          "count": 3
+        },
+        {
+          "rating": 3,
+          "count": 14
+        },
+        {
+          "rating": 4,
+          "count": 33
+        },
+        {
+          "rating": 5,
+          "count": 29
+        }
+      ],
+      "top_rated_organizations": [
+        {
+          "org_id": "ORG-00-000-048-583",
+          "org_name": "Animal Rescue League TX",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-096-142",
+          "org_name": "Bright Future Alliance WA",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-078-932",
+          "org_name": "Education First Trust OH",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-030-955",
+          "org_name": "Environmental Defense Fund CA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-013-270",
+          "org_name": "Environmental Defense Fund TX",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-060-730",
+          "org_name": "Environmental Defense Fund VA",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-002-263",
+          "org_name": "Family Services Network VA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-010-562",
+          "org_name": "Food Bank United VA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-051-258",
+          "org_name": "Green Earth Initiative GA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "large"
+        },
+        {
+          "org_id": "ORG-00-000-054-261",
+          "org_name": "Green Earth Initiative GA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        }
+      ],
+      "top_collaborator_organizations": [
+        {
+          "org_id": "ORG-00-000-048-583",
+          "org_name": "Animal Rescue League TX",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-078-932",
+          "org_name": "Education First Trust OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-016-174",
+          "org_name": "Hope Foundation IL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-018-973",
+          "org_name": "Housing Aid Foundation VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-025-915",
+          "org_name": "Prison Reform Alliance PA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-056-775",
+          "org_name": "Substance Recovery Center FL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-032-153",
+          "org_name": "Urban Renewal Initiative OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-072-275",
+          "org_name": "Workforce Development Center OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-001-658",
+          "org_name": "Youth Empowerment League TX",
+          "rating": 5,
+          "org_type": "non_profit"
+        }
+      ],
+      "top_contributor_organizations": [
+        {
+          "org_id": "ORG-00-000-096-142",
+          "org_name": "Bright Future Alliance WA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-060-730",
+          "org_name": "Environmental Defense Fund VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-002-263",
+          "org_name": "Family Services Network VA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-010-562",
+          "org_name": "Food Bank United VA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-061-193",
+          "org_name": "Homeless Outreach Program PA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-016-174",
+          "org_name": "Hope Foundation IL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-018-973",
+          "org_name": "Housing Aid Foundation VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-037-761",
+          "org_name": "Microfinance Partners FL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-086-852",
+          "org_name": "Ocean Conservation Group CA",
+          "rating": 5,
+          "org_type": "for_profit"
+        }
+      ],
+      "ratings_by_organization_type": [
+        {
+          "org_type": "for_profit",
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 3,
+          "count": 4
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 4,
+          "count": 9
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 5,
+          "count": 6
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 2,
+          "count": 2
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 3,
+          "count": 10
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 4,
+          "count": 24
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 5,
+          "count": 23
+        }
+      ],
+      "ratings_by_organization_size": [
+        {
+          "org_size": "large",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_size": "large",
+          "rating": 3,
+          "count": 2
+        },
+        {
+          "org_size": "large",
+          "rating": 4,
+          "count": 8
+        },
+        {
+          "org_size": "large",
+          "rating": 5,
+          "count": 4
+        },
+        {
+          "org_size": "medium",
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "org_size": "medium",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_size": "medium",
+          "rating": 3,
+          "count": 8
+        },
+        {
+          "org_size": "medium",
+          "rating": 4,
+          "count": 16
+        },
+        {
+          "org_size": "medium",
+          "rating": 5,
+          "count": 10
+        },
+        {
+          "org_size": "small",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_size": "small",
+          "rating": 3,
+          "count": 4
+        },
+        {
+          "org_size": "small",
+          "rating": 4,
+          "count": 9
+        },
+        {
+          "org_size": "small",
+          "rating": 5,
+          "count": 15
+        }
+      ]
+    }
+  },
+  "time_filter=CUSTOM, group_by=monthly": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 48,
+        "non_profit_organizations": 38,
+        "for_profit_organizations": 10,
+        "collaborator_organizations": 16,
+        "non_collaborator_organizations": 32,
+        "contributor_organizations": 27,
+        "non_contributor_organizations": 21
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2026-01",
+          "count": 12
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 7
+        },
+        {
+          "period": "2026-04",
+          "count": 8
+        },
+        {
+          "period": "2026-05",
+          "count": 8
+        },
+        {
+          "period": "2026-06",
+          "count": 9
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "org_type": "non_profit",
+          "count": 38
+        },
+        {
+          "org_type": "for_profit",
+          "count": 10
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "medium",
+          "count": 29
+        },
+        {
+          "org_size": "small",
+          "count": 10
+        },
+        {
+          "org_size": "large",
+          "count": 9
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state": "Ohio",
+          "city": "Cincinnati",
+          "count": 6
+        },
+        {
+          "state": "Texas",
+          "city": "Dallas",
+          "count": 3
+        },
+        {
+          "state": "Washington",
+          "city": "Tacoma",
+          "count": 3
+        },
+        {
+          "state": "Virginia",
+          "city": "Norfolk",
+          "count": 3
+        },
+        {
+          "state": "Pennsylvania",
+          "city": "Erie",
+          "count": 3
+        },
+        {
+          "state": "Virginia",
+          "city": "Virginia Beach",
+          "count": 3
+        },
+        {
+          "state": "Florida",
+          "city": "Miami",
+          "count": 2
+        },
+        {
+          "state": "Georgia",
+          "city": "Augusta",
+          "count": 2
+        },
+        {
+          "state": "Virginia",
+          "city": "Charlottesville",
+          "count": 2
+        },
+        {
+          "state": "Texas",
+          "city": "Houston",
+          "count": 2
+        },
+        {
+          "state": "Illinois",
+          "city": "Springfield",
+          "count": 2
+        },
+        {
+          "state": "Ohio",
+          "city": "Cleveland",
+          "count": 2
+        },
+        {
+          "state": "Washington",
+          "city": "Seattle",
+          "count": 2
+        },
+        {
+          "state": "Illinois",
+          "city": "Peoria",
+          "count": 2
+        },
+        {
+          "state": "Illinois",
+          "city": "Chicago",
+          "count": 2
+        },
+        {
+          "state": "California",
+          "city": "Sacramento",
+          "count": 1
+        },
+        {
+          "state": "Georgia",
+          "city": "Atlanta",
+          "count": 1
+        },
+        {
+          "state": "Florida",
+          "city": "Tampa",
+          "count": 1
+        },
+        {
+          "state": "Florida",
+          "city": "Orlando",
+          "count": 1
+        },
+        {
+          "state": "California",
+          "city": "San Diego",
+          "count": 1
+        },
+        {
+          "state": "California",
+          "city": "Los Angeles",
+          "count": 1
+        },
+        {
+          "state": "Georgia",
+          "city": "Savannah",
+          "count": 1
+        },
+        {
+          "state": "Ohio",
+          "city": "Toledo",
+          "count": 1
+        },
+        {
+          "state": "Washington",
+          "city": "Olympia",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "type": "collaborator",
+          "count": 16
+        },
+        {
+          "type": "non_collaborator",
+          "count": 32
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "type": "contributor",
+          "count": 27
+        },
+        {
+          "type": "non_contributor",
+          "count": 21
+        }
+      ]
+    },
+    "organization_performance": {
+      "summary": {
+        "average_rating": 4.13,
+        "rated_organizations": 38,
+        "unrated_organizations": 10,
+        "five_star_organizations": 16
+      },
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "rating": 3,
+          "count": 6
+        },
+        {
+          "rating": 4,
+          "count": 14
+        },
+        {
+          "rating": 5,
+          "count": 16
+        }
+      ],
+      "top_rated_organizations": [
+        {
+          "org_id": "ORG-00-000-048-583",
+          "org_name": "Animal Rescue League TX",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-078-932",
+          "org_name": "Education First Trust OH",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-030-955",
+          "org_name": "Environmental Defense Fund CA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-013-270",
+          "org_name": "Environmental Defense Fund TX",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-060-730",
+          "org_name": "Environmental Defense Fund VA",
+          "rating": 5,
+          "org_type": "for_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-010-562",
+          "org_name": "Food Bank United VA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "small"
+        },
+        {
+          "org_id": "ORG-00-000-051-258",
+          "org_name": "Green Earth Initiative GA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "large"
+        },
+        {
+          "org_id": "ORG-00-000-054-261",
+          "org_name": "Green Earth Initiative GA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "medium"
+        },
+        {
+          "org_id": "ORG-00-000-049-693",
+          "org_name": "Homeless Outreach Program OH",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "large"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit",
+          "org_size": "large"
+        }
+      ],
+      "top_collaborator_organizations": [
+        {
+          "org_id": "ORG-00-000-048-583",
+          "org_name": "Animal Rescue League TX",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-078-932",
+          "org_name": "Education First Trust OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-025-915",
+          "org_name": "Prison Reform Alliance PA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-032-153",
+          "org_name": "Urban Renewal Initiative OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-072-275",
+          "org_name": "Workforce Development Center OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-001-658",
+          "org_name": "Youth Empowerment League TX",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-028-869",
+          "org_name": "Animal Rescue League VA",
+          "rating": 4,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-038-357",
+          "org_name": "Clean Water Project VA",
+          "rating": 4,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-008-303",
+          "org_name": "Medical Aid Society IL",
+          "rating": 4,
+          "org_type": "non_profit"
+        }
+      ],
+      "top_contributor_organizations": [
+        {
+          "org_id": "ORG-00-000-060-730",
+          "org_name": "Environmental Defense Fund VA",
+          "rating": 5,
+          "org_type": "for_profit"
+        },
+        {
+          "org_id": "ORG-00-000-010-562",
+          "org_name": "Food Bank United VA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-090-131",
+          "org_name": "Medical Aid Society CA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-025-915",
+          "org_name": "Prison Reform Alliance PA",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-041-489",
+          "org_name": "Sports for Youth FL",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-032-153",
+          "org_name": "Urban Renewal Initiative OH",
+          "rating": 5,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-028-869",
+          "org_name": "Animal Rescue League VA",
+          "rating": 4,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-031-778",
+          "org_name": "Bright Future Alliance OH",
+          "rating": 4,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-059-518",
+          "org_name": "Food Bank United WA",
+          "rating": 4,
+          "org_type": "non_profit"
+        },
+        {
+          "org_id": "ORG-00-000-097-564",
+          "org_name": "Green Earth Initiative VA",
+          "rating": 4,
+          "org_type": "non_profit"
+        }
+      ],
+      "ratings_by_organization_type": [
+        {
+          "org_type": "for_profit",
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 3,
+          "count": 1
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 4,
+          "count": 3
+        },
+        {
+          "org_type": "for_profit",
+          "rating": 5,
+          "count": 2
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 3,
+          "count": 5
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 4,
+          "count": 11
+        },
+        {
+          "org_type": "non_profit",
+          "rating": 5,
+          "count": 14
+        }
+      ],
+      "ratings_by_organization_size": [
+        {
+          "org_size": "large",
+          "rating": 3,
+          "count": 1
+        },
+        {
+          "org_size": "large",
+          "rating": 4,
+          "count": 3
+        },
+        {
+          "org_size": "large",
+          "rating": 5,
+          "count": 4
+        },
+        {
+          "org_size": "medium",
+          "rating": 1,
+          "count": 1
+        },
+        {
+          "org_size": "medium",
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "org_size": "medium",
+          "rating": 3,
+          "count": 5
+        },
+        {
+          "org_size": "medium",
+          "rating": 4,
+          "count": 10
+        },
+        {
+          "org_size": "medium",
+          "rating": 5,
+          "count": 5
+        },
+        {
+          "org_size": "small",
+          "rating": 4,
+          "count": 1
+        },
+        {
+          "org_size": "small",
+          "rating": 5,
+          "count": 7
+        }
+      ]
+    }
+  }
+}
