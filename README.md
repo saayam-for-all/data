@@ -23,7 +23,7 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 | Sub-Team | Focus | Leads |
 |----------|-------|-------|
 | **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib Baig** · **Sana Desai** |
-| **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi Deshpande** · **Vighnesh Sridhar** |
+| **Data Analytics** | Dashboards, analytics, insights, reporting | **Sahil Mane** · **Vighnesh Sridhar** |
 | **Project Management** | Task planning, coordination, timelines | **Janhavi Chavan** · **Ruthwik Dhaipulle** |
 
 ---
@@ -129,10 +129,10 @@ Most tasks are assigned to 2+ people. Coordinate with your pair. If you need to 
 | Role | Who | Reach Via |
 |------|-----|-----------|
 | **Data Engineering Leads** | **Saquib Baig** · **Sana Desai** | Team WhatsApp group |
-| **Data Analytics Leads** | **Prachi Deshpande** · **Vighnesh Sridhar** | Team WhatsApp group |
+| **Data Analytics Leads** | **Sahil Mane** · **Vighnesh Sridhar** | Team WhatsApp group |
 | **Project Managers** | **Janhavi Chavan** · **Ruthwik Dhaipulle** | Team WhatsApp group |
 | **Org Lead / Scrum** | **Rao Bhethanabotla** | (408) 390-1725 — escalation only |
-| **Offer Letters** | **Sri Tejaswi Vadapalli** / **Sharanya Gowda** | WhatsApp |
+| **Offer Letters** |  **Sharanya Gowda** | WhatsApp |
 | **Access Issues** | [Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5) | Google Form |
 
 ---
