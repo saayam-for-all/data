@@ -47,6 +47,8 @@ def json_text(value: Any) -> str:
 
 def make_user_ids(count: int, start: int = 101) -> List[str]:
     return [f"U{start + i}" for i in range(count)]
+def make_request_ids(count: int, start: int = 101) -> List[str]:
+    return [f"R{start + i}" for i in range(count)]
 
 
 def build_skill_map(volunteer_rows: Sequence[Dict[str, Any]]) -> Dict[str, List[str]]:
