@@ -1,0 +1,362 @@
+{
+  "request": {
+    "dashboard_type": "performance",
+    "time_filter": "ALL"
+  },
+  "statusCode": 200,
+  "response": {
+    "organization_performance": {
+      "summary": {
+        "average_rating": 3.23,
+        "rated_organizations": 40,
+        "unrated_organizations": 0,
+        "five_star_organizations": 12
+      },
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 5
+        },
+        {
+          "rating": 2,
+          "count": 9
+        },
+        {
+          "rating": 3,
+          "count": 10
+        },
+        {
+          "rating": 4,
+          "count": 4
+        },
+        {
+          "rating": 5,
+          "count": 12
+        }
+      ],
+      "top_rated_organizations": [
+        {
+          "org_id": "ORG-00-000-000-419",
+          "org_name": "Cedar Valley Community Foundation",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "California",
+          "city": "New Susanville"
+        },
+        {
+          "org_id": "ORG-00-000-000-436",
+          "org_name": "Golden Gate Education Fund",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Arizona",
+          "city": "Kyleborough"
+        },
+        {
+          "org_id": "ORG-00-000-000-404",
+          "org_name": "Harbor Family Services",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Minnesota",
+          "city": "Lake Nancyview"
+        },
+        {
+          "org_id": "ORG-00-000-000-401",
+          "org_name": "Harbor Veterans Support",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Alaska",
+          "city": "North Judithbury"
+        },
+        {
+          "org_id": "ORG-00-000-000-411",
+          "org_name": "Hopewell Veterans Support",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "Rhode Island",
+          "city": "South Rachelborough"
+        },
+        {
+          "org_id": "ORG-00-000-000-409",
+          "org_name": "Lakeside Veterans Support",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Montana",
+          "city": "Williamview"
+        },
+        {
+          "org_id": "ORG-00-000-000-431",
+          "org_name": "Maplewood Housing Trust",
+          "org_type": "for_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Virginia",
+          "city": "Sandrastad"
+        },
+        {
+          "org_id": "ORG-00-000-000-422",
+          "org_name": "Meadowbrook Housing Trust",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Nevada",
+          "city": "Leehaven"
+        },
+        {
+          "org_id": "ORG-00-000-000-434",
+          "org_name": "Northgate Community Foundation",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Michigan",
+          "city": "West Williamport"
+        },
+        {
+          "org_id": "ORG-00-000-000-408",
+          "org_name": "Riverside Environmental Coalition",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Iowa",
+          "city": "Lake Debbie"
+        }
+      ],
+      "top_collaborator_organizations": [
+        {
+          "org_id": "ORG-00-000-000-419",
+          "org_name": "Cedar Valley Community Foundation",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "California",
+          "city": "New Susanville"
+        },
+        {
+          "org_id": "ORG-00-000-000-436",
+          "org_name": "Golden Gate Education Fund",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Arizona",
+          "city": "Kyleborough"
+        },
+        {
+          "org_id": "ORG-00-000-000-404",
+          "org_name": "Harbor Family Services",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Minnesota",
+          "city": "Lake Nancyview"
+        },
+        {
+          "org_id": "ORG-00-000-000-411",
+          "org_name": "Hopewell Veterans Support",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 5,
+          "state": "Rhode Island",
+          "city": "South Rachelborough"
+        },
+        {
+          "org_id": "ORG-00-000-000-431",
+          "org_name": "Maplewood Housing Trust",
+          "org_type": "for_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Virginia",
+          "city": "Sandrastad"
+        },
+        {
+          "org_id": "ORG-00-000-000-422",
+          "org_name": "Meadowbrook Housing Trust",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Nevada",
+          "city": "Leehaven"
+        },
+        {
+          "org_id": "ORG-00-000-000-408",
+          "org_name": "Riverside Environmental Coalition",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Iowa",
+          "city": "Lake Debbie"
+        },
+        {
+          "org_id": "ORG-00-000-000-427",
+          "org_name": "Silverline Senior Care Network",
+          "org_type": "for_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Montana",
+          "city": "Wendyville"
+        },
+        {
+          "org_id": "ORG-00-000-000-420",
+          "org_name": "Lakeside Legal Aid Society",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 4,
+          "state": "Nebraska",
+          "city": "Barkerfurt"
+        },
+        {
+          "org_id": "ORG-00-000-000-423",
+          "org_name": "Maplewood Veterans Support",
+          "org_type": "for_profit",
+          "org_size": "medium",
+          "org_rating": 4,
+          "state": "Alabama",
+          "city": "Smithberg"
+        }
+      ],
+      "top_contributor_organizations": [
+        {
+          "org_id": "ORG-00-000-000-401",
+          "org_name": "Harbor Veterans Support",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Alaska",
+          "city": "North Judithbury"
+        },
+        {
+          "org_id": "ORG-00-000-000-409",
+          "org_name": "Lakeside Veterans Support",
+          "org_type": "non_profit",
+          "org_size": "small",
+          "org_rating": 5,
+          "state": "Montana",
+          "city": "Williamview"
+        },
+        {
+          "org_id": "ORG-00-000-000-434",
+          "org_name": "Northgate Community Foundation",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "Michigan",
+          "city": "West Williamport"
+        },
+        {
+          "org_id": "ORG-00-000-000-429",
+          "org_name": "Unity Youth Alliance",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 5,
+          "state": "New Jersey",
+          "city": "South Williamton"
+        },
+        {
+          "org_id": "ORG-00-000-000-435",
+          "org_name": "Summit Relief Network",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 4,
+          "state": "Vermont",
+          "city": "Ortizmouth"
+        },
+        {
+          "org_id": "ORG-00-000-000-415",
+          "org_name": "Unity Senior Care Network",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 4,
+          "state": "Kansas",
+          "city": "Port Andrew"
+        },
+        {
+          "org_id": "ORG-00-000-000-406",
+          "org_name": "Harbor Senior Care Network",
+          "org_type": "for_profit",
+          "org_size": "medium",
+          "org_rating": 3,
+          "state": "Missouri",
+          "city": "Lake Deniseville"
+        },
+        {
+          "org_id": "ORG-00-000-000-424",
+          "org_name": "Liberty Senior Care Network",
+          "org_type": "for_profit",
+          "org_size": "large",
+          "org_rating": 3,
+          "state": "Arkansas",
+          "city": "East Amanda"
+        },
+        {
+          "org_id": "ORG-00-000-000-425",
+          "org_name": "Maplewood Animal Rescue",
+          "org_type": "non_profit",
+          "org_size": "large",
+          "org_rating": 3,
+          "state": "Texas",
+          "city": "Victoriaport"
+        },
+        {
+          "org_id": "ORG-00-000-000-403",
+          "org_name": "Northgate Education Fund",
+          "org_type": "non_profit",
+          "org_size": "medium",
+          "org_rating": 3,
+          "state": "Wisconsin",
+          "city": "Thomasberg"
+        }
+      ],
+      "ratings_by_organization_type": [
+        {
+          "type": "non_profit",
+          "average_rating": 3.62,
+          "rated_organizations": 21,
+          "five_star_organizations": 9
+        },
+        {
+          "type": "for_profit",
+          "average_rating": 2.79,
+          "rated_organizations": 19,
+          "five_star_organizations": 3
+        }
+      ],
+      "ratings_by_organization_size": [
+        {
+          "size": "small",
+          "average_rating": 3.5,
+          "rated_organizations": 10,
+          "five_star_organizations": 5
+        },
+        {
+          "size": "large",
+          "average_rating": 3.24,
+          "rated_organizations": 21,
+          "five_star_organizations": 6
+        },
+        {
+          "size": "medium",
+          "average_rating": 2.89,
+          "rated_organizations": 9,
+          "five_star_organizations": 1
+        }
+      ]
+    },
+    "filters_applied": {
+      "time_filter": "ALL",
+      "start_date": null,
+      "end_date": null,
+      "org_type": null,
+      "org_size": null,
+      "state_id": null,
+      "city_name": null,
+      "org_rating": null,
+      "is_collaborator": null,
+      "is_contributor": null,
+      "group_by": "daily"
+    }
+  }
+}
