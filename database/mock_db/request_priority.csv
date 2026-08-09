@@ -1,0 +1,5 @@
+req_priority_id,req_priority_name
+1,Low
+2,Medium
+3,High
+4,Urgent

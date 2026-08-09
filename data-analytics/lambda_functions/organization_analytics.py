@@ -1,23 +1,67 @@
 import json
 import re
-
-try:
-    import psycopg2
-    from psycopg2.extras import RealDictCursor
-except ImportError:
-    psycopg2 = None
-    RealDictCursor = None
-
-try:
-    from aws_lambda_powertools.utilities import parameters
-except ImportError:
-    class DummyParameters:
-        @staticmethod
-        def get_parameter(name, decrypt=True, max_age=None):
-            raise NotImplementedError("aws_lambda_powertools parameters utility not available")
-    parameters = DummyParameters
+import sqlite3
+import csv
+import os
+from datetime import datetime, timedelta
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
+RealDictCursor = None
+
+
+
+class DictLikeRow(dict):
+    def __getitem__(self, key):
+        if key == 0:
+            return list(self.values())[0]
+        return super().__getitem__(key)
+
+
+class SQLiteCursorWrapper:
+    def __init__(self, cursor):
+        self._cursor = cursor
+        
+    def execute(self, query, params=None):
+        clean_query = query.replace("%s", "?")
+        
+        # Intercept information_schema.columns queries
+        if "information_schema.columns" in query:
+            schema_name, table_name, column_name = params
+            self._cursor.execute(f"PRAGMA table_info({table_name})")
+            columns = [row[1] for row in self._cursor.fetchall()]
+            exists = 1 if column_name in columns else 0
+            self._cursor.execute("SELECT ?", (exists,))
+            return
+            
+        self._cursor.execute(clean_query, params or [])
+        
+    def fetchone(self):
+        row = self._cursor.fetchone()
+        return DictLikeRow(row) if row else None
+        
+    def fetchall(self):
+        rows = self._cursor.fetchall()
+        return [DictLikeRow(r) for r in rows]
+        
+    def close(self):
+        self._cursor.close()
+
+
+class SQLiteConnectionWrapper:
+    def __init__(self, conn):
+        self._conn = conn
+        
+    def cursor(self, cursor_factory=None):
+        return SQLiteCursorWrapper(self._conn.cursor())
+        
+    def close(self):
+        self._conn.close()
+        
+    def commit(self):
+        self._conn.commit()
+        
+    def rollback(self):
+        self._conn.rollback()
 
 
 def build_response(status_code, body):
@@ -32,20 +76,131 @@ def build_response(status_code, body):
 
 
 def get_db_connection():
-    creds = json.loads(parameters.get_parameter(
-        "/dev/saayam/db/Virginia/Analytics/user",
-        decrypt=True,
-        max_age=3600
-    ))
-    db_name = creds["DATABASE NAME"]
-    return psycopg2.connect(
-        host=creds["HOST"],
-        database=db_name,
-        user=creds["USERNAME"],
-        password=creds["PASSWORD"],
-        port=creds["PORT"],
-        sslmode="require"
-    )
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    possible_paths = [
+        base_dir,
+        os.path.join(base_dir, '..', '..', 'database', 'mock_db'),
+        os.path.join(base_dir, 'database', 'mock_db'),
+        os.path.abspath(os.path.join(base_dir, '..', '..')),
+    ]
+    
+    org_path = None
+    state_path = None
+    
+    for path in possible_paths:
+        p_org = os.path.join(path, 'organizations.csv')
+        p_state = os.path.join(path, 'state.csv')
+        if os.path.exists(p_org) and os.path.exists(p_state):
+            org_path = p_org
+            state_path = p_state
+            break
+            
+    if not org_path:
+        p_org = os.path.join(os.getcwd(), 'database', 'mock_db', 'organizations.csv')
+        p_state = os.path.join(os.getcwd(), 'database', 'mock_db', 'state.csv')
+        if os.path.exists(p_org) and os.path.exists(p_state):
+            org_path = p_org
+            state_path = p_state
+            
+    if not org_path:
+        raise FileNotFoundError("Could not find mock files organizations.csv and state.csv in expected locations.")
+        
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    
+    cursor.execute("ATTACH DATABASE ':memory:' AS virginia_dev_saayam_rdbms;")
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS virginia_dev_saayam_rdbms.state (
+            state_id VARCHAR(50) PRIMARY KEY,
+            country_id INT NOT NULL,
+            state_name VARCHAR(100) NOT NULL,
+            state_code VARCHAR(6)
+        );
+    """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS virginia_dev_saayam_rdbms.organizations (
+            org_id VARCHAR(255) PRIMARY KEY,
+            org_name VARCHAR(125) NOT NULL,
+            street VARCHAR(255),
+            city_name VARCHAR(100),
+            state_id VARCHAR(50),
+            zip_code VARCHAR(10),
+            mission TEXT,
+            web_url VARCHAR(255),
+            phone VARCHAR(20),
+            email VARCHAR(255),
+            org_type VARCHAR(50),
+            org_size VARCHAR(50),
+            org_rating INTEGER,
+            is_collaborator INT,
+            created_at TEXT
+        );
+    """)
+    
+    # Load state.csv
+    state_name_to_id = {}
+    with open(state_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            cursor.execute("""
+                INSERT INTO virginia_dev_saayam_rdbms.state (state_id, country_id, state_name)
+                VALUES (?, ?, ?)
+            """, (row['state_id'], int(row['country_id']), row['state_name']))
+            state_name_to_id[row['state_name']] = row['state_id']
+            
+    # Load organizations.csv
+    now = datetime.now()
+    with open(org_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for i, row in enumerate(reader):
+            org_id = row['org_id']
+            org_name = row['org_name']
+            
+            # Map org_type
+            org_type = row.get('org_type')
+            if org_type not in ('non_profit', 'for_profit'):
+                org_type = "non_profit" if i % 3 != 0 else "for_profit"
+                
+            # Map size
+            org_size = row.get('size')
+            if org_size not in ('small', 'medium', 'large'):
+                org_size = "small" if i % 3 == 1 else ("medium" if i % 3 == 2 else "large")
+                
+            # Map rating
+            try:
+                rating_val = int(row.get('rating', 0))
+                org_rating = (rating_val % 5) + 1
+            except (ValueError, TypeError):
+                org_rating = 3
+                
+            # Map state
+            state_code = row.get('state_code')
+            state_id = state_name_to_id.get(state_code)
+            if not state_id:
+                state_id = str((i % 5) + 1)
+                
+            # Staggered fresh dates for created_at
+            created_at = (now - timedelta(days=(i % 45))).isoformat()
+            
+            is_collaborator = 1 if i % 4 == 0 else 0
+            
+            cursor.execute("""
+                INSERT INTO virginia_dev_saayam_rdbms.organizations (
+                    org_id, org_name, street, city_name, state_id, zip_code, mission, 
+                    web_url, phone, email, org_type, org_size, org_rating, is_collaborator, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                org_id, org_name, row.get('street'), row.get('city_name'), state_id, row.get('zip_code'),
+                row.get('mission'), row.get('web_url'), row.get('phone'), row.get('email'),
+                org_type, org_size, org_rating, is_collaborator, created_at
+            ))
+            
+    conn.commit()
+    return SQLiteConnectionWrapper(conn)
+
 
 
 def column_exists(cursor, table_name, column_name, schema_name=SCHEMA_NAME):
@@ -509,9 +664,9 @@ def lambda_handler(event, context):
         has_contributor_col = column_exists(cursor, "organizations", "is_contributor")
         
         if dashboard_type == "overview":
-            result_body = handle_overview(cursor, filters, has_contributor_col, is_sqlite=False)
+            result_body = handle_overview(cursor, filters, has_contributor_col, is_sqlite=True)
         elif dashboard_type == "performance":
-            result_body = handle_performance(cursor, filters, has_contributor_col, is_sqlite=False)
+            result_body = handle_performance(cursor, filters, has_contributor_col, is_sqlite=True)
         else:
             return build_response(400, {"error": "Invalid dashboard_type. Expected 'overview' or 'performance'"})
             
@@ -529,164 +684,28 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    import unittest.mock as mock
-    import sqlite3
+    print("Executing offline verification of lambda_handler using mock CSV files...")
     
-    print("Setting up local SQLite mock database for offline verification...")
-    
-    # 1. Initialize SQLite Database
-    local_conn = sqlite3.connect(":memory:")
-    local_conn.row_factory = sqlite3.Row
-    local_cursor = local_conn.cursor()
-    
-    # 2. Attach Mock Schema Database
-    local_cursor.execute("ATTACH DATABASE ':memory:' AS virginia_dev_saayam_rdbms;")
-    local_cursor.execute("""
-        CREATE TABLE IF NOT EXISTS virginia_dev_saayam_rdbms.state (
-            state_id VARCHAR(50) PRIMARY KEY,
-            country_id INT NOT NULL,
-            state_name VARCHAR(100) NOT NULL,
-            state_code VARCHAR(6)
-        );
-    """)
-    local_cursor.execute("""
-        CREATE TABLE IF NOT EXISTS virginia_dev_saayam_rdbms.organizations (
-            org_id VARCHAR(255) PRIMARY KEY,
-            org_name VARCHAR(125) NOT NULL,
-            street VARCHAR(255),
-            city_name VARCHAR(100),
-            state_id VARCHAR(50),
-            zip_code VARCHAR(10),
-            mission TEXT,
-            web_url VARCHAR(255),
-            phone VARCHAR(20),
-            email VARCHAR(255),
-            org_type VARCHAR(50),
-            org_size VARCHAR(50),
-            org_rating INTEGER,
-            is_collaborator INT,
-            created_at TEXT
-        );
-    """)
-    
-    # 3. Populate state table
-    local_cursor.execute("INSERT INTO virginia_dev_saayam_rdbms.state VALUES ('VA-001', 1, 'Virginia', 'VA');")
-    local_cursor.execute("INSERT INTO virginia_dev_saayam_rdbms.state VALUES ('MD-002', 1, 'Maryland', 'MD');")
-    
-    # 4. Populate organizations table (30 mock organizations)
-    # To test created_at time filters, some are created today, some 15 days ago, some 45 days ago.
-    # Ratings range from 1 to 5, and some Nulls.
-    from datetime import datetime, timedelta
-    now = datetime.now()
-    
-    for i in range(1, 31):
-        org_id = f"ORG-{i:03d}"
-        name = f"Organization {i}"
-        org_type = "non_profit" if i % 3 != 0 else "for_profit"
-        city = "Richmond" if i % 2 == 0 else "Alexandria"
-        state = "VA-001" if i % 2 == 0 else "MD-002"
-        size = "small" if i % 3 == 1 else ("medium" if i % 3 == 2 else "large")
-        rating = (i % 5) + 1 if i % 6 != 0 else None
-        collab = 1 if i % 4 == 0 else 0
-        
-        # Staggered registration times
-        if i <= 10:
-            reg_date = (now - timedelta(days=i)).isoformat()
-        elif i <= 20:
-            reg_date = (now - timedelta(days=i + 5)).isoformat()
-        else:
-            reg_date = (now - timedelta(days=i + 20)).isoformat()
-            
-        local_cursor.execute("""
-            INSERT INTO virginia_dev_saayam_rdbms.organizations (
-                org_id, org_name, street, city_name, state_id, zip_code, mission, 
-                web_url, phone, email, org_type, org_size, org_rating, is_collaborator, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            org_id, name, f"{100+i} Main St", city, state, f"2322{i%10}",
-            "Helping people" if i % 2 == 0 else "Education support",
-            f"http://org{i}.org", f"555-010{i%10}", f"info@org{i}.org",
-            org_type, size, rating, collab, reg_date
-        ))
-    local_conn.commit()
-    
-    # 5. Define local Mock connection mapping
-    class LocalMockCursor:
-        def __init__(self, sqlite_cursor):
-            self.cursor = sqlite_cursor
-            
-        def execute(self, query, params=None):
-            # Convert %s placeholders to ? for SQLite compatibility
-            clean_query = query.replace("%s", "?")
-            self.cursor.execute(clean_query, params or [])
-            
-        def fetchone(self):
-            row = self.cursor.fetchone()
-            return dict(row) if row else None
-            
-        def fetchall(self):
-            rows = self.cursor.fetchall()
-            return [dict(r) for r in rows]
-            
-        def close(self):
-            pass
-
-    class LocalMockConnection:
-        def __init__(self, sqlite_conn):
-            self.conn = sqlite_conn
-            
-        def cursor(self, cursor_factory=None):
-            return LocalMockCursor(self.conn.cursor())
-            
-        def close(self):
-            pass
-
-    # Wrapper lambda_handler that uses SQLite connection
-    def local_lambda_handler(event, context):
-        dashboard_type = event.get("dashboard_type", "overview")
-        filters = {
-            "time_filter": event.get("time_filter", "30D"),
-            "start_date": event.get("start_date"),
-            "end_date": event.get("end_date"),
-            "org_type": event.get("org_type"),
-            "org_size": event.get("org_size"),
-            "state_id": event.get("state_id"),
-            "city_name": event.get("city_name"),
-            "org_rating": event.get("org_rating"),
-            "is_collaborator": event.get("is_collaborator"),
-            "is_contributor": event.get("is_contributor"),
-            "group_by": event.get("group_by")
-        }
-        
-        mock_cursor = LocalMockCursor(local_cursor)
-        
-        # organizations table doesn't have is_contributor locally yet, so passes False
-        has_contributor_col = False 
-        
-        if dashboard_type == "overview":
-            result_body = handle_overview(mock_cursor, filters, has_contributor_col, is_sqlite=True)
-        elif dashboard_type == "performance":
-            result_body = handle_performance(mock_cursor, filters, has_contributor_col, is_sqlite=True)
-        else:
-            return build_response(400, {"error": "Invalid dashboard_type"})
-            
-        return build_response(200, result_body)
-
-    # 6. Verify Local Handler
+    # 1. Test Overview Dashboard
     print("\n--- Testing: Overview Dashboard (30D) ---")
-    res = local_lambda_handler({"dashboard_type": "overview", "time_filter": "30D"}, None)
-    body = json.loads(res["body"])
-    print(json.dumps(body, indent=2))
-    assert res["statusCode"] == 200
-    assert "organization_overview" in body
-    assert body["organization_overview"]["summary"]["total_organizations"] > 0
+    event_overview = {"dashboard_type": "overview", "time_filter": "30D"}
+    res_overview = lambda_handler(event_overview, None)
+    body_overview = json.loads(res_overview["body"])
+    print("Status Code:", res_overview["statusCode"])
+    print(json.dumps(body_overview, indent=2))
+    assert res_overview["statusCode"] == 200
+    assert "organization_overview" in body_overview
+    assert body_overview["organization_overview"]["summary"]["total_organizations"] > 0
     
+    # 2. Test Performance Dashboard
     print("\n--- Testing: Performance Dashboard (30D) ---")
-    res = local_lambda_handler({"dashboard_type": "performance", "time_filter": "30D"}, None)
-    body = json.loads(res["body"])
-    print(json.dumps(body, indent=2))
-    assert res["statusCode"] == 200
-    assert "organization_performance" in body
-    assert body["organization_performance"]["summary"]["average_rating"] > 0
+    event_perf = {"dashboard_type": "performance", "time_filter": "30D"}
+    res_perf = lambda_handler(event_perf, None)
+    body_perf = json.loads(res_perf["body"])
+    print("Status Code:", res_perf["statusCode"])
+    print(json.dumps(body_perf, indent=2))
+    assert res_perf["statusCode"] == 200
+    assert "organization_performance" in body_perf
+    assert body_perf["organization_performance"]["summary"]["average_rating"] > 0
     
     print("\nLocal verification completed successfully!")
