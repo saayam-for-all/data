@@ -1,0 +1,342 @@
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 3.23,
+      "rated_organizations": 40,
+      "unrated_organizations": 0,
+      "five_star_organizations": 12
+    },
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "count": 5
+      },
+      {
+        "rating": 2,
+        "count": 9
+      },
+      {
+        "rating": 3,
+        "count": 10
+      },
+      {
+        "rating": 4,
+        "count": 4
+      },
+      {
+        "rating": 5,
+        "count": 12
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "ORG00019",
+        "org_name": "Cedar Valley Community Foundation",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "CA",
+        "city_name": "New Susanville"
+      },
+      {
+        "org_id": "ORG00036",
+        "org_name": "Golden Gate Education Fund",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small",
+        "state_id": "AZ",
+        "city_name": "Kyleborough"
+      },
+      {
+        "org_id": "ORG00004",
+        "org_name": "Harbor Family Services",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "MN",
+        "city_name": "Lake Nancyview"
+      },
+      {
+        "org_id": "ORG00001",
+        "org_name": "Harbor Veterans Support",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small",
+        "state_id": "AK",
+        "city_name": "North Judithbury"
+      },
+      {
+        "org_id": "ORG00011",
+        "org_name": "Hopewell Veterans Support",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium",
+        "state_id": "RI",
+        "city_name": "South Rachelborough"
+      },
+      {
+        "org_id": "ORG00009",
+        "org_name": "Lakeside Veterans Support",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small",
+        "state_id": "MT",
+        "city_name": "Williamview"
+      },
+      {
+        "org_id": "ORG00031",
+        "org_name": "Maplewood Housing Trust",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "small",
+        "state_id": "VA",
+        "city_name": "Sandrastad"
+      },
+      {
+        "org_id": "ORG00022",
+        "org_name": "Meadowbrook Housing Trust",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "NV",
+        "city_name": "Leehaven"
+      },
+      {
+        "org_id": "ORG00034",
+        "org_name": "Northgate Community Foundation",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "MI",
+        "city_name": "West Williamport"
+      },
+      {
+        "org_id": "ORG00008",
+        "org_name": "Riverside Environmental Coalition",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large",
+        "state_id": "IA",
+        "city_name": "Lake Debbie"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "ORG00019",
+        "org_name": "Cedar Valley Community Foundation",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "CA",
+        "city_name": "New Susanville"
+      },
+      {
+        "org_id": "ORG00036",
+        "org_name": "Golden Gate Education Fund",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small",
+        "state_id": "AZ",
+        "city_name": "Kyleborough"
+      },
+      {
+        "org_id": "ORG00004",
+        "org_name": "Harbor Family Services",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "MN",
+        "city_name": "Lake Nancyview"
+      },
+      {
+        "org_id": "ORG00011",
+        "org_name": "Hopewell Veterans Support",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium",
+        "state_id": "RI",
+        "city_name": "South Rachelborough"
+      },
+      {
+        "org_id": "ORG00031",
+        "org_name": "Maplewood Housing Trust",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "small",
+        "state_id": "VA",
+        "city_name": "Sandrastad"
+      },
+      {
+        "org_id": "ORG00022",
+        "org_name": "Meadowbrook Housing Trust",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "NV",
+        "city_name": "Leehaven"
+      },
+      {
+        "org_id": "ORG00008",
+        "org_name": "Riverside Environmental Coalition",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large",
+        "state_id": "IA",
+        "city_name": "Lake Debbie"
+      },
+      {
+        "org_id": "ORG00027",
+        "org_name": "Silverline Senior Care Network",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "small",
+        "state_id": "MT",
+        "city_name": "Wendyville"
+      },
+      {
+        "org_id": "ORG00020",
+        "org_name": "Lakeside Legal Aid Society",
+        "org_rating": 4,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "NE",
+        "city_name": "Barkerfurt"
+      },
+      {
+        "org_id": "ORG00023",
+        "org_name": "Maplewood Veterans Support",
+        "org_rating": 4,
+        "org_type": "for_profit",
+        "org_size": "medium",
+        "state_id": "AL",
+        "city_name": "Smithberg"
+      }
+    ],
+    "top_contributor_organizations": [
+      {
+        "org_id": "ORG00001",
+        "org_name": "Harbor Veterans Support",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small",
+        "state_id": "AK",
+        "city_name": "North Judithbury"
+      },
+      {
+        "org_id": "ORG00009",
+        "org_name": "Lakeside Veterans Support",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small",
+        "state_id": "MT",
+        "city_name": "Williamview"
+      },
+      {
+        "org_id": "ORG00034",
+        "org_name": "Northgate Community Foundation",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "MI",
+        "city_name": "West Williamport"
+      },
+      {
+        "org_id": "ORG00029",
+        "org_name": "Unity Youth Alliance",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "NJ",
+        "city_name": "South Williamton"
+      },
+      {
+        "org_id": "ORG00035",
+        "org_name": "Summit Relief Network",
+        "org_rating": 4,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "VT",
+        "city_name": "Ortizmouth"
+      },
+      {
+        "org_id": "ORG00015",
+        "org_name": "Unity Senior Care Network",
+        "org_rating": 4,
+        "org_type": "for_profit",
+        "org_size": "large",
+        "state_id": "KS",
+        "city_name": "Port Andrew"
+      },
+      {
+        "org_id": "ORG00006",
+        "org_name": "Harbor Senior Care Network",
+        "org_rating": 3,
+        "org_type": "for_profit",
+        "org_size": "medium",
+        "state_id": "MO",
+        "city_name": "Lake Deniseville"
+      },
+      {
+        "org_id": "ORG00024",
+        "org_name": "Liberty Senior Care Network",
+        "org_rating": 3,
+        "org_type": "for_profit",
+        "org_size": "large",
+        "state_id": "AR",
+        "city_name": "East Amanda"
+      },
+      {
+        "org_id": "ORG00025",
+        "org_name": "Maplewood Animal Rescue",
+        "org_rating": 3,
+        "org_type": "non_profit",
+        "org_size": "large",
+        "state_id": "TX",
+        "city_name": "Victoriaport"
+      },
+      {
+        "org_id": "ORG00003",
+        "org_name": "Northgate Education Fund",
+        "org_rating": 3,
+        "org_type": "non_profit",
+        "org_size": "medium",
+        "state_id": "WI",
+        "city_name": "Thomasberg"
+      }
+    ],
+    "ratings_by_organization_type": [
+      {
+        "org_type": "non_profit",
+        "average_rating": 3.62,
+        "total_organizations": 21,
+        "rated_organizations": 21
+      },
+      {
+        "org_type": "for_profit",
+        "average_rating": 2.79,
+        "total_organizations": 19,
+        "rated_organizations": 19
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "org_size": "small",
+        "average_rating": 3.5,
+        "total_organizations": 10,
+        "rated_organizations": 10
+      },
+      {
+        "org_size": "large",
+        "average_rating": 3.24,
+        "total_organizations": 21,
+        "rated_organizations": 21
+      },
+      {
+        "org_size": "medium",
+        "average_rating": 2.89,
+        "total_organizations": 9,
+        "rated_organizations": 9
+      }
+    ]
+  }
+}
