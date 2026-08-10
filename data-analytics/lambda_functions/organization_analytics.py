@@ -8,21 +8,32 @@ platform over ``virginia_dev_saayam_rdbms.organizations``:
 * ``performance``  - rating quality metrics, rating distribution and
                      top-organization leaderboards.
 
-The module follows the same conventions as ``kpi_api_analytics.py``:
-an env-aware DB connection (local Postgres via env vars, otherwise the SSM
-credential fallback), a ``build_response`` envelope, and a per-query
-try/except strategy so a single failing query degrades to a safe empty
-default (``[]`` or ``0``) instead of failing the whole request.
+The module keeps the ``build_response`` envelope and the per-query
+try/except strategy of ``kpi_api_analytics.py`` so a single failing query
+degrades to a safe empty default (``[]`` or ``0``) instead of failing the
+whole request.
+
+No shared-database credentials
+------------------------------
+This Lambda deliberately has **no** AWS Parameter Store / SSM credential
+lookup. The connection is built solely from explicit ``DB_*`` environment
+variables, and ``get_db_connection`` raises when they are absent rather than
+falling back to anything. There is therefore no code path from this module to
+the shared production database.
+
+Development and testing run entirely against the mock CSV fixtures in
+``data-analytics/sql`` (``organizations.csv`` and ``state.csv``); see
+``data-analytics/tests/`` for the harness that loads them and the recorded
+results.
 
 Guarded contributor support
 ---------------------------
-The ``is_contributor`` column does not exist in the production database yet.
-Every contributor code path is gated behind ``IS_CONTRIBUTOR_AVAILABLE``
-(env var ``ORG_IS_CONTRIBUTOR``). When the flag is off the contributor
-metrics return ``0`` / ``[]`` *without ever referencing the column*, so the
-JSON shape is identical whether or not the migration has landed. When the
-flag is on (local testing with the column present) the same functions run
-real queries.
+Contributor code paths are gated behind the ``ORG_IS_CONTRIBUTOR`` env var.
+The mock fixtures define ``is_contributor``, so the guard defaults to *on*
+and the contributor metrics return real values. Setting
+``ORG_IS_CONTRIBUTOR=false`` makes every contributor metric return ``0`` /
+``[]`` *without ever referencing the column*, keeping the JSON shape
+identical against a database where the migration has not landed yet.
 
 All user-supplied filter values are passed as parameterized ``%s`` values;
 only trusted, whitelisted identifiers (schema name, ``date_trunc`` unit,
@@ -31,9 +42,9 @@ only trusted, whitelisted identifiers (schema name, ``date_trunc`` unit,
 
 import json
 import os
+import re
 from typing import Any, Optional
 
-import boto3
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -43,9 +54,10 @@ SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 # Number of rows returned by the "top N" performance leaderboards.
 TOP_N = 10
 
-# The production DB has no ``is_contributor`` column yet. Flip this on
-# (ORG_IS_CONTRIBUTOR=true) only where the column actually exists.
-IS_CONTRIBUTOR_AVAILABLE = os.environ.get("ORG_IS_CONTRIBUTOR", "false").lower() == "true"
+# The mock fixtures define ``is_contributor``, so contributor metrics are on
+# by default. Set ORG_IS_CONTRIBUTOR=false against a database where the column
+# does not exist yet; the metrics then return 0 / [] without referencing it.
+DEFAULT_IS_CONTRIBUTOR_AVAILABLE = "true"
 
 # Whitelist mapping the public ``group_by`` values to a (date_trunc unit,
 # TO_CHAR format) pair. Guards against SQL injection via the trend grouping.
@@ -96,46 +108,72 @@ def build_response(status_code: int, body: Any) -> dict[str, Any]:
 
 
 def get_db_connection() -> "psycopg2.extensions.connection":
-    """Open a Postgres connection, preferring local env vars over SSM.
+    """Open a Postgres connection described entirely by environment variables.
 
-    If ``DB_HOST`` is present in the environment the connection is built from
-    ``DB_HOST``/``DB_NAME``/``DB_USER``/``DB_PASSWORD``/``DB_PORT`` (local
-    development / testing). Otherwise the unchanged SSM credential fallback
-    from ``kpi_api_analytics.py`` is used for the deployed Lambda.
+    The connection is built from ``DB_HOST``/``DB_NAME``/``DB_USER``/
+    ``DB_PASSWORD``/``DB_PORT``. There is intentionally **no** AWS Parameter
+    Store fallback: this module must not be able to reach the shared
+    production database, so an unconfigured environment is an error rather
+    than an implicit escalation to real credentials.
 
     Returns:
         An open ``psycopg2`` connection.
+
+    Raises:
+        RuntimeError: If ``DB_HOST`` is not set.
     """
     db_host = os.environ.get("DB_HOST")
-    if db_host:
-        return psycopg2.connect(
-            host=db_host,
-            database=os.environ.get("DB_NAME", "saayam_local"),
-            user=os.environ.get("DB_USER", "postgres"),
-            password=os.environ.get("DB_PASSWORD", ""),
-            port=os.environ.get("DB_PORT", "5432"),
+    if not db_host:
+        raise RuntimeError(
+            "DB_HOST is not set. organization_analytics has no AWS Parameter "
+            "Store fallback by design - set the DB_* environment variables to "
+            "point at your own database, or run the mock-backed test suite in "
+            "data-analytics/tests/."
         )
 
-    # --- SSM fallback (unchanged from kpi_api_analytics.py) ---
-    ssm = boto3.client("ssm", region_name="us-east-1")
-    response = ssm.get_parameter(
-        Name="/dev/saayam/db/Virginia/Analytics/user",
-        WithDecryption=True,
-    )
-    creds = json.loads(response["Parameter"]["Value"])
     return psycopg2.connect(
-        host=creds["HOST"],
-        database=creds["DATABASE NAME"],
-        user=creds["USERNAME"],
-        password=creds["PASSWORD"],
-        port=creds["PORT"],
-        sslmode="require",
+        host=db_host,
+        database=os.environ.get("DB_NAME", "saayam_local"),
+        user=os.environ.get("DB_USER", "postgres"),
+        password=os.environ.get("DB_PASSWORD", ""),
+        port=os.environ.get("DB_PORT", "5432"),
     )
 
 
 # --------------------------------------------------------------------------- #
 # Filter helpers
 # --------------------------------------------------------------------------- #
+def _contributor_available() -> bool:
+    """Report whether ``is_contributor`` may be referenced in SQL.
+
+    Read from the environment on every call (rather than captured at import)
+    so the flag can be toggled per-request in tests and per-stage in
+    deployment without reloading the module.
+
+    Returns:
+        ``True`` unless ``ORG_IS_CONTRIBUTOR`` is set to a falsy value.
+    """
+    raw = os.environ.get("ORG_IS_CONTRIBUTOR", DEFAULT_IS_CONTRIBUTOR_AVAILABLE)
+    return str(raw).strip().lower() in ("true", "t", "1", "yes", "y")
+
+
+def _normalize_org_type(value: Any) -> str:
+    """Reduce an ``org_type`` label to a comparable key.
+
+    The fixtures use display labels (``"Non-Profit"``, ``"For-profit"``) whose
+    casing and punctuation are not guaranteed. Stripping every non-letter and
+    lowercasing maps all of ``"Non-Profit"``, ``"non_profit"`` and
+    ``"Non Profit"`` onto the single key ``"nonprofit"``.
+
+    Args:
+        value: Raw ``org_type`` value from the database.
+
+    Returns:
+        A lowercase letters-only key (``""`` for ``None``).
+    """
+    return re.sub(r"[^a-z]", "", str(value or "").lower())
+
+
 def _as_bool(value: Any) -> Optional[bool]:
     """Coerce a JSON/string/int value into a bool, or ``None`` if unset.
 
@@ -252,7 +290,7 @@ def build_org_filters(
         params.extend(date_params)
 
     equality_columns = list(_EQUALITY_COLUMNS)
-    if IS_CONTRIBUTOR_AVAILABLE:
+    if _contributor_available():
         equality_columns.append("is_contributor")
 
     for column in equality_columns:
@@ -363,9 +401,9 @@ def fetch_contributor_summary(cursor: Any, filters: dict[str, Any]) -> tuple[int
     """Return ``(contributor_count, non_contributor_count)``.
 
     GUARDED: returns ``(0, 0)`` without touching the column when
-    ``IS_CONTRIBUTOR_AVAILABLE`` is ``False``.
+    ``ORG_IS_CONTRIBUTOR`` is disabled.
     """
-    if not IS_CONTRIBUTOR_AVAILABLE:
+    if not _contributor_available():
         return 0, 0
     where, params = build_org_filters(filters)
     cursor.execute(
@@ -388,9 +426,9 @@ def fetch_contributor_distribution(cursor: Any, filters: dict[str, Any]) -> list
     """Return TRUE/FALSE counts for ``is_contributor``.
 
     GUARDED: returns ``[]`` without touching the column when
-    ``IS_CONTRIBUTOR_AVAILABLE`` is ``False``.
+    ``ORG_IS_CONTRIBUTOR`` is disabled.
     """
-    if not IS_CONTRIBUTOR_AVAILABLE:
+    if not _contributor_available():
         return []
     where, params = build_org_filters(filters)
     cursor.execute(
@@ -571,9 +609,9 @@ def fetch_top_contributor_organizations(cursor: Any, filters: dict[str, Any]) ->
     """Return the top ``TOP_N`` contributor organizations by rating.
 
     GUARDED: returns ``[]`` without touching the column when
-    ``IS_CONTRIBUTOR_AVAILABLE`` is ``False``.
+    ``ORG_IS_CONTRIBUTOR`` is disabled.
     """
-    if not IS_CONTRIBUTOR_AVAILABLE:
+    if not _contributor_available():
         return []
     where, params = build_org_filters(filters, extra="o.is_contributor = TRUE")
     cursor.execute(
@@ -677,7 +715,12 @@ def _safe(fetch, default: Any, label: str) -> Any:
 def build_overview_response(cursor: Any, filters: dict[str, Any]) -> dict[str, Any]:
     """Assemble the full ``organization_overview`` payload."""
     by_type = _safe(lambda: fetch_organizations_by_type(cursor, filters), [], "organizations_by_type")
-    type_counts = {row["org_type"]: row["count"] for row in by_type}
+    # Key on the normalized label so the summary matches the fixture values
+    # ("Non-Profit" / "For-profit") as well as any snake_case variant.
+    type_counts: dict[str, int] = {}
+    for row in by_type:
+        key = _normalize_org_type(row["org_type"])
+        type_counts[key] = type_counts.get(key, 0) + row["count"]
 
     collaborators, non_collaborators = _safe(
         lambda: fetch_collaborator_summary(cursor, filters), (0, 0), "collaborator_summary"
@@ -692,8 +735,8 @@ def build_overview_response(cursor: Any, filters: dict[str, Any]) -> dict[str, A
                 "total_organizations": _safe(
                     lambda: fetch_total_organizations(cursor, filters), 0, "total_organizations"
                 ),
-                "non_profit_organizations": int(type_counts.get("non_profit", 0)),
-                "for_profit_organizations": int(type_counts.get("for_profit", 0)),
+                "non_profit_organizations": int(type_counts.get("nonprofit", 0)),
+                "for_profit_organizations": int(type_counts.get("forprofit", 0)),
                 "collaborator_organizations": collaborators,
                 "non_collaborator_organizations": non_collaborators,
                 "contributor_organizations": contributors,
@@ -768,6 +811,9 @@ def _extract_filters(event: dict[str, Any]) -> dict[str, Any]:
 
     Returns:
         A dict of the recognized common filters (missing keys omitted).
+
+    Raises:
+        ValueError: If ``org_rating`` is present but is not an integer.
     """
     keys = (
         "time_filter",
@@ -782,7 +828,18 @@ def _extract_filters(event: dict[str, Any]) -> dict[str, Any]:
         "is_contributor",
         "group_by",
     )
-    return {key: event[key] for key in keys if event.get(key) is not None}
+    filters = {key: event[key] for key in keys if event.get(key) is not None}
+
+    # ``org_rating`` is an integer column; coerce it here so a string from a
+    # query parameter still matches, and reject junk with a 400 rather than
+    # silently returning an empty dashboard.
+    if "org_rating" in filters:
+        try:
+            filters["org_rating"] = int(str(filters["org_rating"]).strip())
+        except (TypeError, ValueError):
+            raise ValueError("org_rating must be an integer") from None
+
+    return filters
 
 
 def lambda_handler(event: Optional[dict[str, Any]], context: Any = None) -> dict[str, Any]:
@@ -807,11 +864,11 @@ def lambda_handler(event: Optional[dict[str, Any]], context: Any = None) -> dict
     if dashboard_type not in ("overview", "performance"):
         dashboard_type = "overview"
 
-    filters = _extract_filters(event)
-
-    # Validate CUSTOM date range up front so it surfaces as a clean 400 rather
-    # than being swallowed by the per-query safe-default wrappers below.
+    # Parse and validate the filters up front so bad input surfaces as a clean
+    # 400 rather than escaping the handler or being swallowed by the
+    # per-query safe-default wrappers below.
     try:
+        filters = _extract_filters(event)
         build_date_filter(
             filters.get("time_filter"),
             filters.get("start_date"),
