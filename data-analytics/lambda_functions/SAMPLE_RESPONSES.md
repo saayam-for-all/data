@@ -1,8 +1,8 @@
 # Organization Analytics API — Sample Responses (Issue #228)
 
 All responses below were **captured from a real run** of `organization_analytics.py`
-against a local PostgreSQL instance seeded with `seed_organizations.sql`
-(40 organizations across 6 states, generated on the run date used here).
+against a local PostgreSQL instance loaded with the real `organizations.csv` and
+`state.csv` data from `data-analytics/sql/`.
 
 The full automated suite (`test_organization_analytics.py`) validated:
 
@@ -14,17 +14,17 @@ The full automated suite (`test_organization_analytics.py`) validated:
 - Additional filters — `org_type`, `org_size`, `state_id`, `is_collaborator`
 - Exact response structure match against the spec + CORS headers on every response
 
-> Numbers depend on the randomised seed data; re-seeding reshuffles them but the
-> **structure is always identical** to what is shown here.
+> Numbers depend on the data in the local DB; the **structure is always identical**
+> to what is shown here regardless of the underlying data.
 
 ---
 
 ## How to reproduce
 
 ```bash
-# 1. Create + seed a local DB
+# 1. Create a local DB and load the real organizations.csv and state.csv
+#    from data-analytics/sql/ into your local PostgreSQL instance
 createdb saayam_local
-psql -d saayam_local -f seed_organizations.sql
 
 # 2. Run the full test suite (env vars have localhost defaults)
 export PGHOST=localhost PGPORT=5432 PGDATABASE=saayam_local PGUSER=postgres PGPASSWORD=postgres
@@ -43,6 +43,7 @@ Content-Type: application/json
 
 { "time_filter": "All", "group_by": "monthly" }
 ```
+
 **Request (single-endpoint style):**
 ```json
 { "dashboard_type": "overview", "time_filter": "All", "group_by": "monthly" }
@@ -113,7 +114,7 @@ Content-Type: application/json
 }
 ```
 
-### Overview — `7D` filter (recent registrations, `group_by="daily"`)
+### Overview — `7D` filter (`group_by="daily"`)
 ```json
 {
   "organization_overview": {
@@ -156,13 +157,15 @@ Content-Type: application/json
 ```json
 [ {"period": "2025", "count": 24}, {"period": "2026", "count": 16} ]
 ```
-**monthly:** 17 buckets (`2025-03` … `2026-08`) — see above.
+
+**monthly:** 17 buckets (`2025-03` to `2026-08`) — see full response above.
 
 **weekly (ISO week):**
 ```json
 [ {"period": "2025-W10", "count": 1}, {"period": "2025-W12", "count": 1},
   {"period": "2026-W30", "count": 3}, {"period": "2026-W32", "count": 2} ]
 ```
+
 **daily:** one bucket per registration date, e.g. `{"period": "2025-03-06", "count": 1}`.
 
 ---
@@ -176,6 +179,7 @@ Content-Type: application/json
 
 { "time_filter": "All" }
 ```
+
 **Request (single-endpoint style):**
 ```json
 { "dashboard_type": "performance", "time_filter": "All" }
@@ -199,18 +203,15 @@ Content-Type: application/json
       {"rating": 5, "count": 7}
     ],
     "top_rated_organizations": [
-      {"org_id": "ORG-00-000-000-034", "org_name": "Care Collective Trust",   "org_type": "for_profit", "org_size": "large",  "city_name": "San Francisco", "state_id": "CA", "org_rating": 5},
+      {"org_id": "ORG-00-000-000-034", "org_name": "Care Collective Trust",    "org_type": "for_profit", "org_size": "large",  "city_name": "San Francisco", "state_id": "CA", "org_rating": 5},
       {"org_id": "ORG-00-000-000-009", "org_name": "Community First Alliance", "org_type": "non_profit", "org_size": "medium", "city_name": "Fairfax",       "state_id": "VA", "org_rating": 5},
       {"org_id": "ORG-00-000-000-029", "org_name": "Gentle Wave Society",      "org_type": "non_profit", "org_size": "small",  "city_name": "Fairfax",       "state_id": "VA", "org_rating": 5}
-      /* … up to 10 rows … */
     ],
     "top_collaborator_organizations": [
       {"org_id": "ORG-00-000-000-009", "org_name": "Community First Alliance", "org_type": "non_profit", "org_size": "medium", "city_name": "Fairfax", "state_id": "VA", "org_rating": 5}
-      /* … up to 10 rows, is_collaborator = TRUE, ordered by rating desc … */
     ],
     "top_contributor_organizations": [
       {"org_id": "ORG-00-000-000-001", "org_name": "Bright Future Alliance", "org_type": "non_profit", "org_size": "medium", "city_name": "Richmond", "state_id": "VA", "org_rating": 2}
-      /* … up to 10 rows, is_contributor = TRUE, ordered by rating desc … */
     ],
     "ratings_by_organization_type": [
       {"org_type": "non_profit", "label": "Non-Profit", "average_rating": 3.05, "rated_count": 22},
@@ -225,7 +226,7 @@ Content-Type: application/json
 }
 ```
 
-### Performance summary across time filters (same seed)
+### Performance summary across time filters
 
 | time_filter | average_rating | rated | unrated | five_star |
 |-------------|---------------:|------:|--------:|----------:|
@@ -254,45 +255,38 @@ Every `lambda_handler` response is wrapped API-Gateway style:
 }
 ```
 
-On a total DB failure the handler returns `statusCode: 500` with a **well-shaped
-empty body** (correct top-level keys, zeroed summary, empty arrays) so the
+On a total DB failure the handler returns `statusCode: 500` with a well-shaped
+empty body (correct top-level keys, zeroed summary, empty arrays) so the
 front-end never has to special-case a missing structure.
 
 ---
 
 ## Filter reference
 
-| Parameter        | Values / Example                                  |
-|------------------|---------------------------------------------------|
-| `dashboard_type` | `overview` \| `performance` (ignored if route path present) |
-| `time_filter`    | `7D` \| `30D` \| `1Y` \| `All` \| `Custom` (default `ALL`) |
-| `start_date`,`end_date` | ISO dates, used when `time_filter="Custom"` |
-| `group_by`       | `daily` \| `weekly` \| `monthly` \| `yearly` (default `monthly`) |
-| `org_type`       | `non_profit` \| `for_profit`                      |
-| `org_size`       | `small` \| `medium` \| `large`                    |
-| `state_id`       | e.g. `VA`                                          |
-| `city_name`      | e.g. `Arlington`                                   |
-| `org_rating`     | `1`–`5`                                            |
-| `is_collaborator`| `true` \| `false`                                  |
-| `is_contributor` | `true` \| `false`                                  |
+| Parameter             | Values / Example                                              |
+|-----------------------|---------------------------------------------------------------|
+| `dashboard_type`      | `overview` \| `performance` (ignored if route path present)  |
+| `time_filter`         | `7D` \| `30D` \| `1Y` \| `All` \| `Custom` (default `ALL`)  |
+| `start_date`, `end_date` | ISO dates, used when `time_filter="Custom"`               |
+| `group_by`            | `daily` \| `weekly` \| `monthly` \| `yearly` (default `monthly`) |
+| `org_type`            | `non_profit` \| `for_profit`                                  |
+| `org_size`            | `small` \| `medium` \| `large`                                |
+| `state_id`            | e.g. `VA`                                                     |
+| `city_name`           | e.g. `Arlington`                                              |
+| `org_rating`          | `1`–`5`                                                       |
+| `is_collaborator`     | `true` \| `false`                                             |
+| `is_contributor`      | `true` \| `false`                                             |
 
 All values are bound as SQL parameters (`%s`) — no string interpolation of
 user input, no hardcoded credentials anywhere.
 
 ---
 
-## Schema note — `is_contributor`
+## ⚠️ Schema note — `is_contributor`
 
 The current upstream DDL (`ddl_organizations.sql`) defines `is_collaborator`
 but **not** `is_contributor`, while Issue #228 requires contributor analytics.
-`organization_analytics.py` references `o.is_contributor`, and
-`seed_organizations.sql` adds the column for local testing:
-
-```sql
-ALTER TABLE virginia_dev_saayam_rdbms.organizations
-  ADD COLUMN is_contributor BOOLEAN;
-```
-
-Until that column is added to the real database, the contributor functions
-degrade gracefully to their empty/default values (each query is wrapped in its
-own `try/except`), so the rest of each dashboard keeps working.
+`organization_analytics.py` references `o.is_contributor`. Until that column
+is added to the real database, the contributor functions degrade gracefully to
+their empty/default values — each query is wrapped in its own `try/except` so
+the rest of each dashboard keeps working normally.
