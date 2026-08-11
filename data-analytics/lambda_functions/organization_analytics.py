@@ -1,13 +1,25 @@
+"""
+Organization Analytics API (overview + performance dashboards).
+
+IMPORTANT: this lambda intentionally only ever connects to a local PostgreSQL
+instance. It does NOT read AWS SSM Parameter Store and does NOT contain any
+path that can reach the production/dev RDS database. Connection details come
+exclusively from the LOCAL_DB_* environment variables (see get_db_connection()
+below). Do not reintroduce an SSM/production credential path here without
+sign-off - this was a deliberate change requested in review.
+
+Local testing setup: see data-analytics/lambda_functions/local_testing/. The
+table is seeded from the mock data at data-analytics/sql/organizations.csv.
+"""
+
 import json
 import os
-import boto3
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 ORGANIZATIONS_TABLE = f"{SCHEMA_NAME}.organizations"
-STATE_TABLE = f"{SCHEMA_NAME}.state"
 
 VALID_DASHBOARD_TYPES = {"overview", "performance"}
 VALID_TIME_FILTERS = {"7D", "30D", "1Y", "ALL", "CUSTOM"}
@@ -21,6 +33,16 @@ GROUP_BY_TRUNC = {
 }
 
 TOP_N = 10
+
+# The mock data (data-analytics/sql/organizations.csv) stores org_type as
+# "Non-Profit" / "For-profit" and org_size as "Small" / "Medium" / "Large",
+# while ddl_organizations.sql defines these as lowercase snake_case ENUMs
+# (org_type_enum: 'non_profit' | 'for_profit'; org_size_enum: 'small' |
+# 'medium' | 'large'). These expressions normalize either storage format to
+# the lowercase snake_case values the API accepts as filters, so the same
+# query logic works unchanged against the mock table or the real schema.
+ORG_TYPE_NORM = "LOWER(REPLACE(o.org_type, '-', '_'))"
+ORG_SIZE_NORM = "LOWER(o.org_size)"
 
 
 def get_default_response(dashboard_type):
@@ -109,40 +131,20 @@ def parse_event_body(event):
 
 def get_db_connection():
     """
-    Returns a psycopg2 connection to the Virginia RDS PostgreSQL database.
+    Returns a psycopg2 connection to a local PostgreSQL database only.
 
-    Local testing path: set LOCAL_DB=true and supply connection details via
-    environment variables (e.g. a .env file that is NOT committed). No
-    production credentials are ever hardcoded here.
-
-    Production/dev path (default): credentials are pulled from AWS SSM
-    Parameter Store, as before.
+    This lambda never reads AWS SSM Parameter Store and never connects to
+    the production/dev RDS instance - connection details come exclusively
+    from environment variables, defaulting to a local Postgres instance
+    seeded from data-analytics/sql/organizations.csv (see
+    data-analytics/lambda_functions/local_testing/).
     """
-    if os.environ.get("LOCAL_DB", "false").lower() == "true":
-        return psycopg2.connect(
-            host=os.environ.get("LOCAL_DB_HOST", "localhost"),
-            port=int(os.environ.get("LOCAL_DB_PORT", "5432")),
-            database=os.environ.get("LOCAL_DB_NAME", "saayam"),
-            user=os.environ.get("LOCAL_DB_USER", "postgres"),
-            password=os.environ.get("LOCAL_DB_PASSWORD", ""),
-        )
-
-    ssm = boto3.client("ssm", region_name="us-east-1")
-
-    response = ssm.get_parameter(
-        Name="/dev/saayam/db/Virginia/Analytics/user",
-        WithDecryption=True
-    )
-
-    creds = json.loads(response["Parameter"]["Value"])
-    db_name = creds["DATABASE NAME"]
     return psycopg2.connect(
-        host=creds["HOST"],
-        database=db_name,
-        user=creds["USERNAME"],
-        password=creds["PASSWORD"],
-        port=creds["PORT"],
-        sslmode="require"
+        host=os.environ.get("LOCAL_DB_HOST", "localhost"),
+        port=int(os.environ.get("LOCAL_DB_PORT", "5432")),
+        database=os.environ.get("LOCAL_DB_NAME", "saayam_local"),
+        user=os.environ.get("LOCAL_DB_USER", "postgres"),
+        password=os.environ.get("LOCAL_DB_PASSWORD", ""),
     )
 
 
@@ -188,33 +190,32 @@ def build_common_filters(filters):
     is_contributor). Returns (conditions, params); every value is passed back
     as a bind param, never interpolated into the SQL string.
 
-    Note: is_contributor is part of the requested filter set, but is not yet
-    present on the live virginia_dev_saayam_rdbms.organizations schema (see
-    ddl_organizations.sql). Any query that references it is wrapped in a
-    try/except by its caller, so it degrades to an empty/zeroed result
-    instead of failing the whole request once the column exists.
+    org_type/org_size are compared against the normalized (lowercase,
+    snake_case) expressions so callers can always filter using
+    "non_profit"/"for_profit" and "small"/"medium"/"large" regardless of the
+    underlying storage format (see ORG_TYPE_NORM/ORG_SIZE_NORM above).
     """
     conditions = []
     params = []
 
     org_type = filters.get("org_type")
     if org_type:
-        conditions.append("o.org_type = %s")
-        params.append(org_type)
+        conditions.append(f"{ORG_TYPE_NORM} = %s")
+        params.append(str(org_type).lower().replace("-", "_"))
 
     org_size = filters.get("org_size")
     if org_size:
-        conditions.append("o.org_size = %s")
-        params.append(org_size)
+        conditions.append(f"{ORG_SIZE_NORM} = %s")
+        params.append(str(org_size).lower())
 
     state_id = filters.get("state_id")
     if state_id:
-        conditions.append("o.state_id = %s")
+        conditions.append("UPPER(o.state_id) = UPPER(%s)")
         params.append(state_id)
 
     city_name = filters.get("city_name")
     if city_name:
-        conditions.append("o.city_name = %s")
+        conditions.append("LOWER(o.city_name) = LOWER(%s)")
         params.append(city_name)
 
     org_rating = filters.get("org_rating")
@@ -251,8 +252,8 @@ def fetch_overview_summary(cursor, where_clause, params):
         query = f"""
             SELECT
                 COUNT(*) AS total_organizations,
-                COUNT(*) FILTER (WHERE o.org_type = 'non_profit') AS non_profit_organizations,
-                COUNT(*) FILTER (WHERE o.org_type = 'for_profit') AS for_profit_organizations,
+                COUNT(*) FILTER (WHERE {ORG_TYPE_NORM} = 'non_profit') AS non_profit_organizations,
+                COUNT(*) FILTER (WHERE {ORG_TYPE_NORM} = 'for_profit') AS for_profit_organizations,
                 COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS collaborator_organizations,
                 COUNT(*) FILTER (WHERE o.is_collaborator IS NOT TRUE) AS non_collaborator_organizations,
                 COUNT(*) FILTER (WHERE o.is_contributor IS TRUE) AS contributor_organizations,
@@ -310,7 +311,7 @@ def fetch_organization_activity_trend(cursor, where_clause, params, group_by):
 def fetch_organizations_by_type(cursor, where_clause, params):
     try:
         query = f"""
-            SELECT COALESCE(o.org_type::text, 'unknown') AS org_type, COUNT(*) AS count
+            SELECT COALESCE({ORG_TYPE_NORM}, 'unknown') AS org_type, COUNT(*) AS count
             FROM {ORGANIZATIONS_TABLE} o
             WHERE {where_clause}
             GROUP BY 1
@@ -328,7 +329,7 @@ def fetch_organizations_by_type(cursor, where_clause, params):
 def fetch_organizations_by_size(cursor, where_clause, params):
     try:
         query = f"""
-            SELECT COALESCE(o.org_size::text, 'unknown') AS org_size, COUNT(*) AS count
+            SELECT COALESCE({ORG_SIZE_NORM}, 'unknown') AS org_size, COUNT(*) AS count
             FROM {ORGANIZATIONS_TABLE} o
             WHERE {where_clause}
             GROUP BY 1
@@ -344,13 +345,17 @@ def fetch_organizations_by_size(cursor, where_clause, params):
 
 
 def fetch_organizations_by_state(cursor, where_clause, params):
+    # NOTE: in the mock data (data-analytics/sql/organizations.csv), state_id
+    # is already a literal, display-ready 2-letter state code - there is no
+    # separate state lookup table to join against (unlike the FK relationship
+    # implied by ddl_organizations.sql). If/when this runs against a schema
+    # where state_id is a true FK, this should join to that table instead.
     try:
         query = f"""
-            SELECT COALESCE(s.state_name, 'Unknown') AS state, COUNT(*) AS count
+            SELECT COALESCE(UPPER(o.state_id), 'Unknown') AS state, COUNT(*) AS count
             FROM {ORGANIZATIONS_TABLE} o
-            LEFT JOIN {STATE_TABLE} s ON o.state_id = s.state_id
             WHERE {where_clause}
-            GROUP BY COALESCE(s.state_name, 'Unknown')
+            GROUP BY COALESCE(UPPER(o.state_id), 'Unknown')
             ORDER BY count DESC;
         """
         cursor.execute(query, params)
@@ -400,9 +405,6 @@ def fetch_collaborator_distribution(cursor, where_clause, params):
 
 
 def fetch_contributor_distribution(cursor, where_clause, params):
-    # NOTE: is_contributor is not yet present on the live organizations
-    # schema (ddl_organizations.sql only defines is_collaborator). This will
-    # raise and safely fall back to [] until the column is added.
     try:
         query = f"""
             SELECT
@@ -494,7 +496,8 @@ def fetch_rating_distribution(cursor, where_clause, params):
 def fetch_top_rated_organizations(cursor, where_clause, params, limit=TOP_N):
     try:
         query = f"""
-            SELECT o.org_id, o.org_name, o.org_rating, o.org_type::text AS org_type, o.org_size::text AS org_size
+            SELECT o.org_id, o.org_name, o.org_rating,
+                {ORG_TYPE_NORM} AS org_type, {ORG_SIZE_NORM} AS org_size
             FROM {ORGANIZATIONS_TABLE} o
             WHERE {where_clause}
               AND o.org_rating IS NOT NULL
@@ -546,9 +549,6 @@ def fetch_top_collaborator_organizations(cursor, where_clause, params, limit=TOP
 
 
 def fetch_top_contributor_organizations(cursor, where_clause, params, limit=TOP_N):
-    # NOTE: is_contributor is not yet present on the live organizations
-    # schema (see the note on fetch_contributor_distribution above). This
-    # will raise and safely fall back to [] until the column is added.
     try:
         query = f"""
             SELECT o.org_id, o.org_name, o.org_rating
@@ -578,7 +578,7 @@ def fetch_ratings_by_organization_type(cursor, where_clause, params):
     try:
         query = f"""
             SELECT
-                COALESCE(o.org_type::text, 'unknown') AS org_type,
+                COALESCE({ORG_TYPE_NORM}, 'unknown') AS org_type,
                 ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
                 COUNT(*) FILTER (WHERE o.org_rating IS NOT NULL) AS rated_organizations
             FROM {ORGANIZATIONS_TABLE} o
@@ -606,7 +606,7 @@ def fetch_ratings_by_organization_size(cursor, where_clause, params):
     try:
         query = f"""
             SELECT
-                COALESCE(o.org_size::text, 'unknown') AS org_size,
+                COALESCE({ORG_SIZE_NORM}, 'unknown') AS org_size,
                 ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
                 COUNT(*) FILTER (WHERE o.org_rating IS NOT NULL) AS rated_organizations
             FROM {ORGANIZATIONS_TABLE} o
@@ -694,14 +694,14 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    # Local run: set LOCAL_DB=true (plus LOCAL_DB_HOST/PORT/NAME/USER/PASSWORD
-    # env vars pointing at a local Postgres loaded with the real schema) before
-    # running `python organization_analytics.py`.
+    # Local run only - see data-analytics/lambda_functions/local_testing/ for
+    # the setup SQL and CSV loader. Set LOCAL_DB_HOST/PORT/NAME/USER/PASSWORD
+    # if your local Postgres isn't on the defaults (localhost:5432/saayam_local/postgres).
     test_events = [
         {"dashboard_type": "overview", "time_filter": "ALL", "group_by": "monthly"},
         {"dashboard_type": "overview", "time_filter": "30D", "group_by": "daily"},
         {"dashboard_type": "overview", "time_filter": "1Y", "group_by": "monthly", "org_type": "non_profit"},
-        {"dashboard_type": "overview", "time_filter": "CUSTOM", "start_date": "2026-01-01", "end_date": "2026-12-31", "group_by": "weekly"},
+        {"dashboard_type": "overview", "time_filter": "CUSTOM", "start_date": "2025-01-01", "end_date": "2025-12-31", "group_by": "weekly"},
         {"dashboard_type": "performance", "time_filter": "ALL"},
         {"dashboard_type": "performance", "time_filter": "ALL", "org_size": "large"},
         {"dashboard_type": "performance", "time_filter": "ALL", "is_collaborator": True},
