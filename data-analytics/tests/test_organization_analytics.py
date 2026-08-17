@@ -30,7 +30,7 @@ import json
 import os
 import sys
 import unittest
-from collections import Counter
+from collections import Counter, defaultdict
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Optional
@@ -49,6 +49,27 @@ ORG_ROWS = mock_db.load_organizations()
 STATE_ROWS = mock_db.load_states()
 STATE_NAMES = {row["state_id"]: row["state_name"] for row in STATE_ROWS}
 TOTAL_ORGS = len(ORG_ROWS)
+
+# A state that actually appears in the fixture, for the region filter tests.
+SAMPLE_STATE_ID = Counter(r["state_id"] for r in ORG_ROWS).most_common(1)[0][0]
+SAMPLE_STATE_NAME = STATE_NAMES[SAMPLE_STATE_ID]
+
+TOP_LEVEL_KEYS = {
+    "summary",
+    "growth_trend",
+    "organizations_by_location",
+    "organizations_by_city",
+    "organizations_by_size",
+    "collaborator_vs_contributor",
+    "rating_distribution",
+    "organization_type_distribution",
+}
+SUMMARY_KEYS = {
+    "total_organizations",
+    "total_collaborators",
+    "total_contributors",
+    "average_org_rating",
+}
 
 
 @contextmanager
@@ -70,6 +91,22 @@ def env(**overrides: Any):
                 os.environ[key] = value
 
 
+def oracle_rows(region: Optional[str] = None, organization_type: Optional[str] = None):
+    """Filter the fixture rows in pure Python, mirroring the SQL filters."""
+    rows = ORG_ROWS
+    if region is not None:
+        key = region.strip().lower()
+        rows = [
+            r for r in rows
+            if (STATE_NAMES.get(r["state_id"]) or "").lower() == key
+            or (r["state_id"] or "").lower() == key
+        ]
+    if organization_type is not None:
+        key = org._normalize_key(organization_type)
+        rows = [r for r in rows if org._normalize_key(r["org_type"]) == key]
+    return rows
+
+
 class MockBackedTestCase(unittest.TestCase):
     """Base case giving each test a freshly seeded mock database."""
 
@@ -84,15 +121,10 @@ class MockBackedTestCase(unittest.TestCase):
         self.addCleanup(self.connection.close)
         self.addCleanup(self.cursor.close)
 
-    def overview(self, **filters: Any) -> dict[str, Any]:
-        """Build the overview payload for the given filters."""
-        return org.build_overview_response(self.cursor, filters)["organization_overview"]
-
-    def performance(self, **filters: Any) -> dict[str, Any]:
-        """Build the performance payload for the given filters."""
-        return org.build_performance_response(self.cursor, filters)[
-            "organization_performance"
-        ]
+    def dashboard(self, **payload: Any) -> dict[str, Any]:
+        """Build the full dashboard payload for a raw request payload."""
+        filters = org._extract_filters(payload)
+        return org.build_dashboard_response(self.cursor, filters)
 
 
 # --------------------------------------------------------------------------- #
@@ -107,7 +139,6 @@ class TestNoSharedDatabaseAccess(unittest.TestCase):
         code = "\n".join(
             line for line in source.splitlines() if not line.lstrip().startswith("#")
         )
-        # Strip the module docstring, which documents the absence of SSM.
         body = code.split('"""', 2)[-1]
         for forbidden in ("boto3", "ssm", "get_parameter", "WithDecryption"):
             self.assertNotIn(
@@ -180,336 +211,341 @@ class TestFixtures(unittest.TestCase):
 
 
 # --------------------------------------------------------------------------- #
-# 3. Overview dashboard
+# 3. KPI cards
 # --------------------------------------------------------------------------- #
-class TestOverviewDashboard(MockBackedTestCase):
-    """Dashboard 1 metrics match a pure-Python oracle over the fixtures."""
+class TestKpiSummary(MockBackedTestCase):
+    """The four KPI cards at the top of the dashboard."""
+
+    def test_summary_has_exactly_the_four_cards(self) -> None:
+        """summary carries the four documented keys and nothing else."""
+        self.assertEqual(SUMMARY_KEYS, set(self.dashboard()["summary"]))
 
     def test_total_organizations(self) -> None:
         """total_organizations equals the fixture row count."""
-        self.assertEqual(TOTAL_ORGS, self.overview()["summary"]["total_organizations"])
+        self.assertEqual(TOTAL_ORGS, self.dashboard()["summary"]["total_organizations"])
 
-    def test_non_profit_and_for_profit_counts(self) -> None:
-        """Type summary matches the 'Non-Profit'/'For-profit' fixture labels."""
-        oracle = Counter(org._normalize_org_type(r["org_type"]) for r in ORG_ROWS)
-        summary = self.overview()["summary"]
-        self.assertEqual(oracle["nonprofit"], summary["non_profit_organizations"])
-        self.assertEqual(oracle["forprofit"], summary["for_profit_organizations"])
-        # Regression guard: this pair silently returned 0/0 before the fix.
-        self.assertGreater(summary["non_profit_organizations"], 0)
-        self.assertGreater(summary["for_profit_organizations"], 0)
+    def test_total_collaborators(self) -> None:
+        """total_collaborators counts organizations with is_collaborator true."""
+        expected = sum(1 for r in ORG_ROWS if r["is_collaborator"] is True)
+        self.assertEqual(expected, self.dashboard()["summary"]["total_collaborators"])
 
-    def test_type_counts_partition_the_total(self) -> None:
-        """Non-profit + for-profit accounts for every organization."""
-        summary = self.overview()["summary"]
-        self.assertEqual(
-            summary["total_organizations"],
-            summary["non_profit_organizations"] + summary["for_profit_organizations"],
+    def test_total_contributors(self) -> None:
+        """total_contributors counts organizations with is_contributor true."""
+        expected = sum(1 for r in ORG_ROWS if r["is_contributor"] is True)
+        self.assertEqual(expected, self.dashboard()["summary"]["total_contributors"])
+
+    def test_average_org_rating_ignores_nulls(self) -> None:
+        """average_org_rating averages only the rated organizations."""
+        ratings = [r["org_rating"] for r in ORG_ROWS if r["org_rating"] is not None]
+        expected = round(sum(ratings) / len(ratings), 2)
+        self.assertAlmostEqual(
+            expected, self.dashboard()["summary"]["average_org_rating"], places=2
         )
 
-    def test_collaborator_summary(self) -> None:
-        """Collaborator / non-collaborator counts match the oracle."""
-        expected_true = sum(1 for r in ORG_ROWS if r["is_collaborator"] is True)
-        summary = self.overview()["summary"]
-        self.assertEqual(expected_true, summary["collaborator_organizations"])
-        self.assertEqual(
-            TOTAL_ORGS - expected_true, summary["non_collaborator_organizations"]
-        )
 
-    def test_contributor_summary_returns_real_values(self) -> None:
-        """Contributor counts are real numbers now the fixture has the column."""
-        expected_true = sum(1 for r in ORG_ROWS if r["is_contributor"] is True)
-        summary = self.overview()["summary"]
-        self.assertEqual(expected_true, summary["contributor_organizations"])
-        self.assertEqual(
-            TOTAL_ORGS - expected_true, summary["non_contributor_organizations"]
-        )
-        # Previously this was hard-wired to 0 because the column was absent.
-        self.assertGreater(summary["contributor_organizations"], 0)
+# --------------------------------------------------------------------------- #
+# 4. Tab 1 - Growth & Location
+# --------------------------------------------------------------------------- #
+class TestGrowthTrend(MockBackedTestCase):
+    """growth_trend reports cumulative organizations and collaborators."""
 
-    def test_organizations_by_type(self) -> None:
-        """organizations_by_type matches the oracle and is sorted descending."""
-        oracle = Counter(r["org_type"] for r in ORG_ROWS)
-        rows = self.overview()["organizations_by_type"]
-        self.assertEqual(dict(oracle), {r["org_type"]: r["count"] for r in rows})
-        counts = [r["count"] for r in rows]
-        self.assertEqual(sorted(counts, reverse=True), counts)
-
-    def test_organizations_by_size(self) -> None:
-        """organizations_by_size covers Small/Medium/Large per the oracle."""
-        oracle = Counter(r["org_size"] for r in ORG_ROWS)
-        rows = self.overview()["organizations_by_size"]
-        self.assertEqual(dict(oracle), {r["org_size"]: r["count"] for r in rows})
-
-    def test_organizations_by_state(self) -> None:
-        """by_state matches the oracle and resolves state_name via the join."""
-        oracle = Counter(r["state_id"] for r in ORG_ROWS)
-        rows = self.overview()["organizations_by_location"]["by_state"]
-        self.assertEqual(dict(oracle), {r["state_id"]: r["count"] for r in rows})
-        for row in rows:
+    def test_row_shape(self) -> None:
+        """Each point carries period, total_organizations, total_collaborators."""
+        for row in self.dashboard(group_by="yearly")["growth_trend"]:
             self.assertEqual(
-                STATE_NAMES.get(row["state_id"]),
-                row["state_name"],
-                f"state_name not joined for {row['state_id']}",
+                {"period", "total_organizations", "total_collaborators"}, set(row)
             )
 
-    def test_organizations_by_city(self) -> None:
-        """by_city matches the oracle and totals every organization."""
-        oracle = Counter(r["city_name"] for r in ORG_ROWS)
-        rows = self.overview()["organizations_by_location"]["by_city"]
-        self.assertEqual(dict(oracle), {r["city_name"]: r["count"] for r in rows})
-        self.assertEqual(TOTAL_ORGS, sum(r["count"] for r in rows))
+    def test_series_are_cumulative(self) -> None:
+        """Both series are non-decreasing across periods."""
+        rows = self.dashboard(group_by="monthly")["growth_trend"]
+        for series in ("total_organizations", "total_collaborators"):
+            values = [r[series] for r in rows]
+            self.assertEqual(sorted(values), values, f"{series} is not cumulative")
 
-    def test_registration_trend_groupings(self) -> None:
-        """Every group_by totals the fixture and is ordered ascending."""
+    def test_final_point_matches_summary(self) -> None:
+        """The last period equals the KPI totals."""
+        payload = self.dashboard(group_by="monthly")
+        last = payload["growth_trend"][-1]
+        self.assertEqual(
+            payload["summary"]["total_organizations"], last["total_organizations"]
+        )
+        self.assertEqual(
+            payload["summary"]["total_collaborators"], last["total_collaborators"]
+        )
+
+    def test_periods_ascending_and_unique(self) -> None:
+        """Every grouping returns ordered, non-repeating periods."""
         for group_by in ("daily", "weekly", "monthly", "yearly"):
             with self.subTest(group_by=group_by):
-                rows = self.overview(group_by=group_by)["organization_activity_trend"]
-                self.assertEqual(TOTAL_ORGS, sum(r["count"] for r in rows))
-                periods = [r["period"] for r in rows]
+                periods = [r["period"] for r in self.dashboard(group_by=group_by)["growth_trend"]]
                 self.assertEqual(sorted(periods), periods)
                 self.assertEqual(len(set(periods)), len(periods))
 
-    def test_trend_period_formats(self) -> None:
+    def test_period_formats(self) -> None:
         """Trend period strings use the format tied to each grouping."""
         expected_len = {"daily": 10, "weekly": 10, "monthly": 7, "yearly": 4}
         for group_by, length in expected_len.items():
             with self.subTest(group_by=group_by):
-                rows = self.overview(group_by=group_by)["organization_activity_trend"]
+                rows = self.dashboard(group_by=group_by)["growth_trend"]
                 self.assertTrue(all(len(r["period"]) == length for r in rows))
 
     def test_yearly_trend_matches_oracle(self) -> None:
-        """Yearly buckets match the years present in created_at."""
-        oracle = Counter(str(r["created_at"])[:4] for r in ORG_ROWS)
-        rows = self.overview(group_by="yearly")["organization_activity_trend"]
-        self.assertEqual(dict(oracle), {r["period"]: r["count"] for r in rows})
-
-    def test_unknown_group_by_falls_back_to_daily(self) -> None:
-        """An unrecognized group_by degrades to the daily grouping."""
-        self.assertEqual(
-            self.overview(group_by="daily")["organization_activity_trend"],
-            self.overview(group_by="fortnightly")["organization_activity_trend"],
-        )
-
-    def test_distributions_present(self) -> None:
-        """Collaborator and contributor distributions total the fixture."""
-        payload = self.overview()
-        for key, column in (
-            ("collaborator_distribution", "is_collaborator"),
-            ("contributor_distribution", "is_contributor"),
-        ):
-            with self.subTest(key=key):
-                rows = payload[key]
-                self.assertEqual(TOTAL_ORGS, sum(r["count"] for r in rows))
-                flags = {r[column] for r in rows}
-                self.assertTrue(flags.issubset({True, False}))
-                # PostgreSQL booleans must not surface as SQLite 0/1.
-                self.assertTrue(all(isinstance(f, bool) for f in flags))
-                oracle = Counter(r[column] for r in ORG_ROWS)
-                self.assertEqual(dict(oracle), {r[column]: r["count"] for r in rows})
-
-    def test_response_contains_every_required_key(self) -> None:
-        """The payload matches the response structure named in the issue."""
-        payload = self.overview()
-        self.assertEqual(
-            {
-                "summary", "organization_activity_trend", "organizations_by_type",
-                "organizations_by_size", "organizations_by_location",
-                "collaborator_distribution", "contributor_distribution",
-            },
-            set(payload),
-        )
-        self.assertEqual(
-            {
-                "total_organizations", "non_profit_organizations",
-                "for_profit_organizations", "collaborator_organizations",
-                "non_collaborator_organizations", "contributor_organizations",
-                "non_contributor_organizations",
-            },
-            set(payload["summary"]),
-        )
+        """Yearly cumulative totals match a running count over created_at."""
+        per_year = Counter(str(r["created_at"])[:4] for r in ORG_ROWS)
+        running, expected = 0, {}
+        for year in sorted(per_year):
+            running += per_year[year]
+            expected[year] = running
+        rows = self.dashboard(group_by="yearly")["growth_trend"]
+        self.assertEqual(expected, {r["period"]: r["total_organizations"] for r in rows})
 
 
-# --------------------------------------------------------------------------- #
-# 4. Performance dashboard
-# --------------------------------------------------------------------------- #
-class TestPerformanceDashboard(MockBackedTestCase):
-    """Dashboard 2 rating metrics match a pure-Python oracle."""
+class TestOrganizationsByLocation(MockBackedTestCase):
+    """organizations_by_location and organizations_by_city."""
 
-    @property
-    def ratings(self) -> list[int]:
-        return [r["org_rating"] for r in ORG_ROWS if r["org_rating"] is not None]
+    def test_state_rows_match_oracle(self) -> None:
+        """Per-state counts match the fixture."""
+        oracle = Counter(r["state_id"] for r in ORG_ROWS)
+        rows = self.dashboard()["organizations_by_location"]
+        self.assertEqual(dict(oracle), {r["state_id"]: r["organization_count"] for r in rows})
 
-    def test_average_rating(self) -> None:
-        """average_rating matches the mean of the fixture ratings."""
-        expected = round(sum(self.ratings) / len(self.ratings), 2)
-        self.assertAlmostEqual(
-            expected, self.performance()["summary"]["average_rating"], places=2
-        )
+    def test_state_row_shape_and_names(self) -> None:
+        """Each row has the documented keys and a resolved state_name."""
+        for row in self.dashboard()["organizations_by_location"]:
+            self.assertEqual(
+                {"state_id", "state_name", "organization_count", "percentage"}, set(row)
+            )
+            self.assertEqual(STATE_NAMES.get(row["state_id"]), row["state_name"])
 
-    def test_rated_and_unrated_partition_the_total(self) -> None:
-        """rated + unrated equals every organization."""
-        summary = self.performance()["summary"]
-        self.assertEqual(len(self.ratings), summary["rated_organizations"])
-        self.assertEqual(
-            TOTAL_ORGS - len(self.ratings), summary["unrated_organizations"]
-        )
-        self.assertEqual(
-            TOTAL_ORGS,
-            summary["rated_organizations"] + summary["unrated_organizations"],
-        )
-
-    def test_five_star_count(self) -> None:
-        """five_star_organizations matches the oracle."""
-        expected = sum(1 for r in self.ratings if r == 5)
-        self.assertEqual(expected, self.performance()["summary"]["five_star_organizations"])
-
-    def test_rating_distribution(self) -> None:
-        """rating_distribution matches the oracle, ascending, ratings 1-5."""
-        oracle = Counter(self.ratings)
-        rows = self.performance()["rating_distribution"]
-        self.assertEqual(dict(oracle), {r["rating"]: r["count"] for r in rows})
-        ordered = [r["rating"] for r in rows]
-        self.assertEqual(sorted(ordered), ordered)
-        self.assertTrue(all(1 <= r["rating"] <= 5 for r in rows))
-        self.assertEqual(len(self.ratings), sum(r["count"] for r in rows))
-
-    def test_top_rated_organizations(self) -> None:
-        """Leaderboard is capped at TOP_N and ordered by rating descending."""
-        rows = self.performance()["top_rated_organizations"]
-        self.assertLessEqual(len(rows), org.TOP_N)
-        self.assertEqual(min(org.TOP_N, TOTAL_ORGS), len(rows))
-        ratings = [r["org_rating"] for r in rows]
-        self.assertEqual(sorted(ratings, reverse=True), ratings)
-        self.assertEqual(max(self.ratings), ratings[0])
-
-    def test_top_collaborator_organizations(self) -> None:
-        """Collaborator leaderboard contains only collaborators."""
-        collaborators = {
-            r["org_id"] for r in ORG_ROWS if r["is_collaborator"] is True
-        }
-        rows = self.performance()["top_collaborator_organizations"]
-        self.assertTrue(rows)
-        self.assertTrue({r["org_id"] for r in rows}.issubset(collaborators))
-        self.assertLessEqual(len(rows), org.TOP_N)
-
-    def test_top_contributor_organizations(self) -> None:
-        """Contributor leaderboard is populated and contains only contributors."""
-        contributors = {r["org_id"] for r in ORG_ROWS if r["is_contributor"] is True}
-        rows = self.performance()["top_contributor_organizations"]
-        self.assertTrue(rows, "contributor leaderboard should no longer be empty")
-        self.assertTrue({r["org_id"] for r in rows}.issubset(contributors))
-
-    def test_ratings_by_organization_type(self) -> None:
-        """Average rating per org_type matches the oracle."""
-        buckets: dict[str, list[int]] = {}
-        for row in ORG_ROWS:
-            if row["org_rating"] is not None:
-                buckets.setdefault(row["org_type"], []).append(row["org_rating"])
-        rows = self.performance()["ratings_by_organization_type"]
-        self.assertEqual(set(buckets), {r["org_type"] for r in rows})
+    def test_state_percentages_total_100(self) -> None:
+        """Percentages are shares of the filtered population."""
+        rows = self.dashboard()["organizations_by_location"]
+        self.assertAlmostEqual(100.0, sum(r["percentage"] for r in rows), places=0)
         for row in rows:
-            expected = round(sum(buckets[row["org_type"]]) / len(buckets[row["org_type"]]), 2)
-            self.assertAlmostEqual(expected, row["average_rating"], places=2)
-            self.assertEqual(len(buckets[row["org_type"]]), row["rated_count"])
+            self.assertAlmostEqual(
+                round(row["organization_count"] * 100.0 / TOTAL_ORGS, 1),
+                row["percentage"],
+                places=1,
+            )
 
-    def test_ratings_by_organization_size(self) -> None:
-        """Average rating per org_size matches the oracle."""
-        buckets: dict[str, list[int]] = {}
-        for row in ORG_ROWS:
-            if row["org_rating"] is not None:
-                buckets.setdefault(row["org_size"], []).append(row["org_rating"])
-        rows = self.performance()["ratings_by_organization_size"]
-        self.assertEqual(set(buckets), {r["org_size"] for r in rows})
-        for row in rows:
-            expected = round(sum(buckets[row["org_size"]]) / len(buckets[row["org_size"]]), 2)
-            self.assertAlmostEqual(expected, row["average_rating"], places=2)
+    def test_state_rows_sorted_by_count(self) -> None:
+        """Rows are ordered by organization_count descending."""
+        counts = [r["organization_count"] for r in self.dashboard()["organizations_by_location"]]
+        self.assertEqual(sorted(counts, reverse=True), counts)
 
-    def test_response_contains_every_required_key(self) -> None:
-        """The payload matches the response structure named in the issue."""
-        payload = self.performance()
+    def test_city_rows_match_oracle(self) -> None:
+        """Per-city counts match the fixture and total every organization."""
+        oracle = Counter(r["city_name"] for r in ORG_ROWS)
+        rows = self.dashboard()["organizations_by_city"]
+        self.assertEqual(dict(oracle), {r["city_name"]: r["organization_count"] for r in rows})
+        self.assertEqual(TOTAL_ORGS, sum(r["organization_count"] for r in rows))
+
+    def test_city_row_shape(self) -> None:
+        """City rows carry their owning state for disambiguation."""
+        for row in self.dashboard()["organizations_by_city"]:
+            self.assertEqual(
+                {"city_name", "state_id", "state_name", "organization_count", "percentage"},
+                set(row),
+            )
+
+
+# --------------------------------------------------------------------------- #
+# 5. Tab 2 - Size & Contribution
+# --------------------------------------------------------------------------- #
+class TestOrganizationsBySize(MockBackedTestCase):
+    """organizations_by_size always reports small/medium/large."""
+
+    def test_canonical_buckets_always_present_in_order(self) -> None:
+        """All three buckets are returned, in small-medium-large order."""
+        rows = self.dashboard()["organizations_by_size"]
         self.assertEqual(
-            {
-                "summary", "rating_distribution", "top_rated_organizations",
-                "top_collaborator_organizations", "top_contributor_organizations",
-                "ratings_by_organization_type", "ratings_by_organization_size",
-            },
-            set(payload),
+            list(org.CANONICAL_ORG_SIZES), [r["org_size"] for r in rows[:3]]
+        )
+
+    def test_counts_match_oracle(self) -> None:
+        """Counts match the fixture, compared case-insensitively."""
+        oracle = Counter((r["org_size"] or "").lower() for r in ORG_ROWS)
+        rows = self.dashboard()["organizations_by_size"]
+        self.assertEqual(dict(oracle), {r["org_size"]: r["organization_count"] for r in rows})
+
+    def test_counts_total_the_population(self) -> None:
+        """Every organization lands in exactly one bucket."""
+        rows = self.dashboard()["organizations_by_size"]
+        self.assertEqual(TOTAL_ORGS, sum(r["organization_count"] for r in rows))
+
+    def test_row_shape(self) -> None:
+        """Each row carries org_size and organization_count."""
+        for row in self.dashboard()["organizations_by_size"]:
+            self.assertEqual({"org_size", "organization_count"}, set(row))
+
+
+class TestCollaboratorVsContributor(MockBackedTestCase):
+    """collaborator_vs_contributor reports both counts and shares."""
+
+    def test_two_rows_in_documented_order(self) -> None:
+        """Exactly the collaborator and contributor rows are returned."""
+        rows = self.dashboard()["collaborator_vs_contributor"]
+        self.assertEqual(["collaborator", "contributor"], [r["type"] for r in rows])
+
+    def test_counts_match_oracle(self) -> None:
+        """Counts match the is_collaborator / is_contributor flags."""
+        rows = {r["type"]: r for r in self.dashboard()["collaborator_vs_contributor"]}
+        self.assertEqual(
+            sum(1 for r in ORG_ROWS if r["is_collaborator"] is True),
+            rows["collaborator"]["organization_count"],
         )
         self.assertEqual(
-            {
-                "average_rating", "rated_organizations", "unrated_organizations",
-                "five_star_organizations",
-            },
-            set(payload["summary"]),
+            sum(1 for r in ORG_ROWS if r["is_contributor"] is True),
+            rows["contributor"]["organization_count"],
+        )
+
+    def test_percentages_are_share_of_population(self) -> None:
+        """Each percentage is that flag's share of all filtered organizations."""
+        for row in self.dashboard()["collaborator_vs_contributor"]:
+            self.assertAlmostEqual(
+                round(row["organization_count"] * 100.0 / TOTAL_ORGS, 1),
+                row["percentage"],
+                places=1,
+            )
+
+    def test_row_shape(self) -> None:
+        """Each row carries type, organization_count and percentage."""
+        for row in self.dashboard()["collaborator_vs_contributor"]:
+            self.assertEqual({"type", "organization_count", "percentage"}, set(row))
+
+
+# --------------------------------------------------------------------------- #
+# 6. Tab 3 - Ratings & Type
+# --------------------------------------------------------------------------- #
+class TestRatingDistribution(MockBackedTestCase):
+    """rating_distribution always spans the full 1-5 scale."""
+
+    def test_full_scale_always_present(self) -> None:
+        """Ratings 1 through 5 are returned in ascending order."""
+        rows = self.dashboard()["rating_distribution"]
+        self.assertEqual([1, 2, 3, 4, 5], [r["rating"] for r in rows])
+
+    def test_counts_match_oracle(self) -> None:
+        """Counts match the rated organizations in the fixture."""
+        oracle = Counter(
+            r["org_rating"] for r in ORG_ROWS if r["org_rating"] is not None
+        )
+        rows = self.dashboard()["rating_distribution"]
+        self.assertEqual(
+            {rating: oracle.get(rating, 0) for rating in (1, 2, 3, 4, 5)},
+            {r["rating"]: r["organization_count"] for r in rows},
+        )
+
+    def test_null_ratings_are_excluded_not_fatal(self) -> None:
+        """Unrated organizations are omitted from the buckets without error."""
+        rated = sum(1 for r in ORG_ROWS if r["org_rating"] is not None)
+        rows = self.dashboard()["rating_distribution"]
+        self.assertEqual(rated, sum(r["organization_count"] for r in rows))
+
+    def test_row_shape(self) -> None:
+        """Each row carries rating and organization_count."""
+        for row in self.dashboard()["rating_distribution"]:
+            self.assertEqual({"rating", "organization_count"}, set(row))
+
+
+class TestOrganizationTypeDistribution(MockBackedTestCase):
+    """organization_type_distribution is a cumulative for/non-profit split."""
+
+    def test_row_shape(self) -> None:
+        """Each point carries period, for_profit, non_profit and total."""
+        for row in self.dashboard(group_by="yearly")["organization_type_distribution"]:
+            self.assertEqual({"period", "for_profit", "non_profit", "total"}, set(row))
+
+    def test_total_is_the_sum_of_both_types(self) -> None:
+        """total always equals for_profit + non_profit."""
+        for row in self.dashboard(group_by="monthly")["organization_type_distribution"]:
+            self.assertEqual(row["for_profit"] + row["non_profit"], row["total"])
+
+    def test_series_are_cumulative(self) -> None:
+        """Both series are non-decreasing across periods."""
+        rows = self.dashboard(group_by="monthly")["organization_type_distribution"]
+        for series in ("for_profit", "non_profit", "total"):
+            values = [r[series] for r in rows]
+            self.assertEqual(sorted(values), values, f"{series} is not cumulative")
+
+    def test_final_point_matches_oracle(self) -> None:
+        """The last period totals every organization, split by type."""
+        oracle = Counter(org._normalize_key(r["org_type"]) for r in ORG_ROWS)
+        last = self.dashboard(group_by="yearly")["organization_type_distribution"][-1]
+        self.assertEqual(oracle["forprofit"], last["for_profit"])
+        self.assertEqual(oracle["nonprofit"], last["non_profit"])
+        self.assertEqual(TOTAL_ORGS, last["total"])
+
+    def test_yearly_split_matches_oracle(self) -> None:
+        """Cumulative per-year splits match a running count over created_at."""
+        per_year: dict[str, Counter] = defaultdict(Counter)
+        for row in ORG_ROWS:
+            per_year[str(row["created_at"])[:4]][org._normalize_key(row["org_type"])] += 1
+        running, expected = Counter(), {}
+        for year in sorted(per_year):
+            running += per_year[year]
+            expected[year] = (running["forprofit"], running["nonprofit"])
+        rows = self.dashboard(group_by="yearly")["organization_type_distribution"]
+        self.assertEqual(
+            expected, {r["period"]: (r["for_profit"], r["non_profit"]) for r in rows}
         )
 
 
 # --------------------------------------------------------------------------- #
-# 5. Common filters
+# 7. Common filters
 # --------------------------------------------------------------------------- #
 class TestCommonFilters(MockBackedTestCase):
-    """Each documented filter narrows the result set correctly."""
+    """The shared date / region / organization_type filters."""
 
-    def _total(self, **filters: Any) -> int:
-        return self.overview(**filters)["summary"]["total_organizations"]
+    def _total(self, **payload: Any) -> int:
+        return self.dashboard(**payload)["summary"]["total_organizations"]
 
-    def test_org_type_filter(self) -> None:
-        """Filtering by org_type returns exactly that type's rows."""
-        for value in {r["org_type"] for r in ORG_ROWS}:
-            with self.subTest(org_type=value):
-                expected = sum(1 for r in ORG_ROWS if r["org_type"] == value)
-                self.assertEqual(expected, self._total(org_type=value))
+    def test_region_by_state_name(self) -> None:
+        """region accepts a readable state name."""
+        expected = len(oracle_rows(region=SAMPLE_STATE_NAME))
+        self.assertGreater(expected, 0)
+        self.assertEqual(expected, self._total(region=SAMPLE_STATE_NAME))
 
-    def test_org_size_filter(self) -> None:
-        """Filtering by org_size returns exactly that size's rows."""
-        for value in {r["org_size"] for r in ORG_ROWS}:
-            with self.subTest(org_size=value):
-                expected = sum(1 for r in ORG_ROWS if r["org_size"] == value)
-                self.assertEqual(expected, self._total(org_size=value))
-
-    def test_state_and_city_filters(self) -> None:
-        """state_id and city_name filters match the oracle."""
-        state = ORG_ROWS[0]["state_id"]
-        city = ORG_ROWS[0]["city_name"]
+    def test_region_by_state_code(self) -> None:
+        """region also accepts a state code."""
         self.assertEqual(
-            sum(1 for r in ORG_ROWS if r["state_id"] == state),
-            self._total(state_id=state),
-        )
-        self.assertEqual(
-            sum(1 for r in ORG_ROWS if r["city_name"] == city),
-            self._total(city_name=city),
+            len(oracle_rows(region=SAMPLE_STATE_ID)), self._total(region=SAMPLE_STATE_ID)
         )
 
-    def test_org_rating_filter_accepts_int_and_string(self) -> None:
-        """org_rating filters correctly whether passed as int or string."""
-        expected = sum(1 for r in ORG_ROWS if r["org_rating"] == 5)
-        self.assertEqual(expected, self._total(org_rating=5))
-        self.assertEqual(expected, self._total(**org._extract_filters({"org_rating": "5"})))
+    def test_region_is_case_insensitive(self) -> None:
+        """region matching ignores case."""
+        self.assertEqual(
+            self._total(region=SAMPLE_STATE_NAME),
+            self._total(region=SAMPLE_STATE_NAME.upper()),
+        )
 
-    def test_boolean_filters(self) -> None:
-        """is_collaborator / is_contributor filter on both true and false."""
-        for column in ("is_collaborator", "is_contributor"):
-            for flag in (True, False):
-                with self.subTest(column=column, flag=flag):
-                    expected = sum(1 for r in ORG_ROWS if r[column] is flag)
-                    self.assertEqual(expected, self._total(**{column: flag}))
+    def test_organization_type_filter(self) -> None:
+        """organization_type filters on the snake_case values."""
+        for value in ("non_profit", "for_profit"):
+            with self.subTest(organization_type=value):
+                expected = len(oracle_rows(organization_type=value))
+                self.assertGreater(expected, 0)
+                self.assertEqual(expected, self._total(organization_type=value))
 
-    def test_boolean_filter_accepts_strings(self) -> None:
-        """String 'true'/'false' are coerced like real booleans."""
-        expected = sum(1 for r in ORG_ROWS if r["is_collaborator"] is True)
-        self.assertEqual(expected, self._total(is_collaborator="true"))
+    def test_all_sentinel_means_unfiltered(self) -> None:
+        """'ALL' and null are both treated as no filter."""
+        for payload in (
+            {"region": "ALL", "organization_type": "ALL", "time_filter": "ALL"},
+            {"region": None, "organization_type": None, "time_filter": None},
+            {},
+        ):
+            with self.subTest(payload=payload):
+                self.assertEqual(TOTAL_ORGS, self._total(**payload))
 
     def test_combined_filters_intersect(self) -> None:
-        """Multiple filters combine with AND."""
-        sample = ORG_ROWS[0]
-        expected = sum(
-            1 for r in ORG_ROWS
-            if r["org_type"] == sample["org_type"] and r["org_size"] == sample["org_size"]
+        """region and organization_type combine with AND."""
+        expected = len(
+            oracle_rows(region=SAMPLE_STATE_NAME, organization_type="non_profit")
         )
         self.assertEqual(
             expected,
-            self._total(org_type=sample["org_type"], org_size=sample["org_size"]),
+            self._total(region=SAMPLE_STATE_NAME, organization_type="non_profit"),
         )
 
     def test_time_filters_are_monotonic(self) -> None:
@@ -524,49 +560,123 @@ class TestCommonFilters(MockBackedTestCase):
         """A CUSTOM window returns exactly the rows created inside it."""
         years = sorted({str(r["created_at"])[:4] for r in ORG_ROWS})
         start, end = f"{years[0]}-01-01", f"{years[0]}-12-31 23:59:59"
-        expected = sum(
-            1 for r in ORG_ROWS if start <= str(r["created_at"]) <= end
-        )
+        expected = sum(1 for r in ORG_ROWS if start <= str(r["created_at"]) <= end)
         self.assertEqual(
             expected,
             self._total(time_filter="CUSTOM", start_date=start, end_date=end),
         )
 
-    def test_custom_without_dates_raises(self) -> None:
+    def test_filters_apply_to_every_section(self) -> None:
+        """A filter narrows every section consistently, not just the summary."""
+        payload = self.dashboard(organization_type="non_profit")
+        expected = len(oracle_rows(organization_type="non_profit"))
+        self.assertEqual(expected, payload["summary"]["total_organizations"])
+        self.assertEqual(
+            expected, sum(r["organization_count"] for r in payload["organizations_by_size"])
+        )
+        self.assertEqual(
+            expected,
+            sum(r["organization_count"] for r in payload["organizations_by_location"]),
+        )
+        self.assertEqual(0, payload["organization_type_distribution"][-1]["for_profit"])
+
+
+class TestInvalidFilters(unittest.TestCase):
+    """Unsupported filter values are rejected rather than silently ignored."""
+
+    def test_unknown_time_filter_rejected(self) -> None:
+        """An unsupported time_filter is a validation error."""
+        with self.assertRaises(ValueError):
+            org._extract_filters({"time_filter": "LAST_FORTNIGHT"})
+
+    def test_unknown_group_by_rejected(self) -> None:
+        """An unsupported group_by is a validation error."""
+        with self.assertRaises(ValueError):
+            org._extract_filters({"group_by": "fortnightly"})
+
+    def test_unknown_organization_type_rejected(self) -> None:
+        """An unsupported organization_type is a validation error."""
+        with self.assertRaises(ValueError):
+            org._extract_filters({"organization_type": "charity"})
+
+    def test_custom_without_dates_rejected(self) -> None:
         """CUSTOM without both bounds is a validation error."""
         with self.assertRaises(ValueError):
-            org.build_date_filter("CUSTOM", None, None)
+            org._extract_filters({"time_filter": "CUSTOM"})
+        with self.assertRaises(ValueError):
+            org._extract_filters({"time_filter": "CUSTOM", "start_date": "2026-01-01"})
 
-    def test_unknown_time_filter_returns_everything(self) -> None:
-        """An unrecognized time_filter applies no date restriction."""
-        self.assertEqual(TOTAL_ORGS, self._total(time_filter="LAST_FORTNIGHT"))
+    def test_supported_values_accepted(self) -> None:
+        """Every documented filter value parses without error."""
+        for time_filter in ("7D", "30D", "1Y", "ALL"):
+            org._extract_filters({"time_filter": time_filter})
+        for group_by in ("daily", "weekly", "monthly", "yearly"):
+            org._extract_filters({"group_by": group_by})
+        org._extract_filters(
+            {"time_filter": "CUSTOM", "start_date": "2026-01-01", "end_date": "2026-06-30"}
+        )
 
-    def test_filters_apply_to_performance_dashboard_too(self) -> None:
-        """The same filters narrow the performance dashboard."""
-        value = ORG_ROWS[0]["org_type"]
-        ratings = [
-            r["org_rating"] for r in ORG_ROWS
-            if r["org_type"] == value and r["org_rating"] is not None
-        ]
-        summary = self.performance(org_type=value)["summary"]
-        self.assertEqual(len(ratings), summary["rated_organizations"])
+
+class TestEmptyResultSet(MockBackedTestCase):
+    """A filter matching nothing returns a complete, zeroed payload."""
+
+    EMPTY = {"region": "Atlantis"}
+
+    def test_matches_nothing(self) -> None:
+        """The chosen filter genuinely selects no organizations."""
+        self.assertEqual([], oracle_rows(region="Atlantis"))
+
+    def test_structure_is_still_complete(self) -> None:
+        """Every documented key is present even with no matching rows."""
+        self.assertEqual(TOP_LEVEL_KEYS, set(self.dashboard(**self.EMPTY)))
+
+    def test_summary_is_zeroed(self) -> None:
+        """All four KPI cards report zero, including the average."""
+        summary = self.dashboard(**self.EMPTY)["summary"]
+        self.assertEqual(0, summary["total_organizations"])
+        self.assertEqual(0, summary["total_collaborators"])
+        self.assertEqual(0, summary["total_contributors"])
+        self.assertEqual(0.0, summary["average_org_rating"])
+
+    def test_collections_are_empty_or_zero_filled(self) -> None:
+        """Trends empty out while fixed-scale sections stay zero-filled."""
+        payload = self.dashboard(**self.EMPTY)
+        self.assertEqual([], payload["growth_trend"])
+        self.assertEqual([], payload["organizations_by_location"])
+        self.assertEqual([], payload["organizations_by_city"])
+        self.assertEqual([], payload["organization_type_distribution"])
+        self.assertEqual(
+            [{"rating": r, "organization_count": 0} for r in (1, 2, 3, 4, 5)],
+            payload["rating_distribution"],
+        )
+        self.assertEqual(
+            [{"org_size": s, "organization_count": 0} for s in org.CANONICAL_ORG_SIZES],
+            payload["organizations_by_size"],
+        )
+
+    def test_percentages_do_not_divide_by_zero(self) -> None:
+        """Shares degrade to 0.0 rather than raising on an empty population."""
+        for row in self.dashboard(**self.EMPTY)["collaborator_vs_contributor"]:
+            self.assertEqual(0, row["organization_count"])
+            self.assertEqual(0.0, row["percentage"])
 
 
 # --------------------------------------------------------------------------- #
-# 6. Contributor guard
+# 8. Contributor guard
 # --------------------------------------------------------------------------- #
 class TestContributorGuard(MockBackedTestCase):
     """ORG_IS_CONTRIBUTOR=false keeps the column out of the SQL entirely."""
 
-    def test_guard_off_zeroes_contributor_metrics(self) -> None:
-        """Disabled guard returns 0 / [] for every contributor metric."""
+    def test_guard_off_zeroes_contributor_figures(self) -> None:
+        """Disabled guard reports 0 contributors without dropping keys."""
         with env(ORG_IS_CONTRIBUTOR="false"):
-            overview = self.overview()
-            performance = self.performance()
-        self.assertEqual(0, overview["summary"]["contributor_organizations"])
-        self.assertEqual(0, overview["summary"]["non_contributor_organizations"])
-        self.assertEqual([], overview["contributor_distribution"])
-        self.assertEqual([], performance["top_contributor_organizations"])
+            payload = self.dashboard()
+        self.assertEqual(0, payload["summary"]["total_contributors"])
+        contributor = [
+            r for r in payload["collaborator_vs_contributor"] if r["type"] == "contributor"
+        ]
+        self.assertEqual(1, len(contributor))
+        self.assertEqual(0, contributor[0]["organization_count"])
 
     def test_guard_off_never_references_the_column(self) -> None:
         """No executed statement mentions is_contributor when disabled."""
@@ -574,35 +684,35 @@ class TestContributorGuard(MockBackedTestCase):
             self.skipTest("SQL recording is only available on the SQLite backend")
         self.connection.executed_sql.clear()
         with env(ORG_IS_CONTRIBUTOR="false"):
-            self.overview()
-            self.performance()
+            self.dashboard()
         offenders = [s for s in self.connection.executed_sql if "is_contributor" in s]
         self.assertEqual([], offenders, "is_contributor leaked into SQL while guarded")
 
-    def test_guard_off_still_references_it_when_enabled(self) -> None:
-        """Sanity check: the recorder does see the column when enabled."""
+    def test_recorder_sees_the_column_when_enabled(self) -> None:
+        """Sanity check: the guard really is what suppresses the column."""
         if mock_db.active_backend() != "sqlite":
             self.skipTest("SQL recording is only available on the SQLite backend")
         self.connection.executed_sql.clear()
         with env(ORG_IS_CONTRIBUTOR="true"):
-            self.overview()
-        self.assertTrue(
-            any("is_contributor" in s for s in self.connection.executed_sql)
-        )
+            self.dashboard()
+        self.assertTrue(any("is_contributor" in s for s in self.connection.executed_sql))
 
     def test_response_shape_is_identical_either_way(self) -> None:
         """Toggling the guard adds or drops no JSON keys."""
         with env(ORG_IS_CONTRIBUTOR="true"):
-            on_overview, on_performance = self.overview(), self.performance()
+            on = self.dashboard()
         with env(ORG_IS_CONTRIBUTOR="false"):
-            off_overview, off_performance = self.overview(), self.performance()
-        self.assertEqual(set(on_overview), set(off_overview))
-        self.assertEqual(set(on_overview["summary"]), set(off_overview["summary"]))
-        self.assertEqual(set(on_performance), set(off_performance))
+            off = self.dashboard()
+        self.assertEqual(set(on), set(off))
+        self.assertEqual(set(on["summary"]), set(off["summary"]))
+        self.assertEqual(
+            [r["type"] for r in on["collaborator_vs_contributor"]],
+            [r["type"] for r in off["collaborator_vs_contributor"]],
+        )
 
 
 # --------------------------------------------------------------------------- #
-# 7. Handler contract
+# 9. Handler contract
 # --------------------------------------------------------------------------- #
 class TestLambdaHandler(unittest.TestCase):
     """End-to-end handler behaviour with the mock connection injected."""
@@ -616,17 +726,42 @@ class TestLambdaHandler(unittest.TestCase):
     def _body(response: dict[str, Any]) -> dict[str, Any]:
         return json.loads(response["body"])
 
-    def test_overview_returns_200(self) -> None:
-        """dashboard_type=overview returns 200 with the overview payload."""
-        response = org.lambda_handler({"dashboard_type": "overview"})
+    def test_returns_200_with_the_full_structure(self) -> None:
+        """A standard request returns every documented top-level key."""
+        response = org.lambda_handler({"time_filter": "ALL", "group_by": "monthly"})
         self.assertEqual(200, response["statusCode"])
-        self.assertIn("organization_overview", self._body(response))
+        self.assertEqual(TOP_LEVEL_KEYS, set(self._body(response)))
 
-    def test_performance_returns_200(self) -> None:
-        """dashboard_type=performance returns 200 with the performance payload."""
-        response = org.lambda_handler({"dashboard_type": "performance"})
+    def test_accepts_api_gateway_string_body(self) -> None:
+        """Filters are read from a JSON string body, as API Gateway sends."""
+        event = {"body": json.dumps({"organization_type": "non_profit"})}
+        body = self._body(org.lambda_handler(event))
+        self.assertEqual(
+            len(oracle_rows(organization_type="non_profit")),
+            body["summary"]["total_organizations"],
+        )
+
+    def test_accepts_dict_body_and_bare_event(self) -> None:
+        """A dict body and a bare invocation payload behave identically."""
+        expected = len(oracle_rows(organization_type="for_profit"))
+        for event in (
+            {"body": {"organization_type": "for_profit"}},
+            {"organization_type": "for_profit"},
+        ):
+            with self.subTest(event=event):
+                body = self._body(org.lambda_handler(event))
+                self.assertEqual(expected, body["summary"]["total_organizations"])
+
+    def test_malformed_body_is_treated_as_no_filters(self) -> None:
+        """An unparseable body does not crash the request."""
+        response = org.lambda_handler({"body": "{not json"})
         self.assertEqual(200, response["statusCode"])
-        self.assertIn("organization_performance", self._body(response))
+
+    def test_missing_and_empty_events(self) -> None:
+        """None and {} are valid unfiltered requests."""
+        for event in (None, {}):
+            with self.subTest(event=event):
+                self.assertEqual(200, org.lambda_handler(event)["statusCode"])
 
     def test_response_envelope(self) -> None:
         """Responses carry JSON content-type and CORS headers."""
@@ -634,26 +769,18 @@ class TestLambdaHandler(unittest.TestCase):
         self.assertEqual("application/json", headers["Content-Type"])
         self.assertEqual("*", headers["Access-Control-Allow-Origin"])
 
-    def test_missing_and_unknown_dashboard_type_default_to_overview(self) -> None:
-        """An absent or unrecognized dashboard_type falls back to overview."""
-        for event in ({}, None, {"dashboard_type": "nonsense"}):
-            with self.subTest(event=event):
-                body = self._body(org.lambda_handler(event))
-                self.assertIn("organization_overview", body)
-
-    def test_custom_without_dates_returns_400(self) -> None:
-        """CUSTOM without start_date/end_date is a 400, not a 500."""
-        response = org.lambda_handler(
-            {"dashboard_type": "overview", "time_filter": "CUSTOM"}
-        )
-        self.assertEqual(400, response["statusCode"])
-        self.assertIn("error", self._body(response))
-
-    def test_invalid_org_rating_returns_400(self) -> None:
-        """A non-integer org_rating is rejected up front."""
-        response = org.lambda_handler({"org_rating": "five"})
-        self.assertEqual(400, response["statusCode"])
-        self.assertIn("org_rating", self._body(response)["error"])
+    def test_invalid_filters_return_400(self) -> None:
+        """Every unsupported filter value surfaces as a 400 with a message."""
+        for payload in (
+            {"time_filter": "CUSTOM"},
+            {"time_filter": "LAST_FORTNIGHT"},
+            {"group_by": "fortnightly"},
+            {"organization_type": "charity"},
+        ):
+            with self.subTest(payload=payload):
+                response = org.lambda_handler(payload)
+                self.assertEqual(400, response["statusCode"])
+                self.assertIn("error", self._body(response))
 
     def test_connection_failure_returns_500(self) -> None:
         """A dead database surfaces as a 500 without leaking details."""
@@ -662,27 +789,27 @@ class TestLambdaHandler(unittest.TestCase):
             raise RuntimeError("connection refused to 10.0.0.5")
 
         org.get_db_connection = boom
-        response = org.lambda_handler({"dashboard_type": "overview"})
+        response = org.lambda_handler({})
         self.assertEqual(500, response["statusCode"])
         self.assertEqual("internal server error", self._body(response)["error"])
         self.assertNotIn("10.0.0.5", response["body"])
 
     def test_single_query_failure_degrades_to_default(self) -> None:
         """One failing query yields a safe default while the request stays 200."""
-        original = org.fetch_total_organizations
+        original = org.fetch_summary
 
-        def boom(*_args: Any, **_kwargs: Any) -> int:
+        def boom(*_args: Any, **_kwargs: Any) -> dict[str, Any]:
             raise RuntimeError("simulated query failure")
 
-        org.fetch_total_organizations = boom
-        self.addCleanup(setattr, org, "fetch_total_organizations", original)
+        org.fetch_summary = boom
+        self.addCleanup(setattr, org, "fetch_summary", original)
 
-        response = org.lambda_handler({"dashboard_type": "overview"})
+        response = org.lambda_handler({})
         self.assertEqual(200, response["statusCode"])
-        payload = self._body(response)["organization_overview"]
-        self.assertEqual(0, payload["summary"]["total_organizations"])
-        # Neighbouring metrics still resolve normally.
-        self.assertTrue(payload["organizations_by_type"])
+        body = self._body(response)
+        self.assertEqual(0, body["summary"]["total_organizations"])
+        # Neighbouring sections still resolve normally.
+        self.assertTrue(body["organizations_by_location"])
 
     def test_body_is_json_encoded_string(self) -> None:
         """The body is a JSON string, as API Gateway proxy integration expects."""
@@ -690,10 +817,42 @@ class TestLambdaHandler(unittest.TestCase):
         self.assertIsInstance(response["body"], str)
         self.assertIsInstance(json.loads(response["body"]), dict)
 
+    def test_documented_sample_payloads_all_succeed(self) -> None:
+        """Every sample payload in the issue returns 200."""
+        for payload in SAMPLE_PAYLOADS.values():
+            with self.subTest(payload=payload):
+                response = org.lambda_handler(dict(payload))
+                self.assertEqual(200, response["statusCode"])
+                self.assertEqual(TOP_LEVEL_KEYS, set(self._body(response)))
+
 
 # --------------------------------------------------------------------------- #
-# Results file generation
+# Sample payloads (verbatim from the issue) + results file generation
 # --------------------------------------------------------------------------- #
+SAMPLE_PAYLOADS: dict[str, dict[str, Any]] = {
+    "Standard test": {
+        "time_filter": "30D", "start_date": None, "end_date": None,
+        "group_by": "daily", "region": "ALL", "organization_type": "ALL",
+    },
+    "Last 12 months": {
+        "time_filter": "1Y", "start_date": None, "end_date": None,
+        "group_by": "monthly", "region": "ALL", "organization_type": "ALL",
+    },
+    "Filter by region": {
+        "time_filter": "1Y", "start_date": None, "end_date": None,
+        "group_by": "monthly", "region": "California", "organization_type": "ALL",
+    },
+    "Filter by organization type": {
+        "time_filter": "1Y", "start_date": None, "end_date": None,
+        "group_by": "monthly", "region": "ALL", "organization_type": "non_profit",
+    },
+    "Custom date range": {
+        "time_filter": "CUSTOM", "start_date": "2026-01-01", "end_date": "2026-06-30",
+        "group_by": "monthly", "region": "ALL", "organization_type": "ALL",
+    },
+}
+
+
 class _RecordingResult(unittest.TextTestResult):
     """Collects an ordered pass/fail record for the markdown report."""
 
@@ -702,10 +861,14 @@ class _RecordingResult(unittest.TextTestResult):
         self.records: list[tuple[str, str, str, str]] = []
 
     def _record(self, test: unittest.TestCase, outcome: str) -> None:
-        cls = type(test).__name__
-        name = test._testMethodName
-        doc = (test.shortDescription() or "").strip()
-        self.records.append((cls, name, doc, outcome))
+        self.records.append(
+            (
+                type(test).__name__,
+                test._testMethodName,
+                (test.shortDescription() or "").strip(),
+                outcome,
+            )
+        )
 
     def addSuccess(self, test: unittest.TestCase) -> None:
         super().addSuccess(test)
@@ -727,31 +890,54 @@ class _RecordingResult(unittest.TextTestResult):
 _SECTION_TITLES = {
     "TestNoSharedDatabaseAccess": "No shared-database access (review feedback)",
     "TestFixtures": "Mock fixtures",
-    "TestOverviewDashboard": "Dashboard 1 - Organization Overview",
-    "TestPerformanceDashboard": "Dashboard 2 - Organization Performance",
+    "TestKpiSummary": "KPI cards",
+    "TestGrowthTrend": "Tab 1 - Growth trend",
+    "TestOrganizationsByLocation": "Tab 1 - Organizations by location",
+    "TestOrganizationsBySize": "Tab 2 - Organizations by size",
+    "TestCollaboratorVsContributor": "Tab 2 - Collaborator vs contributor",
+    "TestRatingDistribution": "Tab 3 - Rating distribution",
+    "TestOrganizationTypeDistribution": "Tab 3 - For-profit vs non-profit",
     "TestCommonFilters": "Common filters",
+    "TestInvalidFilters": "Invalid filters",
+    "TestEmptyResultSet": "Empty result sets",
     "TestContributorGuard": "Contributor guard (ORG_IS_CONTRIBUTOR)",
     "TestLambdaHandler": "Lambda handler contract",
 }
 
 
-def _sample_responses() -> list[tuple[str, dict[str, Any], dict[str, Any]]]:
+def _sample_responses() -> list[tuple[str, Any, dict[str, Any]]]:
     """Produce the sample request/response pairs recorded in the report."""
     original = org.get_db_connection
     org.get_db_connection = mock_db.load_mock_database
     try:
-        events = [
-            ("Overview - all organizations", {"dashboard_type": "overview", "time_filter": "ALL", "group_by": "yearly"}),
-            ("Overview - non-profit collaborators only", {"dashboard_type": "overview", "org_type": "Non-Profit", "is_collaborator": True, "group_by": "yearly"}),
-            ("Performance - all organizations", {"dashboard_type": "performance", "time_filter": "ALL"}),
-            ("Performance - large organizations only", {"dashboard_type": "performance", "org_size": "Large"}),
-            ("Validation error - CUSTOM without dates", {"dashboard_type": "overview", "time_filter": "CUSTOM"}),
-            ("Validation error - non-integer org_rating", {"dashboard_type": "overview", "org_rating": "five"}),
-        ]
-        samples = []
-        for title, event in events:
-            response = org.lambda_handler(event)
-            samples.append((title, event, {
+        samples: list[tuple[str, Any, dict[str, Any]]] = []
+        for title, payload in SAMPLE_PAYLOADS.items():
+            response = org.lambda_handler(dict(payload))
+            samples.append((title, payload, {
+                "statusCode": response["statusCode"],
+                "body": json.loads(response["body"]),
+            }))
+
+        # A region that exists in the fixture, so the filtered shape is visible.
+        populated = {
+            "time_filter": "ALL", "start_date": None, "end_date": None,
+            "group_by": "yearly", "region": SAMPLE_STATE_NAME,
+            "organization_type": "ALL",
+        }
+        response = org.lambda_handler(dict(populated))
+        samples.append((
+            f"Filter by region - {SAMPLE_STATE_NAME} (present in the fixture)",
+            populated,
+            {"statusCode": response["statusCode"], "body": json.loads(response["body"])},
+        ))
+
+        for title, payload in (
+            ("Validation error - CUSTOM without dates", {"time_filter": "CUSTOM"}),
+            ("Validation error - unsupported organization_type",
+             {"organization_type": "charity"}),
+        ):
+            response = org.lambda_handler(dict(payload))
+            samples.append((title, payload, {
                 "statusCode": response["statusCode"],
                 "body": json.loads(response["body"]),
             }))
@@ -760,10 +946,10 @@ def _sample_responses() -> list[tuple[str, dict[str, Any], dict[str, Any]]]:
             raise RuntimeError("simulated database outage")
 
         org.get_db_connection = boom
-        outage = org.lambda_handler({"dashboard_type": "overview"})
+        outage = org.lambda_handler({})
         samples.append((
             "Database failure - connection refused",
-            {"dashboard_type": "overview"},
+            {},
             {"statusCode": outage["statusCode"], "body": json.loads(outage["body"])},
         ))
         return samples
@@ -794,6 +980,7 @@ def emit_results(
     add("")
     add("| | |")
     add("|---|---|")
+    add("| Endpoint | `POST /analytics/organizations` |")
     add("| Module under test | `data-analytics/lambda_functions/organization_analytics.py` |")
     add("| Data source | mock fixtures only - `data-analytics/sql/organizations.csv`, `data-analytics/sql/state.csv` |")
     add(f"| Organizations in fixture | {TOTAL_ORGS} |")
@@ -847,21 +1034,24 @@ def emit_results(
     for record in result.records:
         by_class.setdefault(record[0], []).append(record)
 
-    for cls, records in by_class.items():
-        add(f"### {_SECTION_TITLES.get(cls, cls)}")
+    for cls in _SECTION_TITLES:
+        records = by_class.get(cls)
+        if not records:
+            continue
+        add(f"### {_SECTION_TITLES[cls]}")
         add("")
         add("| Result | Check | What it verifies |")
         add("|---|---|---|")
         for _cls, name, doc, outcome in records:
-            mark = {"PASS": "PASS", "FAIL": "FAIL", "ERROR": "ERROR", "SKIP": "SKIP"}[outcome]
-            add(f"| {mark} | `{name}` | {doc} |")
+            add(f"| {outcome} | `{name}` | {doc} |")
         add("")
 
     add("---")
     add("")
     add("## Sample API responses")
     add("")
-    add("Generated by invoking `lambda_handler` against the mock fixtures.")
+    add("Generated by invoking `lambda_handler` against the mock fixtures. The "
+        "first five payloads are the sample payloads from the issue, verbatim.")
     add("")
     for title, event, response in _sample_responses():
         add(f"### {title}")
@@ -884,16 +1074,22 @@ def emit_results(
     add("## Notes")
     add("")
     unrated = sum(1 for r in ORG_ROWS if r["org_rating"] is None)
-    add(f"- Every organization in the current fixture carries a rating, so "
-        f"`unrated_organizations` is {unrated} here. The metric and its SQL are "
-        f"still exercised (`rated + unrated == total`), but a fixture containing "
-        f"NULL ratings would give it a non-zero value to assert against.")
+    add(f"- `growth_trend` and `organization_type_distribution` are **cumulative** "
+        f"running totals, matching the figures in the issue (its stacked-bar sample "
+        f"reaches 109 then 111 against a 126 total, which only holds if each period "
+        f"reports the total reached rather than the number added).")
+    add(f"- The fixture contains {unrated} organizations with a NULL rating. NULL "
+        f"handling is still exercised: unrated rows are excluded from the buckets "
+        f"and from the average without error, and `rating_distribution` always "
+        f"returns the full 1-5 scale zero-filled.")
+    add("- `region` resolves through the `state` lookup table and accepts either a "
+        "readable state name (`California`) or a state code (`CA`), case-insensitively.")
     add("- The default SQLite backend applies a small compatibility shim "
         "(`%s` placeholders, `INTERVAL` arithmetic, `::numeric`, `DATE_TRUNC`, "
         "`TO_CHAR`). Set `MOCK_DB_BACKEND=postgres` with `DB_*` pointing at a "
         "local PostgreSQL to run the identical assertions against real "
         "PostgreSQL; see `data-analytics/tests/mock_db.py`.")
-    add("- `is_contributor` is present in the fixture, so contributor metrics "
+    add("- `is_contributor` is present in the fixture, so contributor figures "
         "return real values. `ORG_IS_CONTRIBUTOR=false` still suppresses them "
         "without referencing the column, for databases where the migration has "
         "not landed.")
@@ -955,8 +1151,6 @@ def main() -> int:
         result, _ = _run_suite(verbosity)
         return 0 if result.wasSuccessful() else 1
 
-    # For the report, run every backend we can reach. PostgreSQL is preferred
-    # for the detailed table because it is the engine this Lambda deploys to.
     coverage: list[tuple[str, str, Optional[_RecordingResult], float]] = []
     detailed: Optional[tuple[_RecordingResult, float, str]] = None
     ok = True

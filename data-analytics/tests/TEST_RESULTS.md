@@ -1,9 +1,10 @@
 # Organization Analytics API - Test Results (Issue #228)
 
-**56/58 checks passed**, 2 skipped in 5.36s on the `postgres` backend.
+**74/76 checks passed**, 2 skipped in 5.69s on the `postgres` backend.
 
 | | |
 |---|---|
+| Endpoint | `POST /analytics/organizations` |
 | Module under test | `data-analytics/lambda_functions/organization_analytics.py` |
 | Data source | mock fixtures only - `data-analytics/sql/organizations.csv`, `data-analytics/sql/state.csv` |
 | Organizations in fixture | 40 |
@@ -17,8 +18,8 @@ The identical suite runs against both a real local PostgreSQL and a zero-depende
 
 | Backend | Engine | Result |
 |---|---|---|
-| `sqlite` | SQLite 3.50.4 (in-memory, PostgreSQL shim) | 58/58 passed in 0.17s |
-| `postgres` | PostgreSQL 16.14 | 56/58 passed, 2 skipped in 5.36s |
+| `sqlite` | SQLite 3.50.4 (in-memory, PostgreSQL shim) | 76/76 passed in 0.32s |
+| `postgres` | PostgreSQL 16.14 | 74/76 passed, 2 skipped in 5.69s |
 
 Reproduce with:
 
@@ -38,31 +39,14 @@ DB_NAME=saayam_local DB_USER=postgres DB_PASSWORD=postgres \
 
 ## Checks
 
-### Common filters
+### No shared-database access (review feedback)
 
 | Result | Check | What it verifies |
 |---|---|---|
-| PASS | `test_boolean_filter_accepts_strings` | String 'true'/'false' are coerced like real booleans. |
-| PASS | `test_boolean_filters` | is_collaborator / is_contributor filter on both true and false. |
-| PASS | `test_combined_filters_intersect` | Multiple filters combine with AND. |
-| PASS | `test_custom_range_matches_oracle` | A CUSTOM window returns exactly the rows created inside it. |
-| PASS | `test_custom_without_dates_raises` | CUSTOM without both bounds is a validation error. |
-| PASS | `test_filters_apply_to_performance_dashboard_too` | The same filters narrow the performance dashboard. |
-| PASS | `test_org_rating_filter_accepts_int_and_string` | org_rating filters correctly whether passed as int or string. |
-| PASS | `test_org_size_filter` | Filtering by org_size returns exactly that size's rows. |
-| PASS | `test_org_type_filter` | Filtering by org_type returns exactly that type's rows. |
-| PASS | `test_state_and_city_filters` | state_id and city_name filters match the oracle. |
-| PASS | `test_time_filters_are_monotonic` | 7D <= 30D <= 1Y <= ALL over the same fixture. |
-| PASS | `test_unknown_time_filter_returns_everything` | An unrecognized time_filter applies no date restriction. |
-
-### Contributor guard (ORG_IS_CONTRIBUTOR)
-
-| Result | Check | What it verifies |
-|---|---|---|
-| SKIP | `test_guard_off_never_references_the_column` | No executed statement mentions is_contributor when disabled. |
-| SKIP | `test_guard_off_still_references_it_when_enabled` | Sanity check: the recorder does see the column when enabled. |
-| PASS | `test_guard_off_zeroes_contributor_metrics` | Disabled guard returns 0 / [] for every contributor metric. |
-| PASS | `test_response_shape_is_identical_either_way` | Toggling the guard adds or drops no JSON keys. |
+| PASS | `test_boto3_is_not_imported` | Importing the module must not pull in boto3. |
+| PASS | `test_connection_refuses_to_guess_credentials` | With DB_HOST unset the connection raises instead of falling back. |
+| PASS | `test_no_ssm_even_with_aws_environment_present` | AWS credentials in the environment do not unlock a fallback path. |
+| PASS | `test_source_has_no_parameter_store_references` | No boto3/SSM/Parameter Store call sites remain in the module. |
 
 ### Mock fixtures
 
@@ -73,79 +57,152 @@ DB_NAME=saayam_local DB_USER=postgres DB_PASSWORD=postgres \
 | PASS | `test_organizations_fixture_loads` | organizations.csv loads with the columns the queries reference. |
 | PASS | `test_state_fixture_loads` | state.csv loads and provides state_id -> state_name. |
 
+### KPI cards
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_average_org_rating_ignores_nulls` | average_org_rating averages only the rated organizations. |
+| PASS | `test_summary_has_exactly_the_four_cards` | summary carries the four documented keys and nothing else. |
+| PASS | `test_total_collaborators` | total_collaborators counts organizations with is_collaborator true. |
+| PASS | `test_total_contributors` | total_contributors counts organizations with is_contributor true. |
+| PASS | `test_total_organizations` | total_organizations equals the fixture row count. |
+
+### Tab 1 - Growth trend
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_final_point_matches_summary` | The last period equals the KPI totals. |
+| PASS | `test_period_formats` | Trend period strings use the format tied to each grouping. |
+| PASS | `test_periods_ascending_and_unique` | Every grouping returns ordered, non-repeating periods. |
+| PASS | `test_row_shape` | Each point carries period, total_organizations, total_collaborators. |
+| PASS | `test_series_are_cumulative` | Both series are non-decreasing across periods. |
+| PASS | `test_yearly_trend_matches_oracle` | Yearly cumulative totals match a running count over created_at. |
+
+### Tab 1 - Organizations by location
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_city_row_shape` | City rows carry their owning state for disambiguation. |
+| PASS | `test_city_rows_match_oracle` | Per-city counts match the fixture and total every organization. |
+| PASS | `test_state_percentages_total_100` | Percentages are shares of the filtered population. |
+| PASS | `test_state_row_shape_and_names` | Each row has the documented keys and a resolved state_name. |
+| PASS | `test_state_rows_match_oracle` | Per-state counts match the fixture. |
+| PASS | `test_state_rows_sorted_by_count` | Rows are ordered by organization_count descending. |
+
+### Tab 2 - Organizations by size
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_canonical_buckets_always_present_in_order` | All three buckets are returned, in small-medium-large order. |
+| PASS | `test_counts_match_oracle` | Counts match the fixture, compared case-insensitively. |
+| PASS | `test_counts_total_the_population` | Every organization lands in exactly one bucket. |
+| PASS | `test_row_shape` | Each row carries org_size and organization_count. |
+
+### Tab 2 - Collaborator vs contributor
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_counts_match_oracle` | Counts match the is_collaborator / is_contributor flags. |
+| PASS | `test_percentages_are_share_of_population` | Each percentage is that flag's share of all filtered organizations. |
+| PASS | `test_row_shape` | Each row carries type, organization_count and percentage. |
+| PASS | `test_two_rows_in_documented_order` | Exactly the collaborator and contributor rows are returned. |
+
+### Tab 3 - Rating distribution
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_counts_match_oracle` | Counts match the rated organizations in the fixture. |
+| PASS | `test_full_scale_always_present` | Ratings 1 through 5 are returned in ascending order. |
+| PASS | `test_null_ratings_are_excluded_not_fatal` | Unrated organizations are omitted from the buckets without error. |
+| PASS | `test_row_shape` | Each row carries rating and organization_count. |
+
+### Tab 3 - For-profit vs non-profit
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_final_point_matches_oracle` | The last period totals every organization, split by type. |
+| PASS | `test_row_shape` | Each point carries period, for_profit, non_profit and total. |
+| PASS | `test_series_are_cumulative` | Both series are non-decreasing across periods. |
+| PASS | `test_total_is_the_sum_of_both_types` | total always equals for_profit + non_profit. |
+| PASS | `test_yearly_split_matches_oracle` | Cumulative per-year splits match a running count over created_at. |
+
+### Common filters
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_all_sentinel_means_unfiltered` | 'ALL' and null are both treated as no filter. |
+| PASS | `test_combined_filters_intersect` | region and organization_type combine with AND. |
+| PASS | `test_custom_range_matches_oracle` | A CUSTOM window returns exactly the rows created inside it. |
+| PASS | `test_filters_apply_to_every_section` | A filter narrows every section consistently, not just the summary. |
+| PASS | `test_organization_type_filter` | organization_type filters on the snake_case values. |
+| PASS | `test_region_by_state_code` | region also accepts a state code. |
+| PASS | `test_region_by_state_name` | region accepts a readable state name. |
+| PASS | `test_region_is_case_insensitive` | region matching ignores case. |
+| PASS | `test_time_filters_are_monotonic` | 7D <= 30D <= 1Y <= ALL over the same fixture. |
+
+### Invalid filters
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_custom_without_dates_rejected` | CUSTOM without both bounds is a validation error. |
+| PASS | `test_supported_values_accepted` | Every documented filter value parses without error. |
+| PASS | `test_unknown_group_by_rejected` | An unsupported group_by is a validation error. |
+| PASS | `test_unknown_organization_type_rejected` | An unsupported organization_type is a validation error. |
+| PASS | `test_unknown_time_filter_rejected` | An unsupported time_filter is a validation error. |
+
+### Empty result sets
+
+| Result | Check | What it verifies |
+|---|---|---|
+| PASS | `test_collections_are_empty_or_zero_filled` | Trends empty out while fixed-scale sections stay zero-filled. |
+| PASS | `test_matches_nothing` | The chosen filter genuinely selects no organizations. |
+| PASS | `test_percentages_do_not_divide_by_zero` | Shares degrade to 0.0 rather than raising on an empty population. |
+| PASS | `test_structure_is_still_complete` | Every documented key is present even with no matching rows. |
+| PASS | `test_summary_is_zeroed` | All four KPI cards report zero, including the average. |
+
+### Contributor guard (ORG_IS_CONTRIBUTOR)
+
+| Result | Check | What it verifies |
+|---|---|---|
+| SKIP | `test_guard_off_never_references_the_column` | No executed statement mentions is_contributor when disabled. |
+| PASS | `test_guard_off_zeroes_contributor_figures` | Disabled guard reports 0 contributors without dropping keys. |
+| SKIP | `test_recorder_sees_the_column_when_enabled` | Sanity check: the guard really is what suppresses the column. |
+| PASS | `test_response_shape_is_identical_either_way` | Toggling the guard adds or drops no JSON keys. |
+
 ### Lambda handler contract
 
 | Result | Check | What it verifies |
 |---|---|---|
+| PASS | `test_accepts_api_gateway_string_body` | Filters are read from a JSON string body, as API Gateway sends. |
+| PASS | `test_accepts_dict_body_and_bare_event` | A dict body and a bare invocation payload behave identically. |
 | PASS | `test_body_is_json_encoded_string` | The body is a JSON string, as API Gateway proxy integration expects. |
 | PASS | `test_connection_failure_returns_500` | A dead database surfaces as a 500 without leaking details. |
-| PASS | `test_custom_without_dates_returns_400` | CUSTOM without start_date/end_date is a 400, not a 500. |
-| PASS | `test_invalid_org_rating_returns_400` | A non-integer org_rating is rejected up front. |
-| PASS | `test_missing_and_unknown_dashboard_type_default_to_overview` | An absent or unrecognized dashboard_type falls back to overview. |
-| PASS | `test_overview_returns_200` | dashboard_type=overview returns 200 with the overview payload. |
-| PASS | `test_performance_returns_200` | dashboard_type=performance returns 200 with the performance payload. |
+| PASS | `test_documented_sample_payloads_all_succeed` | Every sample payload in the issue returns 200. |
+| PASS | `test_invalid_filters_return_400` | Every unsupported filter value surfaces as a 400 with a message. |
+| PASS | `test_malformed_body_is_treated_as_no_filters` | An unparseable body does not crash the request. |
+| PASS | `test_missing_and_empty_events` | None and {} are valid unfiltered requests. |
 | PASS | `test_response_envelope` | Responses carry JSON content-type and CORS headers. |
+| PASS | `test_returns_200_with_the_full_structure` | A standard request returns every documented top-level key. |
 | PASS | `test_single_query_failure_degrades_to_default` | One failing query yields a safe default while the request stays 200. |
-
-### No shared-database access (review feedback)
-
-| Result | Check | What it verifies |
-|---|---|---|
-| PASS | `test_boto3_is_not_imported` | Importing the module must not pull in boto3. |
-| PASS | `test_connection_refuses_to_guess_credentials` | With DB_HOST unset the connection raises instead of falling back. |
-| PASS | `test_no_ssm_even_with_aws_environment_present` | AWS credentials in the environment do not unlock a fallback path. |
-| PASS | `test_source_has_no_parameter_store_references` | No boto3/SSM/Parameter Store call sites remain in the module. |
-
-### Dashboard 1 - Organization Overview
-
-| Result | Check | What it verifies |
-|---|---|---|
-| PASS | `test_collaborator_summary` | Collaborator / non-collaborator counts match the oracle. |
-| PASS | `test_contributor_summary_returns_real_values` | Contributor counts are real numbers now the fixture has the column. |
-| PASS | `test_distributions_present` | Collaborator and contributor distributions total the fixture. |
-| PASS | `test_non_profit_and_for_profit_counts` | Type summary matches the 'Non-Profit'/'For-profit' fixture labels. |
-| PASS | `test_organizations_by_city` | by_city matches the oracle and totals every organization. |
-| PASS | `test_organizations_by_size` | organizations_by_size covers Small/Medium/Large per the oracle. |
-| PASS | `test_organizations_by_state` | by_state matches the oracle and resolves state_name via the join. |
-| PASS | `test_organizations_by_type` | organizations_by_type matches the oracle and is sorted descending. |
-| PASS | `test_registration_trend_groupings` | Every group_by totals the fixture and is ordered ascending. |
-| PASS | `test_response_contains_every_required_key` | The payload matches the response structure named in the issue. |
-| PASS | `test_total_organizations` | total_organizations equals the fixture row count. |
-| PASS | `test_trend_period_formats` | Trend period strings use the format tied to each grouping. |
-| PASS | `test_type_counts_partition_the_total` | Non-profit + for-profit accounts for every organization. |
-| PASS | `test_unknown_group_by_falls_back_to_daily` | An unrecognized group_by degrades to the daily grouping. |
-| PASS | `test_yearly_trend_matches_oracle` | Yearly buckets match the years present in created_at. |
-
-### Dashboard 2 - Organization Performance
-
-| Result | Check | What it verifies |
-|---|---|---|
-| PASS | `test_average_rating` | average_rating matches the mean of the fixture ratings. |
-| PASS | `test_five_star_count` | five_star_organizations matches the oracle. |
-| PASS | `test_rated_and_unrated_partition_the_total` | rated + unrated equals every organization. |
-| PASS | `test_rating_distribution` | rating_distribution matches the oracle, ascending, ratings 1-5. |
-| PASS | `test_ratings_by_organization_size` | Average rating per org_size matches the oracle. |
-| PASS | `test_ratings_by_organization_type` | Average rating per org_type matches the oracle. |
-| PASS | `test_response_contains_every_required_key` | The payload matches the response structure named in the issue. |
-| PASS | `test_top_collaborator_organizations` | Collaborator leaderboard contains only collaborators. |
-| PASS | `test_top_contributor_organizations` | Contributor leaderboard is populated and contains only contributors. |
-| PASS | `test_top_rated_organizations` | Leaderboard is capped at TOP_N and ordered by rating descending. |
 
 ---
 
 ## Sample API responses
 
-Generated by invoking `lambda_handler` against the mock fixtures.
+Generated by invoking `lambda_handler` against the mock fixtures. The first five payloads are the sample payloads from the issue, verbatim.
 
-### Overview - all organizations
+### Standard test
 
 Request:
 
 ```json
 {
-  "dashboard_type": "overview",
-  "time_filter": "ALL",
-  "group_by": "yearly"
+  "time_filter": "30D",
+  "start_date": null,
+  "end_date": null,
+  "group_by": "daily",
+  "region": "ALL",
+  "organization_type": "ALL"
 }
 ```
 
@@ -153,403 +210,79 @@ Response (HTTP 200):
 
 ```json
 {
-  "organization_overview": {
-    "summary": {
-      "total_organizations": 40,
-      "non_profit_organizations": 21,
-      "for_profit_organizations": 19,
-      "collaborator_organizations": 21,
-      "non_collaborator_organizations": 19,
-      "contributor_organizations": 19,
-      "non_contributor_organizations": 21
+  "summary": {
+    "total_organizations": 0,
+    "total_collaborators": 0,
+    "total_contributors": 0,
+    "average_org_rating": 0.0
+  },
+  "growth_trend": [],
+  "organizations_by_location": [],
+  "organizations_by_city": [],
+  "organizations_by_size": [
+    {
+      "org_size": "small",
+      "organization_count": 0
     },
-    "organization_activity_trend": [
-      {
-        "period": "2023",
-        "count": 5
-      },
-      {
-        "period": "2024",
-        "count": 15
-      },
-      {
-        "period": "2025",
-        "count": 19
-      },
-      {
-        "period": "2026",
-        "count": 1
-      }
-    ],
-    "organizations_by_type": [
-      {
-        "org_type": "Non-Profit",
-        "count": 21
-      },
-      {
-        "org_type": "For-profit",
-        "count": 19
-      }
-    ],
-    "organizations_by_size": [
-      {
-        "org_size": "Large",
-        "count": 21
-      },
-      {
-        "org_size": "Small",
-        "count": 10
-      },
-      {
-        "org_size": "Medium",
-        "count": 9
-      }
-    ],
-    "organizations_by_location": {
-      "by_state": [
-        {
-          "state_id": "TX",
-          "state_name": "Texas",
-          "count": 3
-        },
-        {
-          "state_id": "IN",
-          "state_name": "Indiana",
-          "count": 2
-        },
-        {
-          "state_id": "FL",
-          "state_name": "Florida",
-          "count": 2
-        },
-        {
-          "state_id": "IA",
-          "state_name": "Iowa",
-          "count": 2
-        },
-        {
-          "state_id": "MT",
-          "state_name": "Montana",
-          "count": 2
-        },
-        {
-          "state_id": "KS",
-          "state_name": "Kansas",
-          "count": 2
-        },
-        {
-          "state_id": "MN",
-          "state_name": "Minnesota",
-          "count": 2
-        },
-        {
-          "state_id": "NC",
-          "state_name": "North Carolina",
-          "count": 2
-        },
-        {
-          "state_id": "AR",
-          "state_name": "Arkansas",
-          "count": 2
-        },
-        {
-          "state_id": "RI",
-          "state_name": "Rhode Island",
-          "count": 2
-        },
-        {
-          "state_id": "VT",
-          "state_name": "Vermont",
-          "count": 1
-        },
-        {
-          "state_id": "WY",
-          "state_name": "Wyoming",
-          "count": 1
-        },
-        {
-          "state_id": "AL",
-          "state_name": "Alabama",
-          "count": 1
-        },
-        {
-          "state_id": "NJ",
-          "state_name": "New Jersey",
-          "count": 1
-        },
-        {
-          "state_id": "WA",
-          "state_name": "Washington",
-          "count": 1
-        },
-        {
-          "state_id": "WI",
-          "state_name": "Wisconsin",
-          "count": 1
-        },
-        {
-          "state_id": "MO",
-          "state_name": "Missouri",
-          "count": 1
-        },
-        {
-          "state_id": "UT",
-          "state_name": "Utah",
-          "count": 1
-        },
-        {
-          "state_id": "NE",
-          "state_name": "Nebraska",
-          "count": 1
-        },
-        {
-          "state_id": "AZ",
-          "state_name": "Arizona",
-          "count": 1
-        },
-        {
-          "state_id": "AK",
-          "state_name": "Alaska",
-          "count": 1
-        },
-        {
-          "state_id": "OH",
-          "state_name": "Ohio",
-          "count": 1
-        },
-        {
-          "state_id": "CA",
-          "state_name": "California",
-          "count": 1
-        },
-        {
-          "state_id": "VA",
-          "state_name": "Virginia",
-          "count": 1
-        },
-        {
-          "state_id": "MI",
-          "state_name": "Michigan",
-          "count": 1
-        },
-        {
-          "state_id": "NV",
-          "state_name": "Nevada",
-          "count": 1
-        },
-        {
-          "state_id": "OK",
-          "state_name": "Oklahoma",
-          "count": 1
-        },
-        {
-          "state_id": "OR",
-          "state_name": "Oregon",
-          "count": 1
-        },
-        {
-          "state_id": "ME",
-          "state_name": "Maine",
-          "count": 1
-        }
-      ],
-      "by_city": [
-        {
-          "city_name": "Kingborough",
-          "count": 1
-        },
-        {
-          "city_name": "New Amyhaven",
-          "count": 1
-        },
-        {
-          "city_name": "South Monicamouth",
-          "count": 1
-        },
-        {
-          "city_name": "East Jenniferfort",
-          "count": 1
-        },
-        {
-          "city_name": "Burchborough",
-          "count": 1
-        },
-        {
-          "city_name": "Lake Deniseville",
-          "count": 1
-        },
-        {
-          "city_name": "Martinezbury",
-          "count": 1
-        },
-        {
-          "city_name": "North Judithbury",
-          "count": 1
-        },
-        {
-          "city_name": "Smithberg",
-          "count": 1
-        },
-        {
-          "city_name": "South Williamton",
-          "count": 1
-        },
-        {
-          "city_name": "Victoriaport",
-          "count": 1
-        },
-        {
-          "city_name": "West Amandastad",
-          "count": 1
-        },
-        {
-          "city_name": "Johnberg",
-          "count": 1
-        },
-        {
-          "city_name": "Leehaven",
-          "count": 1
-        },
-        {
-          "city_name": "Stephaniemouth",
-          "count": 1
-        },
-        {
-          "city_name": "Port Andrew",
-          "count": 1
-        },
-        {
-          "city_name": "East Amanda",
-          "count": 1
-        },
-        {
-          "city_name": "New Thomas",
-          "count": 1
-        },
-        {
-          "city_name": "Ronaldview",
-          "count": 1
-        },
-        {
-          "city_name": "Lake Debbie",
-          "count": 1
-        },
-        {
-          "city_name": "New Susanville",
-          "count": 1
-        },
-        {
-          "city_name": "Barkerfurt",
-          "count": 1
-        },
-        {
-          "city_name": "Ortizmouth",
-          "count": 1
-        },
-        {
-          "city_name": "South Rachelborough",
-          "count": 1
-        },
-        {
-          "city_name": "North Donnaport",
-          "count": 1
-        },
-        {
-          "city_name": "Jeremyburgh",
-          "count": 1
-        },
-        {
-          "city_name": "Williamview",
-          "count": 1
-        },
-        {
-          "city_name": "Kyleborough",
-          "count": 1
-        },
-        {
-          "city_name": "Wendyville",
-          "count": 1
-        },
-        {
-          "city_name": "North Jamesborough",
-          "count": 1
-        },
-        {
-          "city_name": "Robertfort",
-          "count": 1
-        },
-        {
-          "city_name": "South Jeffrey",
-          "count": 1
-        },
-        {
-          "city_name": "Hortonberg",
-          "count": 1
-        },
-        {
-          "city_name": "Robinfort",
-          "count": 1
-        },
-        {
-          "city_name": "West Erik",
-          "count": 1
-        },
-        {
-          "city_name": "Lake Nancyview",
-          "count": 1
-        },
-        {
-          "city_name": "Mitchellside",
-          "count": 1
-        },
-        {
-          "city_name": "Thomasberg",
-          "count": 1
-        },
-        {
-          "city_name": "West Williamport",
-          "count": 1
-        },
-        {
-          "city_name": "Sandrastad",
-          "count": 1
-        }
-      ]
+    {
+      "org_size": "medium",
+      "organization_count": 0
     },
-    "collaborator_distribution": [
-      {
-        "is_collaborator": true,
-        "count": 21
-      },
-      {
-        "is_collaborator": false,
-        "count": 19
-      }
-    ],
-    "contributor_distribution": [
-      {
-        "is_contributor": true,
-        "count": 19
-      },
-      {
-        "is_contributor": false,
-        "count": 21
-      }
-    ]
-  }
+    {
+      "org_size": "large",
+      "organization_count": 0
+    }
+  ],
+  "collaborator_vs_contributor": [
+    {
+      "type": "collaborator",
+      "organization_count": 0,
+      "percentage": 0.0
+    },
+    {
+      "type": "contributor",
+      "organization_count": 0,
+      "percentage": 0.0
+    }
+  ],
+  "rating_distribution": [
+    {
+      "rating": 1,
+      "organization_count": 0
+    },
+    {
+      "rating": 2,
+      "organization_count": 0
+    },
+    {
+      "rating": 3,
+      "organization_count": 0
+    },
+    {
+      "rating": 4,
+      "organization_count": 0
+    },
+    {
+      "rating": 5,
+      "organization_count": 0
+    }
+  ],
+  "organization_type_distribution": []
 }
 ```
 
-### Overview - non-profit collaborators only
+### Last 12 months
 
 Request:
 
 ```json
 {
-  "dashboard_type": "overview",
-  "org_type": "Non-Profit",
-  "is_collaborator": true,
-  "group_by": "yearly"
+  "time_filter": "1Y",
+  "start_date": null,
+  "end_date": null,
+  "group_by": "monthly",
+  "region": "ALL",
+  "organization_type": "ALL"
 }
 ```
 
@@ -557,174 +290,269 @@ Response (HTTP 200):
 
 ```json
 {
-  "organization_overview": {
-    "summary": {
+  "summary": {
+    "total_organizations": 11,
+    "total_collaborators": 5,
+    "total_contributors": 6,
+    "average_org_rating": 2.73
+  },
+  "growth_trend": [
+    {
+      "period": "2025-09",
+      "total_organizations": 3,
+      "total_collaborators": 2
+    },
+    {
+      "period": "2025-10",
+      "total_organizations": 4,
+      "total_collaborators": 3
+    },
+    {
+      "period": "2025-11",
+      "total_organizations": 7,
+      "total_collaborators": 4
+    },
+    {
+      "period": "2025-12",
+      "total_organizations": 10,
+      "total_collaborators": 5
+    },
+    {
+      "period": "2026-01",
       "total_organizations": 11,
-      "non_profit_organizations": 11,
-      "for_profit_organizations": 0,
-      "collaborator_organizations": 11,
-      "non_collaborator_organizations": 0,
-      "contributor_organizations": 0,
-      "non_contributor_organizations": 11
+      "total_collaborators": 5
+    }
+  ],
+  "organizations_by_location": [
+    {
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 3,
+      "percentage": 27.3
     },
-    "organization_activity_trend": [
-      {
-        "period": "2023",
-        "count": 1
-      },
-      {
-        "period": "2024",
-        "count": 5
-      },
-      {
-        "period": "2025",
-        "count": 5
-      }
-    ],
-    "organizations_by_type": [
-      {
-        "org_type": "Non-Profit",
-        "count": 11
-      }
-    ],
-    "organizations_by_size": [
-      {
-        "org_size": "Large",
-        "count": 6
-      },
-      {
-        "org_size": "Small",
-        "count": 3
-      },
-      {
-        "org_size": "Medium",
-        "count": 2
-      }
-    ],
-    "organizations_by_location": {
-      "by_state": [
-        {
-          "state_id": "RI",
-          "state_name": "Rhode Island",
-          "count": 2
-        },
-        {
-          "state_id": "AZ",
-          "state_name": "Arizona",
-          "count": 1
-        },
-        {
-          "state_id": "CA",
-          "state_name": "California",
-          "count": 1
-        },
-        {
-          "state_id": "FL",
-          "state_name": "Florida",
-          "count": 1
-        },
-        {
-          "state_id": "ME",
-          "state_name": "Maine",
-          "count": 1
-        },
-        {
-          "state_id": "MN",
-          "state_name": "Minnesota",
-          "count": 1
-        },
-        {
-          "state_id": "NE",
-          "state_name": "Nebraska",
-          "count": 1
-        },
-        {
-          "state_id": "NV",
-          "state_name": "Nevada",
-          "count": 1
-        },
-        {
-          "state_id": "AR",
-          "state_name": "Arkansas",
-          "count": 1
-        },
-        {
-          "state_id": "WA",
-          "state_name": "Washington",
-          "count": 1
-        }
-      ],
-      "by_city": [
-        {
-          "city_name": "Barkerfurt",
-          "count": 1
-        },
-        {
-          "city_name": "Kyleborough",
-          "count": 1
-        },
-        {
-          "city_name": "Lake Nancyview",
-          "count": 1
-        },
-        {
-          "city_name": "Leehaven",
-          "count": 1
-        },
-        {
-          "city_name": "Martinezbury",
-          "count": 1
-        },
-        {
-          "city_name": "Mitchellside",
-          "count": 1
-        },
-        {
-          "city_name": "New Susanville",
-          "count": 1
-        },
-        {
-          "city_name": "Robertfort",
-          "count": 1
-        },
-        {
-          "city_name": "South Rachelborough",
-          "count": 1
-        },
-        {
-          "city_name": "Stephaniemouth",
-          "count": 1
-        },
-        {
-          "city_name": "West Amandastad",
-          "count": 1
-        }
-      ]
+    {
+      "state_id": "FL",
+      "state_name": "Florida",
+      "organization_count": 1,
+      "percentage": 9.1
     },
-    "collaborator_distribution": [
-      {
-        "is_collaborator": true,
-        "count": 11
-      }
-    ],
-    "contributor_distribution": [
-      {
-        "is_contributor": false,
-        "count": 11
-      }
-    ]
-  }
+    {
+      "state_id": "ME",
+      "state_name": "Maine",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "state_id": "MI",
+      "state_name": "Michigan",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "state_id": "MN",
+      "state_name": "Minnesota",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "state_id": "MO",
+      "state_name": "Missouri",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "state_id": "NC",
+      "state_name": "North Carolina",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "state_id": "NE",
+      "state_name": "Nebraska",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "state_id": "OH",
+      "state_name": "Ohio",
+      "organization_count": 1,
+      "percentage": 9.1
+    }
+  ],
+  "organizations_by_city": [
+    {
+      "city_name": "Barkerfurt",
+      "state_id": "NE",
+      "state_name": "Nebraska",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "East Jenniferfort",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "Hortonberg",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "Lake Deniseville",
+      "state_id": "MO",
+      "state_name": "Missouri",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "Lake Nancyview",
+      "state_id": "MN",
+      "state_name": "Minnesota",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "Martinezbury",
+      "state_id": "ME",
+      "state_name": "Maine",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "Robinfort",
+      "state_id": "NC",
+      "state_name": "North Carolina",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "South Jeffrey",
+      "state_id": "OH",
+      "state_name": "Ohio",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "Victoriaport",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "West Amandastad",
+      "state_id": "FL",
+      "state_name": "Florida",
+      "organization_count": 1,
+      "percentage": 9.1
+    },
+    {
+      "city_name": "West Williamport",
+      "state_id": "MI",
+      "state_name": "Michigan",
+      "organization_count": 1,
+      "percentage": 9.1
+    }
+  ],
+  "organizations_by_size": [
+    {
+      "org_size": "small",
+      "organization_count": 2
+    },
+    {
+      "org_size": "medium",
+      "organization_count": 2
+    },
+    {
+      "org_size": "large",
+      "organization_count": 7
+    }
+  ],
+  "collaborator_vs_contributor": [
+    {
+      "type": "collaborator",
+      "organization_count": 5,
+      "percentage": 45.5
+    },
+    {
+      "type": "contributor",
+      "organization_count": 6,
+      "percentage": 54.5
+    }
+  ],
+  "rating_distribution": [
+    {
+      "rating": 1,
+      "organization_count": 3
+    },
+    {
+      "rating": 2,
+      "organization_count": 2
+    },
+    {
+      "rating": 3,
+      "organization_count": 3
+    },
+    {
+      "rating": 4,
+      "organization_count": 1
+    },
+    {
+      "rating": 5,
+      "organization_count": 2
+    }
+  ],
+  "organization_type_distribution": [
+    {
+      "period": "2025-09",
+      "for_profit": 1,
+      "non_profit": 2,
+      "total": 3
+    },
+    {
+      "period": "2025-10",
+      "for_profit": 1,
+      "non_profit": 3,
+      "total": 4
+    },
+    {
+      "period": "2025-11",
+      "for_profit": 2,
+      "non_profit": 5,
+      "total": 7
+    },
+    {
+      "period": "2025-12",
+      "for_profit": 3,
+      "non_profit": 7,
+      "total": 10
+    },
+    {
+      "period": "2026-01",
+      "for_profit": 3,
+      "non_profit": 8,
+      "total": 11
+    }
+  ]
 }
 ```
 
-### Performance - all organizations
+### Filter by region
 
 Request:
 
 ```json
 {
-  "dashboard_type": "performance",
-  "time_filter": "ALL"
+  "time_filter": "1Y",
+  "start_date": null,
+  "end_date": null,
+  "group_by": "monthly",
+  "region": "California",
+  "organization_type": "ALL"
 }
 ```
 
@@ -732,292 +560,79 @@ Response (HTTP 200):
 
 ```json
 {
-  "organization_performance": {
-    "summary": {
-      "average_rating": 3.23,
-      "rated_organizations": 40,
-      "unrated_organizations": 0,
-      "five_star_organizations": 12
+  "summary": {
+    "total_organizations": 0,
+    "total_collaborators": 0,
+    "total_contributors": 0,
+    "average_org_rating": 0.0
+  },
+  "growth_trend": [],
+  "organizations_by_location": [],
+  "organizations_by_city": [],
+  "organizations_by_size": [
+    {
+      "org_size": "small",
+      "organization_count": 0
     },
-    "rating_distribution": [
-      {
-        "rating": 1,
-        "count": 5
-      },
-      {
-        "rating": 2,
-        "count": 9
-      },
-      {
-        "rating": 3,
-        "count": 10
-      },
-      {
-        "rating": 4,
-        "count": 4
-      },
-      {
-        "rating": 5,
-        "count": 12
-      }
-    ],
-    "top_rated_organizations": [
-      {
-        "org_id": "ORG00019",
-        "org_name": "Cedar Valley Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00036",
-        "org_name": "Golden Gate Education Fund",
-        "org_type": "Non-Profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00004",
-        "org_name": "Harbor Family Services",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00001",
-        "org_name": "Harbor Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00011",
-        "org_name": "Hopewell Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Medium",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00009",
-        "org_name": "Lakeside Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00031",
-        "org_name": "Maplewood Housing Trust",
-        "org_type": "For-profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00022",
-        "org_name": "Meadowbrook Housing Trust",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00034",
-        "org_name": "Northgate Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00008",
-        "org_name": "Riverside Environmental Coalition",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 5
-      }
-    ],
-    "top_collaborator_organizations": [
-      {
-        "org_id": "ORG00019",
-        "org_name": "Cedar Valley Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00036",
-        "org_name": "Golden Gate Education Fund",
-        "org_type": "Non-Profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00004",
-        "org_name": "Harbor Family Services",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00011",
-        "org_name": "Hopewell Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Medium",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00031",
-        "org_name": "Maplewood Housing Trust",
-        "org_type": "For-profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00022",
-        "org_name": "Meadowbrook Housing Trust",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00008",
-        "org_name": "Riverside Environmental Coalition",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00027",
-        "org_name": "Silverline Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00020",
-        "org_name": "Lakeside Legal Aid Society",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00023",
-        "org_name": "Maplewood Veterans Support",
-        "org_type": "For-profit",
-        "org_size": "Medium",
-        "org_rating": 4
-      }
-    ],
-    "top_contributor_organizations": [
-      {
-        "org_id": "ORG00001",
-        "org_name": "Harbor Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00009",
-        "org_name": "Lakeside Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Small",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00034",
-        "org_name": "Northgate Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00029",
-        "org_name": "Unity Youth Alliance",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00035",
-        "org_name": "Summit Relief Network",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00015",
-        "org_name": "Unity Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00006",
-        "org_name": "Harbor Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Medium",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00024",
-        "org_name": "Liberty Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00025",
-        "org_name": "Maplewood Animal Rescue",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00003",
-        "org_name": "Northgate Education Fund",
-        "org_type": "Non-Profit",
-        "org_size": "Medium",
-        "org_rating": 3
-      }
-    ],
-    "ratings_by_organization_type": [
-      {
-        "org_type": "Non-Profit",
-        "average_rating": 3.62,
-        "rated_count": 21
-      },
-      {
-        "org_type": "For-profit",
-        "average_rating": 2.79,
-        "rated_count": 19
-      }
-    ],
-    "ratings_by_organization_size": [
-      {
-        "org_size": "Small",
-        "average_rating": 3.5,
-        "rated_count": 10
-      },
-      {
-        "org_size": "Large",
-        "average_rating": 3.24,
-        "rated_count": 21
-      },
-      {
-        "org_size": "Medium",
-        "average_rating": 2.89,
-        "rated_count": 9
-      }
-    ]
-  }
+    {
+      "org_size": "medium",
+      "organization_count": 0
+    },
+    {
+      "org_size": "large",
+      "organization_count": 0
+    }
+  ],
+  "collaborator_vs_contributor": [
+    {
+      "type": "collaborator",
+      "organization_count": 0,
+      "percentage": 0.0
+    },
+    {
+      "type": "contributor",
+      "organization_count": 0,
+      "percentage": 0.0
+    }
+  ],
+  "rating_distribution": [
+    {
+      "rating": 1,
+      "organization_count": 0
+    },
+    {
+      "rating": 2,
+      "organization_count": 0
+    },
+    {
+      "rating": 3,
+      "organization_count": 0
+    },
+    {
+      "rating": 4,
+      "organization_count": 0
+    },
+    {
+      "rating": 5,
+      "organization_count": 0
+    }
+  ],
+  "organization_type_distribution": []
 }
 ```
 
-### Performance - large organizations only
+### Filter by organization type
 
 Request:
 
 ```json
 {
-  "dashboard_type": "performance",
-  "org_size": "Large"
+  "time_filter": "1Y",
+  "start_date": null,
+  "end_date": null,
+  "group_by": "monthly",
+  "region": "ALL",
+  "organization_type": "non_profit"
 }
 ```
 
@@ -1025,271 +640,462 @@ Response (HTTP 200):
 
 ```json
 {
-  "organization_performance": {
-    "summary": {
-      "average_rating": 3.24,
-      "rated_organizations": 21,
-      "unrated_organizations": 0,
-      "five_star_organizations": 6
+  "summary": {
+    "total_organizations": 8,
+    "total_collaborators": 4,
+    "total_contributors": 4,
+    "average_org_rating": 3.0
+  },
+  "growth_trend": [
+    {
+      "period": "2025-09",
+      "total_organizations": 2,
+      "total_collaborators": 1
     },
-    "rating_distribution": [
-      {
-        "rating": 1,
-        "count": 2
-      },
-      {
-        "rating": 2,
-        "count": 6
-      },
-      {
-        "rating": 3,
-        "count": 4
-      },
-      {
-        "rating": 4,
-        "count": 3
-      },
-      {
-        "rating": 5,
-        "count": 6
-      }
-    ],
-    "top_rated_organizations": [
-      {
-        "org_id": "ORG00019",
-        "org_name": "Cedar Valley Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00004",
-        "org_name": "Harbor Family Services",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00022",
-        "org_name": "Meadowbrook Housing Trust",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00034",
-        "org_name": "Northgate Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00008",
-        "org_name": "Riverside Environmental Coalition",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00029",
-        "org_name": "Unity Youth Alliance",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00020",
-        "org_name": "Lakeside Legal Aid Society",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00035",
-        "org_name": "Summit Relief Network",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00015",
-        "org_name": "Unity Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00012",
-        "org_name": "Harbor Animal Rescue",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 3
-      }
-    ],
-    "top_collaborator_organizations": [
-      {
-        "org_id": "ORG00019",
-        "org_name": "Cedar Valley Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00004",
-        "org_name": "Harbor Family Services",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00022",
-        "org_name": "Meadowbrook Housing Trust",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00008",
-        "org_name": "Riverside Environmental Coalition",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00020",
-        "org_name": "Lakeside Legal Aid Society",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00012",
-        "org_name": "Harbor Animal Rescue",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00021",
-        "org_name": "Harbor Veterans Support",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 2
-      },
-      {
-        "org_id": "ORG00017",
-        "org_name": "Liberty Education Fund",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 2
-      },
-      {
-        "org_id": "ORG00016",
-        "org_name": "Meadowbrook Legal Aid Society",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 2
-      },
-      {
-        "org_id": "ORG00018",
-        "org_name": "Sunrise Community Foundation",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 2
-      }
-    ],
-    "top_contributor_organizations": [
-      {
-        "org_id": "ORG00034",
-        "org_name": "Northgate Community Foundation",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00029",
-        "org_name": "Unity Youth Alliance",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 5
-      },
-      {
-        "org_id": "ORG00035",
-        "org_name": "Summit Relief Network",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00015",
-        "org_name": "Unity Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 4
-      },
-      {
-        "org_id": "ORG00024",
-        "org_name": "Liberty Senior Care Network",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00025",
-        "org_name": "Maplewood Animal Rescue",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00030",
-        "org_name": "Pinecrest Arts Collective",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 3
-      },
-      {
-        "org_id": "ORG00002",
-        "org_name": "Summit Community Foundation",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 2
-      },
-      {
-        "org_id": "ORG00033",
-        "org_name": "Cedar Valley Health Initiative",
-        "org_type": "For-profit",
-        "org_size": "Large",
-        "org_rating": 1
-      },
-      {
-        "org_id": "ORG00026",
-        "org_name": "Lakeside Food Bank",
-        "org_type": "Non-Profit",
-        "org_size": "Large",
-        "org_rating": 1
-      }
-    ],
-    "ratings_by_organization_type": [
-      {
-        "org_type": "Non-Profit",
-        "average_rating": 3.73,
-        "rated_count": 11
-      },
-      {
-        "org_type": "For-profit",
-        "average_rating": 2.7,
-        "rated_count": 10
-      }
-    ],
-    "ratings_by_organization_size": [
-      {
-        "org_size": "Large",
-        "average_rating": 3.24,
-        "rated_count": 21
-      }
-    ]
-  }
+    {
+      "period": "2025-10",
+      "total_organizations": 3,
+      "total_collaborators": 2
+    },
+    {
+      "period": "2025-11",
+      "total_organizations": 5,
+      "total_collaborators": 3
+    },
+    {
+      "period": "2025-12",
+      "total_organizations": 7,
+      "total_collaborators": 4
+    },
+    {
+      "period": "2026-01",
+      "total_organizations": 8,
+      "total_collaborators": 4
+    }
+  ],
+  "organizations_by_location": [
+    {
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 2,
+      "percentage": 25.0
+    },
+    {
+      "state_id": "FL",
+      "state_name": "Florida",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "state_id": "ME",
+      "state_name": "Maine",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "state_id": "MI",
+      "state_name": "Michigan",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "state_id": "MN",
+      "state_name": "Minnesota",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "state_id": "NC",
+      "state_name": "North Carolina",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "state_id": "NE",
+      "state_name": "Nebraska",
+      "organization_count": 1,
+      "percentage": 12.5
+    }
+  ],
+  "organizations_by_city": [
+    {
+      "city_name": "Barkerfurt",
+      "state_id": "NE",
+      "state_name": "Nebraska",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "Hortonberg",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "Lake Nancyview",
+      "state_id": "MN",
+      "state_name": "Minnesota",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "Martinezbury",
+      "state_id": "ME",
+      "state_name": "Maine",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "Robinfort",
+      "state_id": "NC",
+      "state_name": "North Carolina",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "Victoriaport",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "West Amandastad",
+      "state_id": "FL",
+      "state_name": "Florida",
+      "organization_count": 1,
+      "percentage": 12.5
+    },
+    {
+      "city_name": "West Williamport",
+      "state_id": "MI",
+      "state_name": "Michigan",
+      "organization_count": 1,
+      "percentage": 12.5
+    }
+  ],
+  "organizations_by_size": [
+    {
+      "org_size": "small",
+      "organization_count": 1
+    },
+    {
+      "org_size": "medium",
+      "organization_count": 1
+    },
+    {
+      "org_size": "large",
+      "organization_count": 6
+    }
+  ],
+  "collaborator_vs_contributor": [
+    {
+      "type": "collaborator",
+      "organization_count": 4,
+      "percentage": 50.0
+    },
+    {
+      "type": "contributor",
+      "organization_count": 4,
+      "percentage": 50.0
+    }
+  ],
+  "rating_distribution": [
+    {
+      "rating": 1,
+      "organization_count": 2
+    },
+    {
+      "rating": 2,
+      "organization_count": 1
+    },
+    {
+      "rating": 3,
+      "organization_count": 2
+    },
+    {
+      "rating": 4,
+      "organization_count": 1
+    },
+    {
+      "rating": 5,
+      "organization_count": 2
+    }
+  ],
+  "organization_type_distribution": [
+    {
+      "period": "2025-09",
+      "for_profit": 0,
+      "non_profit": 2,
+      "total": 2
+    },
+    {
+      "period": "2025-10",
+      "for_profit": 0,
+      "non_profit": 3,
+      "total": 3
+    },
+    {
+      "period": "2025-11",
+      "for_profit": 0,
+      "non_profit": 5,
+      "total": 5
+    },
+    {
+      "period": "2025-12",
+      "for_profit": 0,
+      "non_profit": 7,
+      "total": 7
+    },
+    {
+      "period": "2026-01",
+      "for_profit": 0,
+      "non_profit": 8,
+      "total": 8
+    }
+  ]
+}
+```
+
+### Custom date range
+
+Request:
+
+```json
+{
+  "time_filter": "CUSTOM",
+  "start_date": "2026-01-01",
+  "end_date": "2026-06-30",
+  "group_by": "monthly",
+  "region": "ALL",
+  "organization_type": "ALL"
+}
+```
+
+Response (HTTP 200):
+
+```json
+{
+  "summary": {
+    "total_organizations": 1,
+    "total_collaborators": 0,
+    "total_contributors": 1,
+    "average_org_rating": 1.0
+  },
+  "growth_trend": [
+    {
+      "period": "2026-01",
+      "total_organizations": 1,
+      "total_collaborators": 0
+    }
+  ],
+  "organizations_by_location": [
+    {
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 100.0
+    }
+  ],
+  "organizations_by_city": [
+    {
+      "city_name": "Hortonberg",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 100.0
+    }
+  ],
+  "organizations_by_size": [
+    {
+      "org_size": "small",
+      "organization_count": 0
+    },
+    {
+      "org_size": "medium",
+      "organization_count": 1
+    },
+    {
+      "org_size": "large",
+      "organization_count": 0
+    }
+  ],
+  "collaborator_vs_contributor": [
+    {
+      "type": "collaborator",
+      "organization_count": 0,
+      "percentage": 0.0
+    },
+    {
+      "type": "contributor",
+      "organization_count": 1,
+      "percentage": 100.0
+    }
+  ],
+  "rating_distribution": [
+    {
+      "rating": 1,
+      "organization_count": 1
+    },
+    {
+      "rating": 2,
+      "organization_count": 0
+    },
+    {
+      "rating": 3,
+      "organization_count": 0
+    },
+    {
+      "rating": 4,
+      "organization_count": 0
+    },
+    {
+      "rating": 5,
+      "organization_count": 0
+    }
+  ],
+  "organization_type_distribution": [
+    {
+      "period": "2026-01",
+      "for_profit": 0,
+      "non_profit": 1,
+      "total": 1
+    }
+  ]
+}
+```
+
+### Filter by region - Texas (present in the fixture)
+
+Request:
+
+```json
+{
+  "time_filter": "ALL",
+  "start_date": null,
+  "end_date": null,
+  "group_by": "yearly",
+  "region": "Texas",
+  "organization_type": "ALL"
+}
+```
+
+Response (HTTP 200):
+
+```json
+{
+  "summary": {
+    "total_organizations": 3,
+    "total_collaborators": 1,
+    "total_contributors": 2,
+    "average_org_rating": 2.0
+  },
+  "growth_trend": [
+    {
+      "period": "2025",
+      "total_organizations": 2,
+      "total_collaborators": 1
+    },
+    {
+      "period": "2026",
+      "total_organizations": 3,
+      "total_collaborators": 1
+    }
+  ],
+  "organizations_by_location": [
+    {
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 3,
+      "percentage": 100.0
+    }
+  ],
+  "organizations_by_city": [
+    {
+      "city_name": "East Jenniferfort",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 33.3
+    },
+    {
+      "city_name": "Hortonberg",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 33.3
+    },
+    {
+      "city_name": "Victoriaport",
+      "state_id": "TX",
+      "state_name": "Texas",
+      "organization_count": 1,
+      "percentage": 33.3
+    }
+  ],
+  "organizations_by_size": [
+    {
+      "org_size": "small",
+      "organization_count": 0
+    },
+    {
+      "org_size": "medium",
+      "organization_count": 1
+    },
+    {
+      "org_size": "large",
+      "organization_count": 2
+    }
+  ],
+  "collaborator_vs_contributor": [
+    {
+      "type": "collaborator",
+      "organization_count": 1,
+      "percentage": 33.3
+    },
+    {
+      "type": "contributor",
+      "organization_count": 2,
+      "percentage": 66.7
+    }
+  ],
+  "rating_distribution": [
+    {
+      "rating": 1,
+      "organization_count": 1
+    },
+    {
+      "rating": 2,
+      "organization_count": 1
+    },
+    {
+      "rating": 3,
+      "organization_count": 1
+    },
+    {
+      "rating": 4,
+      "organization_count": 0
+    },
+    {
+      "rating": 5,
+      "organization_count": 0
+    }
+  ],
+  "organization_type_distribution": [
+    {
+      "period": "2025",
+      "for_profit": 1,
+      "non_profit": 1,
+      "total": 2
+    },
+    {
+      "period": "2026",
+      "for_profit": 1,
+      "non_profit": 2,
+      "total": 3
+    }
+  ]
 }
 ```
 
@@ -1299,7 +1105,6 @@ Request:
 
 ```json
 {
-  "dashboard_type": "overview",
   "time_filter": "CUSTOM"
 }
 ```
@@ -1312,14 +1117,13 @@ Response (HTTP 400):
 }
 ```
 
-### Validation error - non-integer org_rating
+### Validation error - unsupported organization_type
 
 Request:
 
 ```json
 {
-  "dashboard_type": "overview",
-  "org_rating": "five"
+  "organization_type": "charity"
 }
 ```
 
@@ -1327,7 +1131,7 @@ Response (HTTP 400):
 
 ```json
 {
-  "error": "org_rating must be an integer"
+  "error": "organization_type must be one of for_profit, non_profit or ALL; got 'charity'"
 }
 ```
 
@@ -1336,9 +1140,7 @@ Response (HTTP 400):
 Request:
 
 ```json
-{
-  "dashboard_type": "overview"
-}
+{}
 ```
 
 Response (HTTP 500):
@@ -1353,6 +1155,8 @@ Response (HTTP 500):
 
 ## Notes
 
-- Every organization in the current fixture carries a rating, so `unrated_organizations` is 0 here. The metric and its SQL are still exercised (`rated + unrated == total`), but a fixture containing NULL ratings would give it a non-zero value to assert against.
+- `growth_trend` and `organization_type_distribution` are **cumulative** running totals, matching the figures in the issue (its stacked-bar sample reaches 109 then 111 against a 126 total, which only holds if each period reports the total reached rather than the number added).
+- The fixture contains 0 organizations with a NULL rating. NULL handling is still exercised: unrated rows are excluded from the buckets and from the average without error, and `rating_distribution` always returns the full 1-5 scale zero-filled.
+- `region` resolves through the `state` lookup table and accepts either a readable state name (`California`) or a state code (`CA`), case-insensitively.
 - The default SQLite backend applies a small compatibility shim (`%s` placeholders, `INTERVAL` arithmetic, `::numeric`, `DATE_TRUNC`, `TO_CHAR`). Set `MOCK_DB_BACKEND=postgres` with `DB_*` pointing at a local PostgreSQL to run the identical assertions against real PostgreSQL; see `data-analytics/tests/mock_db.py`.
-- `is_contributor` is present in the fixture, so contributor metrics return real values. `ORG_IS_CONTRIBUTOR=false` still suppresses them without referencing the column, for databases where the migration has not landed.
+- `is_contributor` is present in the fixture, so contributor figures return real values. `ORG_IS_CONTRIBUTOR=false` still suppresses them without referencing the column, for databases where the migration has not landed.

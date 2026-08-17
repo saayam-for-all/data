@@ -1,17 +1,15 @@
 """Organization Analytics API (Issue #228).
 
-A single AWS Lambda entry point that powers two dashboards for the Saayam
-platform over ``virginia_dev_saayam_rdbms.organizations``:
+A single AWS Lambda entry point behind ``POST /analytics/organizations`` that
+returns everything the three Organization Dashboard tabs need in one response,
+over ``virginia_dev_saayam_rdbms.organizations`` and
+``virginia_dev_saayam_rdbms.state``:
 
-* ``overview``     - registration mix, collaborator/contributor breakdowns,
-                     location distribution and an activity trend.
-* ``performance``  - rating quality metrics, rating distribution and
-                     top-organization leaderboards.
-
-The module keeps the ``build_response`` envelope and the per-query
-try/except strategy of ``kpi_api_analytics.py`` so a single failing query
-degrades to a safe empty default (``[]`` or ``0``) instead of failing the
-whole request.
+* KPI cards      - totals and average rating.
+* Tab 1          - ``growth_trend``, ``organizations_by_location``
+                   (plus ``organizations_by_city``).
+* Tab 2          - ``organizations_by_size``, ``collaborator_vs_contributor``.
+* Tab 3          - ``rating_distribution``, ``organization_type_distribution``.
 
 No shared-database credentials
 ------------------------------
@@ -28,16 +26,18 @@ results.
 
 Guarded contributor support
 ---------------------------
-Contributor code paths are gated behind the ``ORG_IS_CONTRIBUTOR`` env var.
-The mock fixtures define ``is_contributor``, so the guard defaults to *on*
-and the contributor metrics return real values. Setting
-``ORG_IS_CONTRIBUTOR=false`` makes every contributor metric return ``0`` /
-``[]`` *without ever referencing the column*, keeping the JSON shape
-identical against a database where the migration has not landed yet.
+``is_contributor`` may not exist yet in the development database. Every
+contributor code path is gated behind ``ORG_IS_CONTRIBUTOR``. With the guard
+off, contributor figures report ``0`` *without ever referencing the column*,
+and no response key is added or dropped.
 
+Safety
+------
 All user-supplied filter values are passed as parameterized ``%s`` values;
 only trusted, whitelisted identifiers (schema name, ``date_trunc`` unit,
-``LIMIT`` constant) are ever formatted into SQL text.
+normalization expressions) are ever formatted into SQL text. Every query is
+wrapped so that one failure degrades to a safe empty default rather than
+failing the whole request, and NULL ratings are handled without error.
 """
 
 import json
@@ -51,13 +51,13 @@ from psycopg2.extras import RealDictCursor
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
-# Number of rows returned by the "top N" performance leaderboards.
-TOP_N = 10
-
-# The mock fixtures define ``is_contributor``, so contributor metrics are on
-# by default. Set ORG_IS_CONTRIBUTOR=false against a database where the column
-# does not exist yet; the metrics then return 0 / [] without referencing it.
+# ``is_contributor`` may be missing from the development database. Set
+# ORG_IS_CONTRIBUTOR=false there; contributor figures then report 0 without
+# the column ever appearing in a statement.
 DEFAULT_IS_CONTRIBUTOR_AVAILABLE = "true"
+
+# The sentinel the dashboard sends instead of null to mean "no filter".
+ALL_SENTINEL = "ALL"
 
 # Whitelist mapping the public ``group_by`` values to a (date_trunc unit,
 # TO_CHAR format) pair. Guards against SQL injection via the trend grouping.
@@ -69,19 +69,28 @@ GROUP_BY_MAP: dict[str, tuple[str, str]] = {
 }
 DEFAULT_GROUP_BY = "daily"
 
-# Columns that accept a simple equality filter when the caller supplies a
-# non-null value. ``is_contributor`` is appended dynamically only when the
-# guard flag is enabled.
-_EQUALITY_COLUMNS = (
-    "org_type",
-    "org_size",
-    "state_id",
-    "city_name",
-    "org_rating",
-    "is_collaborator",
-)
+SUPPORTED_TIME_FILTERS = ("7D", "30D", "1Y", "ALL", "CUSTOM")
 
-_BOOLEAN_FILTERS = frozenset({"is_collaborator", "is_contributor"})
+# Canonical org_size buckets, always present in the response so the UI can
+# render a stable set of bars even when a filter empties one.
+CANONICAL_ORG_SIZES = ("small", "medium", "large")
+
+# Ratings are always reported as a full 1-5 scale, zero-filled where needed.
+RATING_SCALE = (1, 2, 3, 4, 5)
+
+# The fixtures store display labels ("Non-Profit", "For-profit") while the API
+# speaks snake_case ("non_profit", "for_profit"). Both sides are reduced to a
+# punctuation-free lowercase key before being compared.
+ORG_TYPE_KEYS: dict[str, str] = {
+    "nonprofit": "non_profit",
+    "forprofit": "for_profit",
+}
+
+# Portable SQL that reduces org_type to the same key ``_normalize_key`` builds.
+# Uses only LOWER/REPLACE so it behaves identically across engines.
+_ORG_TYPE_KEY_SQL = (
+    "LOWER(REPLACE(REPLACE(REPLACE(o.org_type, '-', ''), '_', ''), ' ', ''))"
+)
 
 
 # --------------------------------------------------------------------------- #
@@ -141,7 +150,7 @@ def get_db_connection() -> "psycopg2.extensions.connection":
 
 
 # --------------------------------------------------------------------------- #
-# Filter helpers
+# Small helpers
 # --------------------------------------------------------------------------- #
 def _contributor_available() -> bool:
     """Report whether ``is_contributor`` may be referenced in SQL.
@@ -157,16 +166,14 @@ def _contributor_available() -> bool:
     return str(raw).strip().lower() in ("true", "t", "1", "yes", "y")
 
 
-def _normalize_org_type(value: Any) -> str:
-    """Reduce an ``org_type`` label to a comparable key.
+def _normalize_key(value: Any) -> str:
+    """Reduce a label to a lowercase letters-only comparison key.
 
-    The fixtures use display labels (``"Non-Profit"``, ``"For-profit"``) whose
-    casing and punctuation are not guaranteed. Stripping every non-letter and
-    lowercasing maps all of ``"Non-Profit"``, ``"non_profit"`` and
-    ``"Non Profit"`` onto the single key ``"nonprofit"``.
+    Maps ``"Non-Profit"``, ``"non_profit"`` and ``"Non Profit"`` onto the
+    single key ``"nonprofit"``.
 
     Args:
-        value: Raw ``org_type`` value from the database.
+        value: Any label from the database or the request.
 
     Returns:
         A lowercase letters-only key (``""`` for ``None``).
@@ -174,42 +181,85 @@ def _normalize_org_type(value: Any) -> str:
     return re.sub(r"[^a-z]", "", str(value or "").lower())
 
 
-def _as_bool(value: Any) -> Optional[bool]:
-    """Coerce a JSON/string/int value into a bool, or ``None`` if unset.
+def _percentage(count: int, total: int) -> float:
+    """Return ``count`` as a percentage of ``total``, rounded to one decimal.
 
     Args:
-        value: Raw filter value (bool, str, int or None).
+        count: Numerator.
+        total: Denominator; ``0`` yields ``0.0`` rather than raising.
 
     Returns:
-        ``True``/``False`` for recognized truthy/falsy inputs, else ``None``
-        (meaning "no filter"). ``False`` is preserved as a real filter value.
+        The percentage, or ``0.0`` when ``total`` is zero.
+    """
+    if not total:
+        return 0.0
+    return round(count * 100.0 / total, 1)
+
+
+def _is_unset(value: Any) -> bool:
+    """Report whether a filter value means "no filter".
+
+    Treats ``None``, an empty/whitespace string and the ``"ALL"`` sentinel the
+    dashboard sends as equivalent.
     """
     if value is None:
-        return None
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, (int, float)):
-        return bool(value)
-    text = str(value).strip().lower()
-    if text in ("true", "t", "1", "yes", "y"):
         return True
-    if text in ("false", "f", "0", "no", "n"):
-        return False
-    return None
+    text = str(value).strip()
+    return text == "" or text.upper() == ALL_SENTINEL
 
 
+def parse_event_body(event: Optional[dict[str, Any]]) -> dict[str, Any]:
+    """Return the request payload from a Lambda event.
+
+    Mirrors ``volunteer_application_analytics.parse_event_body`` so this API
+    accepts the same shapes as the other analytics endpoints: an API Gateway
+    proxy event carrying a JSON string ``body``, a dict ``body``, or a plain
+    invocation event with the filters at the top level.
+
+    Args:
+        event: The raw Lambda event.
+
+    Returns:
+        The decoded payload, or ``{}`` when it cannot be read.
+    """
+    if not event:
+        return {}
+
+    body = event.get("body")
+    if body is None:
+        return event
+    if isinstance(body, str):
+        try:
+            return json.loads(body)
+        except json.JSONDecodeError:
+            return {}
+    if isinstance(body, dict):
+        return body
+    return {}
+
+
+# --------------------------------------------------------------------------- #
+# Filters
+# --------------------------------------------------------------------------- #
 def resolve_group_by(group_by: Optional[str]) -> tuple[str, str]:
     """Validate ``group_by`` against the whitelist and return SQL parts.
 
     Args:
-        group_by: One of ``daily``/``weekly``/``monthly``/``yearly``
-            (case-insensitive). Anything else falls back to the default.
+        group_by: ``daily``/``weekly``/``monthly``/``yearly``
+            (case-insensitive); ``None`` selects the default.
 
     Returns:
         A ``(date_trunc_unit, to_char_format)`` tuple.
+
+    Raises:
+        ValueError: If ``group_by`` is not a supported value.
     """
     key = (group_by or DEFAULT_GROUP_BY).strip().lower()
-    return GROUP_BY_MAP.get(key, GROUP_BY_MAP[DEFAULT_GROUP_BY])
+    if key not in GROUP_BY_MAP:
+        raise ValueError(
+            f"group_by must be one of {', '.join(GROUP_BY_MAP)}; got {group_by!r}"
+        )
+    return GROUP_BY_MAP[key]
 
 
 def build_date_filter(
@@ -219,9 +269,6 @@ def build_date_filter(
 ) -> tuple[str, list[Any]]:
     """Build a ``created_at`` date predicate and its bind params.
 
-    Mirrors the ``build_date_filter`` shape in ``kpi_api_analytics.py`` but
-    filters on ``organizations.created_at`` (the registration timestamp).
-
     Args:
         time_filter: ``7D``/``30D``/``1Y``/``ALL``/``CUSTOM``
             (case-insensitive; defaults to ``ALL``).
@@ -230,12 +277,18 @@ def build_date_filter(
 
     Returns:
         A ``(predicate, params)`` tuple. ``predicate`` is ``""`` (with an
-        empty param list) for ``ALL`` or any unrecognized value.
+        empty param list) for ``ALL``.
 
     Raises:
-        ValueError: If ``CUSTOM`` is requested without both dates.
+        ValueError: If ``time_filter`` is unsupported, or ``CUSTOM`` is
+            requested without both dates.
     """
     tf = (time_filter or "ALL").strip().upper()
+    if tf not in SUPPORTED_TIME_FILTERS:
+        raise ValueError(
+            f"time_filter must be one of {', '.join(SUPPORTED_TIME_FILTERS)}; "
+            f"got {time_filter!r}"
+        )
     if tf == "7D":
         return "o.created_at >= CURRENT_DATE - INTERVAL '7 days'", []
     if tf == "30D":
@@ -248,34 +301,25 @@ def build_date_filter(
                 "start_date and end_date are required when time_filter is CUSTOM"
             )
         return "o.created_at BETWEEN %s AND %s", [start_date, end_date]
-    # ALL or unrecognized -> no date restriction.
     return "", []
 
 
-def build_org_filters(
-    filters: dict[str, Any],
-    extra: Optional[str] = None,
-) -> tuple[str, list[Any]]:
-    """Compose a full ``WHERE`` clause from the common org filters.
+def build_filters(filters: dict[str, Any]) -> tuple[str, list[Any]]:
+    """Compose the ``WHERE`` clause shared by every query.
 
-    Combines the ``created_at`` date predicate with equality predicates for
-    every supplied (non-null) filter among ``org_type``, ``org_size``,
-    ``state_id``, ``city_name``, ``org_rating`` and ``is_collaborator``, plus
-    an optional trusted ``extra`` raw predicate. ``is_contributor`` is only
-    added when ``IS_CONTRIBUTOR_AVAILABLE`` is ``True``.
+    Combines the ``created_at`` window with the dashboard's ``region`` and
+    ``organization_type`` filters. ``region`` accepts either a readable state
+    name ("California") or a state code ("CA") and is resolved through the
+    ``state`` lookup table, so no caller needs to know state ids.
 
-    Every user-supplied value is bound as a ``%s`` parameter. The base table
-    must be aliased ``o`` (and, for location queries, ``state`` aliased ``s``).
+    The base table must be aliased ``o``.
 
     Args:
-        filters: The parsed common-filter dict from the event.
-        extra: An optional raw predicate (no bind params) appended with
-            ``AND``; used for trusted constants such as ``o.is_collaborator
-            = TRUE`` or ``o.org_rating IS NOT NULL``.
+        filters: The parsed filter dict from :func:`_extract_filters`.
 
     Returns:
-        A ``(where_clause, params)`` tuple. ``where_clause`` is ``""`` when no
-        predicates apply, otherwise a ready-to-use ``"WHERE ..."`` string.
+        A ``(where_clause, params)`` tuple; ``where_clause`` is ``""`` when
+        nothing applies, otherwise a ready-to-use ``"WHERE ..."`` string.
     """
     predicates: list[str] = []
     params: list[Any] = []
@@ -289,250 +333,109 @@ def build_org_filters(
         predicates.append(date_pred)
         params.extend(date_params)
 
-    equality_columns = list(_EQUALITY_COLUMNS)
-    if _contributor_available():
-        equality_columns.append("is_contributor")
+    region = filters.get("region")
+    if region is not None:
+        predicates.append(
+            f"o.state_id IN ("
+            f"SELECT s_r.state_id FROM {SCHEMA_NAME}.state s_r "
+            f"WHERE LOWER(s_r.state_name) = LOWER(%s) "
+            f"OR LOWER(s_r.state_id) = LOWER(%s))"
+        )
+        params.extend([region, region])
 
-    for column in equality_columns:
-        raw_value = filters.get(column)
-        value = _as_bool(raw_value) if column in _BOOLEAN_FILTERS else raw_value
-        if value is not None:
-            predicates.append(f"o.{column} = %s")
-            params.append(value)
-
-    if extra:
-        predicates.append(extra)
+    organization_type = filters.get("organization_type")
+    if organization_type is not None:
+        predicates.append(f"{_ORG_TYPE_KEY_SQL} = %s")
+        params.append(organization_type)
 
     where_clause = f"WHERE {' AND '.join(predicates)}" if predicates else ""
     return where_clause, params
 
 
-# --------------------------------------------------------------------------- #
-# Overview fetchers
-# --------------------------------------------------------------------------- #
-def fetch_total_organizations(cursor: Any, filters: dict[str, Any]) -> int:
-    """Return the total organization count for the current filters."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"SELECT COUNT(*) AS total FROM {SCHEMA_NAME}.organizations o {where}",
-        params,
-    )
-    row = cursor.fetchone()
-    return int(row["total"]) if row and row["total"] is not None else 0
+def _extract_filters(event: dict[str, Any]) -> dict[str, Any]:
+    """Pull and validate the common dashboard filters from the payload.
 
+    Recognizes the shared filter structure used by the other analytics
+    dashboards: ``time_filter``, ``start_date``, ``end_date``, ``group_by``,
+    ``region`` and ``organization_type``. ``"ALL"``, ``null`` and ``""`` all
+    mean "no filter".
 
-def fetch_organizations_by_type(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return counts grouped by ``org_type``."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT o.org_type AS org_type, COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.org_type
-        ORDER BY count DESC
-        """,
-        params,
-    )
-    return [
-        {"org_type": row["org_type"], "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
-
-
-def fetch_organizations_by_size(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return counts grouped by ``org_size``."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT o.org_size AS org_size, COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.org_size
-        ORDER BY count DESC
-        """,
-        params,
-    )
-    return [
-        {"org_size": row["org_size"], "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
-
-
-def fetch_collaborator_summary(cursor: Any, filters: dict[str, Any]) -> tuple[int, int]:
-    """Return ``(collaborator_count, non_collaborator_count)``."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT
-            COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE)  AS collaborators,
-            COUNT(*) FILTER (WHERE o.is_collaborator IS FALSE) AS non_collaborators
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        """,
-        params,
-    )
-    row = cursor.fetchone()
-    if not row:
-        return 0, 0
-    return int(row["collaborators"] or 0), int(row["non_collaborators"] or 0)
-
-
-def fetch_collaborator_distribution(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return TRUE/FALSE counts for ``is_collaborator``."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT o.is_collaborator AS is_collaborator, COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.is_collaborator
-        ORDER BY o.is_collaborator DESC NULLS LAST
-        """,
-        params,
-    )
-    return [
-        {"is_collaborator": row["is_collaborator"], "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
-
-
-def fetch_contributor_summary(cursor: Any, filters: dict[str, Any]) -> tuple[int, int]:
-    """Return ``(contributor_count, non_contributor_count)``.
-
-    GUARDED: returns ``(0, 0)`` without touching the column when
-    ``ORG_IS_CONTRIBUTOR`` is disabled.
-    """
-    if not _contributor_available():
-        return 0, 0
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT
-            COUNT(*) FILTER (WHERE o.is_contributor IS TRUE)  AS contributors,
-            COUNT(*) FILTER (WHERE o.is_contributor IS FALSE) AS non_contributors
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        """,
-        params,
-    )
-    row = cursor.fetchone()
-    if not row:
-        return 0, 0
-    return int(row["contributors"] or 0), int(row["non_contributors"] or 0)
-
-
-def fetch_contributor_distribution(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return TRUE/FALSE counts for ``is_contributor``.
-
-    GUARDED: returns ``[]`` without touching the column when
-    ``ORG_IS_CONTRIBUTOR`` is disabled.
-    """
-    if not _contributor_available():
-        return []
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT o.is_contributor AS is_contributor, COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.is_contributor
-        ORDER BY o.is_contributor DESC NULLS LAST
-        """,
-        params,
-    )
-    return [
-        {"is_contributor": row["is_contributor"], "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
-
-
-def fetch_organizations_by_location(cursor: Any, filters: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
-    """Return counts by state (LEFT JOIN ``state``) and by ``city_name``.
-
-    The single ``organizations_by_location`` response key carries both
-    required breakdowns under ``by_state`` and ``by_city``.
+    Args:
+        event: The decoded request payload.
 
     Returns:
-        ``{"by_state": [...], "by_city": [...]}``.
-    """
-    where, params = build_org_filters(filters)
+        A dict holding only the filters that actually apply. Applied filters
+        are normalized: ``organization_type`` becomes a comparison key.
 
-    cursor.execute(
-        f"""
-        SELECT o.state_id AS state_id,
-               s.state_name AS state_name,
-               COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        LEFT JOIN {SCHEMA_NAME}.state s ON o.state_id = s.state_id
-        {where}
-        GROUP BY o.state_id, s.state_name
-        ORDER BY count DESC
-        """,
-        params,
+    Raises:
+        ValueError: If a supplied filter value is not supported.
+    """
+    filters: dict[str, Any] = {}
+
+    time_filter = event.get("time_filter")
+    if not _is_unset(time_filter):
+        filters["time_filter"] = str(time_filter).strip().upper()
+    for key in ("start_date", "end_date"):
+        value = event.get(key)
+        if value is not None and str(value).strip() != "":
+            filters[key] = str(value).strip()
+
+    group_by = event.get("group_by")
+    if group_by is not None and str(group_by).strip() != "":
+        filters["group_by"] = str(group_by).strip().lower()
+
+    region = event.get("region")
+    if not _is_unset(region):
+        filters["region"] = str(region).strip()
+
+    organization_type = event.get("organization_type")
+    if not _is_unset(organization_type):
+        key = _normalize_key(organization_type)
+        if key not in ORG_TYPE_KEYS:
+            raise ValueError(
+                "organization_type must be one of "
+                f"{', '.join(sorted(ORG_TYPE_KEYS.values()))} or ALL; "
+                f"got {organization_type!r}"
+            )
+        filters["organization_type"] = key
+
+    # Surface unsupported time_filter / group_by values as validation errors
+    # rather than silently returning data for a different window.
+    build_date_filter(
+        filters.get("time_filter"), filters.get("start_date"), filters.get("end_date")
     )
-    by_state = [
-        {
-            "state_id": row["state_id"],
-            "state_name": row["state_name"],
-            "count": int(row["count"]),
-        }
-        for row in cursor.fetchall()
-    ]
+    resolve_group_by(filters.get("group_by"))
 
-    cursor.execute(
-        f"""
-        SELECT o.city_name AS city_name, COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.city_name
-        ORDER BY count DESC
-        """,
-        params,
-    )
-    by_city = [
-        {"city_name": row["city_name"], "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
-
-    return {"by_state": by_state, "by_city": by_city}
-
-
-def fetch_organization_activity_trend(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return the registration trend grouped by ``group_by``, ascending.
-
-    Each element is ``{"period": <formatted date>, "count": int}``.
-    """
-    unit, fmt = resolve_group_by(filters.get("group_by"))
-    where, params = build_org_filters(filters)
-    query = f"""
-        SELECT TO_CHAR(DATE_TRUNC(%s, o.created_at), %s) AS period,
-               COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY DATE_TRUNC(%s, o.created_at)
-        ORDER BY DATE_TRUNC(%s, o.created_at) ASC
-    """
-    cursor.execute(query, [unit, fmt] + params + [unit, unit])
-    return [
-        {"period": row["period"], "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
+    return filters
 
 
 # --------------------------------------------------------------------------- #
-# Performance fetchers
+# KPI cards
 # --------------------------------------------------------------------------- #
-def fetch_performance_summary(cursor: Any, filters: dict[str, Any]) -> dict[str, Any]:
-    """Return rating summary: average, rated, unrated and five-star counts."""
-    where, params = build_org_filters(filters)
+def fetch_summary(cursor: Any, filters: dict[str, Any]) -> dict[str, Any]:
+    """Return the four KPI cards for the current filters.
+
+    ``total_contributors`` reports ``0`` without referencing the column when
+    the contributor guard is off. ``average_org_rating`` ignores NULL ratings
+    and reports ``0.0`` when nothing is rated.
+
+    Returns:
+        ``{"total_organizations", "total_collaborators", "total_contributors",
+        "average_org_rating"}``.
+    """
+    where, params = build_filters(filters)
+    contributor_select = (
+        "COUNT(*) FILTER (WHERE o.is_contributor IS TRUE)"
+        if _contributor_available()
+        else "0"
+    )
     cursor.execute(
         f"""
         SELECT
-            ROUND(AVG(o.org_rating)::numeric, 2)               AS average_rating,
-            COUNT(*) FILTER (WHERE o.org_rating IS NOT NULL)   AS rated,
-            COUNT(*) FILTER (WHERE o.org_rating IS NULL)       AS unrated,
-            COUNT(*) FILTER (WHERE o.org_rating = 5)           AS five_star
+            COUNT(*)                                            AS total_organizations,
+            COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE)   AS total_collaborators,
+            {contributor_select}                                AS total_contributors,
+            ROUND(AVG(o.org_rating)::numeric, 2)                AS average_org_rating
         FROM {SCHEMA_NAME}.organizations o
         {where}
         """,
@@ -541,158 +444,325 @@ def fetch_performance_summary(cursor: Any, filters: dict[str, Any]) -> dict[str,
     row = cursor.fetchone()
     if not row:
         return {
-            "average_rating": 0.0,
-            "rated_organizations": 0,
-            "unrated_organizations": 0,
-            "five_star_organizations": 0,
+            "total_organizations": 0,
+            "total_collaborators": 0,
+            "total_contributors": 0,
+            "average_org_rating": 0.0,
         }
+    average = row["average_org_rating"]
     return {
-        "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0.0,
-        "rated_organizations": int(row["rated"] or 0),
-        "unrated_organizations": int(row["unrated"] or 0),
-        "five_star_organizations": int(row["five_star"] or 0),
+        "total_organizations": int(row["total_organizations"] or 0),
+        "total_collaborators": int(row["total_collaborators"] or 0),
+        "total_contributors": int(row["total_contributors"] or 0),
+        "average_org_rating": float(average) if average is not None else 0.0,
     }
 
 
-def fetch_rating_distribution(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return counts grouped by ``org_rating`` (1..5), ascending by rating."""
-    where, params = build_org_filters(filters, extra="o.org_rating IS NOT NULL")
-    cursor.execute(
-        f"""
-        SELECT o.org_rating AS rating, COUNT(*) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.org_rating
-        ORDER BY o.org_rating ASC
-        """,
-        params,
-    )
-    return [
-        {"rating": int(row["rating"]), "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
+# --------------------------------------------------------------------------- #
+# Tab 1 - Growth & Location
+# --------------------------------------------------------------------------- #
+def fetch_growth_trend(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return the cumulative organization and collaborator counts per period.
 
+    Both series are running totals across the filtered window, matching the
+    growth-chart figures in the issue (each period reports the total reached
+    by the end of that period, not the number added during it).
 
-def fetch_top_rated_organizations(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return the top ``TOP_N`` organizations by rating (NULLS LAST)."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT o.org_id, o.org_name, o.org_type, o.org_size, o.org_rating
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        ORDER BY o.org_rating DESC NULLS LAST, o.org_name ASC
-        LIMIT {TOP_N}
-        """,
-        params,
-    )
-    return _serialize_org_rows(cursor.fetchall())
-
-
-def fetch_top_collaborator_organizations(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return the top ``TOP_N`` collaborator organizations by rating."""
-    where, params = build_org_filters(filters, extra="o.is_collaborator = TRUE")
-    cursor.execute(
-        f"""
-        SELECT o.org_id, o.org_name, o.org_type, o.org_size, o.org_rating
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        ORDER BY o.org_rating DESC NULLS LAST, o.org_name ASC
-        LIMIT {TOP_N}
-        """,
-        params,
-    )
-    return _serialize_org_rows(cursor.fetchall())
-
-
-def fetch_top_contributor_organizations(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return the top ``TOP_N`` contributor organizations by rating.
-
-    GUARDED: returns ``[]`` without touching the column when
-    ``ORG_IS_CONTRIBUTOR`` is disabled.
+    Returns:
+        ``[{"period", "total_organizations", "total_collaborators"}, ...]``
+        ordered oldest first.
     """
-    if not _contributor_available():
-        return []
-    where, params = build_org_filters(filters, extra="o.is_contributor = TRUE")
+    unit, fmt = resolve_group_by(filters.get("group_by"))
+    where, params = build_filters(filters)
     cursor.execute(
         f"""
-        SELECT o.org_id, o.org_name, o.org_type, o.org_size, o.org_rating
+        SELECT TO_CHAR(DATE_TRUNC(%s, o.created_at), %s)        AS period,
+               COUNT(*)                                         AS new_organizations,
+               COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS new_collaborators
         FROM {SCHEMA_NAME}.organizations o
         {where}
-        ORDER BY o.org_rating DESC NULLS LAST, o.org_name ASC
-        LIMIT {TOP_N}
+        GROUP BY DATE_TRUNC(%s, o.created_at)
+        ORDER BY DATE_TRUNC(%s, o.created_at) ASC
+        """,
+        [unit, fmt] + params + [unit, unit],
+    )
+
+    trend: list[dict[str, Any]] = []
+    running_organizations = 0
+    running_collaborators = 0
+    for row in cursor.fetchall():
+        running_organizations += int(row["new_organizations"] or 0)
+        running_collaborators += int(row["new_collaborators"] or 0)
+        trend.append(
+            {
+                "period": row["period"],
+                "total_organizations": running_organizations,
+                "total_collaborators": running_collaborators,
+            }
+        )
+    return trend
+
+
+def fetch_organizations_by_location(
+    cursor: Any, filters: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return the organization count and share per state.
+
+    ``state_name`` is resolved through the ``state`` lookup table so the UI
+    gets readable labels; it is ``None`` for any state id the lookup does not
+    cover.
+
+    Returns:
+        ``[{"state_id", "state_name", "organization_count", "percentage"}, ...]``
+        ordered by count descending.
+    """
+    where, params = build_filters(filters)
+    cursor.execute(
+        f"""
+        SELECT o.state_id                AS state_id,
+               s.state_name              AS state_name,
+               COUNT(*)                  AS organization_count
+        FROM {SCHEMA_NAME}.organizations o
+        LEFT JOIN {SCHEMA_NAME}.state s ON o.state_id = s.state_id
+        {where}
+        GROUP BY o.state_id, s.state_name
+        ORDER BY organization_count DESC, o.state_id ASC
         """,
         params,
     )
-    return _serialize_org_rows(cursor.fetchall())
-
-
-def fetch_ratings_by_organization_type(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return average rating grouped by ``org_type``."""
-    where, params = build_org_filters(filters)
-    cursor.execute(
-        f"""
-        SELECT o.org_type AS org_type,
-               ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-               COUNT(*) FILTER (WHERE o.org_rating IS NOT NULL) AS rated_count
-        FROM {SCHEMA_NAME}.organizations o
-        {where}
-        GROUP BY o.org_type
-        ORDER BY average_rating DESC NULLS LAST
-        """,
-        params,
-    )
+    rows = cursor.fetchall()
+    total = sum(int(row["organization_count"]) for row in rows)
     return [
         {
-            "org_type": row["org_type"],
-            "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0.0,
-            "rated_count": int(row["rated_count"] or 0),
+            "state_id": row["state_id"],
+            "state_name": row["state_name"],
+            "organization_count": int(row["organization_count"]),
+            "percentage": _percentage(int(row["organization_count"]), total),
         }
-        for row in cursor.fetchall()
+        for row in rows
     ]
 
 
-def fetch_ratings_by_organization_size(cursor: Any, filters: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return average rating grouped by ``org_size``."""
-    where, params = build_org_filters(filters)
+def fetch_organizations_by_city(
+    cursor: Any, filters: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return the organization count and share per city.
+
+    Carries the owning state alongside each city so the UI can disambiguate
+    identically named cities in different states.
+
+    Returns:
+        ``[{"city_name", "state_id", "state_name", "organization_count",
+        "percentage"}, ...]`` ordered by count descending.
+    """
+    where, params = build_filters(filters)
     cursor.execute(
         f"""
-        SELECT o.org_size AS org_size,
-               ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-               COUNT(*) FILTER (WHERE o.org_rating IS NOT NULL) AS rated_count
+        SELECT o.city_name               AS city_name,
+               o.state_id                AS state_id,
+               s.state_name              AS state_name,
+               COUNT(*)                  AS organization_count
         FROM {SCHEMA_NAME}.organizations o
+        LEFT JOIN {SCHEMA_NAME}.state s ON o.state_id = s.state_id
         {where}
-        GROUP BY o.org_size
-        ORDER BY average_rating DESC NULLS LAST
+        GROUP BY o.city_name, o.state_id, s.state_name
+        ORDER BY organization_count DESC, o.city_name ASC
         """,
         params,
     )
+    rows = cursor.fetchall()
+    total = sum(int(row["organization_count"]) for row in rows)
     return [
         {
-            "org_size": row["org_size"],
-            "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0.0,
-            "rated_count": int(row["rated_count"] or 0),
-        }
-        for row in cursor.fetchall()
-    ]
-
-
-def _serialize_org_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Normalize leaderboard org rows into JSON-friendly dicts."""
-    return [
-        {
-            "org_id": row["org_id"],
-            "org_name": row["org_name"],
-            "org_type": row["org_type"],
-            "org_size": row["org_size"],
-            "org_rating": int(row["org_rating"]) if row["org_rating"] is not None else None,
+            "city_name": row["city_name"],
+            "state_id": row["state_id"],
+            "state_name": row["state_name"],
+            "organization_count": int(row["organization_count"]),
+            "percentage": _percentage(int(row["organization_count"]), total),
         }
         for row in rows
     ]
 
 
 # --------------------------------------------------------------------------- #
-# Dashboard builders (per-query try/except, safe defaults)
+# Tab 2 - Size & Contribution
+# --------------------------------------------------------------------------- #
+def fetch_organizations_by_size(
+    cursor: Any, filters: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return organization counts for the small/medium/large buckets.
+
+    All three canonical buckets are always present (zero-filled) and reported
+    in that order, so the chart keeps a stable set of bars under any filter.
+    Any non-canonical size found in the data is appended afterwards.
+
+    Returns:
+        ``[{"org_size", "organization_count"}, ...]``.
+    """
+    where, params = build_filters(filters)
+    cursor.execute(
+        f"""
+        SELECT LOWER(o.org_size) AS org_size, COUNT(*) AS organization_count
+        FROM {SCHEMA_NAME}.organizations o
+        {where}
+        GROUP BY LOWER(o.org_size)
+        """,
+        params,
+    )
+    counts = {
+        row["org_size"]: int(row["organization_count"]) for row in cursor.fetchall()
+    }
+
+    result = [
+        {"org_size": size, "organization_count": counts.pop(size, 0)}
+        for size in CANONICAL_ORG_SIZES
+    ]
+    # Preserve anything unexpected rather than silently dropping rows.
+    result.extend(
+        {"org_size": size, "organization_count": count}
+        for size, count in sorted(counts.items(), key=lambda item: -item[1])
+    )
+    return result
+
+
+def fetch_collaborator_vs_contributor(
+    cursor: Any, filters: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return collaborator and contributor counts with their shares.
+
+    Both flags are independent, so percentages are each organization's share
+    of the filtered population rather than of one another.
+
+    GUARDED: the contributor row reports ``0`` without referencing the column
+    when ``ORG_IS_CONTRIBUTOR`` is disabled; the row itself is always present.
+
+    Returns:
+        ``[{"type", "organization_count", "percentage"}, ...]`` for
+        ``collaborator`` then ``contributor``.
+    """
+    where, params = build_filters(filters)
+    contributor_select = (
+        "COUNT(*) FILTER (WHERE o.is_contributor IS TRUE)"
+        if _contributor_available()
+        else "0"
+    )
+    cursor.execute(
+        f"""
+        SELECT
+            COUNT(*)                                          AS total,
+            COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS collaborators,
+            {contributor_select}                              AS contributors
+        FROM {SCHEMA_NAME}.organizations o
+        {where}
+        """,
+        params,
+    )
+    row = cursor.fetchone()
+    if not row:
+        return [
+            {"type": "collaborator", "organization_count": 0, "percentage": 0.0},
+            {"type": "contributor", "organization_count": 0, "percentage": 0.0},
+        ]
+
+    total = int(row["total"] or 0)
+    collaborators = int(row["collaborators"] or 0)
+    contributors = int(row["contributors"] or 0)
+    return [
+        {
+            "type": "collaborator",
+            "organization_count": collaborators,
+            "percentage": _percentage(collaborators, total),
+        },
+        {
+            "type": "contributor",
+            "organization_count": contributors,
+            "percentage": _percentage(contributors, total),
+        },
+    ]
+
+
+# --------------------------------------------------------------------------- #
+# Tab 3 - Ratings & Type
+# --------------------------------------------------------------------------- #
+def fetch_rating_distribution(
+    cursor: Any, filters: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return the organization count for each star rating.
+
+    The full 1-5 scale is always returned, zero-filled where a rating is
+    unused. Organizations with a NULL rating are simply excluded from every
+    bucket rather than causing an error.
+
+    Returns:
+        ``[{"rating", "organization_count"}, ...]`` ascending by rating.
+    """
+    where, params = build_filters(filters)
+    cursor.execute(
+        f"""
+        SELECT o.org_rating AS rating, COUNT(*) AS organization_count
+        FROM {SCHEMA_NAME}.organizations o
+        {where}
+        GROUP BY o.org_rating
+        """,
+        params,
+    )
+    counts: dict[int, int] = {}
+    for row in cursor.fetchall():
+        if row["rating"] is None:
+            continue
+        counts[int(row["rating"])] = int(row["organization_count"])
+    return [
+        {"rating": rating, "organization_count": counts.get(rating, 0)}
+        for rating in RATING_SCALE
+    ]
+
+
+def fetch_organization_type_distribution(
+    cursor: Any, filters: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return the cumulative for-profit / non-profit split per period.
+
+    Like the growth trend, each period reports the totals reached by the end
+    of that period, which is what the stacked-bar figures in the issue show.
+
+    Returns:
+        ``[{"period", "for_profit", "non_profit", "total"}, ...]`` ordered
+        oldest first.
+    """
+    unit, fmt = resolve_group_by(filters.get("group_by"))
+    where, params = build_filters(filters)
+    cursor.execute(
+        f"""
+        SELECT TO_CHAR(DATE_TRUNC(%s, o.created_at), %s) AS period,
+               COUNT(*) FILTER (WHERE {_ORG_TYPE_KEY_SQL} = 'forprofit') AS for_profit,
+               COUNT(*) FILTER (WHERE {_ORG_TYPE_KEY_SQL} = 'nonprofit') AS non_profit
+        FROM {SCHEMA_NAME}.organizations o
+        {where}
+        GROUP BY DATE_TRUNC(%s, o.created_at)
+        ORDER BY DATE_TRUNC(%s, o.created_at) ASC
+        """,
+        [unit, fmt] + params + [unit, unit],
+    )
+
+    distribution: list[dict[str, Any]] = []
+    running_for_profit = 0
+    running_non_profit = 0
+    for row in cursor.fetchall():
+        running_for_profit += int(row["for_profit"] or 0)
+        running_non_profit += int(row["non_profit"] or 0)
+        distribution.append(
+            {
+                "period": row["period"],
+                "for_profit": running_for_profit,
+                "non_profit": running_non_profit,
+                "total": running_for_profit + running_non_profit,
+            }
+        )
+    return distribution
+
+
+# --------------------------------------------------------------------------- #
+# Dashboard assembly (per-query try/except, safe defaults)
 # --------------------------------------------------------------------------- #
 def _safe(fetch, default: Any, label: str) -> Any:
     """Run a fetcher, returning ``default`` (and logging) on any error.
@@ -712,168 +782,112 @@ def _safe(fetch, default: Any, label: str) -> Any:
         return default
 
 
-def build_overview_response(cursor: Any, filters: dict[str, Any]) -> dict[str, Any]:
-    """Assemble the full ``organization_overview`` payload."""
-    by_type = _safe(lambda: fetch_organizations_by_type(cursor, filters), [], "organizations_by_type")
-    # Key on the normalized label so the summary matches the fixture values
-    # ("Non-Profit" / "For-profit") as well as any snake_case variant.
-    type_counts: dict[str, int] = {}
-    for row in by_type:
-        key = _normalize_org_type(row["org_type"])
-        type_counts[key] = type_counts.get(key, 0) + row["count"]
-
-    collaborators, non_collaborators = _safe(
-        lambda: fetch_collaborator_summary(cursor, filters), (0, 0), "collaborator_summary"
-    )
-    contributors, non_contributors = _safe(
-        lambda: fetch_contributor_summary(cursor, filters), (0, 0), "contributor_summary"
-    )
-
+def empty_dashboard() -> dict[str, Any]:
+    """Return the full response shape with every metric at its zero value."""
     return {
-        "organization_overview": {
-            "summary": {
-                "total_organizations": _safe(
-                    lambda: fetch_total_organizations(cursor, filters), 0, "total_organizations"
-                ),
-                "non_profit_organizations": int(type_counts.get("nonprofit", 0)),
-                "for_profit_organizations": int(type_counts.get("forprofit", 0)),
-                "collaborator_organizations": collaborators,
-                "non_collaborator_organizations": non_collaborators,
-                "contributor_organizations": contributors,
-                "non_contributor_organizations": non_contributors,
-            },
-            "organization_activity_trend": _safe(
-                lambda: fetch_organization_activity_trend(cursor, filters), [], "organization_activity_trend"
-            ),
-            "organizations_by_type": by_type,
-            "organizations_by_size": _safe(
-                lambda: fetch_organizations_by_size(cursor, filters), [], "organizations_by_size"
-            ),
-            "organizations_by_location": _safe(
-                lambda: fetch_organizations_by_location(cursor, filters),
-                {"by_state": [], "by_city": []},
-                "organizations_by_location",
-            ),
-            "collaborator_distribution": _safe(
-                lambda: fetch_collaborator_distribution(cursor, filters), [], "collaborator_distribution"
-            ),
-            "contributor_distribution": _safe(
-                lambda: fetch_contributor_distribution(cursor, filters), [], "contributor_distribution"
-            ),
-        }
+        "summary": {
+            "total_organizations": 0,
+            "total_collaborators": 0,
+            "total_contributors": 0,
+            "average_org_rating": 0.0,
+        },
+        "growth_trend": [],
+        "organizations_by_location": [],
+        "organizations_by_city": [],
+        "organizations_by_size": [
+            {"org_size": size, "organization_count": 0}
+            for size in CANONICAL_ORG_SIZES
+        ],
+        "collaborator_vs_contributor": [
+            {"type": "collaborator", "organization_count": 0, "percentage": 0.0},
+            {"type": "contributor", "organization_count": 0, "percentage": 0.0},
+        ],
+        "rating_distribution": [
+            {"rating": rating, "organization_count": 0} for rating in RATING_SCALE
+        ],
+        "organization_type_distribution": [],
     }
 
 
-def build_performance_response(cursor: Any, filters: dict[str, Any]) -> dict[str, Any]:
-    """Assemble the full ``organization_performance`` payload."""
-    return {
-        "organization_performance": {
-            "summary": _safe(
-                lambda: fetch_performance_summary(cursor, filters),
-                {
-                    "average_rating": 0.0,
-                    "rated_organizations": 0,
-                    "unrated_organizations": 0,
-                    "five_star_organizations": 0,
-                },
-                "performance_summary",
-            ),
-            "rating_distribution": _safe(
-                lambda: fetch_rating_distribution(cursor, filters), [], "rating_distribution"
-            ),
-            "top_rated_organizations": _safe(
-                lambda: fetch_top_rated_organizations(cursor, filters), [], "top_rated_organizations"
-            ),
-            "top_collaborator_organizations": _safe(
-                lambda: fetch_top_collaborator_organizations(cursor, filters), [], "top_collaborator_organizations"
-            ),
-            "top_contributor_organizations": _safe(
-                lambda: fetch_top_contributor_organizations(cursor, filters), [], "top_contributor_organizations"
-            ),
-            "ratings_by_organization_type": _safe(
-                lambda: fetch_ratings_by_organization_type(cursor, filters), [], "ratings_by_organization_type"
-            ),
-            "ratings_by_organization_size": _safe(
-                lambda: fetch_ratings_by_organization_size(cursor, filters), [], "ratings_by_organization_size"
-            ),
-        }
-    }
+def build_dashboard_response(cursor: Any, filters: dict[str, Any]) -> dict[str, Any]:
+    """Assemble the whole Organization Dashboard payload.
 
-
-# --------------------------------------------------------------------------- #
-# Event parsing + handler
-# --------------------------------------------------------------------------- #
-def _extract_filters(event: dict[str, Any]) -> dict[str, Any]:
-    """Pull the common filter values out of the raw Lambda event.
+    Every section is fetched independently so one failing query degrades to
+    its zero value while the rest of the dashboard still renders.
 
     Args:
-        event: The raw (already-defaulted) event dict.
+        cursor: An open dict-returning cursor.
+        filters: The validated filter dict.
 
     Returns:
-        A dict of the recognized common filters (missing keys omitted).
-
-    Raises:
-        ValueError: If ``org_rating`` is present but is not an integer.
+        The full response body.
     """
-    keys = (
-        "time_filter",
-        "start_date",
-        "end_date",
-        "org_type",
-        "org_size",
-        "state_id",
-        "city_name",
-        "org_rating",
-        "is_collaborator",
-        "is_contributor",
-        "group_by",
-    )
-    filters = {key: event[key] for key in keys if event.get(key) is not None}
+    defaults = empty_dashboard()
+    return {
+        "summary": _safe(
+            lambda: fetch_summary(cursor, filters), defaults["summary"], "summary"
+        ),
+        "growth_trend": _safe(
+            lambda: fetch_growth_trend(cursor, filters), [], "growth_trend"
+        ),
+        "organizations_by_location": _safe(
+            lambda: fetch_organizations_by_location(cursor, filters),
+            [],
+            "organizations_by_location",
+        ),
+        "organizations_by_city": _safe(
+            lambda: fetch_organizations_by_city(cursor, filters),
+            [],
+            "organizations_by_city",
+        ),
+        "organizations_by_size": _safe(
+            lambda: fetch_organizations_by_size(cursor, filters),
+            defaults["organizations_by_size"],
+            "organizations_by_size",
+        ),
+        "collaborator_vs_contributor": _safe(
+            lambda: fetch_collaborator_vs_contributor(cursor, filters),
+            defaults["collaborator_vs_contributor"],
+            "collaborator_vs_contributor",
+        ),
+        "rating_distribution": _safe(
+            lambda: fetch_rating_distribution(cursor, filters),
+            defaults["rating_distribution"],
+            "rating_distribution",
+        ),
+        "organization_type_distribution": _safe(
+            lambda: fetch_organization_type_distribution(cursor, filters),
+            [],
+            "organization_type_distribution",
+        ),
+    }
 
-    # ``org_rating`` is an integer column; coerce it here so a string from a
-    # query parameter still matches, and reject junk with a 400 rather than
-    # silently returning an empty dashboard.
-    if "org_rating" in filters:
-        try:
-            filters["org_rating"] = int(str(filters["org_rating"]).strip())
-        except (TypeError, ValueError):
-            raise ValueError("org_rating must be an integer") from None
 
-    return filters
-
-
+# --------------------------------------------------------------------------- #
+# Handler
+# --------------------------------------------------------------------------- #
 def lambda_handler(event: Optional[dict[str, Any]], context: Any = None) -> dict[str, Any]:
-    """Route an analytics request to the overview or performance dashboard.
+    """Serve ``POST /analytics/organizations``.
 
-    The event branches on ``dashboard_type`` (``overview`` or
-    ``performance``). Unknown or missing values default to ``overview``.
-    The DB connection is wrapped in try/except (returning ``statusCode`` 500
-    on failure); each query degrades to a safe empty default; the cursor and
-    connection are always closed.
+    One request returns every metric for all three dashboard tabs. Invalid
+    filter values are rejected with ``400`` before any query runs; a database
+    failure returns ``500`` without leaking connection details; and a single
+    failing query degrades to that metric's zero value while the request still
+    returns ``200``.
 
     Args:
-        event: Lambda event with ``dashboard_type`` plus optional common
-            filters. ``None`` is treated as an empty event.
+        event: API Gateway proxy event or a plain invocation payload.
         context: Unused Lambda context object.
 
     Returns:
-        An API Gateway proxy response from ``build_response``.
+        An API Gateway proxy response from :func:`build_response`.
     """
-    event = event or {}
-    dashboard_type = str(event.get("dashboard_type") or "overview").strip().lower()
-    if dashboard_type not in ("overview", "performance"):
-        dashboard_type = "overview"
+    payload = parse_event_body(event)
 
-    # Parse and validate the filters up front so bad input surfaces as a clean
-    # 400 rather than escaping the handler or being swallowed by the
-    # per-query safe-default wrappers below.
+    # Validate up front so bad input surfaces as a clean 400 rather than
+    # escaping the handler or being swallowed by the safe-default wrappers.
     try:
-        filters = _extract_filters(event)
-        build_date_filter(
-            filters.get("time_filter"),
-            filters.get("start_date"),
-            filters.get("end_date"),
-        )
+        filters = _extract_filters(payload)
     except ValueError as exc:
         print(f"[organization_analytics] bad request: {exc}")
         return build_response(400, {"error": str(exc)})
@@ -883,16 +897,9 @@ def lambda_handler(event: Optional[dict[str, Any]], context: Any = None) -> dict
     try:
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-
-        if dashboard_type == "performance":
-            body = build_performance_response(cursor, filters)
-        else:
-            body = build_overview_response(cursor, filters)
-
-        return build_response(200, body)
+        return build_response(200, build_dashboard_response(cursor, filters))
 
     except ValueError as exc:
-        # Invalid filter combination (e.g. CUSTOM without dates).
         print(f"[organization_analytics] bad request: {exc}")
         return build_response(400, {"error": str(exc)})
 
@@ -908,5 +915,4 @@ def lambda_handler(event: Optional[dict[str, Any]], context: Any = None) -> dict
 
 
 if __name__ == "__main__":
-    print(json.dumps(lambda_handler({"dashboard_type": "overview"}, None), indent=2))
-    print(json.dumps(lambda_handler({"dashboard_type": "performance"}, None), indent=2))
+    print(json.dumps(lambda_handler({"time_filter": "ALL", "group_by": "monthly"}), indent=2))
