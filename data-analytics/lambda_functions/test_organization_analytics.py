@@ -1,48 +1,53 @@
 """
-Manual test runner for organization_analytics.py -- run against the local
-Postgres setup (see sql/organizations_local_setup.sql)
-Output saved inside (data-analytics/org_alx_dashb_test_output.txt)
+Manual/integration test runner for organization_analytics.py -- run against the
+local Postgres setup (see sql/organizations_local_setup.sql, seeded from the
+real data-analytics/sql/organizations.csv + state.csv). Output saved inside
+data-analytics/org_alx_dashb_test_output.txt for the PR.
+
+Cases below are the ticket's own "Sample Payloads for Local PR Testing", plus
+one extra (#6) that exercises an empty result set: the real seed data's
+created_at values top out around 2026-01, so a 7D window against "today"
+legitimately returns nothing -- useful proof the API handles empty results
+without erroring, which the ticket explicitly calls out as a required test.
+
+For mocked/cursor-based unit tests (no live DB needed), see
+test_organization_analytics_unit.py instead.
 """
 
 import json
-from datetime import date, timedelta
 
 from organization_analytics import lambda_handler
 
 CASES = [
-    ("1. Overview - defaults (no filters)", {}),
-    ("2. Overview - time_filter=7D", {"time_filter": "7D"}),
-    ("3. Overview - time_filter=1Y, group_by=yearly", {"time_filter": "1Y", "group_by": "yearly"}),
-    ("4. Overview - time_filter=ALL, group_by=weekly", {"time_filter": "ALL", "group_by": "weekly"}),
-    ("5. Overview - org_type=for_profit", {"time_filter": "ALL", "org_type": "for_profit"}),
     (
-        "6. Overview - org_size=large + state_id=CA",
-        {"time_filter": "ALL", "org_size": "large", "state_id": "CA"},
+        "1. Standard Test (30D, daily, no filters)",
+        {"time_filter": "30D", "start_date": None, "end_date": None, "group_by": "daily",
+         "region": "ALL", "organization_type": "ALL"},
     ),
     (
-        "7. Overview - city_name=chicago (lowercase, tests ILIKE)",
-        {"time_filter": "ALL", "city_name": "chicago"},
+        "2. Last 12 Months (1Y, monthly, no filters)",
+        {"time_filter": "1Y", "start_date": None, "end_date": None, "group_by": "monthly",
+         "region": "ALL", "organization_type": "ALL"},
     ),
     (
-        "8. Overview - is_collaborator=false + is_contributor=true",
-        {"time_filter": "ALL", "is_collaborator": False, "is_contributor": True},
+        "3. Filter by Region (California)",
+        {"time_filter": "1Y", "start_date": None, "end_date": None, "group_by": "monthly",
+         "region": "California", "organization_type": "ALL"},
     ),
     (
-        "9. Performance - org_rating=5",
-        {"dashboard_type": "performance", "time_filter": "ALL", "org_rating": 5},
+        "4. Filter by Organization Type (non_profit)",
+        {"time_filter": "1Y", "start_date": None, "end_date": None, "group_by": "monthly",
+         "region": "ALL", "organization_type": "non_profit"},
     ),
     (
-        "10. Performance - time_filter=CUSTOM (last 30 days) + is_collaborator=true",
-        {
-            "dashboard_type": "performance",
-            "time_filter": "CUSTOM",
-            # Computed relative to today (not hardcoded) for the same reason the seed
-            # data in organizations_local_setup.sql uses relative intervals -- a fixed
-            # date range goes stale the moment "today" moves past it.
-            "start_date": str(date.today() - timedelta(days=30)),
-            "end_date": str(date.today()),
-            "is_collaborator": True,
-        },
+        "5. Custom Date Range (2026-01-01 to 2026-06-30)",
+        {"time_filter": "CUSTOM", "start_date": "2026-01-01", "end_date": "2026-06-30",
+         "group_by": "monthly", "region": "ALL", "organization_type": "ALL"},
+    ),
+    (
+        "6. Empty result set (7D -- real seed data has no orgs created this recently)",
+        {"time_filter": "7D", "start_date": None, "end_date": None, "group_by": "daily",
+         "region": "ALL", "organization_type": "ALL"},
     ),
 ]
 

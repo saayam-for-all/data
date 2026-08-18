@@ -1,12 +1,23 @@
 import json
+import os
 
-import boto3
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 ORGANIZATIONS = f"{SCHEMA_NAME}.organizations"
 STATE = f"{SCHEMA_NAME}.state"
+FROM_CLAUSE = f"FROM {ORGANIZATIONS} o LEFT JOIN {STATE} s ON o.state_id = s.state_id"
+
+# org_type/org_size are stored as-is from the real sample data ("Non-Profit", "For-profit",
+# "Small"/"Medium"/"Large" -- see organizations_local_setup.sql). These expressions normalize
+# them to the clean lowercase vocabulary the ticket's filters/response examples use
+# ("non_profit", "for_profit", "small"/"medium"/"large").
+ORG_TYPE_EXPR = "LOWER(REPLACE(o.org_type, '-', '_'))"
+ORG_SIZE_EXPR = "LOWER(o.org_size)"
 
 VALID_TIME_FILTERS = {"7D", "30D", "1Y", "ALL", "CUSTOM"}
 VALID_GROUP_BY = {"daily", "weekly", "monthly", "yearly"}
@@ -46,21 +57,12 @@ def build_response(status_code, body):
 
 
 def get_db_connection():
-    ssm = boto3.client("ssm", region_name="us-east-1")
-
-    response = ssm.get_parameter(
-        Name="/dev/saayam/db/Virginia/Analytics/user",
-        WithDecryption=True,
-    )
-
-    creds = json.loads(response["Parameter"]["Value"])
     return psycopg2.connect(
-        host=creds["HOST"],
-        database=creds["DATABASE NAME"],
-        user=creds["USERNAME"],
-        password=creds["PASSWORD"],
-        port=creds["PORT"],
-        sslmode="require",
+        host=os.getenv("HOST"),
+        dbname=os.getenv("DATABASE_NAME"),
+        user=os.getenv("USERNAME"),
+        password=os.getenv("PASSWORD"),
+        port=os.getenv("PORT"),
     )
 
 
@@ -98,44 +100,28 @@ def build_time_filter(time_filter, start_date=None, end_date=None):
     raise ValueError(f"Invalid time_filter. Must be one of: {sorted(VALID_TIME_FILTERS)}")
 
 
+def normalize_org_type(value):
+    return value.strip().lower().replace("-", "_").replace(" ", "_")
+
+
 def build_common_filters(filters):
     """
-    WHERE-fragments + params for the shared filter block (org_type, org_size, state_id,
-    city_name, org_rating, is_collaborator, is_contributor), reused by every metric
-    query below.
+    WHERE-fragments + params for the shared filter block (region, organization_type).
+    "ALL" is the sentinel the frontend sends for "no filter" on either field, matching
+    the ticket's sample payloads.
     """
     clauses = []
     params = []
 
-    if filters.get("org_type"):
-        clauses.append("o.org_type = %s")
-        params.append(filters["org_type"])
+    region = filters.get("region")
+    if region and region.upper() != "ALL":
+        clauses.append("LOWER(s.state_name) = LOWER(%s)")
+        params.append(region)
 
-    if filters.get("org_size"):
-        clauses.append("o.org_size = %s")
-        params.append(filters["org_size"])
-
-    if filters.get("state_id"):
-        clauses.append("o.state_id = %s")
-        params.append(filters["state_id"])
-
-    if filters.get("city_name"):
-        clauses.append("o.city_name ILIKE %s")
-        params.append(filters["city_name"])
-
-    # "is not None" (not a truthy check) because False/0 are valid filter values,
-    # not "no filter" -- a truthy check would silently drop is_collaborator: false.
-    if filters.get("org_rating") is not None:
-        clauses.append("o.org_rating = %s")
-        params.append(filters["org_rating"])
-
-    if filters.get("is_collaborator") is not None:
-        clauses.append("o.is_collaborator = %s")
-        params.append(filters["is_collaborator"])
-
-    if filters.get("is_contributor") is not None:
-        clauses.append("o.is_contributor = %s")
-        params.append(filters["is_contributor"])
+    organization_type = filters.get("organization_type")
+    if organization_type and organization_type.upper() != "ALL":
+        clauses.append(f"{ORG_TYPE_EXPR} = %s")
+        params.append(normalize_org_type(organization_type))
 
     return clauses, params
 
@@ -151,8 +137,12 @@ def build_where_clause(time_filter, start_date, end_date, filters):
     return where_sql, params
 
 
+def and_condition(where_sql, condition):
+    return f"{where_sql} AND {condition}" if where_sql else f"WHERE {condition}"
+
+
 # ---------------------------------------------------------------------------
-# Overview dashboard
+# Metric queries
 # ---------------------------------------------------------------------------
 
 def get_summary(cursor, time_filter, start_date, end_date, filters):
@@ -160,240 +150,188 @@ def get_summary(cursor, time_filter, start_date, end_date, filters):
     query = f"""
         SELECT
             COUNT(*) AS total_organizations,
-            COUNT(*) FILTER (WHERE o.org_type = 'non_profit') AS non_profit_organizations,
-            COUNT(*) FILTER (WHERE o.org_type = 'for_profit') AS for_profit_organizations,
-            COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS collaborator_organizations,
-            COUNT(*) FILTER (WHERE o.is_collaborator IS NOT TRUE) AS non_collaborator_organizations,
-            COUNT(*) FILTER (WHERE o.is_contributor IS TRUE) AS contributor_organizations,
-            COUNT(*) FILTER (WHERE o.is_contributor IS NOT TRUE) AS non_contributor_organizations
-        FROM {ORGANIZATIONS} o
+            COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS total_collaborators,
+            COUNT(*) FILTER (WHERE o.is_contributor IS TRUE) AS total_contributors,
+            ROUND(AVG(o.org_rating)::numeric, 2) AS average_org_rating
+        {FROM_CLAUSE}
         {where_sql}
     """
     cursor.execute(query, params)
     row = cursor.fetchone()
     return {
         "total_organizations": int(row["total_organizations"]),
-        "non_profit_organizations": int(row["non_profit_organizations"]),
-        "for_profit_organizations": int(row["for_profit_organizations"]),
-        "collaborator_organizations": int(row["collaborator_organizations"]),
-        "non_collaborator_organizations": int(row["non_collaborator_organizations"]),
-        "contributor_organizations": int(row["contributor_organizations"]),
-        "non_contributor_organizations": int(row["non_contributor_organizations"]),
+        "total_collaborators": int(row["total_collaborators"]),
+        "total_contributors": int(row["total_contributors"]),
+        "average_org_rating": float(row["average_org_rating"]) if row["average_org_rating"] is not None else 0,
     }
 
 
-def get_activity_trend(cursor, time_filter, start_date, end_date, filters, group_by):
+def get_growth_trend(cursor, time_filter, start_date, end_date, filters, group_by):
+    """
+    Cumulative running totals per period (not new-orgs-per-period), matching the
+    ticket's own example numbers and the SUM(...) OVER (ORDER BY period) pattern
+    already used in volunteer_application_analytics.py's total_volunteers.
+    """
     period, date_format = get_grouping(group_by)
     where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
     query = f"""
-        SELECT TO_CHAR(DATE_TRUNC('{period}', o.created_at), '{date_format}') AS period,
-               COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        GROUP BY 1
-        ORDER BY 1
-    """
-    cursor.execute(query, params)
-    return [{"period": row["period"], "count": int(row["count"])} for row in cursor.fetchall()]
-
-
-def get_by_type(cursor, time_filter, start_date, end_date, filters):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    query = f"""
-        SELECT o.org_type AS type, COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        GROUP BY o.org_type
-        ORDER BY o.org_type
-    """
-    cursor.execute(query, params)
-    return [{"type": row["type"], "count": int(row["count"])} for row in cursor.fetchall()]
-
-
-def get_by_size(cursor, time_filter, start_date, end_date, filters):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    query = f"""
-        SELECT o.org_size AS size, COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        GROUP BY o.org_size
-        ORDER BY o.org_size
-    """
-    cursor.execute(query, params)
-    return [{"size": row["size"], "count": int(row["count"])} for row in cursor.fetchall()]
-
-
-def get_by_location(cursor, time_filter, start_date, end_date, filters):
-    # city_name lives directly on organizations (no city table FK), so it's grouped
-    # as-is; state is joined for a readable name/code alongside the raw state_id.
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    query = f"""
-        SELECT s.state_name AS state, s.state_code AS state_code, o.city_name AS city,
-               COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        LEFT JOIN {STATE} s ON o.state_id = s.state_id
-        {where_sql}
-        GROUP BY s.state_name, s.state_code, o.city_name
-        ORDER BY count DESC
+        SELECT period,
+               SUM(new_count) OVER (ORDER BY period) AS total_organizations,
+               SUM(new_collaborators) OVER (ORDER BY period) AS total_collaborators
+        FROM (
+            SELECT TO_CHAR(DATE_TRUNC('{period}', o.created_at), '{date_format}') AS period,
+                   COUNT(*) AS new_count,
+                   COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS new_collaborators
+            {FROM_CLAUSE}
+            {where_sql}
+            GROUP BY 1
+        ) sub
+        ORDER BY period
     """
     cursor.execute(query, params)
     return [
         {
-            "state": row["state"],
-            "state_code": row["state_code"],
-            "city": row["city"],
-            "count": int(row["count"]),
+            "period": row["period"],
+            "total_organizations": int(row["total_organizations"]),
+            "total_collaborators": int(row["total_collaborators"]),
         }
         for row in cursor.fetchall()
     ]
 
 
-def get_collaborator_distribution(cursor, time_filter, start_date, end_date, filters):
+def get_organizations_by_location(cursor, time_filter, start_date, end_date, filters):
+    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
+
+    state_query = f"""
+        SELECT COALESCE(s.state_id, 'UNKNOWN') AS state_id,
+               COALESCE(s.state_name, 'Unknown') AS state_name,
+               COUNT(*) AS organization_count,
+               ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1) AS percentage
+        {FROM_CLAUSE}
+        {where_sql}
+        GROUP BY COALESCE(s.state_id, 'UNKNOWN'), COALESCE(s.state_name, 'Unknown')
+        ORDER BY organization_count DESC
+    """
+    cursor.execute(state_query, params)
+    state_rows = cursor.fetchall()
+
+    city_query = f"""
+        SELECT COALESCE(s.state_id, 'UNKNOWN') AS state_id,
+               o.city_name AS city_name,
+               COUNT(*) AS organization_count
+        {FROM_CLAUSE}
+        {where_sql}
+        GROUP BY COALESCE(s.state_id, 'UNKNOWN'), o.city_name
+        ORDER BY organization_count DESC
+    """
+    cursor.execute(city_query, params)
+    cities_by_state = {}
+    for row in cursor.fetchall():
+        cities_by_state.setdefault(row["state_id"], []).append(
+            {"city_name": row["city_name"], "organization_count": int(row["organization_count"])}
+        )
+
+    return [
+        {
+            "state_id": row["state_id"],
+            "state_name": row["state_name"],
+            "organization_count": int(row["organization_count"]),
+            "percentage": float(row["percentage"]),
+            "cities": cities_by_state.get(row["state_id"], []),
+        }
+        for row in state_rows
+    ]
+
+
+def get_organizations_by_size(cursor, time_filter, start_date, end_date, filters):
     where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
     query = f"""
-        SELECT COALESCE(o.is_collaborator, FALSE) AS is_collaborator, COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
+        SELECT {ORG_SIZE_EXPR} AS org_size, COUNT(*) AS organization_count
+        {FROM_CLAUSE}
         {where_sql}
-        GROUP BY COALESCE(o.is_collaborator, FALSE)
-        ORDER BY is_collaborator DESC
+        GROUP BY {ORG_SIZE_EXPR}
+        ORDER BY organization_count DESC
     """
     cursor.execute(query, params)
     return [
-        {"is_collaborator": bool(row["is_collaborator"]), "count": int(row["count"])}
+        {"org_size": row["org_size"], "organization_count": int(row["organization_count"])}
         for row in cursor.fetchall()
     ]
 
 
-def get_contributor_distribution(cursor, time_filter, start_date, end_date, filters):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    query = f"""
-        SELECT COALESCE(o.is_contributor, FALSE) AS is_contributor, COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        GROUP BY COALESCE(o.is_contributor, FALSE)
-        ORDER BY is_contributor DESC
-    """
-    cursor.execute(query, params)
-    return [
-        {"is_contributor": bool(row["is_contributor"]), "count": int(row["count"])}
-        for row in cursor.fetchall()
-    ]
-
-
-# ---------------------------------------------------------------------------
-# Performance dashboard
-# ---------------------------------------------------------------------------
-
-def get_performance_summary(cursor, time_filter, start_date, end_date, filters):
+def get_collaborator_vs_contributor(cursor, time_filter, start_date, end_date, filters):
     where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
     query = f"""
         SELECT
-            ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-            COUNT(*) FILTER (WHERE o.org_rating IS NOT NULL) AS rated_organizations,
-            COUNT(*) FILTER (WHERE o.org_rating IS NULL) AS unrated_organizations,
-            COUNT(*) FILTER (WHERE o.org_rating = 5) AS five_star_organizations
-        FROM {ORGANIZATIONS} o
+            COUNT(*) AS total,
+            COUNT(*) FILTER (WHERE o.is_collaborator IS TRUE) AS collaborators,
+            COUNT(*) FILTER (WHERE o.is_contributor IS TRUE) AS contributors
+        {FROM_CLAUSE}
         {where_sql}
     """
     cursor.execute(query, params)
     row = cursor.fetchone()
-    return {
-        "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0,
-        "rated_organizations": int(row["rated_organizations"]),
-        "unrated_organizations": int(row["unrated_organizations"]),
-        "five_star_organizations": int(row["five_star_organizations"]),
-    }
+    total = int(row["total"])
+    collaborators = int(row["collaborators"])
+    contributors = int(row["contributors"])
+
+    # is_collaborator/is_contributor are independent booleans (an org can be both, or
+    # neither), so these percentages are each out of total_organizations and won't
+    # necessarily sum to 100 -- that's expected, not a bug.
+    def pct(count):
+        return round(100.0 * count / total, 1) if total else 0
+
+    return [
+        {"type": "collaborator", "organization_count": collaborators, "percentage": pct(collaborators)},
+        {"type": "contributor", "organization_count": contributors, "percentage": pct(contributors)},
+    ]
 
 
 def get_rating_distribution(cursor, time_filter, start_date, end_date, filters):
     where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
+    # NULL ratings are excluded here (not a crash -- just not part of a 1-5 distribution),
+    # per the ticket's acceptance criteria: "Rating Distribution returns ratings from 1 to 5."
+    where_sql = and_condition(where_sql, "o.org_rating IS NOT NULL")
     query = f"""
-        SELECT o.org_rating AS rating, COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
+        SELECT o.org_rating AS rating, COUNT(*) AS organization_count
+        {FROM_CLAUSE}
         {where_sql}
         GROUP BY o.org_rating
-        ORDER BY o.org_rating NULLS LAST
+        ORDER BY o.org_rating
     """
     cursor.execute(query, params)
-    return [{"rating": row["rating"], "count": int(row["count"])} for row in cursor.fetchall()]
-
-
-def _top_organizations(cursor, where_sql, params, extra_condition, limit):
-    where_sql = f"{where_sql} AND {extra_condition}" if where_sql else f"WHERE {extra_condition}"
-    query = f"""
-        SELECT o.org_id, o.org_name, o.org_rating AS rating, o.org_type AS type, o.org_size AS size
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        ORDER BY o.org_rating DESC NULLS LAST, o.org_name ASC
-        LIMIT %s
-    """
-    cursor.execute(query, params + [limit])
     return [
-        {
-            "org_id": row["org_id"],
-            "org_name": row["org_name"],
-            "rating": row["rating"],
-            "type": row["type"],
-            "size": row["size"],
-        }
+        {"rating": row["rating"], "organization_count": int(row["organization_count"])}
         for row in cursor.fetchall()
     ]
 
 
-def get_top_rated_organizations(cursor, time_filter, start_date, end_date, filters, limit=10):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    return _top_organizations(cursor, where_sql, params, "o.org_rating IS NOT NULL", limit)
-
-
-def get_top_collaborator_organizations(cursor, time_filter, start_date, end_date, filters, limit=10):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    return _top_organizations(cursor, where_sql, params, "o.is_collaborator IS TRUE", limit)
-
-
-def get_top_contributor_organizations(cursor, time_filter, start_date, end_date, filters, limit=10):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    return _top_organizations(cursor, where_sql, params, "o.is_contributor IS TRUE", limit)
-
-
-def get_ratings_by_type(cursor, time_filter, start_date, end_date, filters):
+def get_organization_type_distribution(cursor, time_filter, start_date, end_date, filters, group_by):
+    """Cumulative running totals per period, split by org_type (stacked-bar-chart data)."""
+    period, date_format = get_grouping(group_by)
     where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
     query = f"""
-        SELECT o.org_type AS type,
-               ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-               COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        GROUP BY o.org_type
-        ORDER BY o.org_type
+        SELECT period,
+               SUM(new_for_profit) OVER (ORDER BY period) AS for_profit,
+               SUM(new_non_profit) OVER (ORDER BY period) AS non_profit,
+               SUM(new_for_profit + new_non_profit) OVER (ORDER BY period) AS total
+        FROM (
+            SELECT TO_CHAR(DATE_TRUNC('{period}', o.created_at), '{date_format}') AS period,
+                   COUNT(*) FILTER (WHERE {ORG_TYPE_EXPR} = 'for_profit') AS new_for_profit,
+                   COUNT(*) FILTER (WHERE {ORG_TYPE_EXPR} = 'non_profit') AS new_non_profit
+            {FROM_CLAUSE}
+            {where_sql}
+            GROUP BY 1
+        ) sub
+        ORDER BY period
     """
     cursor.execute(query, params)
     return [
         {
-            "type": row["type"],
-            "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0,
-            "count": int(row["count"]),
-        }
-        for row in cursor.fetchall()
-    ]
-
-
-def get_ratings_by_size(cursor, time_filter, start_date, end_date, filters):
-    where_sql, params = build_where_clause(time_filter, start_date, end_date, filters)
-    query = f"""
-        SELECT o.org_size AS size,
-               ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-               COUNT(*) AS count
-        FROM {ORGANIZATIONS} o
-        {where_sql}
-        GROUP BY o.org_size
-        ORDER BY o.org_size
-    """
-    cursor.execute(query, params)
-    return [
-        {
-            "size": row["size"],
-            "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0,
-            "count": int(row["count"]),
+            "period": row["period"],
+            "for_profit": int(row["for_profit"]),
+            "non_profit": int(row["non_profit"]),
+            "total": int(row["total"]),
         }
         for row in cursor.fetchall()
     ]
@@ -403,42 +341,20 @@ def get_ratings_by_size(cursor, time_filter, start_date, end_date, filters):
 # Handler
 # ---------------------------------------------------------------------------
 
-def get_default_response(dashboard_type):
-    if dashboard_type == "performance":
-        return {
-            "organization_performance": {
-                "summary": {
-                    "average_rating": 0,
-                    "rated_organizations": 0,
-                    "unrated_organizations": 0,
-                    "five_star_organizations": 0,
-                },
-                "rating_distribution": [],
-                "top_rated_organizations": [],
-                "top_collaborator_organizations": [],
-                "top_contributor_organizations": [],
-                "ratings_by_organization_type": [],
-                "ratings_by_organization_size": [],
-            }
-        }
+def get_default_response():
     return {
-        "organization_overview": {
-            "summary": {
-                "total_organizations": 0,
-                "non_profit_organizations": 0,
-                "for_profit_organizations": 0,
-                "collaborator_organizations": 0,
-                "non_collaborator_organizations": 0,
-                "contributor_organizations": 0,
-                "non_contributor_organizations": 0,
-            },
-            "organization_activity_trend": [],
-            "organizations_by_type": [],
-            "organizations_by_size": [],
-            "organizations_by_location": [],
-            "collaborator_distribution": [],
-            "contributor_distribution": [],
-        }
+        "summary": {
+            "total_organizations": 0,
+            "total_collaborators": 0,
+            "total_contributors": 0,
+            "average_org_rating": 0,
+        },
+        "growth_trend": [],
+        "organizations_by_location": [],
+        "organizations_by_size": [],
+        "collaborator_vs_contributor": [],
+        "rating_distribution": [],
+        "organization_type_distribution": [],
     }
 
 
@@ -447,23 +363,17 @@ def lambda_handler(event, context):
     cursor = None
 
     request_body = parse_event_body(event)
-    dashboard_type = request_body.get("dashboard_type", "overview")
     time_filter = request_body.get("time_filter", "30D")
     start_date = request_body.get("start_date")
     end_date = request_body.get("end_date")
     group_by = request_body.get("group_by", "daily")
 
     filters = {
-        "org_type": request_body.get("org_type"),
-        "org_size": request_body.get("org_size"),
-        "state_id": request_body.get("state_id"),
-        "city_name": request_body.get("city_name"),
-        "org_rating": request_body.get("org_rating"),
-        "is_collaborator": request_body.get("is_collaborator"),
-        "is_contributor": request_body.get("is_contributor"),
+        "region": request_body.get("region"),
+        "organization_type": request_body.get("organization_type"),
     }
 
-    response_body = get_default_response(dashboard_type)
+    response_body = get_default_response()
 
     try:
         conn = get_db_connection()
@@ -472,81 +382,40 @@ def lambda_handler(event, context):
 
         # Each metric is wrapped individually so one bad query leaves its slot at the
         # safe default instead of blanking out the whole dashboard response.
-        if dashboard_type == "performance":
-            section = response_body["organization_performance"]
+        try:
+            response_body["summary"] = get_summary(cursor, time_filter, start_date, end_date, filters)
+        except Exception as e:
+            print(f"summary failed: {e}")
 
-            try:
-                section["summary"] = get_performance_summary(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"performance summary failed: {e}")
+        try:
+            response_body["growth_trend"] = get_growth_trend(cursor, time_filter, start_date, end_date, filters, group_by)
+        except Exception as e:
+            print(f"growth_trend failed: {e}")
 
-            try:
-                section["rating_distribution"] = get_rating_distribution(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"rating_distribution failed: {e}")
+        try:
+            response_body["organizations_by_location"] = get_organizations_by_location(cursor, time_filter, start_date, end_date, filters)
+        except Exception as e:
+            print(f"organizations_by_location failed: {e}")
 
-            try:
-                section["top_rated_organizations"] = get_top_rated_organizations(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"top_rated_organizations failed: {e}")
+        try:
+            response_body["organizations_by_size"] = get_organizations_by_size(cursor, time_filter, start_date, end_date, filters)
+        except Exception as e:
+            print(f"organizations_by_size failed: {e}")
 
-            try:
-                section["top_collaborator_organizations"] = get_top_collaborator_organizations(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"top_collaborator_organizations failed: {e}")
+        try:
+            response_body["collaborator_vs_contributor"] = get_collaborator_vs_contributor(cursor, time_filter, start_date, end_date, filters)
+        except Exception as e:
+            print(f"collaborator_vs_contributor failed: {e}")
 
-            try:
-                section["top_contributor_organizations"] = get_top_contributor_organizations(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"top_contributor_organizations failed: {e}")
+        try:
+            response_body["rating_distribution"] = get_rating_distribution(cursor, time_filter, start_date, end_date, filters)
+        except Exception as e:
+            print(f"rating_distribution failed: {e}")
 
-            try:
-                section["ratings_by_organization_type"] = get_ratings_by_type(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"ratings_by_organization_type failed: {e}")
-
-            try:
-                section["ratings_by_organization_size"] = get_ratings_by_size(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"ratings_by_organization_size failed: {e}")
-
-        else:
-            section = response_body["organization_overview"]
-
-            try:
-                section["summary"] = get_summary(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"summary failed: {e}")
-
-            try:
-                section["organization_activity_trend"] = get_activity_trend(cursor, time_filter, start_date, end_date, filters, group_by)
-            except Exception as e:
-                print(f"organization_activity_trend failed: {e}")
-
-            try:
-                section["organizations_by_type"] = get_by_type(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"organizations_by_type failed: {e}")
-
-            try:
-                section["organizations_by_size"] = get_by_size(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"organizations_by_size failed: {e}")
-
-            try:
-                section["organizations_by_location"] = get_by_location(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"organizations_by_location failed: {e}")
-
-            try:
-                section["collaborator_distribution"] = get_collaborator_distribution(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"collaborator_distribution failed: {e}")
-
-            try:
-                section["contributor_distribution"] = get_contributor_distribution(cursor, time_filter, start_date, end_date, filters)
-            except Exception as e:
-                print(f"contributor_distribution failed: {e}")
+        try:
+            response_body["organization_type_distribution"] = get_organization_type_distribution(cursor, time_filter, start_date, end_date, filters, group_by)
+        except Exception as e:
+            print(f"organization_type_distribution failed: {e}")
 
         return build_response(200, response_body)
 
