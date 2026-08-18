@@ -2,7 +2,7 @@
 
 > **Status: Draft for team-lead review. This document proposes a design. It does not approve implementation or authorize deleting production data.**
 
-## Slack summary
+## Executive summary
 
 - **Problem:** Older completed requests can keep growing in PostgreSQL, while analytics and product features may still need their history.
 - **Recommendation:** Copy approved, deidentified fields into a regional S3/Iceberg archive through a daily read-only pipeline.
@@ -14,7 +14,7 @@
 - **Reviewer request:** Decide whether this becomes the canonical draft, correct its facts, and assign one person and due date to every open question.
 - **Review process:** Use this draft pull request for initial feedback, revise it, allow the issue's three-business-day pre-read, and obtain cross-team approval before merge.
 
-Paste this summary into Slack and attach or link the rendered document. Slack may not render the document's Markdown tables or Mermaid diagrams correctly when the entire file is pasted into a message.
+This summary can be shared in Slack with a link to the rendered document. Avoid pasting the entire file into a message because Slack may not render its Markdown tables or Mermaid diagrams correctly.
 
 ## Document overview
 
