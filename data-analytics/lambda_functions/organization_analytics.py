@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-import re
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -12,7 +11,7 @@ logger.setLevel(logging.INFO)
 
 
 def get_db_connection():
-    """Establish PostgreSQL database connection with environment fallbacks."""
+    """Establish local PostgreSQL database connection with environment fallbacks."""
     try:
         conn = psycopg2.connect(
             host=os.environ.get("DB_HOST", "localhost"),
@@ -28,7 +27,7 @@ def get_db_connection():
 
 
 def build_where_clause(filters):
-    """Build dynamic WHERE clause and parameters based on filters payload."""
+    """Build dynamic WHERE clause and parameters based on updated common filter payload."""
     conditions = []
     params = {}
 
@@ -44,244 +43,196 @@ def build_where_clause(filters):
     elif time_filter == "1Y":
         conditions.append("o.created_at >= CURRENT_DATE - INTERVAL '1 year'")
     elif time_filter == "CUSTOM" and start_date and end_date:
-        conditions.append("o.created_at BETWEEN %(start_date)s AND %(end_date)s")
+        conditions.append(
+            "o.created_at BETWEEN %(start_date)s::timestamp AND %(end_date)s::timestamp"
+        )
         params["start_date"] = start_date
         params["end_date"] = end_date
 
-    # 2. Dynamic Attribute Filters
-    if filters.get("org_type"):
-        conditions.append("o.org_type = %(org_type)s")
-        params["org_type"] = filters["org_type"]
+    # 2. Region / State Filter
+    region = filters.get("region")
+    if region and region.upper() != "ALL":
+        conditions.append("(s.state_name = %(region)s OR s.id = %(region)s)")
+        params["region"] = region
 
-    if filters.get("org_size"):
-        conditions.append("o.org_size = %(org_size)s")
-        params["org_size"] = filters["org_size"]
-
-    if filters.get("state_id"):
-        conditions.append("o.state_id = %(state_id)s")
-        params["state_id"] = filters["state_id"]
-
-    if filters.get("city_name"):
-        conditions.append("o.city_name = %(city_name)s")
-        params["city_name"] = filters["city_name"]
-
-    if filters.get("org_rating") is not None:
-        conditions.append("o.rating = %(org_rating)s")
-        params["org_rating"] = filters["org_rating"]
-
-    if filters.get("is_collaborator") is not None:
-        conditions.append("o.is_collaborator = %(is_collaborator)s")
-        params["is_collaborator"] = filters["is_collaborator"]
-
-    if filters.get("is_contributor") is not None:
-        conditions.append("o.is_contributor = %(is_contributor)s")
-        params["is_contributor"] = filters["is_contributor"]
+    # 3. Organization Type Filter
+    org_type = filters.get("organization_type")
+    if org_type and org_type.upper() != "ALL":
+        conditions.append("LOWER(o.org_type) = LOWER(%(org_type)s)")
+        params["org_type"] = org_type
 
     where_sql = " WHERE " + " AND ".join(conditions) if conditions else ""
     return where_sql, params
 
 
-def fetch_overview_dashboard(cursor, where_sql, params, group_by):
-    """Generate Overview Dashboard Metrics."""
-    # Summary Query
+def get_trunc_unit(group_by):
+    """Map group_by string to PostgreSQL DATE_TRUNC unit and format."""
+    group_by = (group_by or "daily").lower()
+    if group_by == "weekly":
+        return "week", "YYYY-IW"
+    elif group_by == "monthly":
+        return "month", "YYYY-MM"
+    elif group_by == "yearly":
+        return "year", "YYYY"
+    else:
+        return "day", "YYYY-MM-DD"
+
+
+def fetch_organization_analytics(cursor, where_sql, params, group_by):
+    """Fetch all metrics across tabs in a single structured JSON response."""
+    trunc_unit, date_format = get_trunc_unit(group_by)
+
+    # 1. KPI Summary Cards
     summary_query = f"""
         SELECT 
             COUNT(o.id) AS total_organizations,
-            COUNT(CASE WHEN LOWER(o.org_type) = 'non-profit' THEN 1 END) AS non_profit_organizations,
-            COUNT(CASE WHEN LOWER(o.org_type) = 'for-profit' THEN 1 END) AS for_profit_organizations,
-            COUNT(CASE WHEN o.is_collaborator = TRUE THEN 1 END) AS collaborator_organizations,
-            COUNT(CASE WHEN o.is_collaborator = FALSE OR o.is_collaborator IS NULL THEN 1 END) AS non_collaborator_organizations,
-            COUNT(CASE WHEN o.is_contributor = TRUE THEN 1 END) AS contributor_organizations,
-            COUNT(CASE WHEN o.is_contributor = FALSE OR o.is_contributor IS NULL THEN 1 END) AS non_contributor_organizations
+            COUNT(CASE WHEN o.is_collaborator = TRUE THEN 1 END) AS total_collaborators,
+            COUNT(CASE WHEN o.is_contributor = TRUE THEN 1 END) AS total_contributors,
+            ROUND(COALESCE(AVG(o.rating), 0)::numeric, 1) AS average_org_rating
         FROM organizations o
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql};
     """
     cursor.execute(summary_query, params)
-    summary = cursor.fetchone() or {}
+    summary = cursor.fetchone() or {
+        "total_organizations": 0,
+        "total_collaborators": 0,
+        "total_contributors": 0,
+        "average_org_rating": 0.0,
+    }
 
-    # Registration Trend Query
-    trunc_unit = (
-        "day"
-        if group_by == "daily"
-        else (
-            "week"
-            if group_by == "weekly"
-            else "year" if group_by == "yearly" else "month"
-        )
-    )
+    # Cast numeric average rating safely
+    if summary.get("average_org_rating") is not None:
+        summary["average_org_rating"] = float(summary["average_org_rating"])
 
-    trend_query = f"""
+    # 2. Growth Trend (Line Chart: Total Organizations vs Total Collaborators)
+    growth_query = f"""
         SELECT 
-            TO_CHAR(DATE_TRUNC('{trunc_unit}', o.created_at), 'YYYY-MM-DD') AS period,
-            COUNT(o.id) AS count
+            TO_CHAR(DATE_TRUNC('{trunc_unit}', o.created_at), '{date_format}') AS period,
+            COUNT(o.id) AS total_organizations,
+            COUNT(CASE WHEN o.is_collaborator = TRUE THEN 1 END) AS total_collaborators
         FROM organizations o
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql}
         GROUP BY 1
         ORDER BY 1 ASC;
     """
-    cursor.execute(trend_query, params)
-    activity_trend = cursor.fetchall()
+    cursor.execute(growth_query, params)
+    growth_trend = cursor.fetchall() or []
 
-    # Organizations by Type
-    type_query = f"""
-        SELECT o.org_type AS type, COUNT(o.id) AS count
-        FROM organizations o
-        {where_sql}
-        GROUP BY o.org_type;
-    """
-    cursor.execute(type_query, params)
-    by_type = cursor.fetchall()
-
-    # Organizations by Size
-    size_query = f"""
-        SELECT o.org_size AS size, COUNT(o.id) AS count
-        FROM organizations o
-        {where_sql}
-        GROUP BY o.org_size;
-    """
-    cursor.execute(size_query, params)
-    by_size = cursor.fetchall()
-
-    # Organizations by Location
+    # 3. Organizations by Location (with percentage calculation)
     location_query = f"""
+        WITH total_count AS (
+            SELECT COUNT(o.id) AS grand_total 
+            FROM organizations o 
+            LEFT JOIN states s ON o.state_id = s.id 
+            {where_sql}
+        )
         SELECT 
-            s.state_name AS state,
-            o.city_name AS city,
-            COUNT(o.id) AS count
+            COALESCE(s.id, 'UNKNOWN') AS state_id,
+            COALESCE(s.state_name, 'Unknown') AS state_name,
+            COUNT(o.id) AS organization_count,
+            ROUND(
+                (COUNT(o.id)::numeric / NULLIF((SELECT grand_total FROM total_count), 0)) * 100, 1
+            ) AS percentage
         FROM organizations o
-        LEFT JOIN state s ON o.state_id = s.id
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql}
-        GROUP BY s.state_name, o.city_name;
+        GROUP BY s.id, s.state_name
+        ORDER BY organization_count DESC;
     """
     cursor.execute(location_query, params)
-    by_location = cursor.fetchall()
+    locations = cursor.fetchall() or []
+    for loc in locations:
+        if loc.get("percentage") is not None:
+            loc["percentage"] = float(loc["percentage"])
 
-    # Collaborator Distribution
-    collab_query = f"""
+    # 4. Organizations by Size
+    size_query = f"""
         SELECT 
-            CASE WHEN o.is_collaborator = TRUE THEN 'collaborator' ELSE 'non_collaborator' END AS status,
-            COUNT(o.id) AS count
+            LOWER(COALESCE(o.org_size, 'unknown')) AS org_size,
+            COUNT(o.id) AS organization_count
         FROM organizations o
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql}
-        GROUP BY 1;
+        GROUP BY 1
+        ORDER BY organization_count DESC;
     """
-    cursor.execute(collab_query, params)
-    collab_dist = cursor.fetchall()
+    cursor.execute(size_query, params)
+    by_size = cursor.fetchall() or []
 
-    # Contributor Distribution
-    contrib_query = f"""
+    # 5. Collaborator vs Contributor
+    collab_contrib_query = f"""
+        WITH total_count AS (
+            SELECT COUNT(o.id) AS grand_total 
+            FROM organizations o 
+            LEFT JOIN states s ON o.state_id = s.id 
+            {where_sql}
+        )
         SELECT 
-            CASE WHEN o.is_contributor = TRUE THEN 'contributor' ELSE 'non_contributor' END AS status,
-            COUNT(o.id) AS count
+            'collaborator' AS type,
+            COUNT(CASE WHEN o.is_collaborator = TRUE THEN 1 END) AS organization_count,
+            ROUND(
+                (COUNT(CASE WHEN o.is_collaborator = TRUE THEN 1 END)::numeric / NULLIF((SELECT grand_total FROM total_count), 0)) * 100, 1
+            ) AS percentage
         FROM organizations o
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql}
-        GROUP BY 1;
-    """
-    cursor.execute(contrib_query, params)
-    contrib_dist = cursor.fetchall()
-
-    return {
-        "organization_overview": {
-            "summary": summary,
-            "organization_activity_trend": activity_trend,
-            "organizations_by_type": by_type,
-            "organizations_by_size": by_size,
-            "organizations_by_location": by_location,
-            "collaborator_distribution": collab_dist,
-            "contributor_distribution": contrib_dist,
-        }
-    }
-
-
-def fetch_performance_dashboard(cursor, where_sql, params):
-    """Generate Performance Dashboard Metrics."""
-    # Summary Query
-    summary_query = f"""
+        UNION ALL
         SELECT 
-            ROUND(AVG(o.rating)::numeric, 2) AS average_rating,
-            COUNT(CASE WHEN o.rating IS NOT NULL THEN 1 END) AS rated_organizations,
-            COUNT(CASE WHEN o.rating IS NULL THEN 1 END) AS unrated_organizations,
-            COUNT(CASE WHEN o.rating = 5 THEN 1 END) AS five_star_organizations
+            'contributor' AS type,
+            COUNT(CASE WHEN o.is_contributor = TRUE THEN 1 END) AS organization_count,
+            ROUND(
+                (COUNT(CASE WHEN o.is_contributor = TRUE THEN 1 END)::numeric / NULLIF((SELECT grand_total FROM total_count), 0)) * 100, 1
+            ) AS percentage
         FROM organizations o
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql};
     """
-    cursor.execute(summary_query, params)
-    summary = cursor.fetchone() or {}
+    cursor.execute(collab_contrib_query, params)
+    collab_vs_contrib = cursor.fetchall() or []
+    for item in collab_vs_contrib:
+        if item.get("percentage") is not None:
+            item["percentage"] = float(item["percentage"])
 
-    # Rating Distribution (1 to 5)
+    # 6. Rating Distribution (1 to 5 Stars, ignoring NULLs)
     rating_query = f"""
-        SELECT o.rating, COUNT(o.id) AS count
+        SELECT 
+            o.rating,
+            COUNT(o.id) AS organization_count
         FROM organizations o
+        LEFT JOIN states s ON o.state_id = s.id
         {where_sql} AND o.rating IS NOT NULL
         GROUP BY o.rating
-        ORDER BY o.rating DESC;
+        ORDER BY o.rating ASC;
     """
     cursor.execute(rating_query, params)
-    rating_dist = cursor.fetchall()
+    rating_dist = cursor.fetchall() or []
 
-    # Top-Rated Organizations
-    top_rated_query = f"""
-        SELECT o.id, o.name, o.rating, o.org_type, o.org_size
+    # 7. For-Profit vs Non-Profit Distribution (Stacked Bar Chart over time)
+    type_dist_query = f"""
+        SELECT 
+            TO_CHAR(DATE_TRUNC('{trunc_unit}', o.created_at), '{date_format}') AS period,
+            COUNT(CASE WHEN LOWER(o.org_type) IN ('for_profit', 'for-profit') THEN 1 END) AS for_profit,
+            COUNT(CASE WHEN LOWER(o.org_type) IN ('non_profit', 'non-profit') THEN 1 END) AS non_profit,
+            COUNT(o.id) AS total
         FROM organizations o
-        {where_sql} AND o.rating IS NOT NULL
-        ORDER BY o.rating DESC
-        LIMIT 10;
+        LEFT JOIN states s ON o.state_id = s.id
+        {where_sql}
+        GROUP BY 1
+        ORDER BY 1 ASC;
     """
-    cursor.execute(top_rated_query, params)
-    top_rated = cursor.fetchall()
-
-    # Top Collaborators
-    top_collab_query = f"""
-        SELECT o.id, o.name, o.rating, o.org_type
-        FROM organizations o
-        {where_sql} AND o.is_collaborator = TRUE
-        ORDER BY o.rating DESC NULLS LAST
-        LIMIT 10;
-    """
-    cursor.execute(top_collab_query, params)
-    top_collab = cursor.fetchall()
-
-    # Top Contributors
-    top_contrib_query = f"""
-        SELECT o.id, o.name, o.rating, o.org_type
-        FROM organizations o
-        {where_sql} AND o.is_contributor = TRUE
-        ORDER BY o.rating DESC NULLS LAST
-        LIMIT 10;
-    """
-    cursor.execute(top_contrib_query, params)
-    top_contrib = cursor.fetchall()
-
-    # Ratings by Organization Type
-    type_rating_query = f"""
-        SELECT o.org_type AS type, ROUND(AVG(o.rating)::numeric, 2) AS average_rating, COUNT(o.id) AS count
-        FROM organizations o
-        {where_sql} AND o.rating IS NOT NULL
-        GROUP BY o.org_type;
-    """
-    cursor.execute(type_rating_query, params)
-    type_ratings = cursor.fetchall()
-
-    # Ratings by Organization Size
-    size_rating_query = f"""
-        SELECT o.org_size AS size, ROUND(AVG(o.rating)::numeric, 2) AS average_rating, COUNT(o.id) AS count
-        FROM organizations o
-        {where_sql} AND o.rating IS NOT NULL
-        GROUP BY o.org_size;
-    """
-    cursor.execute(size_rating_query, params)
-    size_ratings = cursor.fetchall()
+    cursor.execute(type_dist_query, params)
+    type_distribution = cursor.fetchall() or []
 
     return {
-        "organization_performance": {
-            "summary": summary,
-            "rating_distribution": rating_dist,
-            "top_rated_organizations": top_rated,
-            "top_collaborator_organizations": top_collab,
-            "top_contributor_organizations": top_contrib,
-            "ratings_by_organization_type": type_ratings,
-            "ratings_by_organization_size": size_ratings,
-        }
+        "summary": summary,
+        "growth_trend": growth_trend,
+        "organizations_by_location": locations,
+        "organizations_by_size": by_size,
+        "collaborator_vs_contributor": collab_vs_contrib,
+        "rating_distribution": rating_dist,
+        "organization_type_distribution": type_distribution,
     }
 
 
@@ -298,32 +249,16 @@ def lambda_handler(event, context):
         else:
             payload = event
 
-        dashboard_type = payload.get("dashboard_type", "overview").lower()
-        group_by = payload.get("group_by", "daily").lower()
+        group_by = payload.get("group_by", "daily")
 
         where_sql, params = build_where_clause(payload)
 
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-        if dashboard_type == "overview":
-            response_data = fetch_overview_dashboard(
-                cursor, where_sql, params, group_by
-            )
-        elif dashboard_type == "performance":
-            response_data = fetch_performance_dashboard(
-                cursor, where_sql, params
-            )
-        else:
-            return {
-                "statusCode": 400,
-                "body": json.dumps(
-                    {
-                        "error_code": "DE 1002",
-                        "message": "Invalid dashboard_type provided. Must be 'overview' or 'performance'.",
-                    }
-                ),
-            }
+        response_data = fetch_organization_analytics(
+            cursor, where_sql, params, group_by
+        )
 
         cursor.close()
         conn.close()

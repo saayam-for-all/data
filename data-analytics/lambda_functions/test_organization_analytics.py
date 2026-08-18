@@ -8,93 +8,134 @@ from organization_analytics import lambda_handler
 class TestOrganizationAnalytics(unittest.TestCase):
 
     @patch("organization_analytics.get_db_connection")
-    def test_overview_dashboard_success(self, mock_get_db):
-        """Test overview dashboard returns correct structured data."""
+    def test_organization_analytics_success(self, mock_get_db):
+        """Test single response payload containing all 7 dashboard components."""
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
         mock_get_db.return_value = mock_conn
         mock_conn.cursor.return_value = mock_cursor
 
-        # Mock database fetch responses for overview queries
+        # Mock query return values in exact sequence of execution inside fetch_organization_analytics
         mock_cursor.fetchone.side_effect = [
+            # 1. Summary KPIs
             {
-                "total_organizations": 120,
-                "non_profit_organizations": 85,
-                "for_profit_organizations": 35,
-                "collaborator_organizations": 42,
-                "non_collaborator_organizations": 78,
-                "contributor_organizations": 65,
-                "non_contributor_organizations": 55,
+                "total_organizations": 126,
+                "total_collaborators": 42,
+                "total_contributors": 84,
+                "average_org_rating": 4.2,
             }
         ]
+
         mock_cursor.fetchall.side_effect = [
-            [{"period": "2026-07-01", "count": 10}],  # Trend
-            [{"type": "Non-profit", "count": 85}],  # Types
-            [{"size": "Medium", "count": 50}],  # Sizes
+            # 2. Growth Trend
             [
-                {"state": "California", "city": "Los Angeles", "count": 20}
-            ],  # Locations
-            [{"status": "collaborator", "count": 42}],  # Collab dist
-            [{"status": "contributor", "count": 65}],  # Contrib dist
+                {
+                    "period": "2026-01",
+                    "total_organizations": 100,
+                    "total_collaborators": 34,
+                }
+            ],
+            # 3. Location Breakdown
+            [
+                {
+                    "state_id": "CA",
+                    "state_name": "California",
+                    "organization_count": 32,
+                    "percentage": 25.4,
+                }
+            ],
+            # 4. Size Breakdown
+            [{"org_size": "small", "organization_count": 50}],
+            # 5. Collaborator vs Contributor
+            [
+                {
+                    "type": "collaborator",
+                    "organization_count": 42,
+                    "percentage": 33.3,
+                },
+                {
+                    "type": "contributor",
+                    "organization_count": 84,
+                    "percentage": 66.7,
+                },
+            ],
+            # 6. Rating Distribution
+            [{"rating": 1, "organization_count": 1}],
+            # 7. Type Distribution Over Time
+            [
+                {
+                    "period": "2026-01",
+                    "for_profit": 41,
+                    "non_profit": 68,
+                    "total": 109,
+                }
+            ],
         ]
 
-        event = {"dashboard_type": "overview", "time_filter": "30D"}
+        event = {
+            "time_filter": "30D",
+            "group_by": "daily",
+            "region": "ALL",
+            "organization_type": "ALL",
+        }
+
         response = lambda_handler(event, None)
 
         self.assertEqual(response["statusCode"], 200)
         body = json.loads(response["body"])
-        self.assertIn("organization_overview", body)
-        self.assertEqual(
-            body["organization_overview"]["summary"]["total_organizations"], 120
-        )
+
+        # Validate presence of top-level response keys
+        self.assertIn("summary", body)
+        self.assertIn("growth_trend", body)
+        self.assertIn("organizations_by_location", body)
+        self.assertIn("organizations_by_size", body)
+        self.assertIn("collaborator_vs_contributor", body)
+        self.assertIn("rating_distribution", body)
+        self.assertIn("organization_type_distribution", body)
+
+        # Validate summary data values
+        self.assertEqual(body["summary"]["total_organizations"], 126)
+        self.assertEqual(body["summary"]["average_org_rating"], 4.2)
 
     @patch("organization_analytics.get_db_connection")
-    def test_performance_dashboard_success(self, mock_get_db):
-        """Test performance dashboard returns correct structured data."""
+    def test_custom_date_range_and_filters(self, mock_get_db):
+        """Test API behavior with CUSTOM date range, region, and org type filters."""
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
         mock_get_db.return_value = mock_conn
         mock_conn.cursor.return_value = mock_cursor
 
-        mock_cursor.fetchone.side_effect = [
-            {
-                "average_rating": 4.2,
-                "rated_organizations": 95,
-                "unrated_organizations": 25,
-                "five_star_organizations": 35,
-            }
-        ]
-        mock_cursor.fetchall.side_effect = [
-            [{"rating": 5, "count": 35}],  # Rating dist
-            [{"id": 1, "name": "Org A", "rating": 5.0}],  # Top rated
-            [{"id": 2, "name": "Collab B", "rating": 4.8}],  # Top collab
-            [{"id": 3, "name": "Contrib C", "rating": 4.9}],  # Top contrib
-            [{"type": "Non-profit", "average_rating": 4.5}],  # Type ratings
-            [{"size": "Large", "average_rating": 4.6}],  # Size ratings
-        ]
+        mock_cursor.fetchone.return_value = {
+            "total_organizations": 10,
+            "total_collaborators": 5,
+            "total_contributors": 5,
+            "average_org_rating": 4.5,
+        }
+        mock_cursor.fetchall.return_value = []
 
-        event = {"dashboard_type": "performance", "time_filter": "1Y"}
+        event = {
+            "time_filter": "CUSTOM",
+            "start_date": "2026-01-01",
+            "end_date": "2026-06-30",
+            "group_by": "monthly",
+            "region": "California",
+            "organization_type": "non_profit",
+        }
+
         response = lambda_handler(event, None)
-
         self.assertEqual(response["statusCode"], 200)
-        body = json.loads(response["body"])
-        self.assertIn("organization_performance", body)
-        self.assertEqual(
-            body["organization_performance"]["summary"]["average_rating"], 4.2
-        )
 
     @patch("organization_analytics.get_db_connection")
-    def test_invalid_dashboard_type(self, mock_get_db):
-        """Test invalid dashboard type returns DE 1002 error."""
-        mock_conn = MagicMock()
-        mock_get_db.return_value = mock_conn
+    def test_database_exception_handling(self, mock_get_db):
+        """Test database exception triggers DE 1001 failure."""
+        mock_get_db.side_effect = Exception("Database error")
 
-        event = {"dashboard_type": "invalid_type"}
+        event = {"time_filter": "30D"}
         response = lambda_handler(event, None)
 
-        self.assertEqual(response["statusCode"], 400)
+        self.assertEqual(response["statusCode"], 500)
         body = json.loads(response["body"])
-        self.assertEqual(body["error_code"], "DE 1002")
+        self.assertEqual(body["error_code"], "DE 1000")
 
 
 if __name__ == "__main__":
