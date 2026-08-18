@@ -1,11 +1,13 @@
-from fastapi import FastAPI, Depends, HTTPException, Security
+from fastapi import FastAPI, Depends, HTTPException, Security, Query
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 import psycopg2
 import os
 import jwt
-from typing import List
+from typing import List, Optional
 from dotenv import load_dotenv
+
+from src.utils.time_filters import resolve_date_range, date_range_clause, trend_bucket
 
 # Load environment variables
 load_dotenv()
@@ -39,6 +41,19 @@ def get_db_connection():
     except Exception as e:
         print(f"❌ DB connection failed: {e}")
         return None
+
+# Schema for the organizations table (env-configurable, no Parameter Store paths)
+ORG_SCHEMA = os.getenv("ORG_ANALYTICS_SCHEMA", "virginia_dev_saayam_rdbms")
+ORG_TABLE = f"{ORG_SCHEMA}.organizations"
+
+# NOTE: org_size, rating, and registered_at are not confirmed against the live
+# `organizations` table — no DDL/migration for it exists in this repo. They're
+# assumed here based on the dashboard requirements in issue #228. Verify these
+# column names against the real table (e.g. via information_schema.columns)
+# and adjust below before this ships.
+ORG_SIZE_COLUMN = "org_size"
+ORG_RATING_COLUMN = "rating"
+ORG_REGISTERED_AT_COLUMN = "registered_at"
 
 # JWT token generation
 def create_jwt_token(data: dict):
@@ -89,6 +104,42 @@ class CountryUsers(BaseModel):
 
 class EmergencyContactCoverage(BaseModel):
     users_with_emergency_contacts: int
+
+# ---- Organization dashboards ----
+class OrganizationSummary(BaseModel):
+    total_organizations: int
+    total_collaborators: int
+    total_contributors: int
+
+class OrganizationTypeCount(BaseModel):
+    org_type: Optional[str]
+    total_organizations: int
+
+class OrganizationSizeCount(BaseModel):
+    org_size: Optional[str]
+    total_organizations: int
+
+class OrganizationGeoDistribution(BaseModel):
+    city: Optional[str]
+    total_organizations: int
+
+class OrganizationRegistrationTrend(BaseModel):
+    period: str
+    total_organizations: int
+
+class OrganizationPerformanceSummary(BaseModel):
+    average_rating: Optional[float]
+    total_rated_organizations: int
+
+class TopRatedOrganization(BaseModel):
+    org_name: str
+    org_type: Optional[str]
+    rating: float
+
+class OrganizationRatingByCategory(BaseModel):
+    category: Optional[str]
+    average_rating: Optional[float]
+    total_organizations: int
 
 # ========================= Authentication Endpoint =========================
 @app.post("/token")
@@ -241,6 +292,338 @@ def get_emergency_contacts():
         """)
         result = cur.fetchone()
         return {"users_with_emergency_contacts": result[0] if result else 0}
+    finally:
+        cur.close()
+        conn.close()
+
+# ========================= Organization Analytics (Protected) =========================
+
+def _common_org_filters(org_type: Optional[str], is_collaborator: Optional[bool], params: list) -> str:
+    """Builds optional org_type / is_collaborator filter clauses, appending bind params."""
+    clause = ""
+    if org_type is not None:
+        clause += " AND org_type = %s"
+        params.append(org_type)
+    if is_collaborator is not None:
+        clause += " AND is_collaborator = %s"
+        params.append(is_collaborator)
+    return clause
+
+
+def _time_filter_params(
+    time_filter: str,
+    start_date: Optional[str],
+    end_date: Optional[str],
+    date_column: str,
+    params: list,
+) -> str:
+    start, end = resolve_date_range(time_filter, start_date, end_date)
+    return date_range_clause(date_column, start, end, params)
+
+
+# ---- Organization Overview Dashboard ----
+
+@app.get(
+    "/analytics/organizations/overview/summary",
+    response_model=OrganizationSummary,
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_overview_summary(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    org_type: Optional[str] = Query(None),
+    is_collaborator: Optional[bool] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(org_type, is_collaborator, params)
+        cur.execute(
+            f"""
+            SELECT
+                COUNT(*) AS total_organizations,
+                COUNT(*) FILTER (WHERE is_collaborator IS TRUE) AS total_collaborators,
+                COUNT(*) FILTER (WHERE is_collaborator IS NOT TRUE) AS total_contributors
+            FROM {ORG_TABLE}
+            WHERE TRUE {where};
+            """,
+            params,
+        )
+        row = cur.fetchone()
+        return {
+            "total_organizations": row[0] or 0,
+            "total_collaborators": row[1] or 0,
+            "total_contributors": row[2] or 0,
+        }
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.get(
+    "/analytics/organizations/overview/types",
+    response_model=List[OrganizationTypeCount],
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_types(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    is_collaborator: Optional[bool] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(None, is_collaborator, params)
+        cur.execute(
+            f"""
+            SELECT org_type, COUNT(*) AS total_organizations
+            FROM {ORG_TABLE}
+            WHERE TRUE {where}
+            GROUP BY org_type
+            ORDER BY total_organizations DESC;
+            """,
+            params,
+        )
+        result = cur.fetchall()
+        return [{"org_type": row[0], "total_organizations": row[1]} for row in result]
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.get(
+    "/analytics/organizations/overview/sizes",
+    response_model=List[OrganizationSizeCount],
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_sizes(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    org_type: Optional[str] = Query(None),
+    is_collaborator: Optional[bool] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(org_type, is_collaborator, params)
+        cur.execute(
+            f"""
+            SELECT {ORG_SIZE_COLUMN}, COUNT(*) AS total_organizations
+            FROM {ORG_TABLE}
+            WHERE TRUE {where}
+            GROUP BY {ORG_SIZE_COLUMN}
+            ORDER BY total_organizations DESC;
+            """,
+            params,
+        )
+        result = cur.fetchall()
+        return [{"org_size": row[0], "total_organizations": row[1]} for row in result]
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.get(
+    "/analytics/organizations/overview/geographic",
+    response_model=List[OrganizationGeoDistribution],
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_geographic_distribution(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    org_type: Optional[str] = Query(None),
+    is_collaborator: Optional[bool] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(org_type, is_collaborator, params)
+        cur.execute(
+            f"""
+            SELECT city_name, COUNT(*) AS total_organizations
+            FROM {ORG_TABLE}
+            WHERE TRUE {where}
+            GROUP BY city_name
+            ORDER BY total_organizations DESC;
+            """,
+            params,
+        )
+        result = cur.fetchall()
+        return [{"city": row[0], "total_organizations": row[1]} for row in result]
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.get(
+    "/analytics/organizations/overview/registration_trends",
+    response_model=List[OrganizationRegistrationTrend],
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_registration_trends(
+    time_filter: str = Query("30D"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    org_type: Optional[str] = Query(None),
+    is_collaborator: Optional[bool] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(org_type, is_collaborator, params)
+        bucket = trend_bucket(time_filter)
+        cur.execute(
+            f"""
+            SELECT date_trunc(%s, {ORG_REGISTERED_AT_COLUMN}) AS period, COUNT(*) AS total_organizations
+            FROM {ORG_TABLE}
+            WHERE TRUE {where}
+            GROUP BY period
+            ORDER BY period;
+            """,
+            [bucket] + params,
+        )
+        result = cur.fetchall()
+        return [{"period": row[0].isoformat(), "total_organizations": row[1]} for row in result]
+    finally:
+        cur.close()
+        conn.close()
+
+
+# ---- Organization Performance Dashboard ----
+
+@app.get(
+    "/analytics/organizations/performance/summary",
+    response_model=OrganizationPerformanceSummary,
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_performance_summary(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    org_type: Optional[str] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(org_type, None, params)
+        cur.execute(
+            f"""
+            SELECT AVG({ORG_RATING_COLUMN}), COUNT(*) FILTER (WHERE {ORG_RATING_COLUMN} IS NOT NULL)
+            FROM {ORG_TABLE}
+            WHERE TRUE {where};
+            """,
+            params,
+        )
+        row = cur.fetchone()
+        return {
+            "average_rating": float(row[0]) if row[0] is not None else None,
+            "total_rated_organizations": row[1] or 0,
+        }
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.get(
+    "/analytics/organizations/performance/top_rated",
+    response_model=List[TopRatedOrganization],
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_top_rated_organizations(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    org_type: Optional[str] = Query(None),
+    limit: int = Query(10, ge=1, le=100),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(org_type, None, params)
+        params.append(limit)
+        cur.execute(
+            f"""
+            SELECT org_name, org_type, {ORG_RATING_COLUMN}
+            FROM {ORG_TABLE}
+            WHERE {ORG_RATING_COLUMN} IS NOT NULL {where}
+            ORDER BY {ORG_RATING_COLUMN} DESC
+            LIMIT %s;
+            """,
+            params,
+        )
+        result = cur.fetchall()
+        return [{"org_name": row[0], "org_type": row[1], "rating": float(row[2])} for row in result]
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.get(
+    "/analytics/organizations/performance/ratings_by_category",
+    response_model=List[OrganizationRatingByCategory],
+    dependencies=[Depends(check_user_role("admin"))],
+)
+def get_organization_ratings_by_category(
+    time_filter: str = Query("ALL"),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    is_collaborator: Optional[bool] = Query(None),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="DB connection failed")
+    try:
+        cur = conn.cursor()
+        params: list = []
+        where = _time_filter_params(time_filter, start_date, end_date, ORG_REGISTERED_AT_COLUMN, params)
+        where += _common_org_filters(None, is_collaborator, params)
+        cur.execute(
+            f"""
+            SELECT mission, AVG({ORG_RATING_COLUMN}), COUNT(*)
+            FROM {ORG_TABLE}
+            WHERE TRUE {where}
+            GROUP BY mission
+            ORDER BY AVG({ORG_RATING_COLUMN}) DESC NULLS LAST;
+            """,
+            params,
+        )
+        result = cur.fetchall()
+        return [
+            {"category": row[0], "average_rating": float(row[1]) if row[1] is not None else None, "total_organizations": row[2]}
+            for row in result
+        ]
     finally:
         cur.close()
         conn.close()
