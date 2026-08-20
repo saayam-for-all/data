@@ -1,0 +1,830 @@
+===============================================================================
+ Steward Dashboard -- Review Volunteers API : local test evidence
+ Ticket #273  |  branch KTB2110_273_steward_dashboard
+
+ Fixture: sql/steward_volunteer_review_local_setup.sql seeded into local Postgres
+          100 volunteer applications, 80 in SUBMITTED/UNDER_REVIEW
+ Generated: 2026-08-20 15:31:54 EDT
+===============================================================================
+
+############ 1. MOCKED UNIT TESTS (no database) ############
+
+test_connection_failure_returns_500_with_safe_shape (test_steward_volunteer_review_api_unit.TestDatabaseErrors.test_connection_failure_returns_500_with_safe_shape) ... ok
+test_connection_is_closed_even_when_the_query_fails (test_steward_volunteer_review_api_unit.TestDatabaseErrors.test_connection_is_closed_even_when_the_query_fails) ... ok
+test_error_body_leaks_no_internals (test_steward_volunteer_review_api_unit.TestDatabaseErrors.test_error_body_leaks_no_internals) ... ok
+test_query_failure_returns_500_with_safe_shape (test_steward_volunteer_review_api_unit.TestDatabaseErrors.test_query_failure_returns_500_with_safe_shape) ... ok
+test_no_matching_records_returns_200_and_empty_list (test_steward_volunteer_review_api_unit.TestEmptyResults.test_no_matching_records_returns_200_and_empty_list) ... ok
+test_page_past_the_end_returns_200_and_empty_list (test_steward_volunteer_review_api_unit.TestEmptyResults.test_page_past_the_end_returns_200_and_empty_list) ... ok
+test_api_gateway_json_string_body (test_steward_volunteer_review_api_unit.TestEventParsing.test_api_gateway_json_string_body) ... ok
+test_direct_invoke_dict_event (test_steward_volunteer_review_api_unit.TestEventParsing.test_direct_invoke_dict_event) ... ok
+test_malformed_json_body_falls_back_to_defaults (test_steward_volunteer_review_api_unit.TestEventParsing.test_malformed_json_body_falls_back_to_defaults) ... ok
+test_defaults_when_absent (test_steward_volunteer_review_api_unit.TestNormalizePagination.test_defaults_when_absent) ... ok
+test_explicit_values_pass_through (test_steward_volunteer_review_api_unit.TestNormalizePagination.test_explicit_values_pass_through) ... ok
+test_garbage_falls_back_to_defaults (test_steward_volunteer_review_api_unit.TestNormalizePagination.test_garbage_falls_back_to_defaults) ... ok
+test_numeric_strings_are_coerced (test_steward_volunteer_review_api_unit.TestNormalizePagination.test_numeric_strings_are_coerced) ... ok
+test_page_size_capped_at_max (test_steward_volunteer_review_api_unit.TestNormalizePagination.test_page_size_capped_at_max) ... ok
+test_zero_and_negative_clamp_to_defaults (test_steward_volunteer_review_api_unit.TestNormalizePagination.test_zero_and_negative_clamp_to_defaults) ... ok
+test_first_page_offset_is_zero (test_steward_volunteer_review_api_unit.TestPaginationMath.test_first_page_offset_is_zero) ... ok
+test_offset_is_computed_from_page (test_steward_volunteer_review_api_unit.TestPaginationMath.test_offset_is_computed_from_page) ... ok
+test_requested_page_is_echoed_back (test_steward_volunteer_review_api_unit.TestPaginationMath.test_requested_page_is_echoed_back) ... ok
+test_total_pages_exact_multiple (test_steward_volunteer_review_api_unit.TestPaginationMath.test_total_pages_exact_multiple) ... ok
+test_total_pages_rounds_up_on_partial_final_page (test_steward_volunteer_review_api_unit.TestPaginationMath.test_total_pages_rounds_up_on_partial_final_page) ... ok
+test_body_is_a_json_string_not_a_dict (test_steward_volunteer_review_api_unit.TestResponseShape.test_body_is_a_json_string_not_a_dict) ... ok
+test_every_row_carries_the_review_action (test_steward_volunteer_review_api_unit.TestResponseShape.test_every_row_carries_the_review_action) ... ok
+test_internal_columns_are_not_leaked (test_steward_volunteer_review_api_unit.TestResponseShape.test_internal_columns_are_not_leaked) ... ok
+test_standard_payload_returns_expected_shape (test_steward_volunteer_review_api_unit.TestResponseShape.test_standard_payload_returns_expected_shape) ... ok
+test_enum_status_column_is_cast_to_text (test_steward_volunteer_review_api_unit.TestSqlContract.test_enum_status_column_is_cast_to_text) ... ok
+test_filters_to_review_statuses_via_parameter (test_steward_volunteer_review_api_unit.TestSqlContract.test_filters_to_review_statuses_via_parameter) ... ok
+test_joins_users_to_the_volunteer_source (test_steward_volunteer_review_api_unit.TestSqlContract.test_joins_users_to_the_volunteer_source) ... ok
+test_order_by_has_a_unique_tiebreaker (test_steward_volunteer_review_api_unit.TestSqlContract.test_order_by_has_a_unique_tiebreaker) ... ok
+test_pagination_values_are_parameterized (test_steward_volunteer_review_api_unit.TestSqlContract.test_pagination_values_are_parameterized) ... ok
+test_sorted_by_updated_time_descending (test_steward_volunteer_review_api_unit.TestSqlContract.test_sorted_by_updated_time_descending) ... ok
+test_sql_injection_attempt_never_reaches_the_query (test_steward_volunteer_review_api_unit.TestSqlContract.test_sql_injection_attempt_never_reaches_the_query) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.029s
+
+OK
+ERROR: could not connect to server
+Database connected successfully.
+ERROR: boom
+ERROR: FATAL: password authentication failed for user 'postgres' at 10.0.0.7
+Database connected successfully.
+ERROR: relation "volunteers" does not exist
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+Database connected successfully.
+
+
+############ 2. LIVE DATABASE RUN ############
+
+
+=== Ticket sample payload ===
+Request: {"page": 1, "page_size": 5}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-159",
+      "updated_time": "2026-04-23T02:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-158",
+      "updated_time": "2026-04-19T22:17:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-160",
+      "updated_time": "2026-04-18T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-155",
+      "updated_time": "2026-04-17T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-153",
+      "updated_time": "2026-04-16T19:32:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "page_size": 5,
+    "total_records": 80,
+    "total_pages": 16
+  }
+}
+
+=== Empty payload falls back to defaults ===
+Request: {}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-159",
+      "updated_time": "2026-04-23T02:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-158",
+      "updated_time": "2026-04-19T22:17:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-160",
+      "updated_time": "2026-04-18T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-155",
+      "updated_time": "2026-04-17T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-153",
+      "updated_time": "2026-04-16T19:32:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "page_size": 5,
+    "total_records": 80,
+    "total_pages": 16
+  }
+}
+
+=== Second page (must not overlap page 1) ===
+Request: {"page": 2, "page_size": 5}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-156",
+      "updated_time": "2026-04-12T23:35:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-151",
+      "updated_time": "2026-04-10T23:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-157",
+      "updated_time": "2026-04-08T21:44:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-150",
+      "updated_time": "2026-04-08T21:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-152",
+      "updated_time": "2026-04-08T05:54:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 2,
+    "page_size": 5,
+    "total_records": 80,
+    "total_pages": 16
+  }
+}
+
+=== Larger rows-per-page selection ===
+Request: {"page": 1, "page_size": 10}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-159",
+      "updated_time": "2026-04-23T02:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-158",
+      "updated_time": "2026-04-19T22:17:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-160",
+      "updated_time": "2026-04-18T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-155",
+      "updated_time": "2026-04-17T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-153",
+      "updated_time": "2026-04-16T19:32:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-156",
+      "updated_time": "2026-04-12T23:35:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-151",
+      "updated_time": "2026-04-10T23:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-157",
+      "updated_time": "2026-04-08T21:44:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-150",
+      "updated_time": "2026-04-08T21:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-152",
+      "updated_time": "2026-04-08T05:54:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "page_size": 10,
+    "total_records": 80,
+    "total_pages": 8
+  }
+}
+
+=== Final page (partial) ===
+Request: {"page": 16, "page_size": 5}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-081",
+      "updated_time": "2026-01-14T00:32:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-078",
+      "updated_time": "2026-01-10T21:54:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-080",
+      "updated_time": "2026-01-09T15:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-058",
+      "updated_time": "2026-01-07T15:14:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-061",
+      "updated_time": "2026-01-06T00:19:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 16,
+    "page_size": 5,
+    "total_records": 80,
+    "total_pages": 16
+  }
+}
+
+=== Page past the end -> empty array, still 200 ===
+Request: {"page": 999, "page_size": 5}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [],
+  "pagination": {
+    "current_page": 999,
+    "page_size": 5,
+    "total_records": 0,
+    "total_pages": 0
+  }
+}
+
+=== Invalid page clamps to 1 ===
+Request: {"page": 0, "page_size": 5}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-159",
+      "updated_time": "2026-04-23T02:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-158",
+      "updated_time": "2026-04-19T22:17:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-160",
+      "updated_time": "2026-04-18T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-155",
+      "updated_time": "2026-04-17T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-153",
+      "updated_time": "2026-04-16T19:32:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "page_size": 5,
+    "total_records": 80,
+    "total_pages": 16
+  }
+}
+
+=== Oversized page_size clamps to MAX_PAGE_SIZE ===
+Request: {"page": 1, "page_size": 9999}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-159",
+      "updated_time": "2026-04-23T02:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-158",
+      "updated_time": "2026-04-19T22:17:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-160",
+      "updated_time": "2026-04-18T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-155",
+      "updated_time": "2026-04-17T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-153",
+      "updated_time": "2026-04-16T19:32:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-156",
+      "updated_time": "2026-04-12T23:35:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-151",
+      "updated_time": "2026-04-10T23:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-157",
+      "updated_time": "2026-04-08T21:44:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-150",
+      "updated_time": "2026-04-08T21:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-152",
+      "updated_time": "2026-04-08T05:54:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-149",
+      "updated_time": "2026-04-05T01:55:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-143",
+      "updated_time": "2026-04-04T17:54:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-146",
+      "updated_time": "2026-04-02T18:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-144",
+      "updated_time": "2026-04-01T09:03:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-145",
+      "updated_time": "2026-04-01T00:53:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-148",
+      "updated_time": "2026-03-31T22:21:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-141",
+      "updated_time": "2026-03-31T20:42:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-140",
+      "updated_time": "2026-03-28T04:03:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-138",
+      "updated_time": "2026-03-27T03:28:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-139",
+      "updated_time": "2026-03-25T05:56:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-137",
+      "updated_time": "2026-03-24T20:37:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-132",
+      "updated_time": "2026-03-23T22:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-133",
+      "updated_time": "2026-03-23T21:58:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-131",
+      "updated_time": "2026-03-23T00:42:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-129",
+      "updated_time": "2026-03-20T23:52:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-127",
+      "updated_time": "2026-03-20T04:24:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-135",
+      "updated_time": "2026-03-19T22:15:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-124",
+      "updated_time": "2026-03-17T22:20:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-122",
+      "updated_time": "2026-03-15T18:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-125",
+      "updated_time": "2026-03-14T05:54:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-126",
+      "updated_time": "2026-03-14T02:22:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-130",
+      "updated_time": "2026-03-13T22:42:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-121",
+      "updated_time": "2026-03-12T23:12:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-120",
+      "updated_time": "2026-03-12T05:44:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-123",
+      "updated_time": "2026-03-10T20:53:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-119",
+      "updated_time": "2026-03-09T03:09:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-116",
+      "updated_time": "2026-03-09T02:35:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-118",
+      "updated_time": "2026-03-08T08:18:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-117",
+      "updated_time": "2026-03-07T02:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-111",
+      "updated_time": "2026-03-05T23:40:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-113",
+      "updated_time": "2026-03-04T04:08:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-428",
+      "updated_time": "2026-03-03T00:27:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-089",
+      "updated_time": "2026-02-28T14:34:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-110",
+      "updated_time": "2026-02-25T01:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-109",
+      "updated_time": "2026-02-21T12:49:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-107",
+      "updated_time": "2026-02-20T22:53:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-104",
+      "updated_time": "2026-02-20T11:40:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-108",
+      "updated_time": "2026-02-18T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-106",
+      "updated_time": "2026-02-18T01:06:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-391",
+      "updated_time": "2026-02-18T01:01:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-383",
+      "updated_time": "2026-02-15T18:41:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-348",
+      "updated_time": "2026-02-14T23:30:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-310",
+      "updated_time": "2026-02-14T06:01:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-340",
+      "updated_time": "2026-02-12T21:36:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-312",
+      "updated_time": "2026-02-12T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-364",
+      "updated_time": "2026-02-12T04:59:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-371",
+      "updated_time": "2026-02-10T16:00:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-333",
+      "updated_time": "2026-02-09T08:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-309",
+      "updated_time": "2026-02-06T00:35:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-098",
+      "updated_time": "2026-02-05T03:26:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-101",
+      "updated_time": "2026-02-01T17:06:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-095",
+      "updated_time": "2026-02-01T01:51:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-096",
+      "updated_time": "2026-01-30T23:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-300",
+      "updated_time": "2026-01-30T17:25:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-100",
+      "updated_time": "2026-01-27T14:13:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-086",
+      "updated_time": "2026-01-27T02:00:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-083",
+      "updated_time": "2026-01-24T21:36:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-082",
+      "updated_time": "2026-01-24T04:35:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-093",
+      "updated_time": "2026-01-22T16:38:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-079",
+      "updated_time": "2026-01-20T22:40:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-091",
+      "updated_time": "2026-01-20T21:51:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-092",
+      "updated_time": "2026-01-18T23:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-087",
+      "updated_time": "2026-01-16T20:08:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-088",
+      "updated_time": "2026-01-16T00:25:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-084",
+      "updated_time": "2026-01-16T00:01:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-081",
+      "updated_time": "2026-01-14T00:32:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-078",
+      "updated_time": "2026-01-10T21:54:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-080",
+      "updated_time": "2026-01-09T15:23:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-058",
+      "updated_time": "2026-01-07T15:14:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-061",
+      "updated_time": "2026-01-06T00:19:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "page_size": 100,
+    "total_records": 80,
+    "total_pages": 1
+  }
+}
+
+=== Injection attempt is neutralized ===
+Request: {"page": "1; DROP TABLE users;--", "page_size": 5}
+Database connected successfully.
+Database connection closed
+statusCode: 200
+{
+  "data": [
+    {
+      "user_id": "SID-00-000-000-159",
+      "updated_time": "2026-04-23T02:11:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-158",
+      "updated_time": "2026-04-19T22:17:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-160",
+      "updated_time": "2026-04-18T07:39:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-155",
+      "updated_time": "2026-04-17T06:05:00Z",
+      "volunteer_review": "Review"
+    },
+    {
+      "user_id": "SID-00-000-000-153",
+      "updated_time": "2026-04-16T19:32:00Z",
+      "volunteer_review": "Review"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "page_size": 5,
+    "total_records": 80,
+    "total_pages": 16
+  }
+}
+
+
+=== Cross-case verification ===
+page 1 sorted descending: True
+page 1 / page 2 overlap:  0 (expect 0 -- the ORDER BY tiebreaker)
+past-the-end is empty:    True
+review action labels:     {'Review'}
+total_records:            80 (expect 80)
+total_pages:              16 (expect 16)
