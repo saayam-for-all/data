@@ -217,7 +217,32 @@ def get_grouping(time_range):
 
     return period, date_string
 
-def build_date_filter(time_range, start_date=None, end_date=None):
+def build_date_filter_trend(time_range, start_date=None, end_date=None):
+    where_clause = ""
+    params = ()
+
+    if time_range == '7D':
+        where_clause = "AND vd.created_at >= CURRENT_DATE - INTERVAL '7 days'"
+    elif time_range == '30D':
+        where_clause = "AND vd.created_at >= CURRENT_DATE - INTERVAL '30 days'"
+    elif time_range == '1Y':
+        where_clause = "AND vd.created_at >= CURRENT_DATE - INTERVAL '1 year'"
+    elif time_range == 'All':
+        where_clause = ""
+    elif time_range == 'Custom':
+        if start_date and end_date:
+            where_clause = f"AND vd.created_at BETWEEN %s AND %s"
+            params = (start_date, end_date)
+        elif start_date:
+            where_clause = f"AND vd.created_at >= %s"
+            params = (start_date,)
+        elif end_date:
+            where_clause = f"AND vd.created_at <= %s"
+            params = (end_date,)
+
+    return where_clause, params
+
+def build_date_filter_location(time_range, start_date=None, end_date=None):
     where_clause = ""
     params = ()
 
@@ -246,7 +271,7 @@ def build_date_filter(time_range, start_date=None, end_date=None):
 
 def get_volunteer_activity_trend(cursor, users, volunteer_details, time_range='All', start_date=None, end_date=None):
     period, date_string = get_grouping(time_range)
-    date_where_clause, params = build_date_filter(time_range, start_date, end_date)
+    date_where_clause, params = build_date_filter_trend(time_range, start_date, end_date)
 
     try:
         query1 = f"""
@@ -369,7 +394,7 @@ def merge_volunteer_by_location(list1, list2):
 
 
 def get_volunteers_by_location(cursor, users, volunteer_details, country_table, user_skills,help_categories,country='All Countries',chart_type="Bar Chart",skill="All Skills", time_range='All', start_date=None, end_date=None):
-    date_where_clause, date_params = build_date_filter(time_range, start_date, end_date) # date_params is a tuple here
+    date_where_clause, date_params = build_date_filter_location(time_range, start_date, end_date) # date_params is a tuple here
     
     try: 
         query= f"""SELECT
@@ -458,7 +483,3 @@ def get_db_config(db):
 if __name__ == "__main__":
     test_event = {}
     print(lambda_handler(test_event, None))
-    
-
-
-  
