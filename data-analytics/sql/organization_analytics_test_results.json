@@ -1,0 +1,465 @@
+{
+  "Standard Test (30D, daily)": {
+    "request": {
+      "time_filter": "30D",
+      "start_date": null,
+      "end_date": null,
+      "group_by": "daily",
+      "region": "ALL",
+      "organization_type": "ALL"
+    },
+    "response": {
+      "summary": {
+        "total_organizations": 0,
+        "total_collaborators": 0,
+        "total_contributors": 0,
+        "average_org_rating": 0
+      },
+      "growth_trend": [],
+      "organizations_by_location": [],
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": [],
+      "rating_distribution": [],
+      "organization_type_distribution": []
+    }
+  },
+  "Last 12 Months (1Y, monthly)": {
+    "request": {
+      "time_filter": "1Y",
+      "start_date": null,
+      "end_date": null,
+      "group_by": "monthly",
+      "region": "ALL",
+      "organization_type": "ALL"
+    },
+    "response": {
+      "summary": {
+        "total_organizations": 11,
+        "total_collaborators": 5,
+        "total_contributors": 6,
+        "average_org_rating": 2.73
+      },
+      "growth_trend": [
+        {
+          "period": "2025-09",
+          "total_organizations": 3,
+          "total_collaborators": 2
+        },
+        {
+          "period": "2025-10",
+          "total_organizations": 4,
+          "total_collaborators": 3
+        },
+        {
+          "period": "2025-11",
+          "total_organizations": 7,
+          "total_collaborators": 4
+        },
+        {
+          "period": "2025-12",
+          "total_organizations": 10,
+          "total_collaborators": 5
+        },
+        {
+          "period": "2026-01",
+          "total_organizations": 11,
+          "total_collaborators": 5
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state_id": "TX",
+          "state_name": "Texas",
+          "organization_count": 3,
+          "percentage": 27.3
+        },
+        {
+          "state_id": "FL",
+          "state_name": "Florida",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "ME",
+          "state_name": "Maine",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "MI",
+          "state_name": "Michigan",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "MN",
+          "state_name": "Minnesota",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "MO",
+          "state_name": "Missouri",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "NC",
+          "state_name": "North Carolina",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "NE",
+          "state_name": "Nebraska",
+          "organization_count": 1,
+          "percentage": 9.1
+        },
+        {
+          "state_id": "OH",
+          "state_name": "Ohio",
+          "organization_count": 1,
+          "percentage": 9.1
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "Large",
+          "organization_count": 7
+        },
+        {
+          "org_size": "Medium",
+          "organization_count": 2
+        },
+        {
+          "org_size": "Small",
+          "organization_count": 2
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "collaborator",
+          "organization_count": 5,
+          "percentage": 45.5
+        },
+        {
+          "type": "contributor",
+          "organization_count": 6,
+          "percentage": 54.5
+        }
+      ],
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "organization_count": 3
+        },
+        {
+          "rating": 2,
+          "organization_count": 2
+        },
+        {
+          "rating": 3,
+          "organization_count": 3
+        },
+        {
+          "rating": 4,
+          "organization_count": 1
+        },
+        {
+          "rating": 5,
+          "organization_count": 2
+        }
+      ],
+      "organization_type_distribution": [
+        {
+          "period": "2025-09",
+          "for_profit": 1,
+          "non_profit": 2,
+          "total": 3
+        },
+        {
+          "period": "2025-10",
+          "for_profit": 0,
+          "non_profit": 1,
+          "total": 1
+        },
+        {
+          "period": "2025-11",
+          "for_profit": 1,
+          "non_profit": 2,
+          "total": 3
+        },
+        {
+          "period": "2025-12",
+          "for_profit": 1,
+          "non_profit": 2,
+          "total": 3
+        },
+        {
+          "period": "2026-01",
+          "for_profit": 0,
+          "non_profit": 1,
+          "total": 1
+        }
+      ]
+    }
+  },
+  "Filter by Region (California)": {
+    "request": {
+      "time_filter": "1Y",
+      "start_date": null,
+      "end_date": null,
+      "group_by": "monthly",
+      "region": "California",
+      "organization_type": "ALL"
+    },
+    "response": {
+      "summary": {
+        "total_organizations": 0,
+        "total_collaborators": 0,
+        "total_contributors": 0,
+        "average_org_rating": 0
+      },
+      "growth_trend": [],
+      "organizations_by_location": [],
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": [],
+      "rating_distribution": [],
+      "organization_type_distribution": []
+    }
+  },
+  "Filter by Org Type (non_profit)": {
+    "request": {
+      "time_filter": "1Y",
+      "start_date": null,
+      "end_date": null,
+      "group_by": "monthly",
+      "region": "ALL",
+      "organization_type": "non_profit"
+    },
+    "response": {
+      "summary": {
+        "total_organizations": 8,
+        "total_collaborators": 4,
+        "total_contributors": 4,
+        "average_org_rating": 3.0
+      },
+      "growth_trend": [
+        {
+          "period": "2025-09",
+          "total_organizations": 2,
+          "total_collaborators": 1
+        },
+        {
+          "period": "2025-10",
+          "total_organizations": 3,
+          "total_collaborators": 2
+        },
+        {
+          "period": "2025-11",
+          "total_organizations": 5,
+          "total_collaborators": 3
+        },
+        {
+          "period": "2025-12",
+          "total_organizations": 7,
+          "total_collaborators": 4
+        },
+        {
+          "period": "2026-01",
+          "total_organizations": 8,
+          "total_collaborators": 4
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state_id": "TX",
+          "state_name": "Texas",
+          "organization_count": 2,
+          "percentage": 25.0
+        },
+        {
+          "state_id": "FL",
+          "state_name": "Florida",
+          "organization_count": 1,
+          "percentage": 12.5
+        },
+        {
+          "state_id": "ME",
+          "state_name": "Maine",
+          "organization_count": 1,
+          "percentage": 12.5
+        },
+        {
+          "state_id": "MI",
+          "state_name": "Michigan",
+          "organization_count": 1,
+          "percentage": 12.5
+        },
+        {
+          "state_id": "MN",
+          "state_name": "Minnesota",
+          "organization_count": 1,
+          "percentage": 12.5
+        },
+        {
+          "state_id": "NC",
+          "state_name": "North Carolina",
+          "organization_count": 1,
+          "percentage": 12.5
+        },
+        {
+          "state_id": "NE",
+          "state_name": "Nebraska",
+          "organization_count": 1,
+          "percentage": 12.5
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "Large",
+          "organization_count": 6
+        },
+        {
+          "org_size": "Medium",
+          "organization_count": 1
+        },
+        {
+          "org_size": "Small",
+          "organization_count": 1
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "collaborator",
+          "organization_count": 4,
+          "percentage": 50.0
+        },
+        {
+          "type": "contributor",
+          "organization_count": 4,
+          "percentage": 50.0
+        }
+      ],
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "organization_count": 2
+        },
+        {
+          "rating": 2,
+          "organization_count": 1
+        },
+        {
+          "rating": 3,
+          "organization_count": 2
+        },
+        {
+          "rating": 4,
+          "organization_count": 1
+        },
+        {
+          "rating": 5,
+          "organization_count": 2
+        }
+      ],
+      "organization_type_distribution": [
+        {
+          "period": "2025-09",
+          "for_profit": 0,
+          "non_profit": 2,
+          "total": 2
+        },
+        {
+          "period": "2025-10",
+          "for_profit": 0,
+          "non_profit": 1,
+          "total": 1
+        },
+        {
+          "period": "2025-11",
+          "for_profit": 0,
+          "non_profit": 2,
+          "total": 2
+        },
+        {
+          "period": "2025-12",
+          "for_profit": 0,
+          "non_profit": 2,
+          "total": 2
+        },
+        {
+          "period": "2026-01",
+          "for_profit": 0,
+          "non_profit": 1,
+          "total": 1
+        }
+      ]
+    }
+  },
+  "Custom Date Range": {
+    "request": {
+      "time_filter": "CUSTOM",
+      "start_date": "2026-01-01",
+      "end_date": "2026-06-30",
+      "group_by": "monthly",
+      "region": "ALL",
+      "organization_type": "ALL"
+    },
+    "response": {
+      "summary": {
+        "total_organizations": 1,
+        "total_collaborators": 0,
+        "total_contributors": 1,
+        "average_org_rating": 1.0
+      },
+      "growth_trend": [
+        {
+          "period": "2026-01",
+          "total_organizations": 1,
+          "total_collaborators": 0
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state_id": "TX",
+          "state_name": "Texas",
+          "organization_count": 1,
+          "percentage": 100.0
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "org_size": "Medium",
+          "organization_count": 1
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "collaborator",
+          "organization_count": 0,
+          "percentage": 0.0
+        },
+        {
+          "type": "contributor",
+          "organization_count": 1,
+          "percentage": 100.0
+        }
+      ],
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "organization_count": 1
+        }
+      ],
+      "organization_type_distribution": [
+        {
+          "period": "2026-01",
+          "for_profit": 0,
+          "non_profit": 1,
+          "total": 1
+        }
+      ]
+    }
+  }
+}
