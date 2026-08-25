@@ -1,0 +1,201 @@
+{
+  "request": {
+    "time_filter": "1Y",
+    "start_date": null,
+    "end_date": null,
+    "group_by": "monthly",
+    "region": "ALL",
+    "organization_type": "non_profit"
+  },
+  "response": {
+    "summary": {
+      "total_organizations": 9,
+      "total_collaborators": 5,
+      "total_contributors": 4,
+      "average_org_rating": 3.0
+    },
+    "growth_trend": [
+      {
+        "period": "2025-09",
+        "total_organizations": 2,
+        "total_collaborators": 1
+      },
+      {
+        "period": "2025-10",
+        "total_organizations": 1,
+        "total_collaborators": 1
+      },
+      {
+        "period": "2025-11",
+        "total_organizations": 2,
+        "total_collaborators": 1
+      },
+      {
+        "period": "2025-12",
+        "total_organizations": 2,
+        "total_collaborators": 1
+      },
+      {
+        "period": "2026-01",
+        "total_organizations": 1,
+        "total_collaborators": 0
+      },
+      {
+        "period": "2026-08",
+        "total_organizations": 1,
+        "total_collaborators": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state_id": "CA",
+        "state_name": "California",
+        "city_name": "Testville",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "FL",
+        "state_name": "Florida",
+        "city_name": "West Amandastad",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "ME",
+        "state_name": "Maine",
+        "city_name": "Martinezbury",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "MI",
+        "state_name": "Michigan",
+        "city_name": "West Williamport",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "MN",
+        "state_name": "Minnesota",
+        "city_name": "Lake Nancyview",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "NC",
+        "state_name": "North Carolina",
+        "city_name": "Robinfort",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "NE",
+        "state_name": "Nebraska",
+        "city_name": "Barkerfurt",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "TX",
+        "state_name": "Texas",
+        "city_name": "Hortonberg",
+        "organization_count": 1,
+        "percentage": 11.1
+      },
+      {
+        "state_id": "TX",
+        "state_name": "Texas",
+        "city_name": "Victoriaport",
+        "organization_count": 1,
+        "percentage": 11.1
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "org_size": "small",
+        "organization_count": 2
+      },
+      {
+        "org_size": "medium",
+        "organization_count": 1
+      },
+      {
+        "org_size": "large",
+        "organization_count": 6
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "collaborator",
+        "organization_count": 5,
+        "percentage": 55.6
+      },
+      {
+        "type": "contributor",
+        "organization_count": 4,
+        "percentage": 44.4
+      }
+    ],
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "organization_count": 2
+      },
+      {
+        "rating": 2,
+        "organization_count": 1
+      },
+      {
+        "rating": 3,
+        "organization_count": 2
+      },
+      {
+        "rating": 4,
+        "organization_count": 1
+      },
+      {
+        "rating": 5,
+        "organization_count": 2
+      }
+    ],
+    "organization_type_distribution": [
+      {
+        "period": "2025-09",
+        "for_profit": 0,
+        "non_profit": 2,
+        "total": 2
+      },
+      {
+        "period": "2025-10",
+        "for_profit": 0,
+        "non_profit": 1,
+        "total": 1
+      },
+      {
+        "period": "2025-11",
+        "for_profit": 0,
+        "non_profit": 2,
+        "total": 2
+      },
+      {
+        "period": "2025-12",
+        "for_profit": 0,
+        "non_profit": 2,
+        "total": 2
+      },
+      {
+        "period": "2026-01",
+        "for_profit": 0,
+        "non_profit": 1,
+        "total": 1
+      },
+      {
+        "period": "2026-08",
+        "for_profit": 0,
+        "non_profit": 1,
+        "total": 1
+      }
+    ]
+  }
+}
