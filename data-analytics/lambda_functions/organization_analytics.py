@@ -603,8 +603,7 @@ def fetch_collaborator_vs_contributor(cursor, filters):
             "organization_count": contributor_count,
             "percentage": contributor_percentage,
         },
-    ] 
-
+    ]
 def fetch_rating_distribution(cursor, filters):
     where_clause, params = build_common_filters(filters)
 
@@ -928,4 +927,3 @@ def get_db_connection():
         user=os.environ.get("PGUSER"),
         password=os.environ.get("PGPASSWORD"),
     )
-
