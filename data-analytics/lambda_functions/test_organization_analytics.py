@@ -357,12 +357,66 @@ class HandlerTests(unittest.TestCase):
             [0, 0, 0],
         )
 
-    def test_missing_is_contributor(self):
+    def test_missing_is_contributor_still_returns_both_types(self):
         cursor = FakeCursor(contributor_exists=False)
         response, _ = self._run({"time_filter": "ALL"}, cursor)
         body = json.loads(response["body"])
-        types = [row["type"] for row in body["collaborator_vs_contributor"]]
-        self.assertEqual(types, ["collaborator"])
+        rows = body["collaborator_vs_contributor"]
+        self.assertEqual(
+            [row["type"] for row in rows], ["collaborator", "contributor"]
+        )
+        self.assertEqual(rows[1]["organization_count"], 0)
+
+    def test_official_sample_payloads_are_accepted(self):
+        payloads = [
+            {
+                "time_filter": "30D",
+                "start_date": None,
+                "end_date": None,
+                "group_by": "daily",
+                "region": "ALL",
+                "organization_type": "ALL",
+            },
+            {
+                "time_filter": "1Y",
+                "start_date": None,
+                "end_date": None,
+                "group_by": "monthly",
+                "region": "ALL",
+                "organization_type": "ALL",
+            },
+            {
+                "time_filter": "1Y",
+                "start_date": None,
+                "end_date": None,
+                "group_by": "monthly",
+                "region": "California",
+                "organization_type": "ALL",
+            },
+            {
+                "time_filter": "1Y",
+                "start_date": None,
+                "end_date": None,
+                "group_by": "monthly",
+                "region": "ALL",
+                "organization_type": "non_profit",
+            },
+            {
+                "time_filter": "CUSTOM",
+                "start_date": "2026-01-01",
+                "end_date": "2026-06-30",
+                "group_by": "monthly",
+                "region": "ALL",
+                "organization_type": "ALL",
+            },
+        ]
+        for payload in payloads:
+            cursor = FakeCursor()
+            response, _ = self._run(payload, cursor)
+            self.assertEqual(response["statusCode"], 200, msg=payload)
+            body = json.loads(response["body"])
+            self.assertIn("summary", body)
+            self.assertIn("growth_trend", body)
 
     def test_query_exception_returns_500_and_closes(self):
         cursor = FakeCursor(fail_on="information_schema.columns")

@@ -510,24 +510,27 @@ def build_organizations_by_size(size_counts):
     return rows
 
 
-def build_collaborator_vs_contributor(summary, contributor_supported):
+def build_collaborator_vs_contributor(summary, contributor_supported=True):
+    """Always return both types so the dashboard chart has a stable shape.
+
+    If ``is_contributor`` is missing from the database, contributor count is 0.
+    """
     total = summary["total_organizations"]
-    rows = [
+    contributor_count = (
+        summary["total_contributors"] if contributor_supported else 0
+    )
+    return [
         {
             "type": "collaborator",
             "organization_count": summary["total_collaborators"],
             "percentage": _percentage(summary["total_collaborators"], total),
-        }
+        },
+        {
+            "type": "contributor",
+            "organization_count": contributor_count,
+            "percentage": _percentage(contributor_count, total),
+        },
     ]
-    if contributor_supported:
-        rows.append(
-            {
-                "type": "contributor",
-                "organization_count": summary["total_contributors"],
-                "percentage": _percentage(summary["total_contributors"], total),
-            }
-        )
-    return rows
 
 
 def build_rating_distribution(rating_counts):
