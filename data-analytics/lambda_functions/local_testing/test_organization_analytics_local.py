@@ -1,18 +1,13 @@
-"""Local test harness for organization_analytics.py.
-
-Runs against a local Postgres seeded by local_setup.sql. Validates status
-codes, response structure, filter narrowing, and cross-metric consistency.
-No AWS/SSM needed.
+"""Local test harness for organization_analytics.py (v2 spec: single endpoint,
+flat response). Run against a local Postgres loaded with the real sample CSVs
+(organizations.csv, state.csv) from data-analytics/sql/.
 
 Run:
-    export LOCAL_DB=true
-    export LOCAL_DB_NAME=saayam_local   # or whatever you loaded local_setup.sql into
+    export DB_HOST=... DB_PORT=... DB_NAME=... DB_USER=... DB_PASSWORD=...
+    export DB_SCHEMA=virginia_dev_saayam_rdbms
     python test_organization_analytics_local.py
 """
 import json
-import os
-
-os.environ.setdefault("LOCAL_DB", "true")
 
 import organization_analytics as oa
 
@@ -34,118 +29,89 @@ def call(payload):
 
 
 def main():
-    # --- Overview, no filters ---
-    code, body = call({"dashboard_type": "overview", "time_filter": "ALL"})
-    ov = body["organization_overview"]
-    s = ov["summary"]
-    total = s["total_organizations"]
-    check("overview returns 200", code == 200)
-    check("overview has all expected keys",
-          set(ov) >= {"summary", "organization_activity_trend", "organizations_by_type",
-                      "organizations_by_size", "organizations_by_location",
-                      "collaborator_distribution", "contributor_distribution"})
-    check("collaborator + non_collaborator = total",
-          s["collaborator_organizations"] + s["non_collaborator_organizations"] == total,
-          f"{s['collaborator_organizations']}+{s['non_collaborator_organizations']} vs {total}")
-    check("contributor + non_contributor = total",
-          s["contributor_organizations"] + s["non_contributor_organizations"] == total)
-    check("non_profit + for_profit <= total",
-          s["non_profit_organizations"] + s["for_profit_organizations"] <= total)
-    check("type breakdown sums to total",
-          sum(x["count"] for x in ov["organizations_by_type"]) == total)
-    check("trend sums to total",
-          sum(x["count"] for x in ov["organization_activity_trend"]) == total)
-    check("collaborator_distribution has 2 buckets", len(ov["collaborator_distribution"]) == 2)
-    check("contributor_distribution has 2 buckets", len(ov["contributor_distribution"]) == 2)
+    # --- Default / ALL ---
+    code, body = call({"time_filter": "ALL", "region": "ALL", "organization_type": "ALL"})
+    total = body["summary"]["total_organizations"]
+    check("returns 200", code == 200)
+    check("has all required top-level keys",
+          set(body) >= {"summary", "growth_trend", "organizations_by_location",
+                        "organizations_by_size", "collaborator_vs_contributor",
+                        "rating_distribution", "organization_type_distribution"})
+    check("summary has all 4 KPI fields",
+          set(body["summary"]) == {"total_organizations", "total_collaborators",
+                                    "total_contributors", "average_org_rating"})
 
-    # --- Performance, no filters ---
-    code, body = call({"dashboard_type": "performance", "time_filter": "ALL"})
-    pf = body["organization_performance"]
-    ps = pf["summary"]
-    check("performance returns 200", code == 200)
-    check("rated + unrated = total",
-          ps["rated_organizations"] + ps["unrated_organizations"] == total)
-    check("five_star <= rated", ps["five_star_organizations"] <= ps["rated_organizations"])
-    check("rating_distribution has 5 buckets (1..5)",
-          [r["rating"] for r in pf["rating_distribution"]] == [1, 2, 3, 4, 5])
-    check("rating_distribution sums to rated",
-          sum(r["count"] for r in pf["rating_distribution"]) == ps["rated_organizations"])
-    check("no top-rated row is unrated",
-          all(r["org_rating"] is not None for r in pf["top_rated_organizations"]))
+    # --- Region filter narrows and is consistent ---
+    _, ca = call({"time_filter": "ALL", "region": "California"})
+    check("region filter narrows total (<=)", ca["summary"]["total_organizations"] <= total)
+    check("region filter: every location row matches CA",
+          all(l["state_id"] == "CA" for l in ca["organizations_by_location"]))
 
-    # --- top_n respected ---
-    _, body = call({"dashboard_type": "performance", "time_filter": "ALL", "top_n": 3})
-    check("top_n caps top_rated at 3",
-          len(body["organization_performance"]["top_rated_organizations"]) <= 3)
+    # --- organization_type filter narrows and only shows that type in trend ---
+    _, np = call({"time_filter": "ALL", "organization_type": "non_profit"})
+    check("organization_type filter narrows total (<=)", np["summary"]["total_organizations"] <= total)
+    check("organization_type filter: type distribution shows only non_profit",
+          all(p["for_profit"] == 0 for p in np["organization_type_distribution"]))
 
-    # --- Filter narrowing: 7D <= ALL ---
-    _, b7 = call({"dashboard_type": "overview", "time_filter": "7D"})
-    check("7D total <= ALL total",
-          b7["organization_overview"]["summary"]["total_organizations"] <= total)
+    # --- collaborator_vs_contributor is NOT mutually exclusive (can exceed structure of a simple split) ---
+    cvc = {row["type"]: row["organization_count"] for row in body["collaborator_vs_contributor"]}
+    check("collaborator_vs_contributor has both types", set(cvc) == {"collaborator", "contributor"})
+    check("collaborator/contributor counts match summary totals",
+          cvc["collaborator"] == body["summary"]["total_collaborators"]
+          and cvc["contributor"] == body["summary"]["total_contributors"])
 
-    # --- Dimension filter: is_contributor=true is internally consistent ---
-    _, bc = call({"dashboard_type": "overview", "time_filter": "ALL", "is_contributor": True})
-    sc = bc["organization_overview"]["summary"]
-    check("is_contributor filter -> every org is a contributor",
-          sc["total_organizations"] == sc["contributor_organizations"])
+    # --- rating_distribution: 5 buckets, NULL-safe (doesn't error, doesn't inflate buckets) ---
+    check("rating_distribution has exactly 5 buckets (1..5)",
+          [r["rating"] for r in body["rating_distribution"]] == [1, 2, 3, 4, 5])
+    rated_sum = sum(r["organization_count"] for r in body["rating_distribution"])
+    check("rating_distribution sum <= total (NULL ratings safely excluded)", rated_sum <= total)
 
-    # --- Bad dashboard_type falls back to overview (not a crash) ---
-    code, body = call({"dashboard_type": "not_a_real_dashboard"})
-    check("invalid dashboard_type falls back to overview",
-          code == 200 and "organization_overview" in body)
+    # --- organizations_by_size percentages/labels ---
+    check("organizations_by_size values are lowercase (small/medium/large)",
+          all(row["org_size"] in ("small", "medium", "large") for row in body["organizations_by_size"]))
 
-    # === Robustness (mirrors the team acceptance-criteria pattern) ===
+    # --- organization_type_distribution is a per-period trend, each row sums correctly ---
+    check("organization_type_distribution rows: for_profit + non_profit == total",
+          all(p["for_profit"] + p["non_profit"] == p["total"] for p in body["organization_type_distribution"]))
 
-    # No crash on zero-match / empty result set.
-    _, body = call({"dashboard_type": "overview", "time_filter": "ALL", "state_id": "__no_such_state__"})
-    zov = body["organization_overview"]
-    check("zero-match returns 200 with total = 0",
-          zov["summary"]["total_organizations"] == 0)
-    check("zero-match keeps a valid structure (empty lists, 2-bucket distributions)",
-          zov["organizations_by_type"] == [] and len(zov["collaborator_distribution"]) == 2)
+    # --- group_by variants all return without error ---
+    for gb in ("daily", "weekly", "monthly", "yearly"):
+        c, b = call({"time_filter": "ALL", "group_by": gb})
+        check(f"group_by={gb} returns 200 with a non-crashing trend",
+              c == 200 and isinstance(b["growth_trend"], list))
 
-    # Database connection closes cleanly (no leak after repeated calls).
-    import psycopg2
-    dbname = os.environ.get("LOCAL_DB_NAME", "saayam_local")
+    # --- CUSTOM date range ---
+    c, custom = call({"time_filter": "CUSTOM", "start_date": "2026-01-01", "end_date": "2026-06-30"})
+    check("CUSTOM time_filter returns 200", c == 200)
+    check("CUSTOM total <= ALL total", custom["summary"]["total_organizations"] <= total)
 
-    def active_conns():
-        c = psycopg2.connect(
-            host=os.environ.get("LOCAL_DB_HOST", "localhost"),
-            port=os.environ.get("LOCAL_DB_PORT", "5432"),
-            dbname=dbname,
-            user=os.environ.get("LOCAL_DB_USER", "postgres"),
-            password=os.environ.get("LOCAL_DB_PASSWORD", "postgres"),
-        )
-        cur = c.cursor()
-        cur.execute("SELECT count(*) FROM pg_stat_activity WHERE datname = %s;", (dbname,))
-        n = cur.fetchone()[0]
-        cur.close()
-        c.close()
-        return n
+    # --- Zero-match region: no crash, clean empty structure ---
+    c, zero = call({"time_filter": "ALL", "region": "NoSuchPlaceAtAll"})
+    check("zero-match region returns 200 with total = 0",
+          c == 200 and zero["summary"]["total_organizations"] == 0)
+    check("zero-match region keeps valid structure (empty lists)",
+          zero["organizations_by_location"] == [] and zero["growth_trend"] == [])
 
-    try:
-        before = active_conns()
-        for _ in range(20):
-            oa.lambda_handler({"dashboard_type": "performance", "time_filter": "30D"}, None)
-        after = active_conns()
-        check("connection closes cleanly (no leak after 20 calls)",
-              after <= before, f"before={before}, after={after}")
-    except Exception as e:
-        check("connection-leak check ran", False, str(e))
-
-    # Safe response when the DB is unavailable (run last; restores state after).
+    # --- DB unavailable: safe response, no exception leak ---
+    import os
+    saved = os.environ.get("DB_PORT")
+    os.environ["DB_PORT"] = "59999"
     import importlib
-    saved_port = os.environ.get("LOCAL_DB_PORT", "5432")
-    os.environ["LOCAL_DB_PORT"] = "59999"  # nothing is listening here
     importlib.reload(oa)
-    resp = oa.lambda_handler({"dashboard_type": "performance"}, None)
-    down_body = json.loads(resp["body"])
+    resp = oa.lambda_handler({"time_filter": "ALL"}, None)
+    down = json.loads(resp["body"])
     check("DB unavailable -> 500, no exception leaks", resp["statusCode"] == 500)
     check("DB unavailable -> safe default response shape",
-          "organization_performance" in down_body
-          and down_body["organization_performance"]["summary"]["average_rating"] == 0)
-    os.environ["LOCAL_DB_PORT"] = saved_port
+          "summary" in down and down["summary"]["average_org_rating"] == 0)
+    if saved is not None:
+        os.environ["DB_PORT"] = saved
     importlib.reload(oa)
+
+    # --- No AWS Parameter Store / SSM anywhere in the module source ---
+    import inspect
+    src = inspect.getsource(oa).lower()
+    check("no functional SSM/boto3 usage (only explanatory comments, if any)",
+          "boto3." not in src and "get_parameter(" not in src)
 
     print("\n".join(LINES))
     print(f"\n{PASS} passed, {FAIL} failed")

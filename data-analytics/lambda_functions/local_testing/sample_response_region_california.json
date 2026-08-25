@@ -1,0 +1,90 @@
+{
+  "request": {
+    "time_filter": "1Y",
+    "start_date": null,
+    "end_date": null,
+    "group_by": "monthly",
+    "region": "California",
+    "organization_type": "ALL"
+  },
+  "response": {
+    "summary": {
+      "total_organizations": 1,
+      "total_collaborators": 1,
+      "total_contributors": 0,
+      "average_org_rating": 0
+    },
+    "growth_trend": [
+      {
+        "period": "2026-08",
+        "total_organizations": 1,
+        "total_collaborators": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state_id": "CA",
+        "state_name": "California",
+        "city_name": "Testville",
+        "organization_count": 1,
+        "percentage": 100.0
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "org_size": "small",
+        "organization_count": 1
+      },
+      {
+        "org_size": "medium",
+        "organization_count": 0
+      },
+      {
+        "org_size": "large",
+        "organization_count": 0
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "collaborator",
+        "organization_count": 1,
+        "percentage": 100.0
+      },
+      {
+        "type": "contributor",
+        "organization_count": 0,
+        "percentage": 0.0
+      }
+    ],
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "organization_count": 0
+      },
+      {
+        "rating": 2,
+        "organization_count": 0
+      },
+      {
+        "rating": 3,
+        "organization_count": 0
+      },
+      {
+        "rating": 4,
+        "organization_count": 0
+      },
+      {
+        "rating": 5,
+        "organization_count": 0
+      }
+    ],
+    "organization_type_distribution": [
+      {
+        "period": "2026-08",
+        "for_profit": 0,
+        "non_profit": 1,
+        "total": 1
+      }
+    ]
+  }
+}

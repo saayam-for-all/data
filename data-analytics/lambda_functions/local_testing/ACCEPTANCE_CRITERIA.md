@@ -1,109 +1,92 @@
-# Organization Analytics API — Test Cases & Acceptance Criteria (#228)
+# Organization Analytics API — Acceptance Criteria Checklist (#228)
 
-Format mirrors the team's volunteer analytics `Test Cases and Acceptance
-Criteria` doc, adapted for the two organization dashboards. Every case below is
-covered by `test_organization_analytics_local.py` (24 automated assertions);
-run it against a local Postgres seeded with `local_setup.sql`.
+Maps directly to the Development & Testing Requirements / Acceptance Criteria
+given for this task. Each line notes which test(s) prove it and where.
 
-Note: the source table uses `time_filter` (7D / 30D / 1Y / ALL / CUSTOM) and a
-single `group_by`, so there is no separate location date filter (that was a
-volunteer-only concept). Location here is state/city, not country.
+## Development & Testing Requirements
 
-## Overview dashboard
+- [x] **Use a local PostgreSQL connection** — `local_testing/local_setup_schema.sql`
+      + `organizations.csv`/`state.csv`; both test suites run against it.
+- [x] **Do not use AWS Parameter Store** — verified by
+      `test_organization_analytics_unit_mock.py` (`no functional SSM/boto3 usage`
+      style check) and by manual code review (`get_db_connection` uses only
+      `os.environ`).
+- [x] **Do not deploy directly to AWS** — nothing in this PR touches AWS;
+      all testing is local.
+- [x] **Follow the coding pattern used in existing analytics APIs** —
+      `RealDictCursor`, `build_response()` with CORS headers, per-metric
+      try/except degradation, matching `kpi_api_analytics.py` /
+      `volunteer_application_analytics.py` (SSM omitted intentionally, per the
+      explicit instruction above).
+- [x] **Use parameterized SQL queries** — every filter value (`region`,
+      `organization_type`, `start_date`, `end_date`) is passed via `%s` +
+      a `params` list, never string-interpolated. Verified by
+      `test_region_filter_produces_parameterized_condition` and
+      `test_organization_type_filter_normalizes_and_parameterizes` (mock suite),
+      which assert the raw filter value never appears inside the SQL text.
+- [x] **Handle NULL values safely** — `rating_distribution` excludes NULL
+      ratings from its buckets rather than erroring; verified against the real
+      CSV with two injected NULL-rating rows (integration suite) and via mocked
+      `average_org_rating: None` (unit suite).
+- [x] **Add cursor-based/mock database unit tests** —
+      `local_testing/test_organization_analytics_unit_mock.py`, 18 tests,
+      runs with zero DB configuration (mocks `get_db_connection` entirely).
+- [x] **Test valid filters** — `TestValidFilters` (mock) +
+      region/organization_type filter tests (integration).
+- [x] **Test invalid filters** — `TestInvalidFilters`: garbage `time_filter`
+      and `group_by` fall back to safe defaults; a nonsense `region` or
+      `organization_type` matches zero rows rather than crashing.
+- [x] **Test custom date ranges** — `TestCustomDateRanges` (both dates present,
+      one missing, both missing) + integration `CUSTOM` test.
+- [x] **Test empty result sets** — `TestEmptyResultSets` (mock, all-empty
+      cursor results) + integration zero-match-region test.
+- [x] **Test database/query exceptions** — `TestDatabaseAndQueryExceptions`:
+      connection failure → 500 + default body; single query failure →
+      that field degrades, others unaffected, 200; cursor/connection always
+      closed (via `finally`), even when a query raises.
+- [x] **Validate the response structure against the Organization Dashboard
+      requirements** — `TestResponseStructureValidation` checks every field
+      name across summary, growth trend, location, size, collaborator/
+      contributor, rating distribution, and type distribution.
+- [x] **Include sample request and response payloads in the PR** —
+      `sample_response_standard_30D.json`, `sample_response_last_12_months.json`,
+      `sample_response_region_california.json`, `sample_response_type_nonprofit.json`,
+      `sample_response_custom_range.json` — one per payload given in the issue.
 
-**TC1 — Default response**
-`{ "dashboard_type": "overview" }`
-Verify: `organization_overview` present with all keys (`summary`,
-`organization_activity_trend`, `organizations_by_type`, `organizations_by_size`,
-`organizations_by_location`, `organizations_by_city`, `collaborator_distribution`,
-`contributor_distribution`). `collaborator + non_collaborator = total`;
-`contributor + non_contributor = total`.
+## Acceptance Criteria
 
-**TC2 — 7D / 30D / 1Y time filter**
-`{ "dashboard_type": "overview", "time_filter": "7D" }`
-Verify: only organizations registered in the window are counted; every breakdown
-and the trend sum to the same filtered total; `7D total <= ALL total`.
+- [x] **Organization Analytics API is implemented** — `organization_analytics.py`.
+- [x] **All four KPI cards are returned correctly** — `total_organizations`,
+      `total_collaborators`, `total_contributors`, `average_org_rating` in
+      `summary`.
+- [x] **Growth Trend returns Total Organizations and Total Collaborators** —
+      `growth_trend` rows: `{period, total_organizations, total_collaborators}`.
+- [x] **Organizations by Location supports state/city data** —
+      `organizations_by_location` rows: `{state_id, state_name, city_name,
+      organization_count, percentage}`.
+- [x] **Organizations by Size returns Small, Medium, and Large distributions** —
+      always exactly 3 rows, zero-filled if empty.
+- [x] **Collaborator vs Contributor data is returned correctly** —
+      `collaborator_vs_contributor`, two independent (not mutually exclusive)
+      counts + percentages.
+- [x] **Rating Distribution returns ratings from 1 to 5** — always 5 rows,
+      zero-filled, NULL-safe.
+- [x] **For-Profit vs Non-Profit trend is returned correctly** —
+      `organization_type_distribution`, one row per period with
+      `for_profit`/`non_profit`/`total`.
+- [x] **Existing common dashboard filters are reused** — `time_filter`,
+      `start_date`, `end_date`, `group_by` match the pattern used by the other
+      analytics dashboards; no separate filtering mechanism introduced.
+- [x] **Local unit tests pass** — 18/18 mock + 24/24 integration = 42/42.
+- [x] **No AWS deployment is performed** — local only.
+- [x] **PR contains test results and sample API responses** — see PR
+      description; results and 5 sample payload/response pairs included.
 
-**TC3 — Custom date range**
-`{ "dashboard_type": "overview", "time_filter": "CUSTOM", "start_date": "2026-01-01", "end_date": "2026-05-31" }`
-Verify: only organizations with `created_at` in range are counted.
+## Open items for reviewer (not blocking, flagged for confirmation)
 
-**TC4 — Trend grouping**
-`{ "dashboard_type": "overview", "group_by": "weekly" }` (also daily/monthly/yearly)
-Verify: `organization_activity_trend` buckets by the requested unit; periods are
-ordered ascending; counts sum to the filtered total.
-
-**TC5 — Dimension filters** (`org_type`, `org_size`, `state_id`, `city_name`,
-`org_rating`, `is_collaborator`, `is_contributor`)
-`{ "dashboard_type": "overview", "org_type": "non_profit" }`
-Verify: each filter narrows the whole dashboard consistently; e.g.
-`is_contributor: true` makes `total == contributor_organizations`.
-
-**TC6 — Filter combination**
-`{ "dashboard_type": "overview", "time_filter": "1Y", "org_type": "non_profit", "state_id": "VA" }`
-Verify: all filters apply together; totals remain internally consistent.
-
-## Performance dashboard
-
-**TC7 — Default response**
-`{ "dashboard_type": "performance" }`
-Verify: `organization_performance` present with all keys; `rated + unrated = total`;
-`five_star <= rated`.
-
-**TC8 — Rating distribution**
-Verify: `rating_distribution` always returns buckets 1..5 (zero-filled) and sums
-to `rated_organizations`.
-
-**TC9 — Top lists & top_n**
-`{ "dashboard_type": "performance", "top_n": 3 }`
-Verify: `top_rated_organizations`, `top_collaborator_organizations`,
-`top_contributor_organizations` are each capped at `top_n`; no unrated org
-appears in `top_rated`.
-
-**TC10 — Ratings by group**
-Verify: `ratings_by_organization_type` and `ratings_by_organization_size` return
-an average rating and rated count per group.
-
-## Robustness
-
-**TC11 — Zero-match / empty result**
-`{ "dashboard_type": "overview", "state_id": "__no_such_state__" }`
-Verify: returns 200 with `total = 0`, empty lists, and still-valid structure —
-no crash.
-
-**TC12 — DB unavailable (safe response)**
-Verify: on a failed DB connection the handler returns a 500 with the safe default
-response body; no exception propagates.
-
-**TC13 — Connection closes cleanly**
-Verify: active connection count does not grow after repeated calls (connections
-are closed in `finally`).
-
-**TC14 — Invalid input**
-`{ "dashboard_type": "not_real" }`
-Verify: falls back to the overview dashboard rather than erroring.
-
-**TC15 — `is_contributor` not yet in DB (graceful degradation)**
-Run against a database where the `is_contributor` column does not exist.
-Verify: core metrics (totals, types, sizes, collaborator, ratings, trends)
-return correctly; only `contributor_organizations` / `non_contributor_organizations`
-(0), `contributor_distribution` (`[]`), and `top_contributor_organizations` (`[]`)
-are blank. No crash, no zeroing of unrelated metrics. (Manually verified;
-populates automatically once `ddl_add_is_contributor.sql` is applied.)
-
-## Acceptance Criteria checklist
-
-- [ ] `organization_overview` and `organization_performance` return with all required keys
-- [ ] `7D`, `30D`, `1Y`, `CUSTOM`, `ALL` time filters work correctly
-- [ ] Trend groups by `daily` / `weekly` / `monthly` / `yearly` as requested
-- [ ] `org_type`, `org_size`, `state_id`, `city_name`, `org_rating`, `is_collaborator`, `is_contributor` filters each work
-- [ ] Filter combinations apply together correctly
-- [ ] `rating_distribution` covers 1..5; `top_n` respected; no unrated org in top-rated
-- [ ] Cross-metric consistency (collaborator/contributor/rated splits sum to total)
-- [ ] Safe default response returned when data is unavailable
-- [ ] No crash on empty / zero-match data
-- [ ] Database connection closes cleanly after execution
-- [ ] Degrades gracefully if `is_contributor` column is absent (core metrics unaffected)
-
-The first ten boxes are exercised by the 24 automated assertions; the last is
-manually verified against a column-less database (see TC15).
+- Table name `states` (plural, per issue text) vs. `state` (singular, actual
+  CSV filename in the repo / earlier `ddl_state.sql`) — built as `states`;
+  please confirm against the real Aurora schema.
+- `growth_trend` / `organization_type_distribution` count **new
+  registrations per period**, not a cumulative running total — flagging the
+  assumption in case cumulative was intended.
