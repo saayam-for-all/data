@@ -1,0 +1,101 @@
+comment_id,req_id,commenter_id,comment_desc,created_at,last_updated_at,isdeleted
+1,REQ000001,1,Mouth owner lose debate.,indicate,2021-05-28 05:45:35,False
+2,REQ000002,2,Risk feel source young discover picture.,couple,2025-04-13 01:54:55,True
+3,REQ000003,3,Resource free build rather how court federal.,could,2021-01-09 21:02:12,False
+4,REQ000004,4,Whose establish allow.,recognize,2023-07-30 03:29:27,False
+5,REQ000005,5,Seem who game human.,before,2022-09-15 05:10:45,False
+6,REQ000006,6,Stage choose nice sport political.,their,2021-11-22 15:11:27,False
+7,REQ000007,7,Expert first issue place government my pressure.,similar,2021-12-18 23:44:22,False
+8,REQ000008,8,Edge case side ball democratic line seem.,story,2022-10-08 06:57:40,False
+9,REQ000009,9,Fill executive goal government once.,although,2021-07-23 22:32:38,False
+10,REQ000010,10,Similar end sit between us draw.,think,2023-06-24 06:32:48,False
+11,REQ000011,11,Partner there law beyond career production.,amount,2025-07-10 16:05:24,False
+12,REQ000012,12,Hot board beat.,share,2026-02-12 20:19:40,True
+13,REQ000013,13,Everyone case mother mean.,truth,2023-09-02 21:27:56,True
+14,REQ000014,14,Painting fine surface question become help.,bar,2021-10-26 18:04:25,False
+15,REQ000015,15,Or if just other south.,pay,2022-01-24 12:21:49,False
+16,REQ000016,16,Trial mission entire plan.,save,2022-03-18 17:11:10,True
+17,REQ000017,17,Age leave fear class.,stop,2022-12-12 13:25:06,True
+18,REQ000018,18,Tv will away sometimes standard office.,natural,2020-01-30 15:59:11,True
+19,REQ000019,19,Wear real decade environment theory.,fly,2022-10-02 19:04:17,True
+20,REQ000020,20,Our note sound notice.,pretty,2025-07-14 18:57:54,True
+21,REQ000021,21,Why TV kid picture road.,throughout,2021-05-02 09:45:07,True
+22,REQ000022,22,Again finally oil car cell operation spring.,stop,2024-05-28 05:00:44,False
+23,REQ000023,23,Attorney score forget process.,a,2021-05-23 17:05:53,False
+24,REQ000024,24,Would democratic food cut when phone.,focus,2024-10-06 12:23:22,False
+25,REQ000025,25,Establish single both.,central,2020-01-30 00:04:56,True
+26,REQ000026,26,Add fire apply mission detail then almost same.,career,2023-05-29 01:33:49,False
+27,REQ000027,27,Opportunity business attack quickly a network sport now.,agree,2020-10-04 10:01:14,True
+28,REQ000028,28,More ahead worker science certain.,behavior,2022-11-29 14:53:39,True
+29,REQ000029,29,Century traditional issue without car.,explain,2021-09-27 17:00:17,False
+30,REQ000030,30,Central really at manager relationship discuss city religious.,us,2020-11-11 02:20:39,False
+31,REQ000031,31,Class must floor agent improve think air.,like,2025-02-04 04:31:40,True
+32,REQ000032,32,Street ago expect natural attack well weight bank.,course,2021-09-02 14:04:35,False
+33,REQ000033,33,Risk explain security still list impact contain pressure.,discover,2025-05-03 02:07:35,True
+34,REQ000034,34,Thousand various chance candidate.,medical,2020-09-13 14:47:10,True
+35,REQ000035,35,Change contain table wind support table cell.,capital,2023-06-05 11:35:05,True
+36,REQ000036,36,Mr music almost recent stand pretty.,allow,2022-01-04 12:33:28,True
+37,REQ000037,37,Military yeah consumer human community interesting.,car,2024-08-16 07:10:06,False
+38,REQ000038,38,Loss his window strategy.,executive,2020-02-11 09:11:58,True
+39,REQ000039,39,Least per husband technology.,administration,2022-07-05 22:47:14,False
+40,REQ000040,40,Mother charge again never from part chair.,claim,2025-10-08 20:45:47,True
+41,REQ000041,41,Onto recognize food song type despite.,air,2021-06-18 14:33:51,False
+42,REQ000042,42,Again right factor fill.,sort,2026-03-28 04:17:01,True
+43,REQ000043,43,Scene organization free share company try between.,off,2020-07-09 14:59:10,True
+44,REQ000044,44,Because recent medical around.,determine,2025-10-24 16:04:21,True
+45,REQ000045,45,Smile break as information himself recent economic.,responsibility,2023-01-25 02:04:00,False
+46,REQ000046,46,Pretty here sign best.,economic,2025-12-19 11:00:26,False
+47,REQ000047,47,Bag business maybe film certain red.,will,2021-07-01 23:19:56,False
+48,REQ000048,48,Travel interview benefit.,first,2021-03-02 07:58:49,True
+49,REQ000049,49,Piece foot my among.,pressure,2026-03-25 15:51:58,True
+50,REQ000050,50,Poor town know.,sister,2025-07-22 00:11:18,True
+51,REQ000051,51,Win beautiful usually appear say see from.,wish,2023-01-01 01:56:42,True
+52,REQ000052,52,Stay all second laugh.,continue,2020-08-03 13:24:12,False
+53,REQ000053,53,Decade fill I memory again practice instead.,enter,2023-05-20 21:00:34,False
+54,REQ000054,54,Who full again Mr hundred agree production.,director,2023-01-02 10:50:24,True
+55,REQ000055,55,Head might teacher teacher century style.,every,2021-12-08 21:16:01,True
+56,REQ000056,56,Near if little same hospital institution.,indeed,2025-09-28 00:14:22,True
+57,REQ000057,57,Method big single eat before second decade.,heart,2020-09-26 20:03:49,True
+58,REQ000058,58,True within down star establish fall service audience.,stand,2020-01-04 05:02:32,False
+59,REQ000059,59,Difference focus nothing ask.,foot,2022-04-21 00:21:56,True
+60,REQ000060,60,News serious manage with in success.,clear,2025-09-18 03:20:28,False
+61,REQ000061,61,Increase likely agree party.,executive,2022-08-23 20:41:13,False
+62,REQ000062,62,Cut floor nice work energy physical however choose.,catch,2025-04-03 00:13:08,True
+63,REQ000063,63,See program you.,tell,2024-08-09 15:22:05,False
+64,REQ000064,64,Collection campaign word situation us night movie across.,why,2021-06-06 09:09:01,True
+65,REQ000065,65,Officer successful just same who at music time.,start,2021-04-04 14:47:23,False
+66,REQ000066,66,Television three growth environmental miss culture suggest.,whole,2020-04-29 17:35:06,False
+67,REQ000067,67,Career success follow enter into dark less.,must,2026-01-30 10:25:22,False
+68,REQ000068,68,Computer mean figure child not at pass.,spend,2020-11-17 19:50:15,False
+69,REQ000069,69,Week since focus benefit bar section.,reveal,2022-12-06 22:55:13,True
+70,REQ000070,70,Not student including middle serve church nation chance.,indicate,2025-09-18 19:04:51,False
+71,REQ000071,71,Win service from worry by a this.,score,2021-11-13 11:05:01,False
+72,REQ000072,72,Score debate he Mr give.,event,2021-08-11 10:42:54,False
+73,REQ000073,73,Treat space door.,trial,2020-06-13 03:41:22,True
+74,REQ000074,74,View production list despite entire.,live,2025-03-06 11:31:43,False
+75,REQ000075,75,Project chance prevent front man water as.,part,2025-08-07 07:01:36,False
+76,REQ000076,76,Wall defense still as vote.,go,2021-06-22 21:08:05,False
+77,REQ000077,77,Eat head civil final across red catch.,later,2021-05-27 22:47:02,True
+78,REQ000078,78,Participant its perhaps condition push full.,child,2021-01-06 08:33:13,True
+79,REQ000079,79,Science behavior full rather fear Congress now.,administration,2024-04-27 19:43:06,True
+80,REQ000080,80,Third show success glass enjoy art message education.,themselves,2020-05-03 17:48:47,False
+81,REQ000081,81,Knowledge include major fall.,record,2020-12-09 18:03:48,True
+82,REQ000082,82,A risk animal Mrs.,risk,2023-04-09 05:15:09,False
+83,REQ000083,83,Amount month every important suggest here sing once.,natural,2024-06-06 22:02:39,False
+84,REQ000084,84,Exactly dog customer other discuss test method.,son,2025-10-28 09:56:37,False
+85,REQ000085,85,Including game read stuff remain.,perhaps,2021-03-28 01:33:30,True
+86,REQ000086,86,Involve up course pass card region.,bed,2023-11-20 07:21:58,True
+87,REQ000087,87,Point memory economic kid mention fire situation travel.,most,2020-05-05 17:16:11,True
+88,REQ000088,88,That far gun set sister world pull.,continue,2025-12-10 13:35:07,False
+89,REQ000089,89,Way could media hit away.,officer,2023-04-03 17:29:33,False
+90,REQ000090,90,Nothing majority relationship economy.,arrive,2020-11-18 16:36:16,False
+91,REQ000091,91,Health produce forget manager real true blood.,early,2021-10-11 18:12:23,True
+92,REQ000092,92,Next her history guess.,sea,2020-11-21 23:44:29,True
+93,REQ000093,93,To rich city collection conference less federal situation.,thought,2020-05-22 10:34:18,True
+94,REQ000094,94,Trial give something record protect likely clear hit.,charge,2024-09-25 07:33:23,True
+95,REQ000095,95,City region but six real situation.,however,2021-07-29 00:28:21,False
+96,REQ000096,96,Dream level type occur threat relate.,once,2024-09-12 13:08:16,True
+97,REQ000097,97,Government night politics street visit future.,these,2022-05-03 07:06:49,False
+98,REQ000098,98,Especially represent he collection huge leader.,way,2025-07-17 18:49:41,False
+99,REQ000099,99,Bag write which.,plan,2021-05-13 23:29:01,True
+100,REQ000100,100,People positive summer do.,reflect,2022-03-03 19:56:33,False

@@ -1,0 +1,5 @@
+req_status_id,req_status_name
+1,Open
+2,In Progress
+3,Closed
+4,Cancelled
