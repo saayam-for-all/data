@@ -2,24 +2,19 @@ import json
 import os
 from datetime import date
 
-import boto3
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
 SCHEMA_NAME = "virginia_dev_saayam_rdbms"
 
-# Name of the environment variable holding the Parameter Store name for the DB
-# credentials. The path itself is configured on the Lambda, never in the code.
-DB_CREDENTIALS_ENV_VAR = "DB_CREDENTIALS_PARAMETER"
-
-# Column required by the analytics spec but not yet present in the deployed
-# organizations table; contributor metrics degrade gracefully without it.
+# Column required by the analytics spec but not guaranteed to be present in the
+# deployed organizations table yet (see task note); contributor metrics degrade
+# gracefully to 0 without it.
 CONTRIBUTOR_COLUMN = "is_contributor"
 
 VALID_TIME_FILTERS = {"7D", "30D", "1Y", "ALL", "CUSTOM"}
 VALID_GROUP_BY = {"daily", "weekly", "monthly", "yearly"}
-VALID_DASHBOARDS = {"overview", "performance"}
 
 MIN_RATING = 1
 MAX_RATING = 5
@@ -31,6 +26,13 @@ MAX_RATING = 5
 NORMALIZED_ORG_TYPE = "REPLACE(LOWER(o.org_type::text), '-', '_')"
 NORMALIZED_ORG_SIZE = "REPLACE(LOWER(o.org_size::text), '-', '_')"
 
+GROUP_BY_TRUNC = {
+    "daily": "day",
+    "weekly": "week",
+    "monthly": "month",
+    "yearly": "year",
+}
+
 
 def normalize_label(value):
     """'Non-Profit' / 'non profit' / 'NON_PROFIT' -> 'non_profit'."""
@@ -38,54 +40,22 @@ def normalize_label(value):
         return None
     return str(value).strip().lower().replace("-", "_").replace(" ", "_")
 
-GROUP_BY_TRUNC = {
-    "daily": "day",
-    "weekly": "week",
-    "monthly": "month",
-    "yearly": "year"
-}
 
-TOP_N_LIMIT = 10
-
-
-def get_default_overview_response():
+def get_default_response():
+    """Every dashboard section, empty. Matches the issue's suggested structure."""
     return {
-        "organization_overview": {
-            "summary": {
-                "total_organizations": 0,
-                "non_profit_organizations": 0,
-                "for_profit_organizations": 0,
-                "collaborator_organizations": 0,
-                "non_collaborator_organizations": 0,
-                "contributor_organizations": 0,
-                "non_contributor_organizations": 0
-            },
-            "organization_activity_trend": [],
-            "organizations_by_type": [],
-            "organizations_by_size": [],
-            "organizations_by_location": [],
-            "collaborator_distribution": [],
-            "contributor_distribution": []
-        }
-    }
-
-
-def get_default_performance_response():
-    return {
-        "organization_performance": {
-            "summary": {
-                "average_rating": 0,
-                "rated_organizations": 0,
-                "unrated_organizations": 0,
-                "five_star_organizations": 0
-            },
-            "rating_distribution": [],
-            "top_rated_organizations": [],
-            "top_collaborator_organizations": [],
-            "top_contributor_organizations": [],
-            "ratings_by_organization_type": [],
-            "ratings_by_organization_size": []
-        }
+        "summary": {
+            "total_organizations": 0,
+            "total_collaborators": 0,
+            "total_contributors": 0,
+            "average_org_rating": 0,
+        },
+        "growth_trend": [],
+        "organizations_by_location": [],
+        "organizations_by_size": [],
+        "collaborator_vs_contributor": [],
+        "rating_distribution": [],
+        "organization_type_distribution": [],
     }
 
 
@@ -94,45 +64,34 @@ def build_response(status_code, body):
         "statusCode": status_code,
         "headers": {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
         },
-        "body": json.dumps(body, default=str)
+        "body": json.dumps(body, default=str),
     }
 
 
 def get_db_connection():
-    if os.environ.get("LOCAL_DB", "").lower() == "true":
-        conn = psycopg2.connect(
-            host=os.environ.get("DB_HOST", "localhost"),
-            database=os.environ.get("DB_NAME", "saayam_local"),
-            user=os.environ.get("DB_USER", "saayam"),
-            password=os.environ.get("DB_PASSWORD", "saayam_local"),
-            port=os.environ.get("DB_PORT", "5432")
-        )
-        # Read-only workload: each statement stands alone, so one failed metric
-        # cannot leave the connection in an aborted transaction.
-        conn.autocommit = True
-        return conn
+    """Connect using plain environment variables only.
 
-    parameter_name = os.environ.get(DB_CREDENTIALS_ENV_VAR)
-    if not parameter_name:
-        raise RuntimeError(
-            f"{DB_CREDENTIALS_ENV_VAR} is not set. Configure it on the Lambda with "
-            "the Parameter Store name that holds the analytics DB credentials, "
-            "or set LOCAL_DB=true for local PostgreSQL testing."
-        )
-
-    ssm = boto3.client("ssm", region_name=os.environ.get("AWS_REGION", "us-east-1"))
-    response = ssm.get_parameter(Name=parameter_name, WithDecryption=True)
-    creds = json.loads(response["Parameter"]["Value"])
-    conn = psycopg2.connect(
-        host=creds["HOST"],
-        database=creds["DATABASE NAME"],
-        user=creds["USERNAME"],
-        password=creds["PASSWORD"],
-        port=creds["PORT"],
-        sslmode="require"
+    The task forbids AWS Parameter Store / SSM, so credentials are read straight
+    from the environment (injected by the Lambda config in deployment, or exported
+    locally). No boto3, no hard-coded paths. `DB_SSLMODE` lets the deployed
+    environment require TLS without changing the code.
+    """
+    connect_kwargs = dict(
+        host=os.environ.get("DB_HOST", "localhost"),
+        database=os.environ.get("DB_NAME", "saayam_local"),
+        user=os.environ.get("DB_USER", "saayam"),
+        password=os.environ.get("DB_PASSWORD", "saayam_local"),
+        port=os.environ.get("DB_PORT", "5432"),
     )
+    sslmode = os.environ.get("DB_SSLMODE")
+    if sslmode:
+        connect_kwargs["sslmode"] = sslmode
+
+    conn = psycopg2.connect(**connect_kwargs)
+    # Read-only workload: each statement stands alone, so one failed metric
+    # cannot leave the connection in an aborted transaction.
     conn.autocommit = True
     return conn
 
@@ -167,7 +126,7 @@ def has_contributor_column(cursor):
           AND table_name = 'organizations'
           AND column_name = %s;
         """,
-        [SCHEMA_NAME, CONTRIBUTOR_COLUMN]
+        [SCHEMA_NAME, CONTRIBUTOR_COLUMN],
     )
     return cursor.fetchone() is not None
 
@@ -181,27 +140,21 @@ def parse_filters(request_body):
     if group_by not in VALID_GROUP_BY:
         group_by = "daily"
 
-    org_rating = request_body.get("org_rating", None)
-    if org_rating is not None:
-        try:
-            org_rating = int(org_rating)
-            if org_rating < MIN_RATING or org_rating > MAX_RATING:
-                org_rating = None
-        except (TypeError, ValueError):
-            org_rating = None
+    region = request_body.get("region", None)
+    if region is not None and str(region).strip().upper() == "ALL":
+        region = None
+
+    organization_type = request_body.get("organization_type", None)
+    if organization_type is not None and str(organization_type).strip().upper() == "ALL":
+        organization_type = None
 
     return {
         "time_filter": time_filter,
         "start_date": request_body.get("start_date", None),
         "end_date": request_body.get("end_date", None),
-        "org_type": request_body.get("org_type", None),
-        "org_size": request_body.get("org_size", None),
-        "state_id": request_body.get("state_id", None),
-        "city_name": request_body.get("city_name", None),
-        "org_rating": org_rating,
-        "is_collaborator": request_body.get("is_collaborator", None),
-        "is_contributor": request_body.get("is_contributor", None),
-        "group_by": group_by
+        "region": region,
+        "organization_type": organization_type,
+        "group_by": group_by,
     }
 
 
@@ -246,7 +199,7 @@ def build_date_filter(filters, column="o.created_at"):
 
 
 def build_condition_list(filters):
-    """SQL conditions + params for every active filter, without the WHERE keyword."""
+    """SQL conditions + params for the common filters, without the WHERE keyword."""
     conditions = []
     params = []
 
@@ -255,33 +208,20 @@ def build_condition_list(filters):
         conditions.append(date_condition)
         params.extend(date_params)
 
-    if filters["org_type"]:
+    if filters["organization_type"]:
         conditions.append(f"{NORMALIZED_ORG_TYPE} = %s")
-        params.append(normalize_label(filters["org_type"]))
+        params.append(normalize_label(filters["organization_type"]))
 
-    if filters["org_size"]:
-        conditions.append(f"{NORMALIZED_ORG_SIZE} = %s")
-        params.append(normalize_label(filters["org_size"]))
-
-    if filters["state_id"]:
-        conditions.append("o.state_id = %s")
-        params.append(filters["state_id"])
-
-    if filters["city_name"]:
-        conditions.append("LOWER(o.city_name) = LOWER(%s)")
-        params.append(filters["city_name"])
-
-    if filters["org_rating"] is not None:
-        conditions.append("o.org_rating = %s")
-        params.append(filters["org_rating"])
-
-    if filters["is_collaborator"] is not None:
-        conditions.append("o.is_collaborator = %s")
-        params.append(bool(filters["is_collaborator"]))
-
-    if filters["is_contributor"] is not None and filters.get("_has_contributor"):
-        conditions.append(f"o.{CONTRIBUTOR_COLUMN} = %s")
-        params.append(bool(filters["is_contributor"]))
+    # Region matches either the state id (e.g. 'CA') or the state name
+    # (e.g. 'California'), case-insensitively, so the same common filter the UI
+    # already sends works whichever it carries.
+    if filters["region"]:
+        conditions.append(
+            f"(o.state_id = %s OR EXISTS (SELECT 1 FROM {SCHEMA_NAME}.state s "
+            "WHERE s.state_id = o.state_id AND LOWER(s.state_name) = LOWER(%s)))"
+        )
+        params.append(filters["region"])
+        params.append(filters["region"])
 
     return conditions, params
 
@@ -292,30 +232,30 @@ def build_common_filters(filters):
     return where_clause, params
 
 
+def _pct(part, whole):
+    return round(part / whole * 100, 1) if whole else 0
+
+
 # ---------------------------------------------------------------------------
-# Dashboard 1: Organization Overview
+# KPI summary cards
 # ---------------------------------------------------------------------------
 
-def fetch_overview_summary(cursor, filters):
+def fetch_summary(cursor, filters):
     where_clause, params = build_common_filters(filters)
 
     if filters.get("_has_contributor"):
-        contributor_columns = f"""
-            COUNT(o.org_id) FILTER (WHERE o.{CONTRIBUTOR_COLUMN} IS TRUE) AS contributor_organizations,
-            COUNT(o.org_id) FILTER (WHERE o.{CONTRIBUTOR_COLUMN} IS NOT TRUE) AS non_contributor_organizations"""
+        contributor_column = (
+            f"COUNT(o.org_id) FILTER (WHERE o.{CONTRIBUTOR_COLUMN} IS TRUE)"
+        )
     else:
-        contributor_columns = """
-            0 AS contributor_organizations,
-            0 AS non_contributor_organizations"""
+        contributor_column = "0"
 
     query = f"""
         SELECT
             COUNT(o.org_id) AS total_organizations,
-            COUNT(o.org_id) FILTER (WHERE {NORMALIZED_ORG_TYPE} = 'non_profit') AS non_profit_organizations,
-            COUNT(o.org_id) FILTER (WHERE {NORMALIZED_ORG_TYPE} = 'for_profit') AS for_profit_organizations,
-            COUNT(o.org_id) FILTER (WHERE o.is_collaborator IS TRUE) AS collaborator_organizations,
-            COUNT(o.org_id) FILTER (WHERE o.is_collaborator IS NOT TRUE) AS non_collaborator_organizations,
-            {contributor_columns}
+            COUNT(o.org_id) FILTER (WHERE o.is_collaborator IS TRUE) AS total_collaborators,
+            {contributor_column} AS total_contributors,
+            ROUND(AVG(o.org_rating)::numeric, 1) AS average_org_rating
         FROM {SCHEMA_NAME}.organizations o
         {where_clause};
     """
@@ -325,23 +265,28 @@ def fetch_overview_summary(cursor, filters):
 
     return {
         "total_organizations": int(row["total_organizations"]),
-        "non_profit_organizations": int(row["non_profit_organizations"]),
-        "for_profit_organizations": int(row["for_profit_organizations"]),
-        "collaborator_organizations": int(row["collaborator_organizations"]),
-        "non_collaborator_organizations": int(row["non_collaborator_organizations"]),
-        "contributor_organizations": int(row["contributor_organizations"]),
-        "non_contributor_organizations": int(row["non_contributor_organizations"])
+        "total_collaborators": int(row["total_collaborators"]),
+        "total_contributors": int(row["total_contributors"]),
+        "average_org_rating": (
+            float(row["average_org_rating"]) if row["average_org_rating"] is not None else 0
+        ),
     }
 
 
-def fetch_organization_activity_trend(cursor, filters):
+# ---------------------------------------------------------------------------
+# Tab 1: Growth & Location
+# ---------------------------------------------------------------------------
+
+def fetch_growth_trend(cursor, filters):
+    """Cumulative organizations and collaborators per period (line chart)."""
     where_clause, params = build_common_filters(filters)
     trunc_unit = GROUP_BY_TRUNC[filters["group_by"]]
 
     query = f"""
         SELECT
             DATE_TRUNC('{trunc_unit}', o.created_at)::date AS period,
-            COUNT(o.org_id) AS new_organizations
+            COUNT(o.org_id) AS new_organizations,
+            COUNT(o.org_id) FILTER (WHERE o.is_collaborator IS TRUE) AS new_collaborators
         FROM {SCHEMA_NAME}.organizations o
         {where_clause}
         GROUP BY period
@@ -352,53 +297,95 @@ def fetch_organization_activity_trend(cursor, filters):
     rows = cursor.fetchall()
 
     trend = []
-    running_total = 0
+    running_orgs = 0
+    running_collabs = 0
     for row in rows:
-        running_total += int(row["new_organizations"])
+        running_orgs += int(row["new_organizations"])
+        running_collabs += int(row["new_collaborators"])
         trend.append({
             "period": str(row["period"]),
-            "new_organizations": int(row["new_organizations"]),
-            "total_organizations": running_total
+            "total_organizations": running_orgs,
+            "total_collaborators": running_collabs,
         })
     return trend
 
 
-def fetch_organizations_by_type(cursor, filters):
+def fetch_organizations_by_location(cursor, filters):
+    """Organization count by state AND city.
+
+    Grouped at the city grain in SQL, then rolled up in Python into one row per
+    state (state_id, state_name, count, percentage) carrying a nested `cities`
+    breakdown — so a single section serves both the state map and the city drill-down
+    the dashboard needs.
+    """
     where_clause, params = build_common_filters(filters)
 
     query = f"""
         SELECT
-            {NORMALIZED_ORG_TYPE} AS type,
-            COUNT(o.org_id) AS count
+            o.state_id AS state_id,
+            COALESCE(s.state_name, 'Unknown') AS state_name,
+            COALESCE(o.city_name, 'Unknown') AS city_name,
+            COUNT(o.org_id) AS organization_count
         FROM {SCHEMA_NAME}.organizations o
+        LEFT JOIN {SCHEMA_NAME}.state s
+            ON o.state_id = s.state_id
         {where_clause}
-        GROUP BY {NORMALIZED_ORG_TYPE}
-        ORDER BY count DESC;
+        GROUP BY o.state_id, s.state_name, o.city_name
+        ORDER BY organization_count DESC;
     """
 
     cursor.execute(query, params)
     rows = cursor.fetchall()
 
-    return [
-        {
-            "type": row["type"] if row["type"] is not None else "unknown",
-            "count": int(row["count"])
-        }
-        for row in rows
-    ]
+    total = sum(int(row["organization_count"]) for row in rows)
 
+    states = {}
+    order = []
+    for row in rows:
+        key = (row["state_id"], row["state_name"])
+        if key not in states:
+            states[key] = {
+                "state_id": row["state_id"],
+                "state_name": row["state_name"],
+                "organization_count": 0,
+                "percentage": 0,
+                "cities": [],
+            }
+            order.append(key)
+        entry = states[key]
+        count = int(row["organization_count"])
+        entry["organization_count"] += count
+        entry["cities"].append({
+            "city_name": row["city_name"],
+            "organization_count": count,
+        })
+
+    result = []
+    for key in order:
+        entry = states[key]
+        entry["percentage"] = _pct(entry["organization_count"], total)
+        entry["cities"].sort(key=lambda c: c["organization_count"], reverse=True)
+        result.append(entry)
+
+    result.sort(key=lambda e: e["organization_count"], reverse=True)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Tab 2: Size & Contribution
+# ---------------------------------------------------------------------------
 
 def fetch_organizations_by_size(cursor, filters):
     where_clause, params = build_common_filters(filters)
 
     query = f"""
         SELECT
-            {NORMALIZED_ORG_SIZE} AS size,
-            COUNT(o.org_id) AS count
+            {NORMALIZED_ORG_SIZE} AS org_size,
+            COUNT(o.org_id) AS organization_count
         FROM {SCHEMA_NAME}.organizations o
         {where_clause}
         GROUP BY {NORMALIZED_ORG_SIZE}
-        ORDER BY count DESC;
+        ORDER BY organization_count DESC;
     """
 
     cursor.execute(query, params)
@@ -406,110 +393,28 @@ def fetch_organizations_by_size(cursor, filters):
 
     return [
         {
-            "size": row["size"] if row["size"] is not None else "unknown",
-            "count": int(row["count"])
+            "org_size": row["org_size"] if row["org_size"] is not None else "unknown",
+            "organization_count": int(row["organization_count"]),
         }
         for row in rows
     ]
 
 
-def fetch_organizations_by_location(cursor, filters):
+def fetch_collaborator_vs_contributor(cursor, filters):
+    """Collaborator vs contributor counts with each side's share of the two."""
     where_clause, params = build_common_filters(filters)
+
+    if filters.get("_has_contributor"):
+        contributor_column = (
+            f"COUNT(o.org_id) FILTER (WHERE o.{CONTRIBUTOR_COLUMN} IS TRUE)"
+        )
+    else:
+        contributor_column = "0"
 
     query = f"""
         SELECT
-            COALESCE(s.state_name, 'Unknown') AS state,
-            COALESCE(o.city_name, 'Unknown') AS city,
-            COUNT(o.org_id) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        LEFT JOIN {SCHEMA_NAME}.state s
-            ON o.state_id = s.state_id
-        {where_clause}
-        GROUP BY s.state_name, o.city_name
-        ORDER BY count DESC;
-    """
-
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-
-    return [
-        {
-            "state": row["state"],
-            "city": row["city"],
-            "count": int(row["count"])
-        }
-        for row in rows
-    ]
-
-
-def fetch_collaborator_distribution(cursor, filters):
-    where_clause, params = build_common_filters(filters)
-
-    query = f"""
-        SELECT
-            CASE WHEN o.is_collaborator IS TRUE
-                 THEN 'collaborator' ELSE 'non_collaborator' END AS category,
-            COUNT(o.org_id) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where_clause}
-        GROUP BY category
-        ORDER BY category;
-    """
-
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-
-    return [
-        {
-            "category": row["category"],
-            "count": int(row["count"])
-        }
-        for row in rows
-    ]
-
-
-def fetch_contributor_distribution(cursor, filters):
-    if not filters.get("_has_contributor"):
-        return []
-
-    where_clause, params = build_common_filters(filters)
-
-    query = f"""
-        SELECT
-            CASE WHEN o.{CONTRIBUTOR_COLUMN} IS TRUE
-                 THEN 'contributor' ELSE 'non_contributor' END AS category,
-            COUNT(o.org_id) AS count
-        FROM {SCHEMA_NAME}.organizations o
-        {where_clause}
-        GROUP BY category
-        ORDER BY category;
-    """
-
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-
-    return [
-        {
-            "category": row["category"],
-            "count": int(row["count"])
-        }
-        for row in rows
-    ]
-
-
-# ---------------------------------------------------------------------------
-# Dashboard 2: Organization Performance
-# ---------------------------------------------------------------------------
-
-def fetch_performance_summary(cursor, filters):
-    where_clause, params = build_common_filters(filters)
-
-    query = f"""
-        SELECT
-            ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-            COUNT(o.org_id) FILTER (WHERE o.org_rating IS NOT NULL) AS rated_organizations,
-            COUNT(o.org_id) FILTER (WHERE o.org_rating IS NULL) AS unrated_organizations,
-            COUNT(o.org_id) FILTER (WHERE o.org_rating = 5) AS five_star_organizations
+            COUNT(o.org_id) FILTER (WHERE o.is_collaborator IS TRUE) AS collaborators,
+            {contributor_column} AS contributors
         FROM {SCHEMA_NAME}.organizations o
         {where_clause};
     """
@@ -517,17 +422,32 @@ def fetch_performance_summary(cursor, filters):
     cursor.execute(query, params)
     row = cursor.fetchone()
 
-    return {
-        "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0,
-        "rated_organizations": int(row["rated_organizations"]),
-        "unrated_organizations": int(row["unrated_organizations"]),
-        "five_star_organizations": int(row["five_star_organizations"])
-    }
+    collaborators = int(row["collaborators"])
+    contributors = int(row["contributors"])
+    denominator = collaborators + contributors
 
+    return [
+        {
+            "type": "collaborator",
+            "organization_count": collaborators,
+            "percentage": _pct(collaborators, denominator),
+        },
+        {
+            "type": "contributor",
+            "organization_count": contributors,
+            "percentage": _pct(contributors, denominator),
+        },
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Tab 3: Ratings & Type
+# ---------------------------------------------------------------------------
 
 def fetch_rating_distribution(cursor, filters):
     # LEFT JOIN against generate_series so every rating 1-5 is present, including
     # the ones no organization currently holds (the dashboard charts all 5 bars).
+    # NULL ratings simply do not match any bucket, so they never break the query.
     conditions, params = build_condition_list(filters)
     conditions.append("o.org_rating = r.rating")
     join_clause = " AND ".join(conditions)
@@ -535,7 +455,7 @@ def fetch_rating_distribution(cursor, filters):
     query = f"""
         SELECT
             r.rating AS rating,
-            COUNT(o.org_id) AS count
+            COUNT(o.org_id) AS organization_count
         FROM generate_series({MIN_RATING}, {MAX_RATING}) AS r(rating)
         LEFT JOIN {SCHEMA_NAME}.organizations o
             ON {join_clause}
@@ -549,33 +469,26 @@ def fetch_rating_distribution(cursor, filters):
     return [
         {
             "rating": int(row["rating"]),
-            "count": int(row["count"])
+            "organization_count": int(row["organization_count"]),
         }
         for row in rows
     ]
 
 
-def fetch_top_rated_organizations(cursor, filters):
+def fetch_organization_type_distribution(cursor, filters):
+    """For-profit vs non-profit counts per period (stacked bar over time)."""
     where_clause, params = build_common_filters(filters)
-    rating_condition = "o.org_rating IS NOT NULL"
-    where_clause = (f"{where_clause} AND {rating_condition}"
-                    if where_clause else f"WHERE {rating_condition}")
+    trunc_unit = GROUP_BY_TRUNC[filters["group_by"]]
 
     query = f"""
         SELECT
-            o.org_id,
-            o.org_name,
-            {NORMALIZED_ORG_TYPE} AS org_type,
-            {NORMALIZED_ORG_SIZE} AS org_size,
-            o.org_rating,
-            COALESCE(s.state_name, 'Unknown') AS state,
-            COALESCE(o.city_name, 'Unknown') AS city
+            DATE_TRUNC('{trunc_unit}', o.created_at)::date AS period,
+            COUNT(o.org_id) FILTER (WHERE {NORMALIZED_ORG_TYPE} = 'for_profit') AS for_profit,
+            COUNT(o.org_id) FILTER (WHERE {NORMALIZED_ORG_TYPE} = 'non_profit') AS non_profit
         FROM {SCHEMA_NAME}.organizations o
-        LEFT JOIN {SCHEMA_NAME}.state s
-            ON o.state_id = s.state_id
         {where_clause}
-        ORDER BY o.org_rating DESC, o.org_name ASC
-        LIMIT {TOP_N_LIMIT};
+        GROUP BY period
+        ORDER BY period;
     """
 
     cursor.execute(query, params)
@@ -583,95 +496,20 @@ def fetch_top_rated_organizations(cursor, filters):
 
     return [
         {
-            "org_id": row["org_id"],
-            "org_name": row["org_name"],
-            "org_type": row["org_type"],
-            "org_size": row["org_size"],
-            "org_rating": int(row["org_rating"]),
-            "state": row["state"],
-            "city": row["city"]
-        }
-        for row in rows
-    ]
-
-
-def fetch_top_flagged_organizations(cursor, filters, flag_column):
-    where_clause, params = build_common_filters(filters)
-    flag_condition = f"o.{flag_column} IS TRUE AND o.org_rating IS NOT NULL"
-    where_clause = (f"{where_clause} AND {flag_condition}"
-                    if where_clause else f"WHERE {flag_condition}")
-
-    query = f"""
-        SELECT
-            o.org_id,
-            o.org_name,
-            {NORMALIZED_ORG_TYPE} AS org_type,
-            {NORMALIZED_ORG_SIZE} AS org_size,
-            o.org_rating,
-            COALESCE(s.state_name, 'Unknown') AS state,
-            COALESCE(o.city_name, 'Unknown') AS city
-        FROM {SCHEMA_NAME}.organizations o
-        LEFT JOIN {SCHEMA_NAME}.state s
-            ON o.state_id = s.state_id
-        {where_clause}
-        ORDER BY o.org_rating DESC, o.org_name ASC
-        LIMIT {TOP_N_LIMIT};
-    """
-
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-
-    return [
-        {
-            "org_id": row["org_id"],
-            "org_name": row["org_name"],
-            "org_type": row["org_type"],
-            "org_size": row["org_size"],
-            "org_rating": int(row["org_rating"]),
-            "state": row["state"],
-            "city": row["city"]
-        }
-        for row in rows
-    ]
-
-
-def fetch_ratings_by_dimension(cursor, filters, dimension_expression, dimension_key):
-    where_clause, params = build_common_filters(filters)
-    rating_condition = "o.org_rating IS NOT NULL"
-    where_clause = (f"{where_clause} AND {rating_condition}"
-                    if where_clause else f"WHERE {rating_condition}")
-
-    query = f"""
-        SELECT
-            {dimension_expression} AS dimension,
-            ROUND(AVG(o.org_rating)::numeric, 2) AS average_rating,
-            COUNT(o.org_id) AS rated_organizations,
-            COUNT(o.org_id) FILTER (WHERE o.org_rating = {MAX_RATING}) AS five_star_organizations
-        FROM {SCHEMA_NAME}.organizations o
-        {where_clause}
-        GROUP BY {dimension_expression}
-        ORDER BY average_rating DESC;
-    """
-
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-
-    return [
-        {
-            dimension_key: row["dimension"] if row["dimension"] is not None else "unknown",
-            "average_rating": float(row["average_rating"]) if row["average_rating"] is not None else 0,
-            "rated_organizations": int(row["rated_organizations"]),
-            "five_star_organizations": int(row["five_star_organizations"])
+            "period": str(row["period"]),
+            "for_profit": int(row["for_profit"]),
+            "non_profit": int(row["non_profit"]),
+            "total": int(row["for_profit"]) + int(row["non_profit"]),
         }
         for row in rows
     ]
 
 
 # ---------------------------------------------------------------------------
-# Dashboard builders
+# Handler
 # ---------------------------------------------------------------------------
 
-def run_metric(cursor, description, fetcher, *args):
+def run_metric(cursor, description, fetcher, filters):
     """Run one metric query, keeping the connection usable if it fails.
 
     PostgreSQL aborts the surrounding transaction on any error, so without the
@@ -680,7 +518,7 @@ def run_metric(cursor, description, fetcher, *args):
     leaving the caller's safe default in place.
     """
     try:
-        return fetcher(cursor, *args)
+        return fetcher(cursor, filters)
     except Exception as error:
         print(f"{description} query failed: {error}")
         try:
@@ -690,54 +528,23 @@ def run_metric(cursor, description, fetcher, *args):
         return None
 
 
-def assign_metric(target, key, cursor, description, fetcher, *args):
-    result = run_metric(cursor, description, fetcher, *args)
-    if result is not None:
-        target[key] = result
-
-
-def build_overview_dashboard(cursor, filters):
-    response_body = get_default_overview_response()
-    overview = response_body["organization_overview"]
+def build_dashboard(cursor, filters):
+    response_body = get_default_response()
 
     metrics = [
-        ("summary", "Overview summary", fetch_overview_summary),
-        ("organization_activity_trend", "Organization activity trend", fetch_organization_activity_trend),
-        ("organizations_by_type", "Organizations by type", fetch_organizations_by_type),
-        ("organizations_by_size", "Organizations by size", fetch_organizations_by_size),
+        ("summary", "Summary", fetch_summary),
+        ("growth_trend", "Growth trend", fetch_growth_trend),
         ("organizations_by_location", "Organizations by location", fetch_organizations_by_location),
-        ("collaborator_distribution", "Collaborator distribution", fetch_collaborator_distribution),
-        ("contributor_distribution", "Contributor distribution", fetch_contributor_distribution),
+        ("organizations_by_size", "Organizations by size", fetch_organizations_by_size),
+        ("collaborator_vs_contributor", "Collaborator vs contributor", fetch_collaborator_vs_contributor),
+        ("rating_distribution", "Rating distribution", fetch_rating_distribution),
+        ("organization_type_distribution", "Organization type distribution", fetch_organization_type_distribution),
     ]
 
     for key, description, fetcher in metrics:
-        assign_metric(overview, key, cursor, description, fetcher, filters)
-
-    return response_body
-
-
-def build_performance_dashboard(cursor, filters):
-    response_body = get_default_performance_response()
-    performance = response_body["organization_performance"]
-
-    metrics = [
-        ("summary", "Performance summary", fetch_performance_summary, (filters,)),
-        ("rating_distribution", "Rating distribution", fetch_rating_distribution, (filters,)),
-        ("top_rated_organizations", "Top rated organizations", fetch_top_rated_organizations, (filters,)),
-        ("top_collaborator_organizations", "Top collaborator organizations",
-         fetch_top_flagged_organizations, (filters, "is_collaborator")),
-        ("ratings_by_organization_type", "Ratings by organization type",
-         fetch_ratings_by_dimension, (filters, NORMALIZED_ORG_TYPE, "type")),
-        ("ratings_by_organization_size", "Ratings by organization size",
-         fetch_ratings_by_dimension, (filters, NORMALIZED_ORG_SIZE, "size")),
-    ]
-
-    if filters.get("_has_contributor"):
-        metrics.insert(4, ("top_contributor_organizations", "Top contributor organizations",
-                           fetch_top_flagged_organizations, (filters, CONTRIBUTOR_COLUMN)))
-
-    for key, description, fetcher, args in metrics:
-        assign_metric(performance, key, cursor, description, fetcher, *args)
+        result = run_metric(cursor, description, fetcher, filters)
+        if result is not None:
+            response_body[key] = result
 
     return response_body
 
@@ -747,24 +554,13 @@ def lambda_handler(event, context):
     cursor = None
 
     request_body = parse_event_body(event)
-
-    dashboard_type = str(request_body.get("dashboard_type", "overview")).lower()
-    if dashboard_type not in VALID_DASHBOARDS:
-        return build_response(400, {
-            "error": f"Invalid dashboard_type '{dashboard_type}'. "
-                     f"Supported values: {sorted(VALID_DASHBOARDS)}"
-        })
-
     filters = parse_filters(request_body)
 
     validation_error = validate_filters(filters)
     if validation_error:
         return build_response(400, {"error": validation_error})
 
-    if dashboard_type == "overview":
-        response_body = get_default_overview_response()
-    else:
-        response_body = get_default_performance_response()
+    response_body = get_default_response()
 
     try:
         conn = get_db_connection()
@@ -772,10 +568,7 @@ def lambda_handler(event, context):
 
         filters["_has_contributor"] = has_contributor_column(cursor)
 
-        if dashboard_type == "overview":
-            response_body = build_overview_dashboard(cursor, filters)
-        else:
-            response_body = build_performance_dashboard(cursor, filters)
+        response_body = build_dashboard(cursor, filters)
 
         response_body["filters_applied"] = {
             key: value for key, value in filters.items() if not key.startswith("_")
@@ -783,8 +576,8 @@ def lambda_handler(event, context):
         if not filters["_has_contributor"]:
             response_body["schema_notes"] = [
                 f"Column '{CONTRIBUTOR_COLUMN}' is not present in "
-                f"{SCHEMA_NAME}.organizations; contributor metrics return 0/empty "
-                "and the is_contributor filter is ignored."
+                f"{SCHEMA_NAME}.organizations; total_contributors and the "
+                "contributor row return 0."
             ]
         return build_response(200, response_body)
 
@@ -800,10 +593,5 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    os.environ["LOCAL_DB"] = "true"
-
-    result_overview = lambda_handler({"dashboard_type": "overview", "time_filter": "ALL"}, None)
-    print(json.dumps(json.loads(result_overview["body"]), indent=2))
-
-    result_performance = lambda_handler({"dashboard_type": "performance", "time_filter": "ALL"}, None)
-    print(json.dumps(json.loads(result_performance["body"]), indent=2))
+    result = lambda_handler({"time_filter": "ALL", "group_by": "monthly"}, None)
+    print(json.dumps(json.loads(result["body"]), indent=2))
