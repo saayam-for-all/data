@@ -63,21 +63,36 @@ class FilterValidationError(ValueError):
 
 
 def parse_event_body(event):
-    """Return the payload for both API Gateway and direct Lambda invocations."""
+    """Return the JSON object payload for API Gateway and direct invocations.
+
+    Malformed JSON and non-object bodies raise FilterValidationError so the
+    handler can return HTTP 400 instead of silently using default filters.
+    """
     if not event:
         return {}
+    if not isinstance(event, dict):
+        raise FilterValidationError("Request body must be a JSON object.")
 
-    body = event.get("body") if isinstance(event, dict) else None
-    if body is None:
-        return event if isinstance(event, dict) else {}
-    if isinstance(body, str):
-        try:
-            return json.loads(body)
-        except json.JSONDecodeError:
-            return {}
+    # Direct Lambda invocation passes the filter object at the top level.
+    if "body" not in event:
+        return event
+
+    body = event.get("body")
+    if body is None or body == "":
+        return {}
     if isinstance(body, dict):
         return body
-    return {}
+    if isinstance(body, str):
+        try:
+            parsed = json.loads(body)
+        except json.JSONDecodeError as exc:
+            raise FilterValidationError("Request body must be valid JSON.") from exc
+        if parsed is None:
+            return {}
+        if not isinstance(parsed, dict):
+            raise FilterValidationError("Request body must be a JSON object.")
+        return parsed
+    raise FilterValidationError("Request body must be a JSON object.")
 
 
 def get_default_response():
@@ -541,18 +556,21 @@ def build_rating_distribution(rating_counts):
 
 
 def build_organization_type_distribution(buckets):
-    running_for_profit = 0
-    running_non_profit = 0
+    """Return per-period counts for stacked-bar rendering.
+
+    ``total`` is for_profit + non_profit in that period only, not a
+    running total across periods.
+    """
     distribution = []
     for row in buckets:
-        running_for_profit += int(row.get("for_profit") or 0)
-        running_non_profit += int(row.get("non_profit") or 0)
+        for_profit = int(row.get("for_profit") or 0)
+        non_profit = int(row.get("non_profit") or 0)
         distribution.append(
             {
                 "period": row["period"],
-                "for_profit": running_for_profit,
-                "non_profit": running_non_profit,
-                "total": running_for_profit + running_non_profit,
+                "for_profit": for_profit,
+                "non_profit": non_profit,
+                "total": for_profit + non_profit,
             }
         )
     return distribution

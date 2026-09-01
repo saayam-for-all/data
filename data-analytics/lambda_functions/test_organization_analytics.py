@@ -286,6 +286,31 @@ class ResponseShapeTests(unittest.TestCase):
         )
         self.assertEqual(summary["average_org_rating"], 4.0)
 
+    def test_organization_type_distribution_is_per_period(self):
+        rows = api.build_organization_type_distribution(
+            [
+                {"period": "2026-01", "for_profit": 2, "non_profit": 4},
+                {"period": "2026-02", "for_profit": 1, "non_profit": 3},
+            ]
+        )
+        self.assertEqual(
+            rows,
+            [
+                {
+                    "period": "2026-01",
+                    "for_profit": 2,
+                    "non_profit": 4,
+                    "total": 6,
+                },
+                {
+                    "period": "2026-02",
+                    "for_profit": 1,
+                    "non_profit": 3,
+                    "total": 4,
+                },
+            ],
+        )
+
 
 class HandlerTests(unittest.TestCase):
     def _run(self, event, cursor):
@@ -323,6 +348,23 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(body["summary"]["total_contributors"], 6)
         self.assertEqual(body["summary"]["average_org_rating"], 4.2)
         self.assertEqual(body["growth_trend"][-1]["total_organizations"], 10)
+        self.assertEqual(
+            body["organization_type_distribution"],
+            [
+                {
+                    "period": "2026-01",
+                    "for_profit": 2,
+                    "non_profit": 4,
+                    "total": 6,
+                },
+                {
+                    "period": "2026-02",
+                    "for_profit": 1,
+                    "non_profit": 3,
+                    "total": 4,
+                },
+            ],
+        )
         self.assertEqual(body["organizations_by_location"][0]["state_id"], "CA")
         self.assertIn("cities", body["organizations_by_location"][0])
         self.assertEqual(len(body["rating_distribution"]), 5)
@@ -343,6 +385,18 @@ class HandlerTests(unittest.TestCase):
         body = json.loads(response["body"])
         self.assertIn("error", body)
         self.assertEqual(body["summary"]["total_organizations"], 0)
+
+    def test_malformed_json_body_returns_400(self):
+        response = api.lambda_handler({"body": "{not-json"}, None)
+        self.assertEqual(response["statusCode"], 400)
+        body = json.loads(response["body"])
+        self.assertIn("valid JSON", body["error"])
+
+    def test_non_object_json_body_returns_400(self):
+        response = api.lambda_handler({"body": "[1, 2]"}, None)
+        self.assertEqual(response["statusCode"], 400)
+        body = json.loads(response["body"])
+        self.assertIn("JSON object", body["error"])
 
     def test_empty_result_set(self):
         cursor = FakeCursor(empty=True)
