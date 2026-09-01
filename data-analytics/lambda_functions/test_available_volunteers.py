@@ -173,6 +173,7 @@ class SqlBuilderTests(unittest.TestCase):
         self.assertIn("help_categories_map", sql)
         self.assertIn("help_categories", sql)
         self.assertNotIn("ST_DWithin", sql)
+        self.assertNotIn("volunteer_locations", sql)
 
     def test_in_person_sql_uses_volunteer_geolocation(self):
         sql = api.available_volunteers_sql(apply_location=True)
@@ -186,6 +187,22 @@ class SqlBuilderTests(unittest.TestCase):
         self.assertIn("user_status", sql)
         self.assertIn("volunteers_assigned", sql)
         self.assertNotIn("ACTIVE", sql)
+
+
+class SchemaNameTests(unittest.TestCase):
+    def test_allowlisted_schema_is_kept(self):
+        self.assertEqual(
+            api.resolve_schema_name("ireland_dev_saayam_rdbms"),
+            "ireland_dev_saayam_rdbms",
+        )
+
+    def test_invalid_schema_falls_back_to_default(self):
+        self.assertEqual(
+            api.resolve_schema_name("virginia_dev_saayam_rdbms; DROP TABLE users"),
+            api.DEFAULT_SCHEMA_NAME,
+        )
+        self.assertEqual(api.resolve_schema_name("bad-schema"), api.DEFAULT_SCHEMA_NAME)
+        self.assertEqual(api.resolve_schema_name(""), api.DEFAULT_SCHEMA_NAME)
 
 
 class HandlerTests(unittest.TestCase):
@@ -329,6 +346,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(response["statusCode"], 200)
         volunteer_sql, params = cursor.executed[1]
         self.assertNotIn("ST_DWithin", volunteer_sql)
+        self.assertNotIn("volunteer_locations", volunteer_sql)
         self.assertEqual(params[0], "5.2")
         self.assertEqual(params[1], "ACTIVE")
         self.assertEqual(params[2], REQUEST_ID)
@@ -396,6 +414,17 @@ class HandlerTests(unittest.TestCase):
     def test_options_preflight(self):
         response, _, cursor = self._run({"httpMethod": "OPTIONS"}, FakeCursor())
         self.assertEqual(response["statusCode"], 200)
+        self.assertEqual(cursor.executed, [])
+        self.assertEqual(
+            response["headers"]["Access-Control-Allow-Methods"], "POST,OPTIONS"
+        )
+
+    def test_get_is_rejected(self):
+        response, _, cursor = self._run(
+            {"httpMethod": "GET", "request_id": REQUEST_ID}, FakeCursor()
+        )
+        self.assertEqual(response["statusCode"], 405)
+        self.assertEqual(json.loads(response["body"]), {"error": "Method not allowed"})
         self.assertEqual(cursor.executed, [])
 
 

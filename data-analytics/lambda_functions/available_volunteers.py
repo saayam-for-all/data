@@ -20,7 +20,33 @@ import re
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-SCHEMA_NAME = os.getenv("DB_SCHEMA", "virginia_dev_saayam_rdbms")
+DEFAULT_SCHEMA_NAME = "virginia_dev_saayam_rdbms"
+ALLOWED_SCHEMA_NAMES = frozenset(
+    {
+        DEFAULT_SCHEMA_NAME,
+        "ireland_dev_saayam_rdbms",
+    }
+)
+_SCHEMA_IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+def resolve_schema_name(raw=None):
+    """Return a safe SQL schema identifier, or the default if invalid.
+
+    Identifiers cannot be parameterized, so DB_SCHEMA is allowlisted and
+    matched against a strict identifier regex before interpolation.
+    """
+    candidate = str(
+        raw if raw is not None else os.getenv("DB_SCHEMA", DEFAULT_SCHEMA_NAME) or ""
+    ).strip()
+    if candidate in ALLOWED_SCHEMA_NAMES:
+        return candidate
+    if candidate and _SCHEMA_IDENTIFIER_RE.fullmatch(candidate):
+        return candidate
+    return DEFAULT_SCHEMA_NAME
+
+
+SCHEMA_NAME = resolve_schema_name()
 REQUEST_TABLE = f"{SCHEMA_NAME}.request"
 REQUEST_TYPE_TABLE = f"{SCHEMA_NAME}.request_type"
 USERS_TABLE = f"{SCHEMA_NAME}.users"
@@ -70,7 +96,7 @@ def build_response(status_code, body):
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "Content-Type,Authorization",
-            "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+            "Access-Control-Allow-Methods": "POST,OPTIONS",
         },
         "body": json.dumps(body, default=str),
     }
@@ -226,10 +252,21 @@ def available_volunteers_sql(apply_location=False):
     is required; it does not fail the query.
     """
     location_filter = ""
+    location_join = ""
     distance_select = "NULL::double precision AS distance_meters"
     order_by = "name ASC NULLS LAST, u.user_id ASC"
 
     if apply_location:
+        location_join = f"""
+        LEFT JOIN LATERAL (
+            SELECT vl.curr_loc, vl.updated_at
+            FROM {VOLUNTEER_LOCATIONS_TABLE} vl
+            WHERE vl.user_id = u.user_id
+              AND vl.curr_loc IS NOT NULL
+            ORDER BY vl.updated_at DESC NULLS LAST
+            LIMIT 1
+        ) latest_loc ON TRUE
+        """
         location_filter = """
               AND latest_loc.curr_loc IS NOT NULL
               AND ST_DWithin(
@@ -292,14 +329,7 @@ def available_volunteers_sql(apply_location=False):
             ON u.user_id = vs.user_id
         LEFT JOIN {USER_STATUS_TABLE} st
             ON u.user_status_id = st.user_status_id
-        LEFT JOIN LATERAL (
-            SELECT vl.curr_loc, vl.updated_at
-            FROM {VOLUNTEER_LOCATIONS_TABLE} vl
-            WHERE vl.user_id = u.user_id
-              AND vl.curr_loc IS NOT NULL
-            ORDER BY vl.updated_at DESC NULLS LAST
-            LIMIT 1
-        ) latest_loc ON TRUE
+        {location_join}
         WHERE UPPER(TRIM(COALESCE(st.user_status, ''))) = UPPER(%s)
           AND NOT EXISTS (
                 SELECT 1
@@ -368,8 +398,13 @@ def collect_available_volunteers(cursor, request_id):
 
 def lambda_handler(event, context):
     """Entry point for POST /volunteers/available."""
-    if isinstance(event, dict) and str(event.get("httpMethod") or "").upper() == "OPTIONS":
+    method = ""
+    if isinstance(event, dict):
+        method = str(event.get("httpMethod") or "").upper()
+    if method == "OPTIONS":
         return build_response(200, {})
+    if method and method != "POST":
+        return build_response(405, {"error": "Method not allowed"})
 
     try:
         request_id = parse_request_id(parse_event_body(event))
