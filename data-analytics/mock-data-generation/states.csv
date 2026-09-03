@@ -1,0 +1,6 @@
+state_id,country_id,state_name,state_code,latitude,longitude
+1,1,California,CA,36.7783,-119.4179
+2,1,New York,NY,40.7128,-74.006
+3,1,Texas,TX,31.9686,-99.9018
+4,1,New Jersey,NJ,40.0583,-74.4057
+5,1,Florida,FL,27.6648,-81.5158

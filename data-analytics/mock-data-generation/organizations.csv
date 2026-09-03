@@ -1,0 +1,9 @@
+org_id,org_name,contact_email,state_id,is_verified,created_at,updated_at
+1,Saayam Hope Foundation,contact@saayamhopefoundation.org,1,False,2025-11-22 22:06:55,2025-11-25 17:51:22
+2,Global Relief Network,contact@globalreliefnetwork.org,3,True,2025-07-26 14:55:11,2025-08-14 20:58:24
+3,Community Food Basket,contact@communityfoodbasket.org,1,True,2025-05-31 03:44:41,2025-06-16 02:01:54
+4,Youth Empowerment Alliance,contact@youthempowermentalliance.org,4,True,2026-03-15 00:18:10,2026-04-03 03:53:47
+5,Elder Care Helpers,contact@eldercarehelpers.org,2,True,2025-07-29 13:23:23,2025-08-16 22:16:08
+6,Clean Ocean Initiative,contact@cleanoceaninitiative.org,1,True,2025-02-18 06:36:42,2025-02-27 12:15:43
+7,Bright Future Tutors,contact@brightfuturetutors.org,2,True,2026-05-04 19:11:03,2026-05-18 08:54:13
+8,Apex Health Volunteers,contact@apexhealthvolunteers.org,5,True,2026-03-18 06:54:22,2026-04-01 15:13:02
