@@ -1,0 +1,21 @@
+state_id,country_id,state_name,state_code,last_updated_at
+AL,1,Alabama,US-AL,2026-08-31 17:05:37
+AK,1,Alaska,US-AK,2026-01-03 01:01:05
+AZ,1,Arizona,US-AZ,2025-09-20 07:32:38
+CA,1,California,US-CA,2025-06-14 17:12:45
+CO,1,Colorado,US-CO,2026-04-29 22:34:26
+FL,1,Florida,US-FL,2025-09-21 14:37:17
+GA,1,Georgia,US-GA,2026-07-20 00:48:51
+IL,1,Illinois,US-IL,2025-08-21 22:27:21
+NY,1,New York,US-NY,2025-10-21 04:13:48
+TX,1,Texas,US-TX,2025-11-20 03:05:24
+VA,1,Virginia,US-VA,2025-07-20 11:54:22
+WA,1,Washington,US-WA,2026-04-06 08:51:02
+OH,1,Ohio,US-OH,2026-06-09 14:34:07
+PA,1,Pennsylvania,US-PA,2025-12-11 02:35:18
+NC,1,North Carolina,US-NC,2026-07-30 20:39:56
+MH,2,Maharashtra,IN-MH,2026-08-16 11:36:12
+KA,2,Karnataka,IN-KA,2026-05-27 02:02:42
+DL,2,Delhi,IN-DL,2025-09-25 09:05:54
+TN,2,Tamil Nadu,IN-TN,2025-09-28 03:24:17
+ENG,3,England,GB-ENG,2026-01-19 20:53:23
