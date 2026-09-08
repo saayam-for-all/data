@@ -1,0 +1,4 @@
+user_id,state_id,country_id,user_status_id,user_category_id,full_name,first_name,middle_name,last_name,primary_email_address,primary_phone_number,addr_ln1,addr_ln2,addr_ln3,city_name,zip_code,last_location,last_update_date,time_zone,profile_picture_path,gender,language_1,language_2,language_3,promotion_wizard_stage,promotion_wizard_last_update_date,external_auth_provider,dob
+SID-00-000-295-001,VA,1,1,2,Priya Nair,Priya,NULL,Nair,NULL,NULL,NULL,NULL,NULL,Ashburn,20147,NULL,2026-01-13 11:00:00,America/New_York,NULL,NULL,English,NULL,NULL,NULL,NULL,NULL,NULL
+SID-00-000-295-002,VA,1,2,2,Marcus Bell,Marcus,NULL,Bell,marcus.bell@example.org,5715550142,NULL,NULL,NULL,Reston,20190,NULL,2026-01-14 11:00:00,America/New_York,NULL,NULL,English,NULL,NULL,NULL,NULL,NULL,NULL
+SID-00-000-295-003,VA,1,NULL,2,Ana Ruiz,Ana,NULL,Ruiz,ana.ruiz@example.org,5715550163,NULL,NULL,NULL,Herndon,20170,NULL,2026-01-15 11:00:00,America/New_York,NULL,NULL,Spanish,NULL,NULL,NULL,NULL,NULL,NULL

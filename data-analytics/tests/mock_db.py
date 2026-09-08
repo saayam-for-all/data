@@ -1,10 +1,16 @@
 """Load the mock CSV fixtures into a throwaway database for local testing.
 
-Issue #228 requires that ``organization_analytics`` be developed and tested
+Issues #228 and #295 require that these Lambdas be developed and tested
 against the mock fixtures in ``data-analytics/sql`` -- never against the
-shared Saayam database. This module builds a disposable database from
-``organizations.csv`` and ``state.csv`` and hands back a connection that the
-Lambda's own query code can use unmodified.
+shared Saayam database. This module builds a disposable database from those
+CSVs and hands back a connection that the Lambdas' own query code can use
+unmodified.
+
+Tables loaded: ``organizations`` and ``state`` (issue #228), plus ``request``,
+``users``, ``user_status`` and ``volunteers_assigned`` (issue #295). A table
+may be assembled from several CSVs sharing one header, which is how the small
+issue-#295 edge-case rows are unioned onto the bulk database exports without
+editing files that get regenerated wholesale.
 
 Two backends are supported:
 
@@ -56,15 +62,62 @@ MOCK_SQL_DIR = Path(__file__).resolve().parents[1] / "sql"
 ORGANIZATIONS_CSV = MOCK_SQL_DIR / "organizations.csv"
 STATE_CSV = MOCK_SQL_DIR / "state.csv"
 
+# Issue #295 (assigned volunteers) fixtures.
+REQUEST_CSV = MOCK_SQL_DIR / "Request_Table.csv"
+USERS_CSV = MOCK_SQL_DIR / "users.csv"
+USER_STATUS_CSV = MOCK_SQL_DIR / "user_status.csv"
+VOLUNTEERS_ASSIGNED_CSV = MOCK_SQL_DIR / "volunteers_assigned.csv"
+
+# The bulk fixtures above are exports of the development database and get
+# regenerated wholesale, so the handful of rows issue #295 needs to exercise
+# (a cancelled request, a deleted request, a volunteer with NULL contact
+# details, a non-ACTIVE volunteer) live in their own files and are unioned in
+# rather than appended to the exports.
+REQUEST_EXTRA_CSV = MOCK_SQL_DIR / "request_extra_295.csv"
+USERS_EXTRA_CSV = MOCK_SQL_DIR / "users_extra_295.csv"
+
 # Column-name driven typing. The fixtures are small and their column names are
 # stable, so this is simpler and more predictable than inferring from values.
-BOOLEAN_COLUMNS = frozenset({"is_collaborator", "is_contributor"})
-INTEGER_COLUMNS = frozenset({"org_rating", "country_id"})
-TIMESTAMP_COLUMNS = frozenset({"created_at", "last_updated_at", "last_update_date"})
+BOOLEAN_COLUMNS = frozenset(
+    {"is_collaborator", "is_contributor", "iscalamity", "to_public"}
+)
+INTEGER_COLUMNS = frozenset(
+    {
+        "org_rating",
+        "country_id",
+        "volunteers_assigned_id",
+        "req_for_id",
+        "req_islead_id",
+        "req_type_id",
+        "req_priority_id",
+        "req_status_id",
+        "user_status_id",
+        "user_category_id",
+        "promotion_wizard_stage",
+    }
+)
+TIMESTAMP_COLUMNS = frozenset(
+    {
+        "created_at",
+        "last_updated_at",
+        "last_update_date",
+        "submission_date",
+        "serviced_date",
+    }
+)
 
-TABLES: dict[str, Path] = {
-    "organizations": ORGANIZATIONS_CSV,
-    "state": STATE_CSV,
+# Some exports write a literal ``NULL`` where others leave the cell empty;
+# both mean SQL NULL.
+NULL_TOKENS = frozenset({"", "NULL", "NONE"})
+
+# Each table is loaded from one or more CSVs sharing an identical header.
+TABLES: dict[str, tuple[Path, ...]] = {
+    "organizations": (ORGANIZATIONS_CSV,),
+    "state": (STATE_CSV,),
+    "request": (REQUEST_CSV, REQUEST_EXTRA_CSV),
+    "users": (USERS_CSV, USERS_EXTRA_CSV),
+    "user_status": (USER_STATUS_CSV,),
+    "volunteers_assigned": (VOLUNTEERS_ASSIGNED_CSV,),
 }
 
 LOOPBACK_HOSTS = frozenset({"localhost", "127.0.0.1", "::1"})
@@ -86,7 +139,7 @@ def _coerce_csv_value(column: str, raw: Optional[str]) -> Any:
     if raw is None:
         return None
     text = raw.strip()
-    if text == "":
+    if text.upper() in NULL_TOKENS:
         return None
     if column in BOOLEAN_COLUMNS:
         return text.upper() == "TRUE"
@@ -123,6 +176,34 @@ def read_fixture(path: Path) -> tuple[list[str], list[dict[str, Any]]]:
     return columns, rows
 
 
+def read_fixtures(paths: Iterable[Path]) -> tuple[list[str], list[dict[str, Any]]]:
+    """Read one or more CSVs sharing a header into a single row list.
+
+    Args:
+        paths: Fixture paths, in load order. The first one defines the
+            column list.
+
+    Returns:
+        A ``(columns, rows)`` tuple covering every file.
+
+    Raises:
+        ValueError: If the files do not all share the same header.
+    """
+    columns: list[str] = []
+    rows: list[dict[str, Any]] = []
+    for index, path in enumerate(paths):
+        file_columns, file_rows = read_fixture(path)
+        if index == 0:
+            columns = file_columns
+        elif file_columns != columns:
+            raise ValueError(
+                f"{path} has columns {file_columns} but the first fixture for "
+                f"this table has {columns}; the headers must match."
+            )
+        rows.extend(file_rows)
+    return columns, rows
+
+
 def load_organizations() -> list[dict[str, Any]]:
     """Return the typed rows of ``organizations.csv`` (the test oracle)."""
     return read_fixture(ORGANIZATIONS_CSV)[1]
@@ -131,6 +212,26 @@ def load_organizations() -> list[dict[str, Any]]:
 def load_states() -> list[dict[str, Any]]:
     """Return the typed rows of ``state.csv`` (the test oracle)."""
     return read_fixture(STATE_CSV)[1]
+
+
+def load_requests() -> list[dict[str, Any]]:
+    """Return the typed ``request`` rows (the test oracle for issue #295)."""
+    return read_fixtures(TABLES["request"])[1]
+
+
+def load_users() -> list[dict[str, Any]]:
+    """Return the typed ``users`` rows (the test oracle for issue #295)."""
+    return read_fixtures(TABLES["users"])[1]
+
+
+def load_user_statuses() -> list[dict[str, Any]]:
+    """Return the typed ``user_status`` lookup rows."""
+    return read_fixtures(TABLES["user_status"])[1]
+
+
+def load_volunteers_assigned() -> list[dict[str, Any]]:
+    """Return the typed ``volunteers_assigned`` rows (the assignment oracle)."""
+    return read_fixtures(TABLES["volunteers_assigned"])[1]
 
 
 # --------------------------------------------------------------------------- #
@@ -326,8 +427,8 @@ def _build_sqlite() -> MockConnection:
     raw.create_function("date_trunc", 2, _sql_date_trunc)
     raw.create_function("to_char", 2, _sql_to_char)
 
-    for table, path in TABLES.items():
-        columns, rows = read_fixture(path)
+    for table, paths in TABLES.items():
+        columns, rows = read_fixtures(paths)
         column_ddl = ", ".join(
             f'"{col}" {_sqlite_column_type(col)}' for col in columns
         )
@@ -384,8 +485,8 @@ def _build_postgres() -> Any:
     )
     with connection.cursor() as cursor:
         cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA_NAME}")
-        for table, path in TABLES.items():
-            columns, rows = read_fixture(path)
+        for table, paths in TABLES.items():
+            columns, rows = read_fixtures(paths)
             column_ddl = ", ".join(
                 f'"{col}" {_postgres_column_type(col)}' for col in columns
             )
