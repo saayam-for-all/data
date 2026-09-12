@@ -1,0 +1,21 @@
+cat_id,cat_name,cat_desc,last_updated_at
+1,FOOD_ASSISTANCE,"Help with food access, meals, or essential groceries.",2025-02-10 22:24:00
+2,SHELTER_ASSISTANCE,Help locating temporary shelter or housing resources.,2024-09-08 00:12:45
+3,CLOTHING_ASSISTANCE,Help obtaining clothing and basic personal necessities.,2025-11-17 08:49:18
+4,TRANSPORTATION_ASSISTANCE,Help with transportation to essential destinations.,2026-05-07 00:08:12
+5,EDUCATION_SUPPORT,"Tutoring, learning support, and educational assistance.",2025-10-26 09:19:26
+6,TECHNOLOGY_SUPPORT,"Help with devices, software, or basic technology access.",2026-05-21 08:07:25
+7,ELDER_SUPPORT,Non-emergency assistance for elderly community members.,2024-01-16 00:30:45
+8,CHILDCARE_SUPPORT,Community assistance related to childcare needs.,2024-06-22 18:57:38
+9,MEDICAL_TRANSPORT,Non-emergency transportation related to medical care.,2024-04-26 21:17:39
+10,MENTAL_WELLNESS_SUPPORT,Non-emergency community mental wellness support.,2024-08-19 13:08:47
+11,JOB_SEARCH_SUPPORT,"Help with resumes, job searches, and employment resources.",2026-04-27 13:04:49
+12,LANGUAGE_SUPPORT,Translation and language assistance for community needs.,2024-02-25 23:13:34
+13,LEGAL_RESOURCE_GUIDANCE,Help locating appropriate non-emergency legal resources.,2025-07-27 13:22:10
+14,HOME_REPAIR_SUPPORT,Basic community assistance with minor home repair needs.,2026-06-23 21:31:50
+15,DISASTER_RECOVERY_SUPPORT,Community assistance related to disaster recovery.,2026-05-08 07:37:43
+16,PET_SUPPORT,Help related to non-emergency pet care or supplies.,2024-08-18 01:20:11
+17,DOCUMENTATION_SUPPORT,Help understanding or organizing general documentation.,2025-10-29 15:36:36
+18,COMMUNITY_OUTREACH,Support for community outreach and volunteer engagement.,2024-07-16 23:30:48
+19,DONATION_PICKUP,Help coordinating pickup and movement of donated items.,2024-03-05 23:29:34
+20,OTHER_COMMUNITY_SUPPORT,Other non-emergency community assistance.,2025-04-23 20:42:15
