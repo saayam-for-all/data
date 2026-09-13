@@ -1,0 +1,81 @@
+cat_id,cat_name,cat_desc,last_updated_at
+0.0.0.0.0,Uncategorized,General or unspecified request category (catch-all when no specific category applies).,2026-09-01 09:19:07
+1,Food & Groceries,Top-level category covering food & groceries.,2025-11-19 09:08:58
+1.1,Food & Groceries: Grocery Delivery,Help related to grocery delivery under food & groceries.,2025-06-06 22:02:49
+1.2,Food & Groceries: Meal Preparation,Help related to meal preparation under food & groceries.,2025-07-26 11:24:25
+1.3,Food & Groceries: Food Pantry Referral,Help related to food pantry referral under food & groceries.,2025-07-17 01:29:11
+1.3.1,Food & Groceries: SNAP/WIC Assistance,Help related to snap/wic assistance under food & groceries.,2025-11-26 03:47:03
+1.3.2,Food & Groceries: Community Garden Support,Help related to community garden support under food & groceries.,2025-07-23 16:25:59
+1.3.3,Food & Groceries: Grocery Delivery,Help related to grocery delivery under food & groceries.,2025-06-25 17:34:47
+1.3.4,Food & Groceries: Meal Preparation,Help related to meal preparation under food & groceries.,2026-02-12 23:38:00
+1.3.5,Food & Groceries: Food Pantry Referral,Help related to food pantry referral under food & groceries.,2025-07-26 08:52:36
+2,Housing & Shelter,Top-level category covering housing & shelter.,2026-07-05 16:33:53
+2.1,Housing & Shelter: Emergency Shelter,Help related to emergency shelter under housing & shelter.,2025-12-03 04:43:40
+2.2,Housing & Shelter: Rent Assistance,Help related to rent assistance under housing & shelter.,2026-01-03 15:11:32
+2.3,Housing & Shelter: Utility Bill Support,Help related to utility bill support under housing & shelter.,2026-06-13 08:46:55
+2.4,Housing & Shelter: Home Repair,Help related to home repair under housing & shelter.,2025-11-14 17:39:48
+3,Healthcare & Medical,Top-level category covering healthcare & medical.,2026-07-25 04:02:56
+3.1,Healthcare & Medical: Doctor Visit Transport,Help related to doctor visit transport under healthcare & medical.,2025-09-12 02:28:17
+3.10,Healthcare & Medical: Prescription Pickup,Help related to prescription pickup under healthcare & medical.,2026-08-18 21:00:53
+3.2,Healthcare & Medical: Health Insurance Navigation,Help related to health insurance navigation under healthcare & medical.,2026-08-22 21:21:49
+3.3,Healthcare & Medical: Mental Health Check-in,Help related to mental health check-in under healthcare & medical.,2026-06-03 11:13:35
+3.3.1,Healthcare & Medical: Medical Equipment Loan,Help related to medical equipment loan under healthcare & medical.,2025-12-07 01:47:48
+3.3.10,Healthcare & Medical: Vaccination Support,Help related to vaccination support under healthcare & medical.,2026-06-03 16:51:16
+3.3.11,Healthcare & Medical: Elder Care Assistance,Help related to elder care assistance under healthcare & medical.,2026-04-13 12:08:51
+3.3.12,Healthcare & Medical: Caregiver Respite,Help related to caregiver respite under healthcare & medical.,2025-10-27 05:29:53
+3.3.13,Healthcare & Medical: Wellness Coaching,Help related to wellness coaching under healthcare & medical.,2025-08-13 14:21:37
+3.3.2,Healthcare & Medical: Physical Therapy Transport,Help related to physical therapy transport under healthcare & medical.,2025-08-15 14:55:16
+3.3.3,Healthcare & Medical: Home Health Visit Support,Help related to home health visit support under healthcare & medical.,2026-05-02 03:22:35
+3.3.4,Healthcare & Medical: Hospice Companionship,Help related to hospice companionship under healthcare & medical.,2026-03-03 12:35:07
+3.3.5,Healthcare & Medical: Dental Care Referral,Help related to dental care referral under healthcare & medical.,2026-04-26 08:04:40
+3.3.6,Healthcare & Medical: Doctor Visit Transport,Help related to doctor visit transport under healthcare & medical.,2026-04-16 15:30:06
+3.3.7,Healthcare & Medical: Prescription Pickup,Help related to prescription pickup under healthcare & medical.,2026-05-30 01:58:14
+3.3.8,Healthcare & Medical: Health Insurance Navigation,Help related to health insurance navigation under healthcare & medical.,2025-07-13 09:49:26
+3.3.9,Healthcare & Medical: Mental Health Check-in,Help related to mental health check-in under healthcare & medical.,2025-08-16 18:38:31
+3.4,Healthcare & Medical: Medical Equipment Loan,Help related to medical equipment loan under healthcare & medical.,2025-07-18 09:54:07
+3.5,Healthcare & Medical: Vaccination Support,Help related to vaccination support under healthcare & medical.,2026-04-10 01:24:16
+3.6,Healthcare & Medical: Elder Care Assistance,Help related to elder care assistance under healthcare & medical.,2026-02-19 21:03:32
+3.7,Healthcare & Medical: Caregiver Respite,Help related to caregiver respite under healthcare & medical.,2025-08-25 04:55:20
+3.8,Healthcare & Medical: Wellness Coaching,Help related to wellness coaching under healthcare & medical.,2025-12-11 11:17:24
+3.9,Healthcare & Medical: Physical Therapy Transport,Help related to physical therapy transport under healthcare & medical.,2025-10-28 03:29:52
+4,Education & Tutoring,Top-level category covering education & tutoring.,2025-10-27 01:45:03
+4.1,Education & Tutoring: Tutoring - K-12,Help related to tutoring - k-12 under education & tutoring.,2026-07-22 21:05:27
+4.2,Education & Tutoring: ESL Support,Help related to esl support under education & tutoring.,2026-05-15 18:45:45
+4.3,Education & Tutoring: College Application Help,Help related to college application help under education & tutoring.,2025-09-18 05:11:14
+4.3.1,Education & Tutoring: Job Skills Training,Help related to job skills training under education & tutoring.,2026-04-25 00:26:37
+4.3.2,Education & Tutoring: Computer Literacy,Help related to computer literacy under education & tutoring.,2025-10-21 20:27:53
+4.3.3,Education & Tutoring: Reading Buddy Program,Help related to reading buddy program under education & tutoring.,2026-01-03 16:27:28
+4.3.4,Education & Tutoring: Tutoring - K-12,Help related to tutoring - k-12 under education & tutoring.,2026-05-26 16:00:44
+4.3.5,Education & Tutoring: ESL Support,Help related to esl support under education & tutoring.,2025-12-12 08:43:46
+4.3.6,Education & Tutoring: College Application Help,Help related to college application help under education & tutoring.,2025-07-29 21:16:34
+4.4,Education & Tutoring: Job Skills Training,Help related to job skills training under education & tutoring.,2026-05-11 12:33:20
+4.5,Education & Tutoring: Computer Literacy,Help related to computer literacy under education & tutoring.,2026-08-02 18:48:26
+4.6,Education & Tutoring: Reading Buddy Program,Help related to reading buddy program under education & tutoring.,2025-08-16 09:09:03
+4.7,Education & Tutoring: Tutoring - K-12,Help related to tutoring - k-12 under education & tutoring.,2025-07-10 15:02:05
+5,Transportation,Top-level category covering transportation.,2026-07-26 05:17:22
+5.1,Transportation: Rides to Appointments,Help related to rides to appointments under transportation.,2025-06-12 19:06:22
+5.1.1,Transportation: Grocery Run Transport,Help related to grocery run transport under transportation.,2025-08-12 18:32:38
+5.1.10,Transportation: Airport Pickup/Dropoff,Help related to airport pickup/dropoff under transportation.,2025-12-01 22:25:59
+5.1.11,Transportation: Wheelchair-Accessible Rides,Help related to wheelchair-accessible rides under transportation.,2025-10-08 12:15:49
+5.1.2,Transportation: Public Transit Assistance,Help related to public transit assistance under transportation.,2026-04-13 00:06:25
+5.1.3,Transportation: Carpool Coordination,Help related to carpool coordination under transportation.,2026-06-13 13:00:24
+5.1.4,Transportation: Moving Day Help,Help related to moving day help under transportation.,2026-06-10 05:10:16
+5.1.5,Transportation: Non-Emergency Medical Transport,Help related to non-emergency medical transport under transportation.,2025-11-14 08:32:18
+5.1.6,Transportation: School Run Transport,Help related to school run transport under transportation.,2026-04-08 19:55:58
+5.1.7,Transportation: Errand Running,Help related to errand running under transportation.,2025-07-16 21:02:35
+5.1.8,Transportation: Wheelchair Ramp Assistance,Help related to wheelchair ramp assistance under transportation.,2025-10-07 05:03:30
+5.1.9,Transportation: Rides to Appointments,Help related to rides to appointments under transportation.,2026-03-22 16:34:15
+5.2,Transportation: Grocery Run Transport,Help related to grocery run transport under transportation.,2025-06-03 00:10:44
+5.3,Transportation: Airport Pickup/Dropoff,Help related to airport pickup/dropoff under transportation.,2026-03-31 13:59:20
+5.4,Transportation: Wheelchair-Accessible Rides,Help related to wheelchair-accessible rides under transportation.,2025-12-24 07:44:35
+5.5,Transportation: Public Transit Assistance,Help related to public transit assistance under transportation.,2026-05-20 17:58:14
+6,Emotional & Social Support,Top-level category covering emotional & social support.,2026-01-08 21:25:51
+6.1,Emotional & Social Support: Friendly Phone Call,Help related to friendly phone call under emotional & social support.,2026-04-25 21:25:51
+6.2,Emotional & Social Support: Companionship Visit,Help related to companionship visit under emotional & social support.,2026-08-07 00:16:20
+6.3,Emotional & Social Support: Grief Support Group,Help related to grief support group under emotional & social support.,2026-06-14 08:12:45
+6.4,Emotional & Social Support: New Parent Support,Help related to new parent support under emotional & social support.,2025-09-29 13:37:19
+6.5,Emotional & Social Support: Isolation Check-in,Help related to isolation check-in under emotional & social support.,2025-10-26 19:57:10
+6.6,Emotional & Social Support: Peer Mentoring,Help related to peer mentoring under emotional & social support.,2026-01-17 19:02:05
+6.7,Emotional & Social Support: Community Event Buddy,Help related to community event buddy under emotional & social support.,2025-11-17 10:14:19
+6.8,Emotional & Social Support: Holiday Companionship,Help related to holiday companionship under emotional & social support.,2025-07-16 18:12:27
+6.9,Emotional & Social Support: Friendly Phone Call,Help related to friendly phone call under emotional & social support.,2026-08-25 04:42:11
