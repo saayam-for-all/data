@@ -1,0 +1,17 @@
+state_id,state_name,state_code,country_id
+1,California,C,1
+2,Texas,T,1
+3,Arizona,A,1
+4,New York,NY,1
+5,Florida,F,1
+6,Washington,W,1
+7,Illinois,I,1
+8,Georgia,G,1
+9,Colorado,C,1
+10,Massachusetts,M,1
+11,Ontario,O,2
+12,British Columbia,BC,2
+13,Quebec,Q,2
+14,Maharashtra,M,3
+15,Karnataka,K,3
+16,Telangana,T,3
