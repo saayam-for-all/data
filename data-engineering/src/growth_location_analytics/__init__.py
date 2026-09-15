@@ -12,6 +12,11 @@ from .date_ranges import (
 )
 from .growth import GrowthPoint, GrowthResult, calculate_organization_growth
 from .loader import LocalDataError, LocalDataTables, load_local_data
+from .location import (
+    CountryCount,
+    LocationCalculationError,
+    calculate_country_distribution,
+)
 
 __all__ = [
     "ALL_BUCKETS",
@@ -19,11 +24,14 @@ __all__ = [
     "AnalyticsDateRanges",
     "DateRangeError",
     "DateWindow",
+    "CountryCount",
     "GrowthPoint",
     "GrowthResult",
     "LocalDataError",
     "LocalDataTables",
+    "LocationCalculationError",
     "bucket_granularity",
+    "calculate_country_distribution",
     "calculate_organization_growth",
     "load_local_data",
     "period_label",
