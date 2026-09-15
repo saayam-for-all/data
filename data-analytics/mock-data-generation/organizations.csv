@@ -1,0 +1,101 @@
+org_id,org_name,state_id,city_name,created_at,last_updated_at
+1,"Rodriguez, Figueroa and Sanchez Alliance",4,New York City,2026-07-30 23:30:11,2026-08-13 07:56:07
+2,Doyle Ltd Coalition,8,Atlanta,2026-07-27 00:49:06,2026-08-01 00:14:01
+3,"Mcclain, Miller and Henderson Foundation",3,Tucson,2025-11-24 17:11:34,2025-12-07 01:25:43
+4,Davis and Sons Coalition,3,Phoenix,2025-06-30 17:06:48,2026-07-28 05:37:07
+5,"Guzman, Hoffman and Baldwin Alliance",1,San Francisco,2026-07-11 03:34:22,2026-08-20 21:07:29
+6,"Gardner, Robinson and Lawrence Alliance",15,Mysuru,2025-01-06 01:08:44,2026-08-18 10:20:24
+7,Blake and Sons Alliance,14,Pune,2025-08-04 19:53:50,2025-12-03 14:14:42
+8,"Henderson, Ramirez and Lewis Foundation",11,Toronto,2025-03-14 00:54:28,2026-01-03 03:15:57
+9,Garcia-James Foundation,12,Victoria,2026-04-14 22:16:08,2026-06-05 07:01:31
+10,Abbott-Munoz Coalition,15,Bengaluru,2025-10-22 00:23:32,2025-11-21 14:51:47
+11,Blair PLC Foundation,10,Cambridge,2026-03-25 10:37:26,2026-05-01 18:45:13
+12,Dudley Group Foundation,2,Dallas,2025-06-27 00:19:54,2026-02-06 18:54:51
+13,Arnold Ltd Initiative,8,Atlanta,2025-10-23 06:03:59,2026-02-08 04:58:05
+14,"Mcclure, Ward and Lee Alliance",12,Vancouver,2025-10-15 12:40:24,2026-03-02 12:02:10
+15,Williams and Sons Alliance,9,Denver,2026-04-19 03:01:29,2026-08-20 10:14:16
+16,Galloway-Wyatt Network,8,Atlanta,2025-12-26 01:09:17,2026-05-22 09:56:08
+17,James Group Foundation,8,Savannah,2026-08-20 18:24:11,2026-08-30 04:25:45
+18,"Flowers, Martin and Kelly Network",8,Atlanta,2025-09-03 00:28:15,2026-02-05 19:35:51
+19,"Adams, Zuniga and Wong Network",3,Phoenix,2026-03-17 13:00:08,2026-08-03 22:43:30
+20,"Reid, Ferguson and Sanchez Initiative",7,Springfield,2025-11-04 07:06:47,2026-07-11 22:55:36
+21,Gray-Mayo Coalition,5,Orlando,2025-04-19 10:53:52,2025-10-28 00:22:03
+22,"Watts, Robinson and Nguyen Network",9,Boulder,2026-03-30 05:50:31,2026-06-15 19:10:59
+23,Perez Inc Foundation,8,Atlanta,2026-01-31 18:15:30,2026-08-11 10:09:33
+24,Morales-Jones Alliance,2,Austin,2025-04-29 17:10:07,2026-08-30 01:36:38
+25,"Walter, Edwards and Rios Coalition",14,Mumbai,2025-10-26 20:34:57,2026-03-24 01:31:55
+26,Wilkerson-Day Foundation,15,Mysuru,2026-03-06 16:52:41,2026-08-20 20:24:07
+27,Baker and Sons Network,4,Albany,2026-02-22 01:51:08,2026-07-17 21:11:47
+28,"Hoffman, Baker and Richards Alliance",11,Toronto,2025-08-16 23:14:20,2026-02-01 19:32:41
+29,"Ross, Robinson and Bright Network",15,Bengaluru,2026-07-15 20:46:17,2026-08-27 09:12:50
+30,"Snyder, Campos and Callahan Coalition",6,Seattle,2026-05-01 16:26:25,2026-06-28 15:17:37
+31,Burton Ltd Alliance,7,Chicago,2025-10-18 10:15:33,2026-08-10 13:22:29
+32,Carlson-Cruz Foundation,1,Los Angeles,2026-01-15 12:16:14,2026-01-23 01:48:25
+33,"Ferrell, Rice and Maddox Alliance",12,Victoria,2025-07-05 23:42:52,2025-08-19 23:31:04
+34,Frazier Inc Foundation,3,Phoenix,2026-07-23 11:44:47,2026-08-16 01:57:58
+35,"Dyer, Potter and Mack Coalition",5,Miami,2026-05-28 10:38:48,2026-07-13 14:08:05
+36,Rodriguez-Graham Alliance,6,Spokane,2026-02-14 20:33:08,2026-07-29 04:29:01
+37,Smith-Bowen Network,7,Springfield,2025-11-06 21:45:19,2026-07-25 18:19:53
+38,"Baker, Mason and White Alliance",15,Mysuru,2025-04-04 23:40:54,2025-10-14 12:58:38
+39,Harrell LLC Coalition,3,Tempe,2025-01-17 08:06:25,2026-04-19 06:58:34
+40,"Romero, Gonzalez and Brooks Foundation",8,Atlanta,2025-01-06 14:02:49,2025-03-02 17:27:14
+41,Ryan PLC Foundation,8,Atlanta,2025-01-25 09:34:47,2025-10-09 01:12:47
+42,George Group Alliance,8,Savannah,2026-06-04 14:38:58,2026-07-21 17:44:49
+43,Rodriguez LLC Initiative,5,Tampa,2026-03-20 13:00:53,2026-07-10 10:21:20
+44,Allen-Allen Foundation,8,Savannah,2025-11-13 04:08:51,2026-01-26 02:53:47
+45,"Arroyo, Miller and Tucker Initiative",4,Albany,2025-12-01 19:22:35,2026-04-18 09:40:08
+46,Spence PLC Foundation,14,Pune,2026-07-21 06:57:32,2026-07-23 22:04:22
+47,Anderson Group Foundation,2,Houston,2026-07-20 14:53:06,2026-08-06 02:12:04
+48,"Martin, Rose and Obrien Initiative",8,Atlanta,2025-05-28 17:45:03,2026-07-19 06:50:30
+49,Hickman Ltd Initiative,5,Orlando,2025-05-23 12:27:53,2025-12-25 20:55:21
+50,"Harris, Collins and Carney Foundation",8,Atlanta,2025-12-11 04:33:20,2026-07-12 21:57:33
+51,"Brooks, Lam and Hayes Foundation",2,Dallas,2026-02-24 21:17:22,2026-08-06 05:27:37
+52,Walker LLC Initiative,3,Phoenix,2025-05-10 04:15:49,2026-03-21 20:22:14
+53,Chapman and Sons Alliance,16,Hyderabad,2025-11-08 11:55:58,2025-12-01 06:27:15
+54,"Robinson, Jones and Welch Initiative",13,Montreal,2025-10-31 05:59:20,2026-02-11 05:51:37
+55,Jones Inc Initiative,10,Cambridge,2026-06-26 01:24:24,2026-08-19 00:26:26
+56,Jones-Young Foundation,5,Miami,2025-08-19 11:02:05,2025-11-12 00:09:14
+57,"Washington, Ryan and Cummings Foundation",2,Dallas,2025-09-01 14:01:02,2025-09-23 18:50:10
+58,"Johnston, Sanchez and Kennedy Foundation",16,Hyderabad,2025-02-14 04:18:43,2026-03-15 14:55:16
+59,Lee-Davis Alliance,6,Seattle,2026-04-08 04:15:30,2026-04-21 08:58:44
+60,Gomez-Jenkins Coalition,13,Montreal,2026-03-19 11:31:09,2026-05-06 06:57:57
+61,"Brown, Valdez and Lucas Coalition",2,Dallas,2025-03-05 16:16:53,2026-01-25 07:12:00
+62,Powell LLC Alliance,11,Ottawa,2025-06-08 15:40:02,2026-02-07 16:28:44
+63,Wright and Sons Network,9,Boulder,2025-04-12 15:44:52,2026-08-27 00:45:16
+64,"West, Henderson and Ramirez Foundation",15,Mysuru,2026-08-07 23:46:11,2026-08-30 16:52:28
+65,Baxter Inc Foundation,1,Sacramento,2026-04-28 11:14:51,2026-08-15 18:59:16
+66,Morton-Chase Network,3,Tucson,2025-06-15 13:29:03,2026-07-13 11:51:30
+67,Williams PLC Network,5,Orlando,2025-02-23 10:21:46,2025-09-01 04:09:15
+68,Novak and Sons Network,10,Boston,2025-12-07 08:21:08,2026-07-06 07:30:38
+69,Russell Group Alliance,1,Los Angeles,2026-05-31 06:27:43,2026-06-10 07:50:09
+70,Hancock Inc Alliance,9,Denver,2025-03-25 03:17:42,2026-05-28 20:07:52
+71,Gray Group Network,9,Boulder,2026-04-15 18:50:42,2026-05-26 16:27:01
+72,House-Glover Network,7,Springfield,2026-01-28 13:30:27,2026-08-06 06:57:15
+73,Henderson-Bernard Network,2,Austin,2026-05-08 15:55:08,2026-07-29 21:55:30
+74,"Stanley, Tucker and Lee Alliance",2,Austin,2025-09-17 01:56:40,2026-07-13 13:17:47
+75,Novak PLC Coalition,9,Denver,2026-07-30 17:32:44,2026-08-21 04:19:16
+76,"Daniels, Adkins and Brown Alliance",14,Mumbai,2025-03-28 21:28:49,2025-05-26 08:07:38
+77,"Woods, Calhoun and Schmidt Alliance",2,Houston,2026-03-29 10:45:55,2026-07-14 17:43:07
+78,Yu Inc Network,14,Mumbai,2025-02-02 11:44:47,2025-09-29 22:05:54
+79,Jones Inc Foundation,2,Houston,2025-06-13 04:06:37,2025-12-23 23:40:54
+80,"Hensley, Powell and David Alliance",12,Victoria,2026-04-28 01:58:08,2026-05-28 02:14:22
+81,"Sanchez, Wheeler and Harvey Alliance",6,Seattle,2025-11-17 05:43:29,2025-11-26 20:45:01
+82,Sandoval-Cunningham Alliance,11,Ottawa,2026-06-05 07:58:26,2026-08-28 05:23:20
+83,Donovan-Harris Initiative,9,Denver,2026-06-29 16:46:22,2026-07-10 04:39:13
+84,"Edwards, Baker and Anderson Initiative",2,Houston,2025-06-22 18:27:54,2025-11-24 18:46:19
+85,"Evans, Stewart and Walton Foundation",12,Victoria,2025-06-26 18:41:14,2025-12-16 22:17:00
+86,Smith PLC Foundation,7,Springfield,2025-09-12 23:14:46,2025-12-30 04:00:53
+87,"Ferrell, Jones and Lewis Initiative",9,Boulder,2026-05-14 06:05:10,2026-08-21 04:05:19
+88,Anderson-Bailey Alliance,11,Toronto,2025-03-31 14:07:33,2025-10-20 11:31:48
+89,Suarez LLC Initiative,9,Denver,2025-03-26 04:46:11,2026-07-02 13:39:50
+90,Moore-Bass Coalition,12,Victoria,2025-12-05 22:58:17,2026-07-29 09:14:50
+91,"Turner, Riggs and Roman Network",4,Buffalo,2026-03-24 20:22:48,2026-04-30 18:12:40
+92,"Smith, Montoya and Evans Coalition",2,Dallas,2025-12-05 16:42:04,2025-12-06 08:27:53
+93,"Garcia, Humphrey and Baker Network",7,Springfield,2025-12-01 23:57:58,2025-12-29 04:10:09
+94,Newton and Sons Coalition,11,Toronto,2026-07-14 01:11:30,2026-08-12 04:59:35
+95,Campbell-Clark Network,10,Cambridge,2025-09-11 08:29:24,2026-02-14 15:08:00
+96,Harris-Walters Initiative,5,Miami,2025-11-23 13:41:15,2026-08-08 19:16:44
+97,Wagner-King Foundation,6,Spokane,2025-11-12 09:47:23,2026-06-13 04:56:04
+98,Davis Group Coalition,10,Cambridge,2025-06-13 06:05:21,2026-05-13 03:47:06
+99,Williams-Cook Alliance,11,Ottawa,2025-12-10 03:29:17,2026-05-30 20:42:57
+100,Walsh LLC Network,16,Hyderabad,2026-05-27 17:52:05,2026-06-04 23:27:21
