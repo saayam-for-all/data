@@ -1,0 +1,4 @@
+city_id,state_id,city_name,latitude,longitude,last_updated_at
+1,VA,Richmond,37.540725,-77.436048,2026-09-01 10:40:00
+2,CA,San Jose,37.338208,-121.886329,2026-09-01 10:45:00
+3,NY,New York,40.712776,-74.005974,2026-09-01 10:50:00
