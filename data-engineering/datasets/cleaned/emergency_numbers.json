@@ -1,0 +1,2534 @@
+{
+  "AD": {
+    "default": {
+      "police": "110",
+      "ambulance": "116",
+      "fire": "118",
+      "mountain_rescue": "112"
+    },
+    "states": {}
+  },
+  "AE": {
+    "default": {
+      "ambulance": "998",
+      "fire": "997",
+      "police": "999",
+      "women_helpline": "800111",
+      "general_emergency": "999",
+      "coastguard": "996",
+      "suicide_helpline": "920033360"
+    },
+    "states": {}
+  },
+  "AF": {
+    "default": {
+      "police": "119",
+      "ambulance": "112",
+      "fire": "119"
+    },
+    "states": {}
+  },
+  "AG": {
+    "default": {
+      "general_emergency": "999; 911",
+      "police": "999; 911",
+      "ambulance": "999; 911",
+      "fire": "999; 911"
+    },
+    "states": {}
+  },
+  "AI": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "AL": {
+    "default": {
+      "ambulance": "127",
+      "fire": "128",
+      "police": "129"
+    },
+    "states": {}
+  },
+  "AM": {
+    "default": {
+      "general_emergency": "911",
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "women_helpline": "114"
+    },
+    "states": {}
+  },
+  "AO": {
+    "default": {
+      "ambulance": "112",
+      "fire": "115",
+      "police": "113"
+    },
+    "states": {}
+  },
+  "AQ": {
+    "default": {},
+    "states": {}
+  },
+  "AR": {
+    "default": {
+      "ambulance": "107",
+      "fire": "100",
+      "police": "101",
+      "general_emergency": "911",
+      "disaster_management": "103",
+      "suicide_helpline": "0800-345-1435"
+    },
+    "states": {}
+  },
+  "AS": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "AT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "133",
+      "ambulance": "144",
+      "fire": "122",
+      "suicide_helpline": "142",
+      "women_helpline": "0800 222 555"
+    },
+    "states": {}
+  },
+  "AU": {
+    "default": {
+      "general_emergency": "000",
+      "police": "000",
+      "ambulance": "000",
+      "fire": "000",
+      "suicide_helpline": "131114",
+      "domestic_violence_helpline": "1800737732",
+      "women_helpline": "1800 737 732"
+    },
+    "states": {}
+  },
+  "AW": {
+    "default": {
+      "ambulance": "911",
+      "fire": "911",
+      "police": "100"
+    },
+    "states": {}
+  },
+  "AX": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112"
+    },
+    "states": {}
+  },
+  "AZ": {
+    "default": {
+      "ambulance": "103",
+      "fire": "101",
+      "police": "102",
+      "general_emergency": "112",
+      "women_helpline": "0800 222 555"
+    },
+    "states": {}
+  },
+  "BA": {
+    "default": {
+      "ambulance": "124",
+      "fire": "123",
+      "police": "122",
+      "suicide_helpline": "080 05 03 05"
+    },
+    "states": {
+      "Federation of Bosnia and Herzegovina": {
+        "default": {
+          "women_helpline": "1265"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Republika Srpska": {
+        "default": {
+          "women_helpline": "1264"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "BB": {
+    "default": {
+      "ambulance": "511",
+      "fire": "311",
+      "police": "211",
+      "suicide_helpline": "246-536-4500"
+    },
+    "states": {}
+  },
+  "BD": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999",
+      "women_helpline": "109",
+      "suicide_helpline": "09612-119911"
+    },
+    "states": {}
+  },
+  "BE": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "1813",
+      "women_helpline": "1712"
+    },
+    "states": {
+      "Flanders": {
+        "default": {
+          "suicide_helpline": "1813"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Wallonia": {
+        "default": {
+          "suicide_helpline": "0800 32 123"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "BF": {
+    "default": {
+      "police": "17",
+      "ambulance": "112",
+      "fire": "18"
+    },
+    "states": {
+      "Kadiogo": {
+        "default": {},
+        "cities": {
+          "Ouagadougou": {
+            "police": "17",
+            "ambulance": "18",
+            "fire": "18"
+          }
+        },
+        "zips": {}
+      }
+    }
+  },
+  "BG": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "+359 800 18 676"
+    },
+    "states": {}
+  },
+  "BH": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "BI": {
+    "default": {
+      "general_emergency": "112",
+      "police": "117",
+      "ambulance": "112",
+      "fire": "118",
+      "red_cross": "109",
+      "suicide_helpline": "+257 69 77 63 67"
+    },
+    "states": {}
+  },
+  "BJ": {
+    "default": {
+      "ambulance": "112",
+      "fire": "118",
+      "police": "117",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "BL": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "BM": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "BN": {
+    "default": {
+      "ambulance": "991",
+      "fire": "995",
+      "police": "993",
+      "search_and_rescue": "998",
+      "suicide_helpline": "145"
+    },
+    "states": {}
+  },
+  "BO": {
+    "default": {
+      "ambulance": "118",
+      "police": "110",
+      "fire": "119",
+      "general_emergency": "911",
+      "disaster_management": "114"
+    },
+    "states": {}
+  },
+  "BQ": {
+    "default": {
+      "ambulance": "911",
+      "fire": "911",
+      "police": "911"
+    },
+    "states": {}
+  },
+  "BR": {
+    "default": {
+      "ambulance": "192",
+      "fire": "193",
+      "police": "190",
+      "disaster_management": "199",
+      "suicide_helpline": "188"
+    },
+    "states": {}
+  },
+  "BS": {
+    "default": {
+      "general_emergency": "911; 919",
+      "police": "911; 919",
+      "ambulance": "911; 919",
+      "fire": "911; 919",
+      "suicide_helpline": "322-2763"
+    },
+    "states": {}
+  },
+  "BT": {
+    "default": {
+      "ambulance": "112",
+      "fire": "110",
+      "police": "113"
+    },
+    "states": {}
+  },
+  "BV": {
+    "default": {},
+    "states": {}
+  },
+  "BW": {
+    "default": {
+      "ambulance": "997",
+      "fire": "998",
+      "police": "999",
+      "general_emergency": "112",
+      "suicide_helpline": "3911270"
+    },
+    "states": {}
+  },
+  "BY": {
+    "default": {
+      "ambulance": "103",
+      "fire": "101",
+      "police": "102",
+      "women_helpline": "+375 29 367 32 32"
+    },
+    "states": {}
+  },
+  "BZ": {
+    "default": {
+      "general_emergency": "911; 90",
+      "police": "911; 90",
+      "ambulance": "911; 90",
+      "fire": "911; 90"
+    },
+    "states": {}
+  },
+  "CA": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "suicide_helpline": "988",
+      "women_helpline": "1-866-863-0511"
+    },
+    "states": {
+      "Quebec": {
+        "default": {
+          "suicide_helpline": "1-866-277-3553"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "CC": {
+    "default": {
+      "police": "000"
+    },
+    "states": {}
+  },
+  "CD": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "fire": "118"
+    },
+    "states": {
+      "Kinshasa": {
+        "default": {
+          "police": "112",
+          "fire": "118"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "CF": {
+    "default": {
+      "police": "117",
+      "ambulance": "1220",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CG": {
+    "default": {
+      "police": "117",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CH": {
+    "default": {
+      "general_emergency": "112",
+      "police": "117",
+      "ambulance": "144",
+      "fire": "118",
+      "suicide_helpline": "143"
+    },
+    "states": {}
+  },
+  "CI": {
+    "default": {
+      "ambulance": "185",
+      "fire": "180",
+      "police": "110; 111"
+    },
+    "states": {}
+  },
+  "CK": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "CL": {
+    "default": {
+      "ambulance": "131",
+      "fire": "132",
+      "police": "133",
+      "suicide_helpline": "*4141"
+    },
+    "states": {}
+  },
+  "CM": {
+    "default": {
+      "ambulance": "119",
+      "fire": "118",
+      "police": "117",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "CN": {
+    "default": {
+      "ambulance": "120",
+      "fire": "119",
+      "police": "110",
+      "traffic_police": "122",
+      "maritime_search_and_rescue": "12395",
+      "suicide_helpline": "12356",
+      "coastguard": "95110"
+    },
+    "states": {}
+  },
+  "CO": {
+    "default": {
+      "ambulance": "125",
+      "fire": "119",
+      "police": "112",
+      "general_emergency": "123",
+      "suicide_helpline": "106"
+    },
+    "states": {}
+  },
+  "CR": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "suicide_helpline": "2272-3774"
+    },
+    "states": {}
+  },
+  "CU": {
+    "default": {
+      "ambulance": "104",
+      "fire": "105",
+      "police": "106"
+    },
+    "states": {}
+  },
+  "CV": {
+    "default": {
+      "ambulance": "130",
+      "fire": "131",
+      "police": "132"
+    },
+    "states": {}
+  },
+  "CW": {
+    "default": {
+      "ambulance": "912",
+      "fire": "911",
+      "police": "911"
+    },
+    "states": {}
+  },
+  "CX": {
+    "default": {
+      "general_emergency": "000",
+      "police": "000"
+    },
+    "states": {}
+  },
+  "CY": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "8000 7773",
+      "women_helpline": "1440"
+    },
+    "states": {}
+  },
+  "CZ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "116123",
+      "women_helpline": "116 016"
+    },
+    "states": {}
+  },
+  "DE": {
+    "default": {
+      "ambulance": "112",
+      "fire": "112",
+      "police": "110",
+      "suicide_helpline": "116123",
+      "women_helpline": "116016",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "DJ": {
+    "default": {
+      "ambulance": "19",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "DK": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "1888",
+      "suicide_helpline": "70 20 12 01"
+    },
+    "states": {}
+  },
+  "DM": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "DO": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "tourist_police": "18092003500"
+    },
+    "states": {}
+  },
+  "DZ": {
+    "default": {
+      "ambulance": "14",
+      "fire": "14",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "EC": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "131",
+      "fire": "102"
+    },
+    "states": {}
+  },
+  "EE": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "116 006",
+      "suicide_helpline": "655 8088"
+    },
+    "states": {}
+  },
+  "EG": {
+    "default": {
+      "ambulance": "123",
+      "fire": "180",
+      "police": "122",
+      "tourist_police": "126",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "EH": {
+    "default": {
+      "general_emergency": "150",
+      "police": "150",
+      "ambulance": "150",
+      "fire": "150"
+    },
+    "states": {}
+  },
+  "ER": {
+    "default": {
+      "ambulance": "114",
+      "fire": "116",
+      "police": "113",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "ES": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "024",
+      "women_helpline": "016"
+    },
+    "states": {}
+  },
+  "ET": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "907",
+      "fire": "939"
+    },
+    "states": {
+      "Addis Ababa": {
+        "default": {
+          "ambulance": "907"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "FI": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "+358 800 05005",
+      "suicide_helpline": "09 2525 0111"
+    },
+    "states": {}
+  },
+  "FJ": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "910",
+      "suicide_helpline": "132454"
+    },
+    "states": {}
+  },
+  "FK": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "FM": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "FO": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "FR": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18",
+      "suicide_helpline": "3114",
+      "women_helpline": "3919",
+      "child_helpline": "119"
+    },
+    "states": {}
+  },
+  "GA": {
+    "default": {
+      "police": "177",
+      "ambulance": "117",
+      "fire": "177"
+    },
+    "states": {}
+  },
+  "GB": {
+    "default": {
+      "suicide_helpline": "116123",
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {
+      "England": {
+        "default": {
+          "domestic_violence_helpline": "08082000247",
+          "women_helpline": "0808 2000 247"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Northern Ireland": {
+        "default": {
+          "domestic_violence_helpline": "08088021414",
+          "women_helpline": "0808 802 1414"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Wales": {
+        "default": {
+          "domestic_violence_helpline": "0808 8010 800",
+          "women_helpline": "0808 2000 247"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Scotland": {
+        "default": {
+          "domestic_violence_helpline": "08000271234",
+          "women_helpline": "0800 027 1234"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "GD": {
+    "default": {
+      "police": "911",
+      "fire": "911",
+      "general_emergency": "911"
+    },
+    "states": {
+      "Saint George": {
+        "default": {},
+        "cities": {
+          "St. George's": {
+            "ambulance": "434"
+          }
+        },
+        "zips": {}
+      },
+      "Saint Andrew": {
+        "default": {},
+        "cities": {
+          "Grenville": {
+            "ambulance": "724"
+          }
+        },
+        "zips": {}
+      },
+      "Carriacou and Petite Martinique": {
+        "default": {
+          "ambulance": "774"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "GE": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "116 006"
+    },
+    "states": {}
+  },
+  "GF": {
+    "default": {
+      "ambulance": "15",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "GG": {
+    "default": {
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "GH": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "GI": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "GL": {
+    "default": {
+       "general_emergency":"112",
+       "police": "112",
+       "ambulance": "112",
+       "fire": "112",
+       "disaster_management": "+299 21 52 22 22",
+       "women_helpline": "131",
+       "suicide_helpline": "+299 80 11 22"
+    },
+    "states": {}
+  },
+  "GM": {
+    "default": {
+      "general_emergency": "112",
+      "police": "117",
+      "ambulance": "116",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "GN": {
+    "default": {
+      "police": "117",
+      "ambulance": "18",
+      "fire": "442-020"
+    },
+    "states": {}
+  },
+  "GP": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18",
+      "coastguard": "196"
+    },
+    "states": {}
+  },
+  "GQ": {
+    "default": {
+      "ambulance": "115",
+      "police": "114",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "GR": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "1018",
+      "women_helpline": "15900",
+      "child_helpline": "1056"
+    },
+    "states": {}
+  },
+  "GS": {
+    "default": {},
+    "states": {}
+  },
+  "GT": {
+    "default": {
+      "ambulance": "122",
+      "fire": "122",
+      "police": "110",
+      "disaster_management": "119"
+    },
+    "states": {}
+  },
+  "GU": {
+    "default": {
+      "general_emergency": "911",
+      "ambulance": "911"
+    },
+    "states": {}
+  },
+  "GW": {
+    "default": {
+      "ambulance": "1313",
+      "fire": "1313",
+      "police": "117",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "GY": {
+    "default": {
+      "ambulance": "913",
+      "fire": "912",
+      "police": "911",
+      "general_emergency": "911",
+      "women_helpline": "914",
+      "suicide_helpline": "223-0001"
+    },
+    "states": {}
+  },
+  "HK": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999",
+      "suicide_helpline": "2896 0000"
+    },
+    "states": {}
+  },
+  "HM": {
+    "default": {},
+    "states": {}
+  },
+  "HN": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "195",
+      "fire": "198"
+    },
+    "states": {}
+  },
+  "HR": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "116 016",
+      "suicide_helpline": "01-4833-888"
+    },
+    "states": {}
+  },
+  "HT": {
+    "default": {
+      "ambulance": "116",
+      "fire": "115",
+      "police": "122"
+    },
+    "states": {}
+  },
+  "HU": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "116123",
+      "women_helpline": "+36 80 505 101"
+    },
+    "states": {}
+  },
+  "ID": {
+    "default": {
+      "ambulance": "118",
+      "fire": "112",
+      "police": "110",
+      "general_emergency": "112",
+      "disaster_management": "129",
+      "suicide_helpline": "021-500-454"
+    },
+    "states": {}
+  },
+  "IE": {
+    "default": {
+      "general_emergency": "112; 999",
+      "police": "112; 999",
+      "ambulance": "112; 999",
+      "fire": "112; 999",
+      "suicide_helpline": "116123",
+      "women_helpline": "+353 1800 341 900"
+    },
+    "states": {}
+  },
+  "IL": {
+    "default": {
+      "ambulance": "101",
+      "fire": "102",
+      "police": "100",
+      "general_emergency": "112",
+      "suicide_helpline": "1201"
+    },
+    "states": {}
+  },
+  "IM": {
+    "default": {
+      "general_emergency": "999",
+      "ambulance": "999"
+    },
+    "states": {}
+  },
+  "IN": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "14416",
+      "women_helpline": "181",
+      "child_helpline": "1098",
+      "disaster_management": "1070"
+    },
+    "states": {
+      "Karnataka": {
+        "default": {
+          "police": "100",
+          "ambulance": "108",
+          "fire": "101"
+        },
+        "cities": {
+          "Bengaluru": {
+            "women_helpline": "1091",
+            "police": "100",
+            "ambulance": "108",
+            "fire": "101"
+          },
+          "Mysuru": {
+            "women_helpline": "1091",
+            "disaster_management": "1077",
+            "police": "100",
+            "ambulance": "108",
+            "fire": "101"
+          }
+        },
+        "zips": {
+          "560001": {
+            "police": "100",
+            "ambulance": "108",
+            "fire": "101"
+          }
+        }
+      },
+      "Tamil Nadu": {
+        "default": {},
+        "cities": {
+          "Chennai": {
+            "disaster_management": "1077"
+          }
+        },
+        "zips": {}
+      }
+    }
+  },
+  "IO": {
+    "default": {
+      "police": "+2463702938"
+    },
+    "states": {}
+  },
+  "IQ": {
+    "default": {
+      "ambulance": "122",
+      "fire": "115",
+      "police": "104",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "IR": {
+    "default": {
+      "ambulance": "115",
+      "fire": "125",
+      "police": "110",
+      "suicide_helpline": "123"
+    },
+    "states": {}
+  },
+  "IS": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "1717",
+      "women_helpline": "+354 561 1205"
+    },
+    "states": {}
+  },
+  "IT": {
+    "default": {
+      "ambulance": "118",
+      "fire": "115",
+      "police": "112",
+      "general_emergency": "112",
+      "suicide_helpline": "800 86 00 22",
+      "women_helpline": "1522"
+    },
+    "states": {}
+  },
+  "JE": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "JM": {
+    "default": {
+      "ambulance": "110",
+      "fire": "110",
+      "police": "119"
+    },
+    "states": {}
+  },
+  "JO": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "JP": {
+    "default": {
+      "ambulance": "119",
+      "fire": "119",
+      "police": "110",
+      "coastguard": "118",
+      "suicide_helpline": "0120-061-338"
+    },
+    "states": {}
+  },
+  "KE": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999",
+      "suicide_helpline": "0722 178 177"
+    },
+    "states": {}
+  },
+  "KG": {
+    "default": {
+      "ambulance": "103",
+      "fire": "101",
+      "police": "102",
+      "general_emergency": "112"
+    },
+    "states": {
+      "Issyk-Kul": {
+        "default": {
+          "tourist_police": "+996705009102"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "KH": {
+    "default": {
+      "police": "117",
+      "fire": "118",
+      "ambulance": "119",
+      "child_helpline": "1280"
+    },
+    "states": {}
+  },
+  "KI": {
+    "default": {
+      "general_emergency": "999",
+      "police": "192",
+      "ambulance": "194",
+      "fire": "193"
+    },
+    "states": {}
+  },
+  "KM": {
+    "default": {
+      "fire": "113",
+      "police": "117",
+      "ambulance": "772-03-73"
+    },
+    "states": {}
+  },
+  "KN": {
+    "default": {
+      "ambulance": "911",
+      "fire": "333",
+      "police": "911",
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "KP": {
+    "default": {
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "KR": {
+    "default": {
+      "ambulance": "119",
+      "fire": "119",
+      "police": "112",
+      "suicide_helpline": "109"
+    },
+    "states": {}
+  },
+  "KW": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "KY": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "KZ": {
+    "default": {
+      "ambulance": "103",
+      "fire": "101",
+      "police": "102",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "LA": {
+    "default": {
+      "police": "119",
+      "ambulance": "119",
+      "fire": "119"
+    },
+    "states": {
+      "Vientiane Prefecture": {
+        "default": {},
+        "cities": {
+          "Vientiane": {
+            "tourist_police": "021251128"
+          }
+        },
+        "zips": {}
+      }
+    }
+  },
+  "LB": {
+    "default": {
+      "ambulance": "140",
+      "fire": "175",
+      "police": "112",
+      "suicide_helpline": "1564"
+    },
+    "states": {}
+  },
+  "LC": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "LI": {
+    "default": {
+      "fire": "118",
+      "police": "117",
+      "ambulance": "144",
+      "women_helpline": "+423 380 0203"
+    },
+    "states": {}
+  },
+  "LK": {
+    "default": {
+      "police": "119",
+      "ambulance": "1990",
+      "fire": "111",
+      "tourist_police": "0112421052"
+    },
+    "states": {}
+  },
+  "LR": {
+    "default": {
+      "police": "+231770800911",
+      "general_emergency": "911",
+      "suicide_helpline": "6534308"
+    },
+    "states": {}
+  },
+  "LS": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "LT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "116123",
+      "women_helpline": "8 800 66366"
+    },
+    "states": {}
+  },
+  "LU": {
+    "default": {
+      "ambulance": "112",
+      "fire": "112",
+      "police": "113",
+      "general_emergency": "112",
+      "suicide_helpline": "454545",
+      "women_helpline": "+352 20601060"
+    },
+    "states": {}
+  },
+  "LV": {
+    "default": {
+      "ambulance": "113",
+      "fire": "112",
+      "police": "110",
+      "general_emergency": "112",
+      "suicide_helpline": "67222922"
+    },
+    "states": {
+      "Riga": {
+        "default": {},
+        "cities": {
+          "Riga": {
+            "tourist_police": "+37167181818"
+          }
+        },
+        "zips": {}
+      }
+    }
+  },
+  "LY": {
+    "default": {
+      "general_emergency": "1415",
+      "police": "1415",
+      "ambulance": "1415",
+      "fire": "1415"
+    },
+    "states": {}
+  },
+  "MA": {
+    "default": {
+      "ambulance": "150",
+      "fire": "150",
+      "police": "190",
+      "gendarmerie": "177",
+      "general_emergency": "112",
+      "suicide_helpline": "0522-87-47-40"
+    },
+    "states": {}
+  },
+  "MC": {
+    "default": {
+      "general_emergency_landline": "18",
+      "general_emergency_mobile": "112",
+      "police": "17",
+      "ambulance": "18",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "MD": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "+373 80088008"
+    },
+    "states": {}
+  },
+  "ME": {
+    "default": {
+      "general_emergency": "112",
+      "police": "122",
+      "ambulance": "124",
+      "fire": "123",
+      "women_helpline": "+382 80111111"
+    },
+    "states": {}
+  },
+  "MF": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "MG": {
+    "default": {
+      "police": "17",
+      "ambulance": "17",
+      "fire": "18",
+      "police_mobile": "117",
+      "ambulance_mobile": "117",
+      "fire_mobile": "118"
+    },
+    "states": {}
+  },
+  "MH": {
+    "default": {
+      "ambulance": "6254142",
+      "police": "6258666",
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "MK": {
+    "default": {
+      "ambulance": "194",
+      "police": "192",
+      "general_emergency": "112",
+      "fire": "193",
+      "women_helpline": "+389 70 141700"
+    },
+    "states": {}
+  },
+  "ML": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "MM": {
+    "default": {
+      "ambulance": "192",
+      "fire": "191",
+      "police": "199",
+      "general_emergency": "999"
+    },
+    "states": {}
+  },
+  "MN": {
+    "default": {
+      "ambulance": "103",
+      "fire": "101",
+      "police": "102"
+    },
+    "states": {}
+  },
+  "MO": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "MP": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911"
+    },
+    "states": {}
+  },
+  "MQ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "MR": {
+    "default": {
+      "ambulance": "101",
+      "fire": "118",
+      "police": "117"
+    },
+    "states": {}
+  },
+  "MS": {
+    "default": {
+      "general_emergency": "911; 999",
+      "police": "911; 999",
+      "ambulance": "911; 999",
+      "fire": "911; 999"
+    },
+    "states": {}
+  },
+  "MT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "179"
+    },
+    "states": {}
+  },
+  "MU": {
+    "default": {
+      "police": "999",
+      "ambulance": "114",
+      "fire": "115",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "MV": {
+    "default": {
+      "ambulance": "100",
+      "fire": "118",
+      "police": "119",
+      "general_emergency": "911",
+      "disaster_management": "115"
+    },
+    "states": {}
+  },
+  "MW": {
+    "default": {
+      "ambulance": "998",
+      "fire": "999",
+      "police": "990"
+    },
+    "states": {}
+  },
+  "MX": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "suicide_helpline": "800 822 3737"
+    },
+    "states": {
+      "Mexico City": {
+        "default": {},
+        "cities": {
+          "Mexico City": {
+            "tourist_police": "+525552074155"
+          }
+        },
+        "zips": {}
+      }
+    }
+  },
+  "MY": {
+    "default": {
+      "police": "999",
+      "ambulance": "999",
+      "fire": "994",
+      "general_emergency": "999",
+      "suicide_helpline": "15555"
+    },
+    "states": {}
+  },
+  "MZ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "198"
+    },
+    "states": {}
+  },
+  "NA": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "NC": {
+    "default": {
+      "ambulance": "15",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "NE": {
+    "default": {
+      "ambulance": "15",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "NF": {
+    "default": {
+      "police": "000",
+      "ambulance": "000"
+    },
+    "states": {}
+  },
+  "NG": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "NI": {
+    "default": {
+      "general_emergency": "911",
+      "police": "118",
+      "ambulance": "128",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "NL": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "0800-0113",
+      "women_helpline": "+31 800 2000"
+    },
+    "states": {}
+  },
+  "NO": {
+    "default": {
+      "fire": "110",
+      "police": "112",
+      "ambulance": "113",
+      "general_emergency": "112",
+      "suicide_helpline": "116123",
+      "women_helpline": "116 006"
+    },
+    "states": {}
+  },
+  "NP": {
+    "default": {
+      "police": "100",
+      "fire": "101",
+      "ambulance": "102",
+      "tourist_police": "1144",
+      "general_emergency": "112",
+      "suicide_helpline": "1166"
+    },
+    "states": {}
+  },
+  "NR": {
+    "default": {
+      "ambulance": "111",
+      "fire": "112",
+      "police": "110"
+    },
+    "states": {}
+  },
+  "NU": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "NZ": {
+    "default": {
+      "general_emergency": "111",
+      "police": "111",
+      "ambulance": "111",
+      "fire": "111",
+      "suicide_helpline": "1737"
+    },
+    "states": {}
+  },
+  "OM": {
+    "default": {
+      "general_emergency": "9999",
+      "police": "9999",
+      "ambulance": "9999",
+      "fire": "9999"
+    },
+    "states": {}
+  },
+  "PA": {
+    "default": {
+      "general_emergency": "911",
+      "police": "104",
+      "ambulance": "911",
+      "fire": "103"
+    },
+    "states": {}
+  },
+  "PE": {
+    "default": {
+      "ambulance": "106",
+      "fire": "116",
+      "police": "105",
+      "general_emergency": "911",
+      "disaster_management": "115",
+      "women_helpline": "100"
+    },
+    "states": {}
+  },
+  "PF": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18",
+      "ambulance_landline": "40485906"
+    },
+    "states": {}
+  },
+  "PG": {
+    "default": {
+      "ambulance": "111",
+      "fire": "110",
+      "police": "112"
+    },
+    "states": {}
+  },
+  "PH": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "suicide_helpline": "1553",
+      "child_helpline": "163"
+    },
+    "states": {}
+  },
+  "PK": {
+    "default": {
+      "police": "15",
+      "ambulance": "1122",
+      "fire": "16",
+      "general_emergency": "112",
+      "suicide_helpline": "0311-7786264"
+    },
+    "states": {
+      "Punjab": {
+        "default": {
+          "women_helpline": "1043"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "PL": {
+    "default": {
+      "ambulance": "999",
+      "fire": "998",
+      "police": "997",
+      "general_emergency": "112",
+      "suicide_helpline": "800 70 22 22",
+      "women_helpline": "+48 800 107777"
+    },
+    "states": {}
+  },
+  "PM": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "PN": {
+    "default": {},
+    "states": {}
+  },
+  "PR": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "PS": {
+    "default": {
+      "ambulance": "101",
+      "fire": "102",
+      "police": "100"
+    },
+    "states": {}
+  },
+  "PT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "213 544 545",
+      "women_helpline": "+351 800 202148"
+    },
+    "states": {}
+  },
+  "PW": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "PY": {
+    "default": {
+      "ambulance": "141",
+      "fire": "132",
+      "police": "912",
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "QA": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "RE": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "RO": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "0800 080 100",
+      "women_helpline": "+40 800 500333"
+    },
+    "states": {}
+  },
+  "RS": {
+    "default": {
+      "ambulance": "194",
+      "fire": "193",
+      "police": "192",
+      "general_emergency": "112",
+      "women_helpline": "+381 800 222003"
+    },
+    "states": {}
+  },
+  "RU": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "+7 8 800 700-06-00"
+    },
+    "states": {}
+  },
+  "RW": {
+    "default": {
+      "ambulance": "112",
+      "police": "112",
+      "fire": "111",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "SA": {
+    "default": {
+      "police": "999",
+      "ambulance": "997",
+      "fire": "998",
+      "general_emergency": "911"
+    },
+    "states": {
+      "Makkah": {
+        "default": {
+          "general_emergency": "911"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Madinah": {
+        "default": {
+          "general_emergency": "911"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Riyadh": {
+        "default": {
+          "general_emergency": "911"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Eastern Province": {
+        "default": {
+          "general_emergency": "911"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "SB": {
+    "default": {
+      "ambulance": "111",
+      "fire": "988",
+      "police": "999",
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "SC": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "SD": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999",
+      "suicide_helpline": "11-555-253"
+    },
+    "states": {}
+  },
+  "SE": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "suicide_helpline": "90101",
+      "women_helpline": "116 016"
+    },
+    "states": {}
+  },
+  "SG": {
+    "default": {
+      "ambulance": "995",
+      "fire": "995",
+      "police": "999",
+      "general_emergency": "999",
+      "suicide_helpline": "1767"
+    },
+    "states": {}
+  },
+  "SH": {
+    "default": {},
+    "states": {
+      "Saint Helena": {
+        "default": {
+          "general_emergency": "999",
+          "police": "999",
+          "ambulance": "911",
+          "fire": "999"
+        },
+        "cities": {},
+        "zips": {}
+      },
+      "Ascension": {
+        "default": {
+          "general_emergency": "999",
+          "police": "999",
+          "ambulance": "999",
+          "fire": "999"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "SI": {
+    "default": {
+      "police": "113",
+      "ambulance": "112",
+      "fire": "112",
+      "mountain_rescue": "112",
+      "general_emergency": "112",
+      "suicide_helpline": "01-520-99-00",
+      "women_helpline": "+386 80 1155"
+    },
+    "states": {}
+  },
+  "SJ": {
+    "default": {},
+    "states": {
+      "Svalbard": {
+        "default": {
+          "general_emergency": "112",
+          "fire": "110",
+          "ambulance":"113",
+          "suicide_helpline": "116 123"
+        },
+        "cities": {},
+        "zips": {}
+      }
+    }
+  },
+  "SK": {
+    "default": {
+      "ambulance": "155",
+      "fire": "150",
+      "police": "158",
+      "general_emergency": "112",
+      "women_helpline": "+421 800 212212"
+    },
+    "states": {}
+  },
+  "SL": {
+    "default": {
+      "general_emergency": "117",
+      "police": "117",
+      "ambulance": "117",
+      "fire": "117"
+    },
+    "states": {}
+  },
+  "SM": {
+    "default": {
+      "ambulance": "118",
+      "fire": "115",
+      "police": "112",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "SN": {
+    "default": {
+      "ambulance": "15",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "SO": {
+    "default": {
+      "ambulance": "999",
+      "fire": "555",
+      "police": "888",
+      "red_crescent": "446"
+    },
+    "states": {}
+  },
+  "SR": {
+    "default": {
+      "general_emergency": "115",
+      "police": "115",
+      "ambulance": "113",
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "SS": {
+    "default": {
+      "police": "999"
+    },
+    "states": {}
+  },
+  "ST": {
+    "default": {
+      "ambulance": "2222222",
+      "fire": "112",
+      "police": "113",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "SV": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "132",
+      "fire": "913"
+    },
+    "states": {}
+  },
+  "SX": {
+    "default": {
+      "ambulance": "911",
+      "fire": "919",
+      "police": "911"
+    },
+    "states": {}
+  },
+  "SY": {
+    "default": {
+      "general_emergency": "112",
+      "police": "110",
+      "fire": "113"
+    },
+    "states": {}
+  },
+  "SZ": {
+    "default": {
+      "ambulance": "977",
+      "fire": "933",
+      "police": "999"
+    },
+    "states": {}
+  },
+  "TC": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "TD": {
+    "default": {
+      "ambulance": "2251-4242",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "TF": {
+    "default": {},
+    "states": {}
+  },
+  "TG": {
+    "default": {
+      "ambulance": "8200",
+      "fire": "118",
+      "police": "117"
+    },
+    "states": {}
+  },
+  "TH": {
+    "default": {
+      "general_emergency": "191",
+      "police": "191",
+      "ambulance": "1669",
+      "fire": "199",
+      "tourist_police": "1155",
+      "suicide_helpline": "1323"
+    },
+    "states": {}
+  },
+  "TJ": {
+    "default": {
+      "police": "02",
+      "ambulance": "03",
+      "fire": "01",
+      "police_mobile": "102",
+      "ambulance_mobile": "103",
+      "fire_mobile": "101",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "TK": {
+    "default": {},
+    "states": {}
+  },
+  "TL": {
+    "default": {
+      "ambulance": "110",
+      "fire": "115",
+      "police": "112",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "TM": {
+    "default": {
+      "police": "02",
+      "ambulance": "03",
+      "fire": "01",
+      "police_mobile": "002",
+      "ambulance_mobile": "003",
+      "fire_mobile": "001"
+    },
+    "states": {}
+  },
+  "TN": {
+    "default": {
+      "police": "197",
+      "ambulance": "190",
+      "fire": "198",
+      "national_guard": "193"
+    },
+    "states": {}
+  },
+  "TO": {
+    "default": {
+      "general_emergency": "911",
+      "police": "922",
+      "ambulance": "933",
+      "fire": "999",
+      "suicide_helpline": "23000"
+    },
+    "states": {}
+  },
+  "TR": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
+      "women_helpline": "183"
+    },
+    "states": {}
+  },
+  "TT": {
+    "default": {
+      "ambulance": "811",
+      "fire": "990",
+      "police": "999",
+      "general_emergency": "999",
+      "suicide_helpline": "800-5588"
+    },
+    "states": {}
+  },
+  "TV": {
+    "default": {
+      "ambulance": "999",
+      "fire": "000",
+      "police": "911",
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "TW": {
+    "default": {
+      "police": "110",
+      "ambulance": "119",
+      "fire": "119",
+      "coastguard": "118",
+      "domestic_violence_helpline": "113",
+      "suicide_helpline": "1925"
+    },
+    "states": {}
+  },
+  "TZ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "UA": {
+    "default": {
+      "ambulance": "103",
+      "fire": "101",
+      "police": "102",
+      "general_emergency": "112",
+      "suicide_helpline": "7333",
+      "women_helpline": "+380 800 500335"
+    },
+    "states": {}
+  },
+  "UG": {
+    "default": {
+      "general_emergency": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "UM": {
+    "default": {},
+    "states": {}
+  },
+  "US": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "suicide_helpline": "988",
+      "domestic_violence_helpline": "18007997233",
+      "women_helpline": "1-800-799-7233"
+    },
+    "states": {}
+  },
+  "UY": {
+    "default": {
+      "general_emergency": "911",
+      "police": "109",
+      "ambulance": "105",
+      "fire": "104",
+      "suicide_helpline": "0800 0767"
+    },
+    "states": {}
+  },
+  "UZ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "tourist_helpline": "1173"
+    },
+    "states": {}
+  },
+  "VA": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "VC": {
+    "default": {
+      "general_emergency": "911; 999",
+      "police": "999",
+      "ambulance": "911",
+      "fire": "911; 999"
+    },
+    "states": {}
+  },
+  "VE": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "VG": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "sea_rescue": "767"
+    },
+    "states": {}
+  },
+  "VI": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "VN": {
+    "default": {
+      "police": "113",
+      "ambulance": "115",
+      "fire": "114",
+      "search_and_rescue": "112",
+      "child_helpline": "111"
+    },
+    "states": {}
+  },
+  "VU": {
+    "default": {
+      "ambulance": "112",
+      "fire": "113",
+      "police": "111"
+    },
+    "states": {}
+  },
+  "WF": {
+    "default": {
+      "ambulance": "15",
+      "fire": "18",
+      "police": "17"
+    },
+    "states": {}
+  },
+  "WS": {
+    "default": {
+      "general_emergency": "999",
+      "police": "995",
+      "ambulance": "996",
+      "fire": "994"
+    },
+    "states": {}
+  },
+  "YE": {
+    "default": {
+      "ambulance": "191",
+      "fire": "191",
+      "police": "194"
+    },
+    "states": {}
+  },
+  "YT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "ZA": {
+    "default": {
+      "general_emergency_mobile": "112",
+      "police": "10111",
+      "ambulance": "10177",
+      "fire": "10177",
+      "general_emergency": "112",
+      "suicide_helpline": "0800 567 567"
+    },
+    "states": {}
+  },
+  "ZM": {
+    "default": {
+      "police": "991",
+      "ambulance": "992",
+      "fire": "993",
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "ZW": {
+    "default": {
+      "general_emergency_landline": "08003222911",
+      "general_emergency_econet": "112",
+      "general_emergency_netone": "114",
+      "general_emergency": "112",
+      "police": "999",
+      "ambulance": "994",
+      "fire": "993"
+    },
+    "states": {}
+  }
+}
