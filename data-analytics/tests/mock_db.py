@@ -6,7 +6,7 @@ shared Saayam database. This module builds a disposable database from those
 CSVs and hands back a connection that the Lambdas' own query code can use
 unmodified.
 
-Tables loaded: ``organizations`` and ``state`` (issue #228), plus ``request``,
+Tables loaded: ``organizations`` and ``state`` (issue #228), plus ``requests``,
 ``users``, ``user_status`` and ``volunteers_assigned`` (issue #295). A table
 may be assembled from several CSVs sharing one header, which is how the small
 issue-#295 edge-case rows are unioned onto the bulk database exports without
@@ -63,18 +63,21 @@ ORGANIZATIONS_CSV = MOCK_SQL_DIR / "organizations.csv"
 STATE_CSV = MOCK_SQL_DIR / "state.csv"
 
 # Issue #295 (assigned volunteers) fixtures.
-REQUEST_CSV = MOCK_SQL_DIR / "Request_Table.csv"
+REQUESTS_CSV = MOCK_SQL_DIR / "requests.csv"
 USERS_CSV = MOCK_SQL_DIR / "users.csv"
 USER_STATUS_CSV = MOCK_SQL_DIR / "user_status.csv"
 VOLUNTEERS_ASSIGNED_CSV = MOCK_SQL_DIR / "volunteers_assigned.csv"
 
 # The bulk fixtures above are exports of the development database and get
-# regenerated wholesale, so the handful of rows issue #295 needs to exercise
-# (a cancelled request, a deleted request, a volunteer with NULL contact
-# details, a non-ACTIVE volunteer) live in their own files and are unioned in
-# rather than appended to the exports.
-REQUEST_EXTRA_CSV = MOCK_SQL_DIR / "request_extra_295.csv"
+# regenerated wholesale, so the few rows issue #295 needs that the export does
+# not contain - a volunteer with NULL contact details, a non-ACTIVE volunteer,
+# a NULL user_status_id, and a superseded assignment on a request that is not
+# cancelled - live in their own files and are unioned in rather than appended
+# to the exports. Everything else (multiple assignees, cancelled requests with
+# assignment rows, volunteers absent from users.csv) is covered by the real
+# data.
 USERS_EXTRA_CSV = MOCK_SQL_DIR / "users_extra_295.csv"
+VOLUNTEERS_ASSIGNED_EXTRA_CSV = MOCK_SQL_DIR / "volunteers_assigned_extra_295.csv"
 
 # Column-name driven typing. The fixtures are small and their column names are
 # stable, so this is simpler and more predictable than inferring from values.
@@ -85,7 +88,7 @@ INTEGER_COLUMNS = frozenset(
     {
         "org_rating",
         "country_id",
-        "volunteers_assigned_id",
+        "vol_assigned_id",
         "req_for_id",
         "req_islead_id",
         "req_type_id",
@@ -114,10 +117,13 @@ NULL_TOKENS = frozenset({"", "NULL", "NONE"})
 TABLES: dict[str, tuple[Path, ...]] = {
     "organizations": (ORGANIZATIONS_CSV,),
     "state": (STATE_CSV,),
-    "request": (REQUEST_CSV, REQUEST_EXTRA_CSV),
+    "requests": (REQUESTS_CSV,),
     "users": (USERS_CSV, USERS_EXTRA_CSV),
     "user_status": (USER_STATUS_CSV,),
-    "volunteers_assigned": (VOLUNTEERS_ASSIGNED_CSV,),
+    "volunteers_assigned": (
+        VOLUNTEERS_ASSIGNED_CSV,
+        VOLUNTEERS_ASSIGNED_EXTRA_CSV,
+    ),
 }
 
 LOOPBACK_HOSTS = frozenset({"localhost", "127.0.0.1", "::1"})
@@ -215,8 +221,8 @@ def load_states() -> list[dict[str, Any]]:
 
 
 def load_requests() -> list[dict[str, Any]]:
-    """Return the typed ``request`` rows (the test oracle for issue #295)."""
-    return read_fixtures(TABLES["request"])[1]
+    """Return the typed ``requests`` rows (the test oracle for issue #295)."""
+    return read_fixtures(TABLES["requests"])[1]
 
 
 def load_users() -> list[dict[str, Any]]:

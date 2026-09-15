@@ -1,25 +1,27 @@
 """Mock-backed test suite for the Assigned Volunteers API (Issue #295).
 
 Every assertion runs against the committed mock fixtures in
-``data-analytics/sql`` (``Request_Table.csv`` + ``request_extra_295.csv``,
-``users.csv`` + ``users_extra_295.csv``, ``user_status.csv`` and
-``volunteers_assigned.csv``). Nothing in this suite can reach the shared
-Saayam database: the Lambda has no Parameter Store fallback, and the only
-connection it is ever handed here is the disposable one built by
+``data-analytics/sql`` (``requests.csv``, ``users.csv`` +
+``users_extra_295.csv``, ``user_status.csv`` and ``volunteers_assigned.csv`` +
+``volunteers_assigned_extra_295.csv``). Nothing in this suite can reach the
+shared Saayam database: the Lambda has no Parameter Store fallback, and the
+only connection it is ever handed here is the disposable one built by
 :mod:`mock_db`.
 
 Expected values are derived from the CSVs at runtime by a pure-Python oracle
 that re-implements the current-assignment rule independently of the SQL, so
 the two have to agree for a test to pass.
 
-``volunteers_assigned.csv`` is authored specifically for this suite and holds
-one row group per scenario the issue asks for: a single assignee, two
-concurrent assignees, a reassigned volunteer, a tied timestamp, a mix of
-current and superseded rows, a volunteer with NULL contact details, a
-non-ACTIVE volunteer, a volunteer with no ``users`` row at all, and
-assignments on cancelled and deleted requests. ``user_status.csv`` carries the
-one real lookup row (``1 ACTIVE``) plus two mock-only rows so a non-ACTIVE
-volunteer can be exercised at all.
+Most scenarios come from the real committed export: 15 of its 25 requests have
+multiple assignees, all six request statuses appear, three cancelled requests
+carry assignment rows, and 19 of its 60 assignments name a volunteer with no
+``users`` row. Only four things the export cannot express are supplied by the
+``*_extra_295`` fixtures - a volunteer with NULL contact details, a non-ACTIVE
+volunteer, a NULL ``user_status_id``, and a superseded assignment on a request
+that is *not* cancelled (the export's one duplicate pair sits on a cancelled
+request, where the rule is masked by suppression). ``user_status.csv`` carries
+the one real lookup row (``1 ACTIVE``) plus two mock-only rows, since every
+user in the export is ACTIVE.
 
 Run it:
 
@@ -66,23 +68,34 @@ STATUS_BY_ID = {
 }
 
 # Scenario request ids. These are fixture landmarks, not expected values -
-# every expected payload is still computed by ``oracle_assigned``.
-REQ_SINGLE = "REQ-00-000-000-0018"          # exactly one current volunteer
-REQ_MULTIPLE = "REQ-00-000-000-0019"        # two concurrent volunteers
-REQ_REASSIGNED = "REQ-00-000-000-0020"      # superseded row + newer row
-REQ_NULL_CONTACT = "REQ-00-000-000-0021"    # volunteer with NULL email/phone
-REQ_INACTIVE_VOLUNTEER = "REQ-00-000-000-0022"  # user_status INACTIVE
-REQ_NULL_STATUS = "REQ-00-000-000-0023"     # users.user_status_id is NULL
-REQ_MISSING_PROFILE = "REQ-00-000-000-0024"  # no matching users row at all
-REQ_TIED_TIMESTAMP = "REQ-00-000-000-0025"  # two rows, identical timestamp
-REQ_MIXED_HISTORY = "REQ-00-000-000-0026"   # current + superseded, 2 people
-REQ_NO_ASSIGNMENT = "REQ-00-000-000-0030"   # exists, never assigned
-REQ_CANCELLED = "REQ-00-000-295-004"        # req_status_id 4, has rows
-REQ_DELETED = "REQ-00-000-295-005"          # req_status_id 5, has rows
-REQ_IN_PROGRESS_UNASSIGNED = "REQ-00-000-295-006"  # active, no rows
-REQ_UNKNOWN = "REQ-00-000-999-999"          # not in the request fixture
+# every expected payload is still computed by ``oracle_assigned``. All but the
+# three marked below come from the real committed export.
+REQ_SINGLE = "REQ-000007"            # Completed, exactly one assignment
+REQ_MULTIPLE = "REQ-000013"          # New, seven concurrent assignments
+REQ_MISSING_PROFILE = "REQ-000020"   # Completed, all 3 volunteers absent from users
+REQ_NO_ASSIGNMENT = "REQ-000015"     # Completed, no assignment rows at all
+REQ_NEW_UNASSIGNED = "REQ-000022"    # New, no rows in the export
+REQ_CANCELLED = "REQ-000005"         # Cancelled, 3 rows incl. a superseded pair
+REQ_CANCELLED_EMPTY = "REQ-000010"   # Cancelled, no rows
+REQ_COMPLETED = "REQ-000002"         # Completed with 4 rows - must NOT suppress
+REQ_ON_HOLD = "REQ-000009"           # On Hold, 4 rows - must NOT suppress
+REQ_ESCALATED = "REQ-000008"         # Escalated, 5 rows - must NOT suppress
+REQ_LEAD_MATCHES = "REQ-000013"      # the one request whose lead is also assigned
+REQ_LEAD_UNMATCHED = "REQ-000003"    # lead_volunteer_id names nobody assigned
+REQ_NO_LEAD = "REQ-000016"           # lead_volunteer_id is NULL
+REQ_UNKNOWN = "REQ-999999"           # not in the requests fixture
 
-RESPONSE_KEYS = {"req_id", "assignedVolunteers"}
+# Scenarios the real export cannot reach, supplied by the *_extra_295 fixtures.
+REQ_SPECIAL_PROFILES = "REQ-000022"  # NULL contacts / INACTIVE / NULL status
+REQ_REASSIGNED = "REQ-000016"        # superseded row + newer row, not cancelled
+REQ_TIED_TIMESTAMP = "REQ-000024"    # two rows, identical last_update_date
+
+RESPONSE_KEYS = {"req_id", "lead_volunteer_id", "assignedVolunteers"}
+
+# Volunteers defined in users_extra_295.csv.
+VOL_NULL_CONTACT = "SID-00-000-295-001"
+VOL_INACTIVE = "SID-00-000-295-002"
+VOL_NULL_STATUS = "SID-00-000-295-003"
 
 
 @contextmanager
@@ -111,19 +124,19 @@ def oracle_current_rows(req_id: str) -> list[dict[str, Any]]:
     """Return the current ``volunteers_assigned`` rows for ``req_id``.
 
     Re-implements the module's rule in Python: newest ``last_update_date`` per
-    volunteer, ties broken by the higher ``volunteers_assigned_id``, ordered
+    volunteer, ties broken by the higher ``vol_assigned_id``, ordered
     newest assignment first then by volunteer id.
     """
     newest: dict[str, dict[str, Any]] = {}
     for row in ASSIGNMENT_ROWS:
-        if row["request_id"] != req_id:
+        if row["req_id"] != req_id:
             continue
         key = row["volunteer_id"]
         current = newest.get(key)
         if current is None or (
             row["last_update_date"],
-            row["volunteers_assigned_id"],
-        ) > (current["last_update_date"], current["volunteers_assigned_id"]):
+            row["vol_assigned_id"],
+        ) > (current["last_update_date"], current["vol_assigned_id"]):
             newest[key] = row
 
     # Stable sorts, applied least-significant first, reproduce
@@ -141,6 +154,7 @@ def oracle_assigned(req_id: str) -> list[dict[str, Any]]:
     if request_row["req_status_id"] in av.TERMINAL_REQUEST_STATUS_IDS:
         return []
 
+    lead = request_row.get("lead_volunteer_id")
     expected: list[dict[str, Any]] = []
     for row in oracle_current_rows(req_id):
         user = USER_BY_ID.get(row["volunteer_id"], {})
@@ -153,6 +167,7 @@ def oracle_assigned(req_id: str) -> list[dict[str, Any]]:
                 "user_status": STATUS_BY_ID.get(user.get("user_status_id")),
                 "volunteer_type": row["volunteer_type"],
                 "assigned_at": row["last_update_date"],
+                "is_lead": lead is not None and row["volunteer_id"] == lead,
             }
         )
     return expected
@@ -240,43 +255,64 @@ class TestFixtures(unittest.TestCase):
     def test_every_assignment_points_at_a_known_request(self) -> None:
         """No volunteers_assigned row references a missing request."""
         for row in ASSIGNMENT_ROWS:
-            self.assertIn(row["request_id"], REQUEST_BY_ID)
+            self.assertIn(row["req_id"], REQUEST_BY_ID)
 
     def test_scenario_requests_all_exist(self) -> None:
-        """Each landmark req_id is present in the request fixture."""
+        """Each landmark req_id is present in the requests fixture."""
         for req_id in (
-            REQ_SINGLE, REQ_MULTIPLE, REQ_REASSIGNED, REQ_NULL_CONTACT,
-            REQ_INACTIVE_VOLUNTEER, REQ_NULL_STATUS, REQ_MISSING_PROFILE,
-            REQ_TIED_TIMESTAMP, REQ_MIXED_HISTORY, REQ_NO_ASSIGNMENT,
-            REQ_CANCELLED, REQ_DELETED, REQ_IN_PROGRESS_UNASSIGNED,
+            REQ_SINGLE, REQ_MULTIPLE, REQ_MISSING_PROFILE, REQ_NO_ASSIGNMENT,
+            REQ_NEW_UNASSIGNED, REQ_CANCELLED, REQ_CANCELLED_EMPTY,
+            REQ_COMPLETED, REQ_ON_HOLD, REQ_ESCALATED, REQ_LEAD_MATCHES,
+            REQ_LEAD_UNMATCHED, REQ_NO_LEAD, REQ_SPECIAL_PROFILES, REQ_REASSIGNED,
+            REQ_TIED_TIMESTAMP,
         ):
             self.assertIn(req_id, REQUEST_BY_ID)
         self.assertNotIn(REQ_UNKNOWN, REQUEST_BY_ID)
 
-    def test_terminal_status_requests_do_have_assignment_rows(self) -> None:
-        """Cancelled/deleted requests carry rows, so suppression is real."""
-        for req_id in (REQ_CANCELLED, REQ_DELETED):
+    def test_cancelled_request_does_have_assignment_rows(self) -> None:
+        """The cancelled landmark carries rows, so suppression is real."""
+        self.assertTrue(
+            [r for r in ASSIGNMENT_ROWS if r["req_id"] == REQ_CANCELLED],
+            "REQ_CANCELLED needs rows for the suppression test to mean anything",
+        )
+        self.assertIn(
+            REQUEST_BY_ID[REQ_CANCELLED]["req_status_id"],
+            av.TERMINAL_REQUEST_STATUS_IDS,
+        )
+
+    def test_non_terminal_landmarks_are_not_suppressed(self) -> None:
+        """Completed/On Hold/Escalated landmarks hold rows and are not terminal."""
+        for req_id in (REQ_COMPLETED, REQ_ON_HOLD, REQ_ESCALATED):
             self.assertTrue(
-                [r for r in ASSIGNMENT_ROWS if r["request_id"] == req_id],
-                f"{req_id} needs an assignment row for the test to mean anything",
+                [r for r in ASSIGNMENT_ROWS if r["req_id"] == req_id], req_id
             )
-            self.assertIn(
+            self.assertNotIn(
                 REQUEST_BY_ID[req_id]["req_status_id"],
                 av.TERMINAL_REQUEST_STATUS_IDS,
+                req_id,
             )
 
     def test_historical_rows_exist(self) -> None:
         """Some volunteers have more than one row on the same request."""
-        for req_id in (REQ_REASSIGNED, REQ_TIED_TIMESTAMP, REQ_MIXED_HISTORY):
-            rows = [r for r in ASSIGNMENT_ROWS if r["request_id"] == req_id]
+        for req_id in (REQ_REASSIGNED, REQ_TIED_TIMESTAMP):
+            rows = [r for r in ASSIGNMENT_ROWS if r["req_id"] == req_id]
             self.assertGreater(len(rows), len(oracle_current_rows(req_id)))
+
+    def test_volunteers_missing_from_users_exist(self) -> None:
+        """The export really does assign volunteers with no users row."""
+        unknown = [
+            r for r in ASSIGNMENT_ROWS
+            if r["req_id"] == REQ_MISSING_PROFILE
+            and r["volunteer_id"] not in USER_BY_ID
+        ]
+        self.assertTrue(unknown)
 
     def test_null_values_survive_csv_loading(self) -> None:
         """A literal NULL cell loads as None, not the string 'NULL'."""
-        volunteer = USER_BY_ID["SID-00-000-295-001"]
+        volunteer = USER_BY_ID[VOL_NULL_CONTACT]
         self.assertIsNone(volunteer["primary_phone_number"])
         self.assertIsNone(volunteer["primary_email_address"])
-        self.assertIsNone(USER_BY_ID["SID-00-000-295-003"]["user_status_id"])
+        self.assertIsNone(USER_BY_ID[VOL_NULL_STATUS]["user_status_id"])
 
 
 # --------------------------------------------------------------------------- #
@@ -352,78 +388,84 @@ class TestAssignmentRetrieval(MockBackedTestCase):
         self.assertEqual(1, len(result))
 
     def test_multiple_assigned_volunteers(self) -> None:
-        """Two concurrent assignments are both returned, newest first."""
+        """Seven concurrent assignments are all returned, newest first."""
         result = self.assigned(REQ_MULTIPLE)
         self.assertEqual(oracle_assigned(REQ_MULTIPLE), result)
-        self.assertEqual(2, len(result))
-        self.assertGreaterEqual(
-            str(result[0]["assigned_at"]), str(result[1]["assigned_at"])
-        )
+        self.assertEqual(7, len(result))
+        timestamps = [str(entry["assigned_at"]) for entry in result]
+        self.assertEqual(sorted(timestamps, reverse=True), timestamps)
 
     def test_no_assigned_volunteer_returns_empty_list(self) -> None:
         """A valid request with no assignment is 200 with [], not an error."""
         status_code, body = self.invoke({"req_id": REQ_NO_ASSIGNMENT})
         self.assertEqual(200, status_code)
-        self.assertEqual(
-            {"req_id": REQ_NO_ASSIGNMENT, "assignedVolunteers": []}, body
-        )
+        self.assertEqual(REQ_NO_ASSIGNMENT, body["req_id"])
+        self.assertEqual([], body["assignedVolunteers"])
 
-    def test_active_request_with_no_assignment_rows(self) -> None:
-        """An in-progress request that was never matched also returns []."""
-        self.assertEqual([], self.assigned(REQ_IN_PROGRESS_UNASSIGNED))
+    def test_new_request_with_no_assignment_rows(self) -> None:
+        """A New request never matched in the export returns its extras only."""
+        self.assertEqual(
+            oracle_assigned(REQ_NEW_UNASSIGNED), self.assigned(REQ_NEW_UNASSIGNED)
+        )
 
     def test_reassigned_request_returns_only_the_newest_row(self) -> None:
         """A replaced assignment does not appear alongside its replacement."""
         result = self.assigned(REQ_REASSIGNED)
         self.assertEqual(oracle_assigned(REQ_REASSIGNED), result)
-        self.assertEqual(1, len(result))
-        self.assertEqual("LEAD", result[0]["volunteer_type"])
+        entry = next(e for e in result if e["user_id"] == VOL_NULL_CONTACT)
+        self.assertEqual("Primary", entry["volunteer_type"])
 
     def test_historical_rows_are_excluded(self) -> None:
-        """Superseded rows never reach the response for any request."""
-        for req_id in (REQ_REASSIGNED, REQ_TIED_TIMESTAMP, REQ_MIXED_HISTORY):
-            all_rows = [r for r in ASSIGNMENT_ROWS if r["request_id"] == req_id]
+        """Superseded rows never reach the response."""
+        for req_id in (REQ_REASSIGNED, REQ_TIED_TIMESTAMP):
+            all_rows = [r for r in ASSIGNMENT_ROWS if r["req_id"] == req_id]
             result = self.assigned(req_id)
             self.assertEqual(oracle_assigned(req_id), result)
             self.assertLess(len(result), len(all_rows))
 
     def test_one_entry_per_volunteer(self) -> None:
         """A volunteer with several rows appears at most once."""
-        for req_id in (REQ_REASSIGNED, REQ_TIED_TIMESTAMP, REQ_MIXED_HISTORY):
+        for req_id in sorted({r["req_id"] for r in ASSIGNMENT_ROWS}):
             ids = [entry["user_id"] for entry in self.assigned(req_id)]
             self.assertEqual(len(ids), len(set(ids)), req_id)
 
     def test_tied_timestamps_break_deterministically(self) -> None:
         """Two rows with the same timestamp resolve to the higher id."""
         rows = [
-            r for r in ASSIGNMENT_ROWS if r["request_id"] == REQ_TIED_TIMESTAMP
+            r for r in ASSIGNMENT_ROWS
+            if r["req_id"] == REQ_TIED_TIMESTAMP
+            and r["volunteer_id"] == VOL_INACTIVE
         ]
-        winner = max(rows, key=lambda r: r["volunteers_assigned_id"])
-        result = self.assigned(REQ_TIED_TIMESTAMP)
-        self.assertEqual(1, len(result))
-        self.assertEqual(winner["volunteer_type"], result[0]["volunteer_type"])
-
-    def test_mixed_current_and_historical_across_volunteers(self) -> None:
-        """One volunteer's row is superseded while another's stays current."""
-        result = self.assigned(REQ_MIXED_HISTORY)
-        self.assertEqual(oracle_assigned(REQ_MIXED_HISTORY), result)
-        self.assertEqual(2, len(result))
+        self.assertEqual(2, len(rows))
+        winner = max(rows, key=lambda r: r["vol_assigned_id"])
+        entry = next(
+            e for e in self.assigned(REQ_TIED_TIMESTAMP)
+            if e["user_id"] == VOL_INACTIVE
+        )
+        self.assertEqual(winner["volunteer_type"], entry["volunteer_type"])
 
     def test_cancelled_request_has_no_current_assignment(self) -> None:
-        """A CANCELLED request returns [] despite holding assignment rows."""
+        """A Cancelled request returns [] despite holding assignment rows."""
         status_code, body = self.invoke({"req_id": REQ_CANCELLED})
         self.assertEqual(200, status_code)
         self.assertEqual([], body["assignedVolunteers"])
 
-    def test_deleted_request_has_no_current_assignment(self) -> None:
-        """A DELETED request returns [] despite holding assignment rows."""
-        status_code, body = self.invoke({"req_id": REQ_DELETED})
-        self.assertEqual(200, status_code)
-        self.assertEqual([], body["assignedVolunteers"])
+    def test_completed_request_still_reports_its_volunteers(self) -> None:
+        """Completed is deliberately not terminal - reviewers need the names."""
+        result = self.assigned(REQ_COMPLETED)
+        self.assertEqual(oracle_assigned(REQ_COMPLETED), result)
+        self.assertTrue(result)
+
+    def test_on_hold_and_escalated_keep_their_volunteers(self) -> None:
+        """Paused or raised requests are not ended, so assignments survive."""
+        for req_id in (REQ_ON_HOLD, REQ_ESCALATED):
+            result = self.assigned(req_id)
+            self.assertEqual(oracle_assigned(req_id), result, req_id)
+            self.assertTrue(result, req_id)
 
     def test_assignments_do_not_leak_across_requests(self) -> None:
         """Every returned entry belongs to the requested req_id only."""
-        for req_id in {r["request_id"] for r in ASSIGNMENT_ROWS}:
+        for req_id in {r["req_id"] for r in ASSIGNMENT_ROWS}:
             expected_ids = {r["volunteer_id"] for r in oracle_current_rows(req_id)}
             if REQUEST_BY_ID[req_id]["req_status_id"] in (
                 av.TERMINAL_REQUEST_STATUS_IDS
@@ -433,8 +475,8 @@ class TestAssignmentRetrieval(MockBackedTestCase):
             self.assertEqual(expected_ids, actual_ids, req_id)
 
     def test_matches_the_oracle_for_every_request_in_the_fixture(self) -> None:
-        """The SQL and the Python rule agree on every assigned request."""
-        for req_id in sorted({r["request_id"] for r in ASSIGNMENT_ROWS}):
+        """The SQL and the Python rule agree on every request in the export."""
+        for req_id in sorted(REQUEST_BY_ID):
             self.assertEqual(oracle_assigned(req_id), self.assigned(req_id), req_id)
 
 
@@ -462,43 +504,55 @@ class TestVolunteerData(MockBackedTestCase):
 
     def test_every_entry_has_the_full_key_set(self) -> None:
         """The response shape is stable regardless of NULL columns."""
-        for req_id in sorted({r["request_id"] for r in ASSIGNMENT_ROWS}):
+        for req_id in sorted({r["req_id"] for r in ASSIGNMENT_ROWS}):
             for entry in self.assigned(req_id):
                 self.assertEqual(set(av.VOLUNTEER_FIELDS), set(entry), req_id)
 
     def test_null_contact_details_do_not_drop_the_volunteer(self) -> None:
         """NULL email/phone surface as null instead of failing or filtering."""
-        result = self.assigned(REQ_NULL_CONTACT)
-        self.assertEqual(1, len(result))
-        self.assertIsNone(result[0]["primary_email_address"])
-        self.assertIsNone(result[0]["primary_phone_number"])
-        self.assertIsNotNone(result[0]["full_name"])
+        entry = next(
+            e for e in self.assigned(REQ_SPECIAL_PROFILES)
+            if e["user_id"] == VOL_NULL_CONTACT
+        )
+        self.assertIsNone(entry["primary_email_address"])
+        self.assertIsNone(entry["primary_phone_number"])
+        self.assertIsNotNone(entry["full_name"])
 
     def test_missing_user_row_does_not_drop_the_volunteer(self) -> None:
         """An assignment with no users row still reports the volunteer id."""
         result = self.assigned(REQ_MISSING_PROFILE)
-        self.assertEqual(1, len(result))
-        self.assertNotIn(result[0]["user_id"], USER_BY_ID)
-        self.assertIsNone(result[0]["full_name"])
-        self.assertIsNone(result[0]["user_status"])
+        self.assertTrue(result)
+        unknown = [e for e in result if e["user_id"] not in USER_BY_ID]
+        self.assertTrue(unknown)
+        for entry in unknown:
+            self.assertIsNone(entry["full_name"])
+            self.assertIsNone(entry["user_status"])
+            self.assertIsNotNone(entry["volunteer_type"])
 
     def test_user_status_is_resolved_from_the_lookup(self) -> None:
         """user_status comes from the user_status join, not the raw id."""
-        entry = self.assigned(REQ_SINGLE)[0]
+        entry = next(
+            e for e in self.assigned(REQ_SPECIAL_PROFILES)
+            if e["user_id"] == VOL_NULL_CONTACT
+        )
         self.assertEqual("ACTIVE", entry["user_status"])
 
     def test_inactive_volunteer_is_still_returned(self) -> None:
         """A changed user status does not remove a current assignee."""
-        result = self.assigned(REQ_INACTIVE_VOLUNTEER)
-        self.assertEqual(1, len(result))
-        self.assertEqual("INACTIVE", result[0]["user_status"])
+        entry = next(
+            e for e in self.assigned(REQ_SPECIAL_PROFILES)
+            if e["user_id"] == VOL_INACTIVE
+        )
+        self.assertEqual("INACTIVE", entry["user_status"])
 
     def test_null_user_status_id_yields_null_status(self) -> None:
         """A NULL user_status_id reports null rather than failing the join."""
-        result = self.assigned(REQ_NULL_STATUS)
-        self.assertEqual(1, len(result))
-        self.assertIsNone(result[0]["user_status"])
-        self.assertIsNotNone(result[0]["full_name"])
+        entry = next(
+            e for e in self.assigned(REQ_SPECIAL_PROFILES)
+            if e["user_id"] == VOL_NULL_STATUS
+        )
+        self.assertIsNone(entry["user_status"])
+        self.assertIsNotNone(entry["full_name"])
 
     def test_assignment_metadata_is_returned(self) -> None:
         """volunteer_type and assigned_at come from volunteers_assigned."""
@@ -512,6 +566,67 @@ class TestVolunteerData(MockBackedTestCase):
             [str(row["last_update_date"]) for row in expected],
             [str(entry["assigned_at"]) for entry in result],
         )
+
+
+# --------------------------------------------------------------------------- #
+# 5b. The lead volunteer - reported, never reconciled
+# --------------------------------------------------------------------------- #
+class TestLeadVolunteer(MockBackedTestCase):
+    """requests.lead_volunteer_id is echoed and flagged, never used to filter."""
+
+    def test_lead_volunteer_id_is_echoed(self) -> None:
+        """The request's own lead_volunteer_id is returned at the top level."""
+        status_code, body = self.invoke({"req_id": REQ_LEAD_MATCHES})
+        self.assertEqual(200, status_code)
+        self.assertEqual(
+            REQUEST_BY_ID[REQ_LEAD_MATCHES]["lead_volunteer_id"],
+            body["lead_volunteer_id"],
+        )
+
+    def test_null_lead_volunteer_id_is_reported_as_null(self) -> None:
+        """A request with no lead reports null rather than omitting the key."""
+        status_code, body = self.invoke({"req_id": REQ_NO_LEAD})
+        self.assertEqual(200, status_code)
+        self.assertIn("lead_volunteer_id", body)
+        self.assertIsNone(body["lead_volunteer_id"])
+
+    def test_is_lead_marks_the_matching_volunteer(self) -> None:
+        """is_lead is true exactly for the request's lead_volunteer_id."""
+        lead = REQUEST_BY_ID[REQ_LEAD_MATCHES]["lead_volunteer_id"]
+        result = self.assigned(REQ_LEAD_MATCHES)
+        flagged = [e["user_id"] for e in result if e["is_lead"]]
+        self.assertEqual([lead], flagged)
+
+    def test_is_lead_is_false_when_no_lead_is_set(self) -> None:
+        """A NULL lead_volunteer_id never flags anybody."""
+        for entry in self.assigned(REQ_NO_LEAD):
+            self.assertFalse(entry["is_lead"])
+
+    def test_lead_does_not_filter_the_array(self) -> None:
+        """Volunteers who are not the lead are still returned."""
+        result = self.assigned(REQ_LEAD_MATCHES)
+        self.assertGreater(len(result), len([e for e in result if e["is_lead"]]))
+
+    def test_unmatched_lead_flags_nobody(self) -> None:
+        """A lead who holds no assignment row leaves every is_lead false."""
+        result = self.assigned(REQ_LEAD_UNMATCHED)
+        self.assertTrue(result)
+        self.assertFalse([e for e in result if e["is_lead"]])
+
+    def test_lead_without_an_assignment_row_is_not_fabricated(self) -> None:
+        """A lead with no volunteers_assigned row is never added to the array."""
+        checked = 0
+        for req_id, request_row in REQUEST_BY_ID.items():
+            lead = request_row["lead_volunteer_id"]
+            if not lead:
+                continue
+            if any(r["volunteer_id"] == lead for r in oracle_current_rows(req_id)):
+                continue
+            checked += 1
+            self.assertNotIn(
+                lead, [e["user_id"] for e in self.assigned(req_id)], req_id
+            )
+        self.assertTrue(checked, "fixture should have unmatched lead ids")
 
 
 # --------------------------------------------------------------------------- #
@@ -591,7 +706,7 @@ class TestFailureScenarios(MockBackedTestCase):
         """Many assigned volunteers still cost the same two statements."""
         self.connection.executed_sql.clear()
         result = av.build_assigned_volunteers_response(self.cursor, REQ_MULTIPLE)
-        self.assertEqual(2, len(result[1]["assignedVolunteers"]))
+        self.assertGreater(len(result[1]["assignedVolunteers"]), 1)
         self.assertEqual(2, len(self.connection.executed_sql))
 
     def test_sql_injection_attempt_returns_404(self) -> None:
@@ -700,6 +815,7 @@ _SECTION_TITLES = {
     "TestRequestValidation": "Steps 1-2 - request validation",
     "TestAssignmentRetrieval": "Step 3 - current assignment retrieval",
     "TestVolunteerData": "Step 4 - volunteer details",
+    "TestLeadVolunteer": "Lead volunteer (requests.lead_volunteer_id)",
     "TestFailureScenarios": "General / failure scenarios",
     "TestLambdaHandler": "Lambda handler contract",
 }
@@ -708,8 +824,12 @@ SAMPLE_PAYLOADS = {
     "One assigned volunteer": {"req_id": REQ_SINGLE},
     "Multiple assigned volunteers": {"req_id": REQ_MULTIPLE},
     "Reassigned request - only the current volunteer": {"req_id": REQ_REASSIGNED},
-    "Volunteer with NULL contact details": {"req_id": REQ_NULL_CONTACT},
-    "Inactive volunteer, still assigned": {"req_id": REQ_INACTIVE_VOLUNTEER},
+    "NULL contacts, inactive volunteer, NULL status": {
+        "req_id": REQ_SPECIAL_PROFILES
+    },
+    "Volunteers with no users row": {"req_id": REQ_MISSING_PROFILE},
+    "Lead volunteer flagged": {"req_id": REQ_LEAD_MATCHES},
+    "Completed request - volunteers still reported": {"req_id": REQ_COMPLETED},
     "No current assignment": {"req_id": REQ_NO_ASSIGNMENT},
     "Cancelled request": {"req_id": REQ_CANCELLED},
     "Validation error - missing req_id": {},
@@ -770,9 +890,11 @@ def emit_results(
     add("|---|---|")
     add("| Endpoint | `POST /volunteers/assigned` |")
     add("| Module under test | `data-analytics/lambda_functions/assigned_volunteers.py` |")
-    add("| Data source | mock fixtures only - `Request_Table.csv`, `request_extra_295.csv`, "
-        "`users.csv`, `users_extra_295.csv`, `user_status.csv`, `volunteers_assigned.csv` |")
+    add("| Data source | mock fixtures only - `requests.csv`, `users.csv`, "
+        "`users_extra_295.csv`, `user_status.csv`, `volunteers_assigned.csv`, "
+        "`volunteers_assigned_extra_295.csv` |")
     add(f"| Requests in fixture | {len(REQUEST_ROWS)} |")
+    add(f"| Terminal statuses | {av.TERMINAL_REQUEST_STATUS_IDS} (Cancelled only) |")
     add(f"| Users in fixture | {len(USER_ROWS)} |")
     add(f"| Assignment rows in fixture | {len(ASSIGNMENT_ROWS)} |")
     add(f"| Python | {sys.version.split()[0]} |")
@@ -782,9 +904,9 @@ def emit_results(
     add("")
     add("`volunteers_assigned` has no assignment-status column and no active flag, "
         "so \"current\" is defined by the Lambda: the newest `last_update_date` row "
-        "per `(request_id, volunteer_id)` - ties broken by the higher "
-        "`volunteers_assigned_id` - and nothing at all for a request in a terminal "
-        "status (`req_status_id` 4 CANCELLED, 5 DELETED). The suite re-implements "
+        "per `(req_id, volunteer_id)` - ties broken by the higher "
+        "`vol_assigned_id` - and nothing at all for a Cancelled request "
+        "(`req_status_id` 4). The suite re-implements "
         "that rule in Python straight from the CSVs and compares it against what the "
         "SQL returns.")
     add("")
@@ -880,13 +1002,17 @@ def emit_results(
     add("- `user_status.csv` holds the single real lookup row (`1 ACTIVE`) plus two "
         "mock-only rows (`2 INACTIVE`, `3 SUSPENDED`) that exist solely so "
         "non-ACTIVE status handling can be exercised.")
-    add("- The edge-case rows for this issue live in `request_extra_295.csv` and "
-        "`users_extra_295.csv` rather than being appended to the bulk exports, so a "
-        "regeneration of `Request_Table.csv` or `users.csv` cannot silently delete "
-        "the scenarios this suite depends on.")
+    add("- Only four scenarios the real export cannot express live in the "
+        "`*_extra_295` fixtures; they are unioned in rather than appended to the "
+        "exports, so regenerating `requests.csv`, `users.csv` or "
+        "`volunteers_assigned.csv` cannot silently delete them.")
+    add("- `Completed` requests deliberately still report their volunteers - only "
+        "`Cancelled` (4) suppresses the array. `requests.lead_volunteer_id` is "
+        "echoed and flagged via `is_lead` but never reconciled: in this fixture it "
+        "matches an assignment row in only 1 of 20 cases.")
     add("- Suggested indexes for the production tables: "
-        "`volunteers_assigned(request_id)` and "
-        "`volunteers_assigned(request_id, volunteer_id, last_update_date)` to serve "
+        "`volunteers_assigned(req_id)` and "
+        "`volunteers_assigned(req_id, volunteer_id, last_update_date)` to serve "
         "the lookup and the anti-join, plus the existing `request(req_id)` and "
         "`users(user_id)` primary keys.")
 

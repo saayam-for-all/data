@@ -1,4 +1,0 @@
-"req_id","req_user_id","req_for_id","req_islead_id","req_cat_id","req_type_id","req_priority_id","req_status_id","req_loc","iscalamity","req_subj","req_desc","req_doc_link","audio_req_desc","submission_date","serviced_date","last_update_date","to_public"
-"REQ-00-000-295-004","SID-00-000-000-102",1,1,"5.2",0,1,4,"Ashburn, VA",False,"Cancelled grocery run","Requester cancelled after arranging help elsewhere.",NULL,NULL,"2026-01-17 10:00:00",NULL,"2026-01-17 12:00:00",False
-"REQ-00-000-295-005","SID-00-000-000-102",1,1,"5.2",0,1,5,"Ashburn, VA",False,"Deleted duplicate request","Duplicate request removed from the system.",NULL,NULL,"2026-01-18 10:00:00",NULL,"2026-01-18 12:00:00",False
-"REQ-00-000-295-006","SID-00-000-000-102",1,1,"5.2",0,2,2,"Ashburn, VA",False,"In progress with no assignment row","Request is being worked but has no volunteers_assigned row yet.",NULL,NULL,"2026-01-19 10:00:00",NULL,"2026-01-19 10:00:00",False
