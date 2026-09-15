@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from growth_location_analytics.date_ranges import DateWindow
 
 ORGANIZATION_COLUMNS = [
     "org_id",
@@ -33,3 +34,10 @@ def write_csvs(
     )
 
 
+def utc_window(start: str, end_exclusive: str) -> DateWindow:
+    """Build explicit UTC boundaries without using the production date resolver."""
+
+    return DateWindow(
+        start=pd.Timestamp(start, tz="UTC").to_pydatetime(),
+        end_exclusive=pd.Timestamp(end_exclusive, tz="UTC").to_pydatetime(),
+    )
