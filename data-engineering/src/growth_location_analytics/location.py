@@ -6,7 +6,10 @@ from typing import TypedDict
 
 import pandas as pd
 
-from .date_ranges import DateWindow
+if __package__:
+    from .date_ranges import DateWindow
+else:
+    from date_ranges import DateWindow  # type: ignore[no-redef]
 
 
 class LocationCalculationError(ValueError):

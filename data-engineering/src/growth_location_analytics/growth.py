@@ -6,7 +6,14 @@ from typing import TypedDict
 
 import pandas as pd
 
-from .date_ranges import DateWindow, bucket_granularity, period_label
+if __package__:
+    from .date_ranges import DateWindow, bucket_granularity, period_label
+else:
+    from date_ranges import (  # type: ignore[no-redef]
+        DateWindow,
+        bucket_granularity,
+        period_label,
+    )
 
 
 class GrowthPoint(TypedDict):

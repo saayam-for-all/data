@@ -17,6 +17,7 @@ from .location import (
     LocationCalculationError,
     calculate_country_distribution,
 )
+from .lambda_function import RequestBodyError, assemble_analytics, lambda_handler
 
 __all__ = [
     "ALL_BUCKETS",
@@ -30,10 +31,13 @@ __all__ = [
     "LocalDataError",
     "LocalDataTables",
     "LocationCalculationError",
+    "RequestBodyError",
+    "assemble_analytics",
     "bucket_granularity",
     "calculate_country_distribution",
     "calculate_organization_growth",
     "load_local_data",
+    "lambda_handler",
     "period_label",
     "resolve_date_ranges",
 ]
