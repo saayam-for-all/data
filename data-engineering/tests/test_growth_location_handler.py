@@ -142,6 +142,48 @@ def test_lambda_entry_point_imports_from_packaged_zip_root():
     assert completed.returncode == 0, completed.stderr
 
 
+def test_local_runner_uses_real_handler_for_all_required_scenarios(
+    tmp_path, monkeypatch, capsys
+):
+    _write_csvs(tmp_path)
+    monkeypatch.setenv("MOCK_DATA_DIR", str(tmp_path))
+    monkeypatch.setattr(handler, "_current_utc_time", lambda: REFERENCE)
+    real_handler = handler.lambda_handler
+    calls: list[dict[str, str]] = []
+
+    def record_call(event: dict[str, str], context: object):
+        calls.append(event)
+        return real_handler(event, context)
+
+    monkeypatch.setattr(handler, "lambda_handler", record_call)
+
+    handler._run_local_samples()
+
+    assert calls == [
+        {},
+        {"start_date": "2025-01-01", "end_date": "2026-09-15"},
+        {
+            "location_start_date": "2025-01-01",
+            "location_end_date": "2026-09-15",
+        },
+        {
+            "start_date": "2025-01-01",
+            "end_date": "2025-01-01",
+            "location_start_date": "2026-09-15",
+            "location_end_date": "2026-09-15",
+        },
+    ]
+    output = capsys.readouterr().out
+    assert output.count('"statusCode": 200') == 4
+    for label in (
+        "No body / {}",
+        "Growth Custom range only",
+        "Location Custom range only",
+        "Both independent Custom ranges",
+    ):
+        assert f"=== {label} ===" in output
+
+
 @pytest.mark.parametrize("event", [{}, {"body": None}, {"body": "{}"}])
 def test_no_body_returns_all_fixed_buckets_and_empty_custom(invoke, event):
     response, payload = invoke(event)

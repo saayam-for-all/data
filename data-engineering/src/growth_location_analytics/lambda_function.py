@@ -172,3 +172,61 @@ def _current_utc_time() -> datetime:
     """Read the invocation reference time once; isolated for deterministic tests."""
 
     return datetime.now(timezone.utc)
+
+
+def _local_sample_events() -> tuple[tuple[str, dict[str, str]], ...]:
+    """Build reproducible sample requests from dates present in the local CSVs.
+
+    The local runner derives its dates from the configured organizations data so
+    the Custom examples remain meaningful when the local fixture changes. An
+    empty, header-only organizations file uses a stable fallback date; every
+    response is still produced by :func:`lambda_handler` and the normal loader.
+    """
+
+    organizations = load_local_data().organizations
+    if organizations.empty:
+        first_date = last_date = "1970-01-01"
+    else:
+        active_dates = organizations["created_at"].dt.date.sort_values()
+        first_date = active_dates.iloc[0].isoformat()
+        last_date = active_dates.iloc[-1].isoformat()
+
+    return (
+        ("No body / {}", {}),
+        (
+            "Growth Custom range only",
+            {"start_date": first_date, "end_date": last_date},
+        ),
+        (
+            "Location Custom range only",
+            {
+                "location_start_date": first_date,
+                "location_end_date": last_date,
+            },
+        ),
+        (
+            "Both independent Custom ranges",
+            {
+                "start_date": first_date,
+                "end_date": first_date,
+                "location_start_date": last_date,
+                "location_end_date": last_date,
+            },
+        ),
+    )
+
+
+def _run_local_samples() -> None:
+    """Invoke and print the real handler for the four issue-required examples."""
+
+    for label, event in _local_sample_events():
+        response = lambda_handler(event, None)
+        print(f"=== {label} ===")
+        print("Request:")
+        print(json.dumps(event, indent=2))
+        print("Response:")
+        print(json.dumps(response, indent=2))
+
+
+if __name__ == "__main__":
+    _run_local_samples()
