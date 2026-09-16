@@ -17,7 +17,7 @@ if __package__:
         resolve_date_ranges,
     )
     from .growth import calculate_organization_growth
-    from .loader import LocalDataTables, load_local_data
+    from .loader import LocalDataTables, load_local_data, load_organizations
     from .location import calculate_country_distribution
 else:
     # The repository's Lambda workflow copies this directory's contents to the
@@ -30,7 +30,7 @@ else:
         resolve_date_ranges,
     )
     from growth import calculate_organization_growth  # type: ignore[no-redef]
-    from loader import LocalDataTables, load_local_data  # type: ignore[no-redef]
+    from loader import LocalDataTables, load_local_data, load_organizations  # type: ignore[no-redef]
     from location import calculate_country_distribution  # type: ignore[no-redef]
 
 
@@ -167,3 +167,57 @@ def _current_utc_time() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def _local_sample_events() -> tuple[tuple[str, dict[str, str]], ...]:
+    """Build four sample requests using the earliest/latest local organization dates.
+
+    Header-only data uses 1970-01-01. The runner sends each event through the
+    real handler so output exercises loading and both charts.
+    """
+
+    organizations = load_organizations()
+    if organizations.empty:
+        first_date = last_date = "1970-01-01"
+    else:
+        dates = organizations["created_at"]
+        first_date = dates.min().date().isoformat()
+        last_date = dates.max().date().isoformat()
+
+    return (
+        ("No body / {}", {}),
+        (
+            "Growth Custom range only",
+            {"start_date": first_date, "end_date": last_date},
+        ),
+        (
+            "Location Custom range only",
+            {
+                "location_start_date": first_date,
+                "location_end_date": last_date,
+            },
+        ),
+        (
+            "Both independent Custom ranges",
+            {
+                "start_date": first_date,
+                "end_date": first_date,
+                "location_start_date": last_date,
+                "location_end_date": last_date,
+            },
+        ),
+    )
+
+
+def _run_local_samples() -> None:
+    """Invoke and print the real handler for the four issue-required examples."""
+
+    for label, event in _local_sample_events():
+        response = lambda_handler(event, None)
+        print(f"=== {label} ===")
+        print("Request:")
+        print(json.dumps(event, indent=2))
+        print("Response:")
+        print(json.dumps(response, indent=2))
+
+
+if __name__ == "__main__":
+    _run_local_samples()

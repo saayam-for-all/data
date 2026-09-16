@@ -130,6 +130,34 @@ def test_lambda_entry_point_imports_from_packaged_zip_root():
     assert completed.returncode == 0, completed.stderr
 
 
+def test_local_runner_uses_real_handler_for_all_required_scenarios(tmp_path, monkeypatch, capsys):
+    _write_csvs(tmp_path)
+    monkeypatch.setenv("MOCK_DATA_DIR", str(tmp_path))
+    monkeypatch.setattr(handler, "_current_utc_time", lambda: REFERENCE)
+    real_handler = handler.lambda_handler
+    responses = []
+
+    def record_response(event, context):
+        response = real_handler(event, context)
+        responses.append(response)
+        return response
+
+    monkeypatch.setattr(handler, "lambda_handler", record_response)
+    handler._run_local_samples()
+
+    assert len(responses) == 4
+    for response, (has_growth, has_location) in zip(
+        responses, [(False, False), (True, False), (False, True), (True, True)]
+    ):
+        assert response["statusCode"] == 200
+        payload = json.loads(response["body"])
+        assert payload["All"]["growth_trend"]["total_organizations"][-1]["count"] == 5
+        custom = payload["Custom"]
+        assert bool(custom["growth_trend"]["total_organizations"]) == has_growth
+        assert bool(custom["organizations_by_location"]) == has_location
+    assert capsys.readouterr().out.count('"statusCode": 200') == 4
+
+
 @pytest.mark.parametrize(
     "event",
     [
