@@ -17,5 +17,6 @@ build/
 htmlcov/
 .coverage
 datasets/raw/
-datasets/cleaned/
+datasets/cleaned/*
+!datasets/cleaned/emergency_numbers.json
 dist/
