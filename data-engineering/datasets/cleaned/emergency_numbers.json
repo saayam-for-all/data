@@ -30,10 +30,10 @@
   },
   "AG": {
     "default": {
-      "general_emergency": "999; 911",
-      "police": "999; 911",
-      "ambulance": "999; 911",
-      "fire": "999; 911"
+      "general_emergency": "911",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   },
@@ -328,10 +328,10 @@
   },
   "BS": {
     "default": {
-      "general_emergency": "911; 919",
-      "police": "911; 919",
-      "ambulance": "911; 919",
-      "fire": "911; 919",
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "919",
       "suicide_helpline": "322-2763"
     },
     "states": {}
@@ -369,10 +369,10 @@
   },
   "BZ": {
     "default": {
-      "general_emergency": "911; 90",
-      "police": "911; 90",
-      "ambulance": "911; 90",
-      "fire": "911; 90"
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -447,7 +447,8 @@
     "default": {
       "ambulance": "185",
       "fire": "180",
-      "police": "110; 111"
+      "police": "110",
+      "security_coordination_center": "111"
     },
     "states": {}
   },
@@ -1048,10 +1049,12 @@
   },
   "IE": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999",
+      "general_emergency": "999",
+      "eu_emergency": "112",
+      "emergency_sms": "112",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999",
       "suicide_helpline": "116123",
       "women_helpline": "+353 1800 341 900"
     },
@@ -1573,10 +1576,10 @@
   },
   "MS": {
     "default": {
-      "general_emergency": "911; 999",
-      "police": "911; 999",
-      "ambulance": "911; 999",
-      "fire": "911; 999"
+      "general_emergency": "911",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "911"
     },
     "states": {}
   },
@@ -2415,10 +2418,10 @@
   },
   "VC": {
     "default": {
-      "general_emergency": "911; 999",
+      "general_emergency": "911",
       "police": "999",
       "ambulance": "911",
-      "fire": "911; 999"
+      "fire": "911"
     },
     "states": {}
   },
