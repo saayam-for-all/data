@@ -1,0 +1,2266 @@
+{
+  "AD": {
+    "default": {
+      "police": "110",
+      "ambulance": "116",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "AE": {
+    "default": {
+      "police": "999",
+      "ambulance": "998",
+      "fire": "997",
+      "coast_guard": "996",
+      "non_emergency_police": "901"
+    },
+    "states": {}
+  },
+  "AF": {
+    "default": {
+      "police": "119",
+      "ambulance": "112",
+      "fire": "119"
+    },
+    "states": {}
+  },
+  "AG": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "AI": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "AL": {
+    "default": {
+      "police": "129",
+      "ambulance": "127",
+      "fire": "128",
+      "traffic_police": "126",
+      "emergency_at_sea": "125"
+    },
+    "states": {}
+  },
+  "AM": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "911": "911"
+      },
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "gas_emergency": "104"
+    },
+    "states": {}
+  },
+  "AO": {
+    "default": {
+      "police": "113",
+      "ambulance": {
+        "112": "112",
+        "national": "116"
+      },
+      "fire": "115"
+    },
+    "states": {}
+  },
+  "AQ": {
+    "default": {
+      "mcmurdo_station": "911"
+    },
+    "states": {}
+  },
+  "AR": {
+    "default": {
+      "general_emergency": "911",
+      "police": "101",
+      "ambulance": "107",
+      "fire": "100",
+      "civil_defense": "103",
+      "forest_fire": "105",
+      "coast_guard": "106"
+    },
+    "states": {}
+  },
+  "AS": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "AT": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "133"
+      },
+      "ambulance": "144",
+      "fire": "122",
+      "gas_emergency": "128",
+      "mountain_rescue": "140",
+      "crisis_hotline": "142"
+    },
+    "states": {}
+  },
+  "AU": {
+    "default": {
+      "general_emergency": "000",
+      "mobile_phones": {
+        "112": "112",
+        "000": "000"
+      },
+      "state_emergency_service": "132 500",
+      "poison_control": "13 11 26"
+    },
+    "states": {}
+  },
+  "AW": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "AX": {
+    "default": {
+      "general_emergency": "112",
+      "non_emergency_police": "018 527 100",
+      "poison_control": "09 471 977"
+    },
+    "states": {}
+  },
+  "AZ": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "102"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "103"
+      },
+      "fire": {
+        "112": "112",
+        "national": "101"
+      },
+      "gas_service": "104",
+      "traffic_police": "902"
+    },
+    "states": {}
+  },
+  "BA": {
+    "default": {
+      "police": "122",
+      "ambulance": "124",
+      "fire": "123",
+      "civil_protection": "121"
+    },
+    "states": {}
+  },
+  "BB": {
+    "default": {
+      "police": "211",
+      "ambulance": "511",
+      "fire": "311"
+    },
+    "states": {}
+  },
+  "BD": {
+    "default": {
+      "police": "999",
+      "women_helpline": "109",
+      "child_helpline": "16123",
+      "health_services": "16263"
+    },
+    "states": {}
+  },
+  "BE": {
+    "default": {
+      "police": {
+        "national": "101",
+        "112": "112"
+      },
+      "ambulance": "112",
+      "non_emergency_fire": "1722"
+    },
+    "states": {}
+  },
+  "BF": {
+    "default": {
+      "police": "17",
+      "ambulance": "112",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "BG": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "166"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "150"
+      },
+      "fire": {
+        "112": "112",
+        "national": "160"
+      }
+    },
+    "states": {}
+  },
+  "BH": {
+    "default": {
+      "police": "999",
+      "mobile_phones": "112",
+      "traffic_police": "199",
+      "coast_guard": "994"
+    },
+    "states": {}
+  },
+  "BI": {
+    "default": {
+      "police": "117",
+      "ambulance": "112",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "BJ": {
+    "default": {
+      "police": "117",
+      "ambulance": "112",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "BL": {
+    "default": {
+      "police": "17",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "BM": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "BN": {
+    "default": {
+      "police": "993",
+      "ambulance": "991",
+      "fire": "995",
+      "search_and_rescue": "998"
+    },
+    "states": {}
+  },
+  "BO": {
+    "default": {
+      "general_emergency": "911",
+      "police": "110",
+      "ambulance": "118",
+      "fire": "119",
+      "civil_protection": "114"
+    },
+    "states": {}
+  },
+  "BQ": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "BR": {
+    "default": {
+      "police": "190",
+      "ambulance": "192",
+      "fire": "193",
+      "federal_highway_police": "191",
+      "federal_police": "194",
+      "civil_police": "197",
+      "civil_defense": "199",
+      "human_rights": "100"
+    },
+    "states": {}
+  },
+  "BS": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "national": "919"
+      },
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "BT": {
+    "default": {
+      "police": "113",
+      "ambulance": "112",
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "BW": {
+    "default": {
+      "police": "999",
+      "ambulance": "997",
+      "fire": "998",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "BY": {
+    "default": {
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "gas_emergency": "104"
+    },
+    "states": {}
+  },
+  "BZ": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "CA": {
+    "default": {
+      "general_emergency": "911",
+      "suicide_helpline": "988",
+      "non_emergency_social_services": "211",
+      "municipal_services": "311"
+    },
+    "states": {}
+  },
+  "CC": {
+    "default": {
+      "general_emergency": "000"
+    },
+    "states": {}
+  },
+  "CD": {
+    "default": {
+      "police": "112",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CF": {
+    "default": {
+      "police": "117",
+      "ambulance": "1220",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CG": {
+    "default": {
+      "police": "117",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CH": {
+    "default": {
+      "police": "117",
+      "ambulance": "144",
+      "fire": "118",
+      "poison_control": "145",
+      "rega_air_rescue": "1414"
+    },
+    "states": {}
+  },
+  "CI": {
+    "default": {
+      "police": {
+        "option_1": "110",
+        "option_2": "111",
+        "option_3": "170"
+      },
+      "ambulance": "185",
+      "fire": "180"
+    },
+    "states": {}
+  },
+  "CK": {
+    "default": {
+      "general_emergency": "999"
+    },
+    "states": {}
+  },
+  "CL": {
+    "default": {
+      "police": "133",
+      "ambulance": "131",
+      "fire": "132"
+    },
+    "states": {}
+  },
+  "CM": {
+    "default": {
+      "general_emergency": "112",
+      "police": "117",
+      "ambulance": "119",
+      "fire": "118",
+      "electricity_emergency": "8010"
+    },
+    "states": {}
+  },
+  "CN": {
+    "default": {
+      "police": "110",
+      "ambulance": "120",
+      "fire": "119",
+      "traffic_accident_reports": "122",
+      "coast_guard": "95110"
+    },
+    "states": {}
+  },
+  "CO": {
+    "default": {
+      "police": "112",
+      "ambulance": "125",
+      "fire": "119",
+      "general_emergency": "123",
+      "anti_kidnapping_hotline": "165"
+    },
+    "states": {}
+  },
+  "CR": {
+    "default": {
+      "general_emergency": "911",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "CU": {
+    "default": {
+      "police": "106",
+      "ambulance": "104",
+      "fire": "105"
+    },
+    "states": {}
+  },
+  "CV": {
+    "default": {
+      "police": "132",
+      "ambulance": "130",
+      "fire": "131"
+    },
+    "states": {}
+  },
+  "CW": {
+    "default": {
+      "police": "911",
+      "ambulance": {
+        "national": "910",
+        "option_1": "912"
+      },
+      "fire": "911"
+    },
+    "states": {}
+  },
+  "CX": {
+    "default": {
+      "general_emergency": "000"
+    },
+    "states": {}
+  },
+  "CY": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "national": "199"
+      },
+      "air_sea_rescue": "1441",
+      "poison_control": "1401"
+    },
+    "states": {}
+  },
+  "CZ": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "158"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "155"
+      },
+      "fire": {
+        "112": "112",
+        "national": "150"
+      },
+      "municipal_police": "156",
+      "mountain_rescue": "1210"
+    },
+    "states": {}
+  },
+  "DE": {
+    "default": {
+      "police": "110",
+      "fire": "112",
+      "non_emergency_medical": "116 117",
+      "card_locking": "116 116"
+    },
+    "states": {}
+  },
+  "DJ": {
+    "default": {
+      "police": "17",
+      "ambulance": "19",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "DK": {
+    "default": {
+      "general_emergency": "112",
+      "non_emergency_police": "114"
+    },
+    "states": {}
+  },
+  "DM": {
+    "default": {
+      "general_emergency": "999"
+    },
+    "states": {}
+  },
+  "DO": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "DZ": {
+    "default": {
+      "police": "1548",
+      "ambulance": "14",
+      "gendarme": "1055"
+    },
+    "states": {}
+  },
+  "EC": {
+    "default": {
+      "general_emergency": "911",
+      "police": "101",
+      "ambulance": "131",
+      "fire": "102"
+    },
+    "states": {}
+  },
+  "EE": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "EG": {
+    "default": {
+      "general_emergency": "112",
+      "police": {
+        "112": "112",
+        "national": "122"
+      },
+      "ambulance": "123",
+      "fire": "180",
+      "tourist_police": "126",
+      "traffic_police": "128",
+      "electricity_emergency": "121",
+      "gas_emergency": "129"
+    },
+    "states": {}
+  },
+  "EH": {
+    "default": {
+      "police": "150"
+    },
+    "states": {}
+  },
+  "ER": {
+    "default": {
+      "police": "113",
+      "ambulance": "114",
+      "fire": "116",
+      "general_emergency": "112",
+      "traffic_police": "115"
+    },
+    "states": {}
+  },
+  "ES": {
+    "default": {
+      "general_emergency": "112",
+      "national_police": "091",
+      "civil_guard": "062",
+      "samur_ambulance": "061",
+      "civil_protection": "1006"
+    },
+    "states": {}
+  },
+  "ET": {
+    "default": {
+      "general_emergency": "911",
+      "police": "991",
+      "ambulance": "907",
+      "fire": "939",
+      "traffic_police": "945"
+    },
+    "states": {}
+  },
+  "FI": {
+    "default": {
+      "general_emergency": "112",
+      "maritime_rescue": "02 94 1000",
+      "poison_control": "0800 147 111",
+      "medical_helpline": "116 117"
+    },
+    "states": {}
+  },
+  "FJ": {
+    "default": {
+      "general_emergency": "911",
+      "police": "917",
+      "fire": "910",
+      "crime_stoppers": "919"
+    },
+    "states": {}
+  },
+  "FK": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "FM": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "FO": {
+    "default": {
+      "general_emergency": "112",
+      "non_emergency_police": "114"
+    },
+    "states": {}
+  },
+  "FR": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "17"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "15"
+      },
+      "fire": {
+        "112": "112",
+        "national": "18"
+      },
+      "deaf_fax_sms": "114",
+      "child_abuse_hotline": "119",
+      "missing_children": "116 000"
+    },
+    "states": {}
+  },
+  "GA": {
+    "default": {
+      "police": "1730",
+      "ambulance": "1300",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "GB": {
+    "default": {
+      "general_emergency": {
+        "999": "999",
+        "112": "112"
+      },
+      "non_emergency_police": "101",
+      "power_outages": "105",
+      "non_emergency_health": "111"
+    },
+    "states": {}
+  },
+  "GD": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "GE": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "GF": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "GG": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "GH": {
+    "default": {
+      "general_emergency": "112",
+      "police": "191",
+      "ambulance": "193",
+      "fire": "192"
+    },
+    "states": {}
+  },
+  "GI": {
+    "default": {
+      "police": {
+        "option_1": "199",
+        "112": "112",
+        "999": "999"
+      },
+      "ambulance": {
+        "option_1": "190",
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "GL": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "GM": {
+    "default": {
+      "police": "117",
+      "ambulance": "116",
+      "fire": "118",
+      "police_alt": "112",
+      "electricity_emergency": "124",
+      "water_emergency": "125"
+    },
+    "states": {}
+  },
+  "GN": {
+    "default": {
+      "police": "117",
+      "ambulance": "18",
+      "fire": "442-020",
+      "maritime_emergency": "19",
+      "gendarmerie": "118",
+      "national_gendarmerie": "122"
+    },
+    "states": {}
+  },
+  "GP": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "GQ": {
+    "default": {
+      "police": "114",
+      "ambulance": "115",
+      "fire": "112",
+      "traffic_police": "116"
+    },
+    "states": {}
+  },
+  "GR": {
+    "default": {
+      "police": {
+        "national": "100",
+        "112": "112"
+      },
+      "ambulance": {
+        "national": "166",
+        "112": "112"
+      },
+      "fire": {
+        "national": "199",
+        "112": "112"
+      },
+      "coast_guard": "108",
+      "child_protection_helpline": "1056"
+    },
+    "states": {}
+  },
+  "GS": {
+    "default": {
+      "police": "999"
+    },
+    "states": {}
+  },
+  "GT": {
+    "default": {
+      "police": "110",
+      "ambulance": {
+        "cbv_national": "122",
+        "cbm_municipal": "123"
+      },
+      "municipality_bomberos_assoc": "1554",
+      "red_cross": "125",
+      "disaster_management": "119"
+    },
+    "states": {}
+  },
+  "GU": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "GW": {
+    "default": {
+      "general_emergency": "112",
+      "police": "117",
+      "ambulance": "119",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "GY": {
+    "default": {
+      "general_emergency": "911",
+      "ambulance": "913",
+      "fire": "912",
+      "domestic_violence": "914"
+    },
+    "states": {}
+  },
+  "HK": {
+    "default": {
+      "police": "999",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "HN": {
+    "default": {
+      "general_emergency": "911",
+      "ambulance": "195",
+      "fire": "198"
+    },
+    "states": {}
+  },
+  "HR": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "192"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "194"
+      },
+      "fire": {
+        "112": "112",
+        "national": "193"
+      },
+      "search_and_rescue_at_sea": {
+        "112": "112",
+        "national": "195"
+      },
+      "road_help": "1987"
+    },
+    "states": {}
+  },
+  "HT": {
+    "default": {
+      "police": "114",
+      "ambulance": "116",
+      "fire": "115",
+      "police_alt": "122"
+    },
+    "states": {}
+  },
+  "HU": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "107"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "104"
+      },
+      "fire": {
+        "112": "112",
+        "national": "105"
+      },
+      "water_emergency": "1817"
+    },
+    "states": {}
+  },
+  "ID": {
+    "default": {
+      "general_emergency": "112",
+      "police": "110",
+      "ambulance": {
+        "national": "118",
+        "option_1": "119"
+      },
+      "fire": {
+        "national": "113",
+        "option_1": "1131"
+      },
+      "search_and_rescue": "115",
+      "natural_disasters": "129"
+    },
+    "states": {}
+  },
+  "IE": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "IL": {
+    "default": {
+      "police": "100",
+      "ambulance": "101",
+      "fire": "102",
+      "electric_corp": "103",
+      "home_front_command": "104",
+      "child_abuse_hotline": "105"
+    },
+    "states": {}
+  },
+  "IM": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "IN": {
+    "default": {
+      "general_emergency": "112",
+      "police": "100",
+      "ambulance": "108",
+      "fire": "101",
+      "disaster_management": "104",
+      "women_helpline": "181",
+      "gas_leakage": "1906",
+      "tourist_helpline": "1363",
+      "child_helpline": "1098"
+    },
+    "states": {
+      "Karnataka": {
+        "default": {
+          "police": "112",
+          "ambulance": "108",
+          "fire": "101"
+        },
+        "cities": {
+          "Bengaluru": {
+            "police": "112",
+            "ambulance": "108"
+          },
+          "Mysuru": {
+            "police": "112",
+            "ambulance": "108"
+          }
+        },
+        "zips": {
+          "560001": {
+            "police": "112",
+            "ambulance": "108"
+          }
+        }
+      }
+    }
+  },
+  "IO": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "IQ": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "911": "911"
+      },
+      "police": "104",
+      "ambulance": "122",
+      "fire": "115"
+    },
+    "states": {}
+  },
+  "IR": {
+    "default": {
+      "police": "110",
+      "ambulance": "115",
+      "fire": "125",
+      "social_emergency": "123",
+      "red_crescent": "112"
+    },
+    "states": {}
+  },
+  "IS": {
+    "default": {
+      "general_emergency": "112",
+      "non_emergency_police_reykjavik": "444 10 00"
+    },
+    "states": {}
+  },
+  "IT": {
+    "default": {
+      "general_emergency": "112",
+      "child_abuse": "114",
+      "anti_violence_stalking": "1522",
+      "coast_guard": "1530"
+    },
+    "states": {}
+  },
+  "JE": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "JM": {
+    "default": {
+      "police": "119",
+      "ambulance": "110"
+    },
+    "states": {}
+  },
+  "JO": {
+    "default": {
+      "general_emergency": "911",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "JP": {
+    "default": {
+      "police": "110",
+      "ambulance": "119",
+      "fire": "119",
+      "coast_guard": "118"
+    },
+    "states": {}
+  },
+  "KE": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999",
+        "911": "911"
+      }
+    },
+    "states": {}
+  },
+  "KG": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "KH": {
+    "default": {
+      "police": "117",
+      "ambulance": "119",
+      "fire": "118",
+      "child_helpline": "1280"
+    },
+    "states": {}
+  },
+  "KI": {
+    "default": {
+      "general_emergency": {
+        "national": "100",
+        "999": "999"
+      },
+      "police": "192",
+      "ambulance": {
+        "national": "194",
+        "option_1": "195"
+      },
+      "fire": "193"
+    },
+    "states": {}
+  },
+  "KM": {
+    "default": {
+      "police": "17",
+      "ambulance": "772-03-73",
+      "fire": "18",
+      "ambulance_alt": "773-26-04"
+    },
+    "states": {}
+  },
+  "KN": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "KP": {
+    "default": {
+      "ambulance": {
+        "national": "110",
+        "option_1": "8119"
+      }
+    },
+    "states": {}
+  },
+  "KR": {
+    "default": {
+      "police": "112",
+      "fire": "119",
+      "non_emergency": "110",
+      "national_security": "111",
+      "narcotics_report": "127"
+    },
+    "states": {}
+  },
+  "KW": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "KY": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "KZ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "gas_leaks": "104"
+    },
+    "states": {}
+  },
+  "LA": {
+    "default": {
+      "police": "191",
+      "ambulance": "195",
+      "fire": "190"
+    },
+    "states": {}
+  },
+  "LB": {
+    "default": {
+      "police": {
+        "999": "999",
+        "112": "112"
+      },
+      "ambulance": "140",
+      "fire": "175",
+      "police_alt": "160",
+      "civil_defense": "125"
+    },
+    "states": {}
+  },
+  "LC": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "LI": {
+    "default": {
+      "police": "117",
+      "ambulance": "144",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "LK": {
+    "default": {
+      "police": "119",
+      "ambulance": "110",
+      "traffic_police": "112 691 111"
+    },
+    "states": {}
+  },
+  "LR": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "LS": {
+    "default": {
+      "police": "123",
+      "ambulance": "121",
+      "fire": "122"
+    },
+    "states": {}
+  },
+  "LT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "022",
+      "ambulance": "033",
+      "fire": "011"
+    },
+    "states": {}
+  },
+  "LU": {
+    "default": {
+      "general_emergency": "112",
+      "police": "113"
+    },
+    "states": {}
+  },
+  "LV": {
+    "default": {
+      "general_emergency": "112",
+      "police": "110",
+      "ambulance": "113",
+      "gas_emergency": "114"
+    },
+    "states": {}
+  },
+  "LY": {
+    "default": {
+      "police": "1515",
+      "ambulance": "193"
+    },
+    "states": {}
+  },
+  "MA": {
+    "default": {
+      "police": "19",
+      "ambulance": "15",
+      "royal_gendarmerie": "177",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "MC": {
+    "default": {
+      "police": "17",
+      "ambulance": {
+        "112": "112",
+        "national": "18"
+      },
+      "fire": {
+        "112": "112",
+        "national": "18"
+      }
+    },
+    "states": {}
+  },
+  "MD": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "ME": {
+    "default": {
+      "police": {
+        "national": "122",
+        "112": "112"
+      },
+      "ambulance": {
+        "national": "124",
+        "112": "112"
+      },
+      "fire": {
+        "national": "123",
+        "112": "112"
+      },
+      "emergency_at_sea": "129"
+    },
+    "states": {}
+  },
+  "MF": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "MG": {
+    "default": {
+      "police": "117",
+      "ambulance": "124",
+      "fire": "118",
+      "traffic_police": "3600"
+    },
+    "states": {}
+  },
+  "MH": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "MK": {
+    "default": {
+      "police": {
+        "national": "192",
+        "112": "112"
+      },
+      "ambulance": {
+        "national": "194",
+        "112": "112"
+      },
+      "fire": {
+        "national": "193",
+        "112": "112"
+      }
+    },
+    "states": {}
+  },
+  "ML": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18",
+      "ambulance_alt": "112",
+      "fire_alt": "112"
+    },
+    "states": {}
+  },
+  "MM": {
+    "default": {
+      "police": "999",
+      "police_alt": "199",
+      "ambulance": "192",
+      "fire": "191"
+    },
+    "states": {}
+  },
+  "MN": {
+    "default": {
+      "police": "105",
+      "police_alt": "102",
+      "ambulance": "103",
+      "fire": "101"
+    },
+    "states": {}
+  },
+  "MO": {
+    "default": {
+      "police": "999",
+      "mobile_phones": {
+        "110": "110",
+        "112": "112"
+      },
+      "judiciary_police": "993"
+    },
+    "states": {}
+  },
+  "MP": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "MQ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "MR": {
+    "default": {
+      "police": "117",
+      "ambulance": "101",
+      "fire": "118",
+      "gendarmerie": "116",
+      "traffic_police": "119"
+    },
+    "states": {}
+  },
+  "MS": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "999": "999"
+      }
+    },
+    "states": {}
+  },
+  "MT": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "MU": {
+    "default": {
+      "police": "112",
+      "ambulance": "114",
+      "fire": "115",
+      "police_alt": "999",
+      "fire_alt": "995"
+    },
+    "states": {}
+  },
+  "MV": {
+    "default": {
+      "general_emergency": "911",
+      "police": "119",
+      "ambulance": "100",
+      "fire": "118",
+      "coastguard": "191"
+    },
+    "states": {}
+  },
+  "MW": {
+    "default": {
+      "police": "997",
+      "ambulance": "998",
+      "fire": "999",
+      "police_alt": "990"
+    },
+    "states": {}
+  },
+  "MX": {
+    "default": {
+      "general_emergency": "911",
+      "anonymous_complaint": "089"
+    },
+    "states": {}
+  },
+  "MY": {
+    "default": {
+      "police": "999",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "MZ": {
+    "default": {
+      "police": "119",
+      "ambulance": "117",
+      "fire": "198"
+    },
+    "states": {}
+  },
+  "NA": {
+    "default": {
+      "police": "10 111"
+    },
+    "states": {}
+  },
+  "NC": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "NE": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "NG": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "NI": {
+    "default": {
+      "police": "118",
+      "ambulance": "128",
+      "fire": "115",
+      "fire_alt": "911"
+    },
+    "states": {}
+  },
+  "NL": {
+    "default": {
+      "general_emergency": "112",
+      "animal_emergency": "144",
+      "suicide_prevention": "0800-0113",
+      "child_abuse": "0900 123 12 30"
+    },
+    "states": {}
+  },
+  "NO": {
+    "default": {
+      "police": "112",
+      "ambulance": "113",
+      "fire": "110",
+      "emergency_at_sea": "120",
+      "non_emergency_police": "02 800",
+      "child_abuse_family_violence": "116 111"
+    },
+    "states": {}
+  },
+  "NP": {
+    "default": {
+      "police": "100",
+      "ambulance": "102",
+      "fire": "101",
+      "traffic_police": "103"
+    },
+    "states": {}
+  },
+  "NR": {
+    "default": {
+      "police": "110",
+      "ambulance": "111",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "NU": {
+    "default": {
+      "police": "(+683) 4333",
+      "ambulance": "(+683) 4202",
+      "fire": "(+683) 4133"
+    },
+    "states": {}
+  },
+  "NZ": {
+    "default": {
+      "general_emergency": "111",
+      "crime_stoppers": "0800 555 111",
+      "non_emergency_police": "105"
+    },
+    "states": {}
+  },
+  "OM": {
+    "default": {
+      "police": "9999",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "PA": {
+    "default": {
+      "general_emergency": "911",
+      "police": "104",
+      "fire": "103"
+    },
+    "states": {}
+  },
+  "PE": {
+    "default": {
+      "general_emergency": "911",
+      "police": "105",
+      "ambulance": "106",
+      "fire": "116",
+      "civil_defense": "115",
+      "domestic_violence": "100"
+    },
+    "states": {}
+  },
+  "PF": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "PG": {
+    "default": {
+      "police": "112",
+      "ambulance": "111",
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "PK": {
+    "default": {
+      "police": "15",
+      "ambulance": {
+        "national": "115",
+        "option_1": "1122"
+      },
+      "fire": "16",
+      "ambulance_alt": "1122",
+      "traffic_police": "1915",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "PL": {
+    "default": {
+      "police": {
+        "national": "997",
+        "112": "112"
+      },
+      "ambulance": {
+        "999": "999",
+        "112": "112"
+      },
+      "fire": {
+        "national": "998",
+        "112": "112"
+      },
+      "road_help": "981",
+      "missing_children": "116 000"
+    },
+    "states": {}
+  },
+  "PM": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "PR": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "PS": {
+    "default": {
+      "police": "100",
+      "ambulance": "101",
+      "fire": "102"
+    },
+    "states": {}
+  },
+  "PT": {
+    "default": {
+      "general_emergency": "112",
+      "forest_fire": "117",
+      "social_emergency": "144"
+    },
+    "states": {}
+  },
+  "PW": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "PY": {
+    "default": {
+      "general_emergency": "911",
+      "police": "912",
+      "ambulance": "141",
+      "fire": "132",
+      "rescue": "131"
+    },
+    "states": {}
+  },
+  "QA": {
+    "default": {
+      "police": "999",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "RE": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "RO": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "RS": {
+    "default": {
+      "police": {
+        "national": "192",
+        "112": "112"
+      },
+      "ambulance": "194",
+      "fire": "193",
+      "civil_protection": "1985"
+    },
+    "states": {}
+  },
+  "RU": {
+    "default": {
+      "police": {
+        "national": "102",
+        "112": "112"
+      },
+      "ambulance": {
+        "national": "103",
+        "112": "112"
+      },
+      "fire": {
+        "national": "101",
+        "112": "112"
+      },
+      "gas_emergency": "104"
+    },
+    "states": {}
+  },
+  "RW": {
+    "default": {
+      "police": "112",
+      "ambulance": "912",
+      "fire": "112",
+      "traffic_police": "113"
+    },
+    "states": {}
+  },
+  "SA": {
+    "default": {
+      "general_emergency": "911",
+      "police": "999",
+      "ambulance": "997",
+      "fire": "998",
+      "traffic_police": "993"
+    },
+    "states": {}
+  },
+  "SB": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "999": "999"
+      },
+      "police": "999",
+      "ambulance": "111",
+      "fire": "988"
+    },
+    "states": {}
+  },
+  "SC": {
+    "default": {
+      "general_emergency": {
+        "112": "112",
+        "999": "999"
+      },
+      "police": "133",
+      "ambulance": "151"
+    },
+    "states": {}
+  },
+  "SD": {
+    "default": {
+      "police": "999",
+      "traffic_police": "777 777"
+    },
+    "states": {}
+  },
+  "SE": {
+    "default": {
+      "general_emergency": "112",
+      "non_emergency_police": "114 14",
+      "non_emergency_medical_advice": "1177"
+    },
+    "states": {}
+  },
+  "SG": {
+    "default": {
+      "police": "999",
+      "ambulance": "995",
+      "mobile_phones": {
+        "112": "112",
+        "911": "911"
+      },
+      "non_emergency_ambulance": "1777"
+    },
+    "states": {}
+  },
+  "SH": {
+    "default": {
+      "police": "999"
+    },
+    "states": {}
+  },
+  "SI": {
+    "default": {
+      "general_emergency": "112",
+      "police": "113",
+      "road_help": "1987",
+      "emergency_at_sea": "080 18 00"
+    },
+    "states": {}
+  },
+  "SK": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "158"
+      },
+      "ambulance": {
+        "112": "112",
+        "national": "155"
+      },
+      "fire": {
+        "112": "112",
+        "national": "150"
+      },
+      "municipal_police": "159"
+    },
+    "states": {}
+  },
+  "SL": {
+    "default": {
+      "police": "019",
+      "ambulance": "999"
+    },
+    "states": {}
+  },
+  "SM": {
+    "default": {
+      "police": {
+        "112": "112",
+        "national": "113"
+      },
+      "ambulance": "118",
+      "fire": "115"
+    },
+    "states": {}
+  },
+  "SN": {
+    "default": {
+      "police": "17",
+      "ambulance": "18",
+      "fire": "1515"
+    },
+    "states": {}
+  },
+  "SO": {
+    "default": {
+      "police": "888",
+      "ambulance": "999",
+      "fire": "555",
+      "traffic_police": "777"
+    },
+    "states": {}
+  },
+  "SR": {
+    "default": {
+      "police": "115",
+      "ambulance": "113",
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "SS": {
+    "default": {
+      "police": "999"
+    },
+    "states": {}
+  },
+  "ST": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "SV": {
+    "default": {
+      "general_emergency": "911",
+      "ambulance": "132",
+      "fire": "913"
+    },
+    "states": {}
+  },
+  "SX": {
+    "default": {
+      "police": "911",
+      "ambulance": "912",
+      "fire": "919"
+    },
+    "states": {}
+  },
+  "SY": {
+    "default": {
+      "police": "112",
+      "ambulance": "110",
+      "fire": "113",
+      "traffic_police": "115"
+    },
+    "states": {}
+  },
+  "SZ": {
+    "default": {
+      "police": "999",
+      "ambulance": "977",
+      "fire": "933"
+    },
+    "states": {}
+  },
+  "TC": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "TD": {
+    "default": {
+      "police": "17",
+      "ambulance": "2251-4242",
+      "fire": "18",
+      "ambulance_alt": "2251-1237"
+    },
+    "states": {}
+  },
+  "TG": {
+    "default": {
+      "police": "117",
+      "ambulance": "8200",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "TH": {
+    "default": {
+      "police": "191",
+      "ambulance": "1669",
+      "fire": "199",
+      "tourist_police": "1155",
+      "highway_patrol": "1193"
+    },
+    "states": {}
+  },
+  "TJ": {
+    "default": {
+      "general_emergency": "112",
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "gas_leaks": "104"
+    },
+    "states": {}
+  },
+  "TK": {
+    "default": {
+      "police": "(+690) 2116",
+      "ambulance": "(+690) 2112"
+    },
+    "states": {}
+  },
+  "TL": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "TM": {
+    "default": {
+      "police": "02",
+      "ambulance": "03",
+      "fire": "01"
+    },
+    "states": {}
+  },
+  "TN": {
+    "default": {
+      "police": "197",
+      "ambulance": "190",
+      "fire": "198",
+      "national_guard": "193"
+    },
+    "states": {}
+  },
+  "TO": {
+    "default": {
+      "general_emergency": "911",
+      "police": "922",
+      "ambulance": "933",
+      "fire": "999"
+    },
+    "states": {}
+  },
+  "TR": {
+    "default": {
+      "police": {
+        "112": "112",
+        "911": "911"
+      },
+      "ambulance": {
+        "112": "112",
+        "911": "911"
+      },
+      "fire": "112",
+      "municipal_police": "153",
+      "gas_emergency": "187",
+      "electricity_emergency": "186"
+    },
+    "states": {}
+  },
+  "TT": {
+    "default": {
+      "police": {
+        "999": "999",
+        "911": "911"
+      },
+      "ambulance": "811",
+      "fire": "990"
+    },
+    "states": {}
+  },
+  "TV": {
+    "default": {
+      "general_emergency": "911",
+      "police": "911",
+      "ambulance": "999",
+      "fire": "000"
+    },
+    "states": {}
+  },
+  "TW": {
+    "default": {
+      "police": "110",
+      "ambulance": "119",
+      "fire": "119",
+      "domestic_violence": "113",
+      "coast_guard": "118"
+    },
+    "states": {}
+  },
+  "TZ": {
+    "default": {
+      "police": "112",
+      "ambulance": "114",
+      "fire": "115",
+      "police_alt": "999",
+      "health_call_centre": "199"
+    },
+    "states": {}
+  },
+  "UA": {
+    "default": {
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "general_emergency": "112",
+      "gas_emergency": "104"
+    },
+    "states": {}
+  },
+  "UG": {
+    "default": {
+      "police": "112",
+      "ambulance": "911",
+      "fire": "112",
+      "police_alt": "999",
+      "fire_alt": "999"
+    },
+    "states": {}
+  },
+  "US": {
+    "default": {
+      "general_emergency": "911",
+      "suicide_helpline": "988"
+    },
+    "states": {}
+  },
+  "UY": {
+    "default": {
+      "general_emergency": "911",
+      "police": "109",
+      "ambulance": "105",
+      "fire": "104"
+    },
+    "states": {}
+  },
+  "UZ": {
+    "default": {
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "emergency_service": "1050",
+      "gas_leaks": "104"
+    },
+    "states": {}
+  },
+  "VA": {
+    "default": {
+      "general_emergency": "112"
+    },
+    "states": {}
+  },
+  "VC": {
+    "default": {
+      "general_emergency": {
+        "999": "999",
+        "911": "911",
+        "112": "112"
+      }
+    },
+    "states": {}
+  },
+  "VE": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "national": "171"
+      }
+    },
+    "states": {}
+  },
+  "VG": {
+    "default": {
+      "general_emergency": {
+        "911": "911",
+        "999": "999"
+      },
+      "police": "311"
+    },
+    "states": {}
+  },
+  "VI": {
+    "default": {
+      "general_emergency": "911"
+    },
+    "states": {}
+  },
+  "VN": {
+    "default": {
+      "police": "113",
+      "ambulance": "115",
+      "fire": "114",
+      "child_abuse": "111",
+      "lifesaving_services": "112"
+    },
+    "states": {}
+  },
+  "VU": {
+    "default": {
+      "police": "111",
+      "ambulance": "112",
+      "fire": "113"
+    },
+    "states": {}
+  },
+  "WF": {
+    "default": {
+      "police": "15"
+    },
+    "states": {}
+  },
+  "WS": {
+    "default": {
+      "general_emergency": "999",
+      "police": "995",
+      "ambulance": "996",
+      "fire": "994"
+    },
+    "states": {}
+  },
+  "XK": {
+    "default": {
+      "police": "192",
+      "ambulance": "194",
+      "fire": "193"
+    },
+    "states": {}
+  },
+  "YE": {
+    "default": {
+      "police": "194",
+      "ambulance": "191"
+    },
+    "states": {}
+  },
+  "YT": {
+    "default": {
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "ZA": {
+    "default": {
+      "police": "10 111",
+      "ambulance": "10 177",
+      "cape_town_emergency": "107",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "ZM": {
+    "default": {
+      "police": "999",
+      "police_alt": "911",
+      "ambulance": "992",
+      "fire": "993",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  },
+  "ZW": {
+    "default": {
+      "police": "999",
+      "police_alt": "995",
+      "ambulance": "994",
+      "fire": "993",
+      "mobile_phones": "112"
+    },
+    "states": {}
+  }
+}
