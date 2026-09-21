@@ -1,0 +1,6 @@
+country_id,country_name,phone_code,country_code,is_eu_member
+14,AUSTRALIA,61,AUS,false
+39,CANADA,1,CAN,false
+82,GERMANY,49,DEU,true
+101,INDIA,91,IND,false
+233,UNITED_STATES_OF_AMERICA,1,USA,false
