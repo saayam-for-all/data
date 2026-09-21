@@ -136,7 +136,6 @@ NAME_ALIASES = {
     "são tomé and príncipe": "ST",
     "guinea-bissau": "GW",
     "hong kong": "HK",
-    "kosovo": "XK",
     "netherlands": "NL",
     "south africa": "ZA",
     "united arab emirates": "AE",
@@ -324,7 +323,7 @@ def extract_numbers(raw: str) -> List[str]:
     text = text.replace("\xa0", " ").strip()
     if not text or SKIP_VALUES.search(text):
         return []
-    text = re.sub(r"\b(or|/|and)\b", ";", text, flags=re.I)
+    text = re.sub(r"\b(or|/|and)\b|,", ";", text, flags=re.I)
     parts: List[str] = []
     for chunk in text.split(";"):
         chunk = chunk.strip()
@@ -573,7 +572,6 @@ def parse_wikipedia_rows() -> List[Tuple[str, Optional[str], Optional[str], Opti
 
 def build_dataset() -> Tuple[Dict[str, Any], List[str]]:
     iso_codes, by_name = load_iso_countries()
-    iso_codes.setdefault("XK", "Kosovo")
     dataset = {code: empty_country() for code in sorted(iso_codes)}
     unmatched: List[str] = []
     for country, police, ambulance, fire, notes in parse_wikipedia_rows():

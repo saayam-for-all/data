@@ -2200,14 +2200,6 @@
     },
     "states": {}
   },
-  "XK": {
-    "default": {
-      "police": "192",
-      "ambulance": "194",
-      "fire": "193"
-    },
-    "states": {}
-  },
   "YE": {
     "default": {
       "police": "194",

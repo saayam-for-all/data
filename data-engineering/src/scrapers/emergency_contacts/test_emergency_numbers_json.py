@@ -82,11 +82,19 @@ class EmergencyNumbersTests(unittest.TestCase):
 
     def test_extract_and_pick_numbers(self):
         self.assertEqual(gen.extract_numbers("112 or 999 [1]"), ["112", "999"])
+        self.assertEqual(gen.extract_numbers("112, 999"), ["112", "999"])
         self.assertEqual(gen.normalize_numbers("112 or 999 [1]"), "112")
         self.assertEqual(gen.normalize_numbers("10 111"), "10111")
         self.assertIsNone(gen.normalize_numbers("depends on town/city"))
         self.assertEqual(gen.pick_service_number(["112", "133"]), "133")
         self.assertEqual(gen.pick_general_emergency(["112", "133"], ["144"], ["122"]), ("112", None))
+
+    def test_dataset_uses_only_iso_alpha2_codes(self):
+        self.assertNotIn("XK", self.data)
+        for code in self.data:
+            self.assertRegex(code, r"^[A-Z]{2}$")
+            # XK is user-assigned, not an official ISO 3166-1 code.
+            self.assertNotEqual(code, "XK")
 
     def test_validator_rejects_combined_and_non_string(self):
         bad = {"US": {"default": {"police": "112; 911"}, "states": {}}}
