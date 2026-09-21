@@ -33,13 +33,8 @@ TOP_LOCATIONS = 4
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MIN_YEAR, MAX_YEAR = 1900, 2200  # keeps dates inside the range pandas can represent
 
-# bucket -> (window start relative to today, trend granularity); "All" is unbounded
-FIXED_BUCKETS = {
-    "7D": (pd.DateOffset(days=7), "D"),
-    "30D": (pd.DateOffset(days=30), "D"),
-    "1Y": (pd.DateOffset(years=1), "M"),
-    "All": (None, "M"),
-}
+# bucket -> trend granularity (D = day, M = calendar month)
+FIXED_BUCKETS = {"7D": "D", "30D": "D", "1Y": "M", "All": "M"}
 
 REQUIRED_COLUMNS = {
     "organizations.csv": ["org_id", "state_id", "city_name", "is_collaborator", "created_at"],
@@ -192,11 +187,22 @@ def organizations_by_location(orgs, start, end):
             for country, n in zip(ranked["country"][:TOP_LOCATIONS], ranked["n"][:TOP_LOCATIONS])]
 
 
+def window_start(bucket, today):
+    """First day of a fixed bucket's window (it always ends today); None means unbounded."""
+    if bucket == "7D":
+        return today - pd.Timedelta(days=7)
+    if bucket == "30D":
+        return today - pd.Timedelta(days=30)
+    if bucket == "1Y":  # trailing 12 calendar months: this month plus the 11 before it
+        return (today.to_period("M") - 11).start_time
+    return None
+
+
 def build_response(orgs, today, growth_range=None, location_range=None):
     result = {}
-    for bucket, (offset, freq) in FIXED_BUCKETS.items():
-        start = None if offset is None else today - offset
-        end = None if offset is None else today
+    for bucket, freq in FIXED_BUCKETS.items():
+        start = window_start(bucket, today)
+        end = None if start is None else today
         result[bucket] = {
             "growth_trend": growth_trend(orgs, start, end, freq),
             "organizations_by_location": organizations_by_location(orgs, start, end),

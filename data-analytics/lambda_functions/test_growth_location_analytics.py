@@ -268,6 +268,40 @@ def test_window_boundaries_are_inclusive_calendar_days(call):
            [day(30)[:10], day(8)[:10], day(7)[:10]]
 
 
+def test_1y_is_the_trailing_12_calendar_months(call):
+    # TODAY is 2026-06-15, so the window is whole months: July 2025 .. June 2026
+    orgs = [("TX", "2025-06-20 09:00:00", "false"),   # same day-of-month a year ago: outside
+            ("TX", "2025-06-30 23:00:00", "false"),   # last day before the window
+            ("TX", "2025-07-01 00:00:00", "true")]    # first day of the window
+    _, body = call(orgs)
+    trend = body["1Y"]["growth_trend"]
+    assert trend["total_organizations"] == [{"period": "2025-07", "count": 3}]   # all-time running total
+    assert trend["collaborators"] == [{"period": "2025-07", "count": 1}]
+    assert body["1Y"]["organizations_by_location"] == [{"country": "USA", "count": 1}]
+
+
+def test_1y_never_has_more_than_12_monthly_periods(call):
+    months = [(y, m) for y in (2024, 2025) for m in range(1, 13)] + [(2026, m) for m in range(1, 7)]
+    _, body = call([("TX", f"{y}-{m:02d}-10 09:00:00", "false") for y, m in months])
+    periods = [p["period"] for p in body["1Y"]["growth_trend"]["total_organizations"]]
+    assert periods == [f"2025-{m:02d}" for m in range(7, 13)] + [f"2026-{m:02d}" for m in range(1, 7)]
+    assert len(body["All"]["growth_trend"]["total_organizations"]) == len(months)
+
+
+@pytest.mark.parametrize("today, start_1y", [
+    ("2026-06-15", "2025-07-01"),
+    ("2026-01-05", "2025-02-01"),     # window crosses a year boundary
+    ("2026-12-31", "2026-01-01"),     # December: the window is exactly the calendar year
+    ("2024-02-29", "2023-03-01"),     # leap day
+])
+def test_window_starts(today, start_1y):
+    today = pd.Timestamp(today)
+    assert gla.window_start("1Y", today) == pd.Timestamp(start_1y)
+    assert gla.window_start("7D", today) == today - pd.Timedelta(days=7)
+    assert gla.window_start("30D", today) == today - pd.Timedelta(days=30)
+    assert gla.window_start("All", today) is None
+
+
 def test_organizations_created_after_today_are_ignored_by_dated_windows(call):
     orgs = [("TX", day(1), "true"), ("TX", "2026-07-01 00:00:00", "true")]   # second is in the future
     _, body = call(orgs)
