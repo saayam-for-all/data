@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -33,6 +34,21 @@ class EmergencyNumbersTests(unittest.TestCase):
     def test_numbers_are_strings(self):
         self.assertEqual(gen.validate_dataset(self.data), [])
 
+    def test_no_combined_number_strings(self):
+        """Issue guidance: never store '112 or 133' / '999; 112' in one field."""
+        combined = []
+
+        def walk(path, obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    walk(f"{path}.{key}" if path else key, value)
+            elif isinstance(obj, str):
+                if ";" in obj or re.search(r"\bor\b", obj, re.I) or "/" in obj:
+                    combined.append((path, obj))
+
+        walk("", self.data)
+        self.assertEqual(combined, [])
+
     def test_india_example_hierarchy(self):
         india = self.data["IN"]
         self.assertEqual(india["default"]["general_emergency"], "112")
@@ -49,23 +65,36 @@ class EmergencyNumbersTests(unittest.TestCase):
         self.assertEqual(self.data["US"]["default"]["general_emergency"], "911")
         self.assertEqual(self.data["QA"]["default"]["general_emergency"], "999")
         self.assertEqual(self.data["US"]["states"], {})
-        self.assertIn("999", self.data["GB"]["default"]["police"])
-        self.assertNotEqual(self.data["GB"]["default"]["police"], "101")
+        self.assertEqual(self.data["GB"]["default"]["police"], "999")
+        self.assertEqual(self.data["GB"]["default"]["general_emergency"], "112")
         self.assertEqual(self.data["AU"]["default"]["police"], "000")
+
+    def test_france_splits_service_numbers(self):
+        france = self.data["FR"]["default"]
+        self.assertEqual(france["general_emergency"], "112")
+        self.assertEqual(france["police"], "17")
+        self.assertEqual(france["ambulance"], "15")
+        self.assertEqual(france["fire"], "18")
 
     def test_empty_sections_are_objects(self):
         self.assertEqual(self.data["AQ"]["states"], {})
         self.assertIsInstance(self.data["AQ"]["default"], dict)
 
-    def test_normalize_numbers(self):
-        self.assertEqual(gen.normalize_numbers("112 or 999 [1]"), "112; 999")
+    def test_extract_and_pick_numbers(self):
+        self.assertEqual(gen.extract_numbers("112 or 999 [1]"), ["112", "999"])
+        self.assertEqual(gen.normalize_numbers("112 or 999 [1]"), "112")
         self.assertEqual(gen.normalize_numbers("10 111"), "10111")
         self.assertIsNone(gen.normalize_numbers("depends on town/city"))
+        self.assertEqual(gen.pick_service_number(["112", "133"]), "133")
+        self.assertEqual(gen.pick_general_emergency(["112", "133"], ["144"], ["122"]), ("112", None))
 
-    def test_validator_rejects_non_string(self):
-        bad = {"US": {"default": {"police": 911}, "states": {}}}
+    def test_validator_rejects_combined_and_non_string(self):
+        bad = {"US": {"default": {"police": "112; 911"}, "states": {}}}
         errors = gen.validate_dataset(bad)
-        self.assertTrue(any("not a string" in item for item in errors))
+        self.assertTrue(any("combines multiple numbers" in item for item in errors))
+        bad2 = {"US": {"default": {"police": 911}, "states": {}}}
+        errors2 = gen.validate_dataset(bad2)
+        self.assertTrue(any("not a string" in item for item in errors2))
 
 
 if __name__ == "__main__":

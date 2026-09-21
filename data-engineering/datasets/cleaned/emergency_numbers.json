@@ -28,10 +28,11 @@
   },
   "AG": {
     "default": {
-      "general_emergency": "911; 999",
-      "police": "911; 999",
-      "ambulance": "911; 999",
-      "fire": "911; 999"
+      "general_emergency": "911",
+      "general_emergency_alternate": "999",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -46,6 +47,7 @@
   },
   "AL": {
     "default": {
+      "general_emergency": "112",
       "police": "129",
       "ambulance": "127",
       "fire": "128",
@@ -55,18 +57,20 @@
   },
   "AM": {
     "default": {
-      "general_emergency": "112; 911",
-      "police": "102",
-      "ambulance": "103",
-      "fire": "101",
+      "general_emergency": "112",
+      "general_emergency_alternate": "911",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112",
       "traffic_police": "177"
     },
     "states": {}
   },
   "AO": {
     "default": {
+      "general_emergency": "112",
       "police": "113",
-      "ambulance": "112; 116",
+      "ambulance": "116",
       "fire": "115"
     },
     "states": {}
@@ -78,9 +82,9 @@
   "AR": {
     "default": {
       "general_emergency": "911",
-      "police": "101",
-      "ambulance": "107",
-      "fire": "100",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
       "disaster_management": "103",
       "coastguard": "106"
     },
@@ -97,7 +101,8 @@
   },
   "AT": {
     "default": {
-      "police": "112; 133",
+      "general_emergency": "112",
+      "police": "133",
       "ambulance": "144",
       "fire": "122",
       "suicide_helpline": "142"
@@ -134,9 +139,10 @@
   },
   "AZ": {
     "default": {
-      "police": "112; 102",
-      "ambulance": "112; 103",
-      "fire": "112; 101",
+      "general_emergency": "112",
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
       "traffic_police": "902"
     },
     "states": {}
@@ -170,7 +176,7 @@
   "BE": {
     "default": {
       "general_emergency": "112",
-      "police": "101; 112",
+      "police": "101",
       "ambulance": "112",
       "fire": "112"
     },
@@ -187,9 +193,10 @@
   },
   "BG": {
     "default": {
-      "police": "112; 166",
-      "ambulance": "112; 150",
-      "fire": "112; 160"
+      "general_emergency": "112",
+      "police": "166",
+      "ambulance": "150",
+      "fire": "160"
     },
     "states": {}
   },
@@ -250,9 +257,9 @@
   "BO": {
     "default": {
       "general_emergency": "911",
-      "police": "110",
-      "ambulance": "118",
-      "fire": "119",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
       "disaster_management": "114"
     },
     "states": {}
@@ -277,10 +284,10 @@
   },
   "BS": {
     "default": {
-      "general_emergency": "911; 919",
-      "police": "911; 919",
-      "ambulance": "911; 919",
-      "fire": "911; 919"
+      "general_emergency": "911",
+      "police": "919",
+      "ambulance": "919",
+      "fire": "919"
     },
     "states": {}
   },
@@ -375,7 +382,8 @@
   },
   "CI": {
     "default": {
-      "police": "110; 111; 170",
+      "general_emergency": "111",
+      "police": "110",
       "ambulance": "185",
       "fire": "180"
     },
@@ -401,9 +409,9 @@
   "CM": {
     "default": {
       "general_emergency": "112",
-      "police": "117",
-      "ambulance": "119",
-      "fire": "118"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -454,7 +462,7 @@
     "default": {
       "general_emergency": "911",
       "police": "911",
-      "ambulance": "910; 912",
+      "ambulance": "910",
       "fire": "911"
     },
     "states": {}
@@ -470,19 +478,20 @@
   },
   "CY": {
     "default": {
-      "general_emergency": "112; 199",
-      "police": "112; 199",
-      "ambulance": "112; 199",
-      "fire": "112; 199",
+      "general_emergency": "112",
+      "police": "199",
+      "ambulance": "199",
+      "fire": "199",
       "coastguard": "1441"
     },
     "states": {}
   },
   "CZ": {
     "default": {
-      "police": "112; 158",
-      "ambulance": "112; 155",
-      "fire": "112; 150"
+      "general_emergency": "112",
+      "police": "158",
+      "ambulance": "155",
+      "fire": "150"
     },
     "states": {}
   },
@@ -542,9 +551,9 @@
   "EC": {
     "default": {
       "general_emergency": "911",
-      "police": "101",
-      "ambulance": "131",
-      "fire": "102"
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -559,7 +568,8 @@
   },
   "EG": {
     "default": {
-      "police": "112; 122",
+      "general_emergency": "112",
+      "police": "122",
       "ambulance": "123",
       "fire": "180",
       "traffic_police": "128"
@@ -587,7 +597,7 @@
   "ES": {
     "default": {
       "general_emergency": "112",
-      "police": "091",
+      "police": "112",
       "ambulance": "112",
       "fire": "112",
       "disaster_management": "1006"
@@ -597,9 +607,9 @@
   "ET": {
     "default": {
       "general_emergency": "911",
-      "police": "991",
-      "ambulance": "907",
-      "fire": "939",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
       "traffic_police": "945"
     },
     "states": {}
@@ -616,18 +626,19 @@
   "FJ": {
     "default": {
       "general_emergency": "911",
-      "police": "917",
+      "police": "911",
       "ambulance": "911",
-      "fire": "910"
+      "fire": "911"
     },
     "states": {}
   },
   "FK": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -651,9 +662,10 @@
   },
   "FR": {
     "default": {
-      "police": "112; 17",
-      "ambulance": "112; 15",
-      "fire": "112; 18"
+      "general_emergency": "112",
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
     },
     "states": {}
   },
@@ -667,10 +679,11 @@
   },
   "GB": {
     "default": {
-      "general_emergency": "999; 112",
-      "police": "999; 112",
-      "ambulance": "999; 112",
-      "fire": "999; 112"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   },
@@ -695,35 +708,38 @@
   "GF": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "GG": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "GH": {
     "default": {
       "general_emergency": "112",
-      "police": "191",
-      "ambulance": "193",
-      "fire": "192"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "GI": {
     "default": {
-      "police": "199; 112; 999",
-      "ambulance": "190; 112; 999",
-      "fire": "190; 112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "199",
+      "ambulance": "190",
+      "fire": "190"
     },
     "states": {}
   },
@@ -738,6 +754,7 @@
   },
   "GM": {
     "default": {
+      "general_emergency": "112",
       "police": "117",
       "ambulance": "116",
       "fire": "118"
@@ -756,9 +773,9 @@
   "GP": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -774,9 +791,10 @@
   },
   "GR": {
     "default": {
-      "police": "100; 112",
-      "ambulance": "166; 112",
-      "fire": "199; 112",
+      "general_emergency": "112",
+      "police": "100",
+      "ambulance": "166",
+      "fire": "199",
       "coastguard": "108"
     },
     "states": {}
@@ -792,6 +810,7 @@
   },
   "GT": {
     "default": {
+      "general_emergency": "110",
       "police": "110"
     },
     "states": {}
@@ -808,9 +827,9 @@
   "GW": {
     "default": {
       "general_emergency": "112",
-      "police": "117",
-      "ambulance": "119",
-      "fire": "118"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -848,9 +867,10 @@
   },
   "HR": {
     "default": {
-      "police": "112; 192",
-      "ambulance": "112; 194",
-      "fire": "112; 193"
+      "general_emergency": "112",
+      "police": "192",
+      "ambulance": "194",
+      "fire": "193"
     },
     "states": {}
   },
@@ -864,27 +884,29 @@
   },
   "HU": {
     "default": {
-      "police": "112; 107",
-      "ambulance": "112; 104",
-      "fire": "112; 105"
+      "general_emergency": "112",
+      "police": "107",
+      "ambulance": "104",
+      "fire": "105"
     },
     "states": {}
   },
   "ID": {
     "default": {
       "general_emergency": "112",
-      "police": "110",
-      "ambulance": "118; 119",
-      "fire": "113; 1131"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "IE": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -898,10 +920,11 @@
   },
   "IM": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -944,19 +967,21 @@
   },
   "IO": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "IQ": {
     "default": {
-      "general_emergency": "112; 911",
-      "police": "104",
-      "ambulance": "122",
-      "fire": "115"
+      "general_emergency": "112",
+      "general_emergency_alternate": "911",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -990,10 +1015,11 @@
   },
   "JE": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "112; 999",
-      "ambulance": "112; 999",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1025,10 +1051,11 @@
   },
   "KE": {
     "default": {
-      "general_emergency": "112; 999; 911",
-      "police": "112; 999; 911",
-      "ambulance": "112; 999; 911",
-      "fire": "112; 999; 911"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1052,10 +1079,10 @@
   },
   "KI": {
     "default": {
-      "general_emergency": "100; 999",
-      "police": "192",
-      "ambulance": "194",
-      "fire": "193"
+      "general_emergency": "999",
+      "police": "100",
+      "ambulance": "100",
+      "fire": "100"
     },
     "states": {}
   },
@@ -1078,7 +1105,8 @@
   },
   "KP": {
     "default": {
-      "fire": "110; 8119"
+      "general_emergency": "110",
+      "fire": "110"
     },
     "states": {}
   },
@@ -1112,9 +1140,9 @@
   "KZ": {
     "default": {
       "general_emergency": "112",
-      "police": "102",
-      "ambulance": "103",
-      "fire": "101"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1128,7 +1156,9 @@
   },
   "LB": {
     "default": {
-      "police": "999; 112",
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "999",
       "ambulance": "140",
       "fire": "175",
       "disaster_management": "125"
@@ -1137,10 +1167,11 @@
   },
   "LC": {
     "default": {
-      "general_emergency": "911; 999",
-      "police": "911; 999",
-      "ambulance": "911; 999",
-      "fire": "911; 999"
+      "general_emergency": "911",
+      "general_emergency_alternate": "999",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -1181,16 +1212,16 @@
   "LT": {
     "default": {
       "general_emergency": "112",
-      "police": "022",
-      "ambulance": "033",
-      "fire": "011"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "LU": {
     "default": {
       "general_emergency": "112",
-      "police": "113",
+      "police": "112",
       "ambulance": "112",
       "fire": "112"
     },
@@ -1199,8 +1230,8 @@
   "LV": {
     "default": {
       "general_emergency": "112",
-      "police": "110",
-      "ambulance": "113",
+      "police": "112",
+      "ambulance": "112",
       "fire": "112"
     },
     "states": {}
@@ -1209,7 +1240,7 @@
     "default": {
       "general_emergency": "1515",
       "police": "1515",
-      "ambulance": "193",
+      "ambulance": "1515",
       "fire": "1515"
     },
     "states": {}
@@ -1225,9 +1256,10 @@
   },
   "MC": {
     "default": {
+      "general_emergency": "112",
       "police": "17",
-      "ambulance": "112; 18",
-      "fire": "112; 18"
+      "ambulance": "18",
+      "fire": "18"
     },
     "states": {}
   },
@@ -1242,9 +1274,10 @@
   },
   "ME": {
     "default": {
-      "police": "122; 112",
-      "ambulance": "124; 112",
-      "fire": "123; 112"
+      "general_emergency": "112",
+      "police": "122",
+      "ambulance": "124",
+      "fire": "123"
     },
     "states": {}
   },
@@ -1276,14 +1309,16 @@
   },
   "MK": {
     "default": {
-      "police": "192; 112",
-      "ambulance": "194; 112",
-      "fire": "193; 112"
+      "general_emergency": "112",
+      "police": "192",
+      "ambulance": "194",
+      "fire": "193"
     },
     "states": {}
   },
   "ML": {
     "default": {
+      "general_emergency": "112",
       "police": "17",
       "ambulance": "15",
       "fire": "18"
@@ -1293,25 +1328,25 @@
   "MM": {
     "default": {
       "general_emergency": "999",
-      "police": "199",
-      "ambulance": "192",
-      "fire": "191"
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   },
   "MN": {
     "default": {
       "general_emergency": "105",
-      "police": "102",
-      "ambulance": "103",
-      "fire": "101"
+      "police": "105",
+      "ambulance": "105",
+      "fire": "105"
     },
     "states": {}
   },
   "MO": {
     "default": {
       "general_emergency": "999",
-      "police": "993",
+      "police": "999",
       "ambulance": "999",
       "fire": "999"
     },
@@ -1329,9 +1364,9 @@
   "MQ": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1347,10 +1382,11 @@
   },
   "MS": {
     "default": {
-      "general_emergency": "911; 999",
-      "police": "911; 999",
-      "ambulance": "911; 999",
-      "fire": "911; 999"
+      "general_emergency": "911",
+      "general_emergency_alternate": "999",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -1375,9 +1411,9 @@
   "MV": {
     "default": {
       "general_emergency": "911",
-      "police": "119",
-      "ambulance": "100",
-      "fire": "118",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
       "coastguard": "191"
     },
     "states": {}
@@ -1419,6 +1455,7 @@
   },
   "NA": {
     "default": {
+      "general_emergency": "10111",
       "police": "10111"
     },
     "states": {}
@@ -1426,9 +1463,9 @@
   "NC": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1455,6 +1492,7 @@
   },
   "NI": {
     "default": {
+      "general_emergency": "911",
       "police": "118",
       "ambulance": "128",
       "fire": "115"
@@ -1490,7 +1528,8 @@
   },
   "NR": {
     "default": {
-      "general_emergency": "111",
+      "general_emergency": "112",
+      "general_emergency_alternate": "111",
       "police": "110",
       "ambulance": "111",
       "fire": "112"
@@ -1526,18 +1565,18 @@
   "PA": {
     "default": {
       "general_emergency": "911",
-      "police": "104",
+      "police": "911",
       "ambulance": "911",
-      "fire": "103"
+      "fire": "911"
     },
     "states": {}
   },
   "PE": {
     "default": {
       "general_emergency": "911",
-      "police": "105",
+      "police": "911",
       "ambulance": "911",
-      "fire": "116",
+      "fire": "911",
       "disaster_management": "115",
       "women_helpline": "100"
     },
@@ -1546,15 +1585,16 @@
   "PF": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "PG": {
     "default": {
       "general_emergency": "112",
+      "general_emergency_alternate": "111",
       "police": "112",
       "ambulance": "111",
       "fire": "110"
@@ -1573,7 +1613,7 @@
   "PK": {
     "default": {
       "police": "15",
-      "ambulance": "115; 1122",
+      "ambulance": "115",
       "fire": "16",
       "traffic_police": "1915"
     },
@@ -1581,18 +1621,20 @@
   },
   "PL": {
     "default": {
-      "police": "997; 112",
-      "ambulance": "999; 112",
-      "fire": "998; 112"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "997",
+      "ambulance": "999",
+      "fire": "998"
     },
     "states": {}
   },
   "PM": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1622,7 +1664,7 @@
       "general_emergency": "112",
       "police": "112",
       "ambulance": "112",
-      "fire": "117"
+      "fire": "112"
     },
     "states": {}
   },
@@ -1638,9 +1680,9 @@
   "PY": {
     "default": {
       "general_emergency": "911",
-      "police": "912",
-      "ambulance": "141",
-      "fire": "132"
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -1656,9 +1698,9 @@
   "RE": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1673,7 +1715,8 @@
   },
   "RS": {
     "default": {
-      "police": "192; 112",
+      "general_emergency": "112",
+      "police": "192",
       "ambulance": "194",
       "fire": "193",
       "disaster_management": "1985"
@@ -1682,9 +1725,10 @@
   },
   "RU": {
     "default": {
-      "police": "102; 112",
-      "ambulance": "103; 112",
-      "fire": "101; 112"
+      "general_emergency": "112",
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101"
     },
     "states": {}
   },
@@ -1701,28 +1745,30 @@
   "SA": {
     "default": {
       "general_emergency": "911",
-      "police": "999",
-      "ambulance": "997",
-      "fire": "998",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
       "traffic_police": "993"
     },
     "states": {}
   },
   "SB": {
     "default": {
-      "general_emergency": "911; 999",
-      "police": "999",
-      "ambulance": "111",
-      "fire": "988"
+      "general_emergency": "911",
+      "general_emergency_alternate": "999",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
   "SC": {
     "default": {
-      "general_emergency": "112; 999",
-      "police": "133",
-      "ambulance": "151",
-      "fire": "112; 999"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1767,7 +1813,7 @@
   "SI": {
     "default": {
       "general_emergency": "112",
-      "police": "113",
+      "police": "112",
       "ambulance": "112",
       "fire": "112"
     },
@@ -1779,9 +1825,10 @@
   },
   "SK": {
     "default": {
-      "police": "112; 158",
-      "ambulance": "112; 155",
-      "fire": "112; 150"
+      "general_emergency": "112",
+      "police": "158",
+      "ambulance": "155",
+      "fire": "150"
     },
     "states": {}
   },
@@ -1796,7 +1843,8 @@
   },
   "SM": {
     "default": {
-      "police": "112; 113",
+      "general_emergency": "112",
+      "police": "113",
       "ambulance": "118",
       "fire": "115"
     },
@@ -1824,8 +1872,8 @@
     "default": {
       "general_emergency": "115",
       "police": "115",
-      "ambulance": "113",
-      "fire": "110"
+      "ambulance": "115",
+      "fire": "115"
     },
     "states": {}
   },
@@ -1924,9 +1972,9 @@
   "TJ": {
     "default": {
       "general_emergency": "112",
-      "police": "102",
-      "ambulance": "103",
-      "fire": "101"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -1966,23 +2014,27 @@
   "TO": {
     "default": {
       "general_emergency": "911",
-      "police": "922",
-      "ambulance": "933",
-      "fire": "999"
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
   "TR": {
     "default": {
-      "police": "112; 911; 153",
-      "ambulance": "112; 911",
-      "fire": "112; 911"
+      "general_emergency": "112",
+      "general_emergency_alternate": "911",
+      "police": "153",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
   "TT": {
     "default": {
-      "police": "999; 911",
+      "general_emergency": "911",
+      "general_emergency_alternate": "999",
+      "police": "999",
       "ambulance": "811",
       "fire": "990"
     },
@@ -1992,8 +2044,8 @@
     "default": {
       "general_emergency": "911",
       "police": "911",
-      "ambulance": "999",
-      "fire": "000"
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -2027,6 +2079,7 @@
   "UG": {
     "default": {
       "general_emergency": "112",
+      "general_emergency_alternate": "911",
       "police": "112",
       "ambulance": "911",
       "fire": "112"
@@ -2050,9 +2103,9 @@
   "UY": {
     "default": {
       "general_emergency": "911",
-      "police": "109",
-      "ambulance": "105",
-      "fire": "104"
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -2075,28 +2128,30 @@
   },
   "VC": {
     "default": {
-      "general_emergency": "999; 911; 112",
-      "police": "999; 911; 112",
-      "ambulance": "999; 911; 112",
-      "fire": "999; 911; 112"
+      "general_emergency": "112",
+      "general_emergency_alternate": "999",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   },
   "VE": {
     "default": {
-      "general_emergency": "911; 171",
-      "police": "911; 171",
-      "ambulance": "911; 171",
-      "fire": "911; 171"
+      "general_emergency": "911",
+      "police": "171",
+      "ambulance": "171",
+      "fire": "171"
     },
     "states": {}
   },
   "VG": {
     "default": {
-      "general_emergency": "911; 999",
-      "police": "311",
-      "ambulance": "911; 999",
-      "fire": "911; 999"
+      "general_emergency": "911",
+      "general_emergency_alternate": "999",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911"
     },
     "states": {}
   },
@@ -2119,7 +2174,8 @@
   },
   "VU": {
     "default": {
-      "general_emergency": "111",
+      "general_emergency": "112",
+      "general_emergency_alternate": "111",
       "police": "111",
       "ambulance": "112",
       "fire": "113"
@@ -2138,9 +2194,9 @@
   "WS": {
     "default": {
       "general_emergency": "999",
-      "police": "995",
-      "ambulance": "996",
-      "fire": "994"
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   },
@@ -2163,9 +2219,9 @@
   "YT": {
     "default": {
       "general_emergency": "112",
-      "police": "17",
-      "ambulance": "15",
-      "fire": "18"
+      "police": "112",
+      "ambulance": "112",
+      "fire": "112"
     },
     "states": {}
   },
@@ -2180,18 +2236,18 @@
   "ZM": {
     "default": {
       "general_emergency": "999",
-      "police": "911",
-      "ambulance": "992",
-      "fire": "993"
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   },
   "ZW": {
     "default": {
       "general_emergency": "999",
-      "police": "995",
-      "ambulance": "994",
-      "fire": "993"
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999"
     },
     "states": {}
   }

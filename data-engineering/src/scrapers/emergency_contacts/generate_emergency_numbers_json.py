@@ -31,6 +31,7 @@ USER_AGENT = (
 
 PREFERRED_FIELDS = (
     "general_emergency",
+    "general_emergency_alternate",
     "police",
     "ambulance",
     "fire",
@@ -232,6 +233,9 @@ LABEL_NUMBER = re.compile(
     r")\s*[–—:\-]\s*(?P<number>[+\d][\d\s\-/,or]*)",
     re.I,
 )
+# Shared national / multi-service numbers. When a Wikipedia cell lists these
+# together with a service-specific number, keep them on separate fields.
+UNIVERSAL_NUMBERS = ("112", "911", "999", "000", "111")
 
 
 def fetch(url: str) -> bytes:
@@ -312,15 +316,16 @@ def normalize_name(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", value).strip()
 
 
-def normalize_numbers(raw: str) -> Optional[str]:
+def extract_numbers(raw: str) -> List[str]:
+    """Parse a Wikipedia cell into individual dialable numbers (no joining)."""
     if not raw:
-        return None
+        return []
     text = CITATIONS.sub("", raw)
     text = text.replace("\xa0", " ").strip()
     if not text or SKIP_VALUES.search(text):
-        return None
+        return []
     text = re.sub(r"\b(or|/|and)\b", ";", text, flags=re.I)
-    parts = []
+    parts: List[str] = []
     for chunk in text.split(";"):
         chunk = chunk.strip()
         chunk = re.sub(r"[^\d+\- ]+", "", chunk)
@@ -330,14 +335,51 @@ def normalize_numbers(raw: str) -> Optional[str]:
             parts.append(chunk)
         elif re.fullmatch(r"\d{2,6}-\d{2,8}", chunk):
             parts.append(chunk)
-    if not parts:
-        return None
-    # Keep unique order.
-    unique = []
+    unique: List[str] = []
     for part in parts:
         if part not in unique:
             unique.append(part)
-    return "; ".join(unique)
+    return unique
+
+
+def normalize_numbers(raw: str) -> Optional[str]:
+    """Compatibility helper: first extracted number only (never a joined list)."""
+    numbers = extract_numbers(raw)
+    return numbers[0] if numbers else None
+
+
+def pick_service_number(numbers: List[str]) -> Optional[str]:
+    """Prefer the service-specific number over a shared universal number."""
+    if not numbers:
+        return None
+    specific = [num for num in numbers if num not in UNIVERSAL_NUMBERS]
+    if specific:
+        return specific[0]
+    return numbers[0]
+
+
+def pick_general_emergency(
+    police_nums: List[str],
+    ambulance_nums: List[str],
+    fire_nums: List[str],
+) -> Tuple[Optional[str], Optional[str]]:
+    """Choose primary/alternate shared emergency numbers without combining them."""
+    seen: List[str] = []
+    for group in (police_nums, ambulance_nums, fire_nums):
+        for num in group:
+            if num in UNIVERSAL_NUMBERS and num not in seen:
+                seen.append(num)
+    # Prefer EU/GSM 112, then North-American 911, then 999/000/111.
+    for preferred in UNIVERSAL_NUMBERS:
+        if preferred in seen:
+            rest = [num for num in seen if num != preferred]
+            return preferred, (rest[0] if rest else None)
+    # If every service cell shares one identical non-universal number, treat it
+    # as the country default general emergency.
+    flattened = [nums[0] for nums in (police_nums, ambulance_nums, fire_nums) if nums]
+    if flattened and len(set(flattened)) == 1:
+        return flattened[0], None
+    return None, None
 
 
 def classify_label(label: str) -> Optional[str]:
@@ -381,9 +423,16 @@ def parse_notes(notes: str) -> Dict[str, str]:
         if "non-emergency" in prefix or "nonemergency" in prefix:
             continue
         key = classify_label(match.group("label"))
-        value = normalize_numbers(match.group("number"))
-        if key and value and key not in extras:
-            extras[key] = value
+        numbers = extract_numbers(match.group("number"))
+        if not key or not numbers or key in extras:
+            continue
+        # Notes often list one purpose → one number. If several are listed,
+        # keep the service-specific digit and promote shared universals later.
+        extras[key] = pick_service_number(numbers) or numbers[0]
+        for num in numbers:
+            if num in UNIVERSAL_NUMBERS and "general_emergency" not in extras:
+                extras["general_emergency"] = num
+                break
     return extras
 
 
@@ -403,30 +452,47 @@ def empty_country() -> Dict[str, Any]:
 
 
 def build_default(police: Optional[str], ambulance: Optional[str], fire: Optional[str], notes: str) -> Dict[str, str]:
+    """Build country-level contacts with one number per field (no joined strings)."""
+    police_nums = extract_numbers(police or "")
+    ambulance_nums = extract_numbers(ambulance or "")
+    fire_nums = extract_numbers(fire or "")
+
     values: Dict[str, str] = {}
-    if police:
-        values["police"] = police
-    if ambulance:
-        values["ambulance"] = ambulance
-    if fire:
-        values["fire"] = fire
-    unified = police and police == ambulance == fire
-    if unified:
-        values["general_emergency"] = police  # type: ignore[assignment]
+    police_value = pick_service_number(police_nums)
+    ambulance_value = pick_service_number(ambulance_nums)
+    fire_value = pick_service_number(fire_nums)
+    if police_value:
+        values["police"] = police_value
+    if ambulance_value:
+        values["ambulance"] = ambulance_value
+    if fire_value:
+        values["fire"] = fire_value
+
+    general, alternate = pick_general_emergency(police_nums, ambulance_nums, fire_nums)
+    if general:
+        values["general_emergency"] = general
+    if alternate:
+        values["general_emergency_alternate"] = alternate
+
     extras = parse_notes(notes)
     for key, value in extras.items():
         if key in {"police", "ambulance", "fire"}:
-            if unified or key not in values:
-                values[key] = value
-            if unified:
-                values["general_emergency"] = police  # type: ignore[assignment]
+            # Table columns win when present; notes fill gaps only.
+            values.setdefault(key, value)
+        elif key == "general_emergency":
+            values.setdefault("general_emergency", value)
         else:
             values.setdefault(key, value)
-    if "general_emergency" not in values:
-        for candidate in (police, ambulance, fire):
-            if candidate in {"112", "911", "999", "000", "111"}:
-                values["general_emergency"] = candidate
-                break
+
+    # If all three services already share one number and general is missing,
+    # mirror that shared value as general_emergency.
+    if (
+        "general_emergency" not in values
+        and police_value
+        and police_value == ambulance_value == fire_value
+    ):
+        values["general_emergency"] = police_value
+
     return order_fields(values)
 
 
@@ -497,9 +563,9 @@ def parse_wikipedia_rows() -> List[Tuple[str, Optional[str], Optional[str], Opti
             country = re.sub(r"\s+", " ", raw[0]).strip()
             if not country or country.lower() == "country":
                 continue
-            police = normalize_numbers(raw[1] if len(raw) > 1 else "")
-            ambulance = normalize_numbers(raw[2] if len(raw) > 2 else "")
-            fire = normalize_numbers(raw[3] if len(raw) > 3 else "")
+            police = (raw[1] if len(raw) > 1 else "").strip() or None
+            ambulance = (raw[2] if len(raw) > 2 else "").strip() or None
+            fire = (raw[3] if len(raw) > 3 else "").strip() or None
             notes = CITATIONS.sub("", raw[4] if len(raw) > 4 else "").strip()
             rows.append((country, police, ambulance, fire, notes))
     return rows
@@ -525,6 +591,16 @@ def build_dataset() -> Tuple[Dict[str, Any], List[str]]:
     return dataset, unmatched
 
 
+def _validate_contact_value(path: str, value: Any, errors: List[str]) -> None:
+    if not isinstance(value, str):
+        errors.append(f"{path} is not a string")
+        return
+    if ";" in value or re.search(r"\bor\b", value, re.I) or "/" in value:
+        errors.append(f"{path} combines multiple numbers: {value!r}")
+    if len(value) > 40:
+        errors.append(f"{path} looks like descriptive text, not a dialable number: {value!r}")
+
+
 def validate_dataset(data: Dict[str, Any]) -> List[str]:
     errors: List[str] = []
     if not data:
@@ -544,8 +620,7 @@ def validate_dataset(data: Dict[str, Any]) -> List[str]:
             errors.append(f"{code}: default and states must be objects")
             continue
         for key, value in payload["default"].items():
-            if not isinstance(value, str):
-                errors.append(f"{code}.default.{key} is not a string")
+            _validate_contact_value(f"{code}.default.{key}", value, errors)
         for state_name, state in payload["states"].items():
             if not isinstance(state, dict):
                 errors.append(f"{code}.states.{state_name} must be an object")
@@ -553,24 +628,20 @@ def validate_dataset(data: Dict[str, Any]) -> List[str]:
             for required in ("default", "cities", "zips"):
                 if required not in state or not isinstance(state[required], dict):
                     errors.append(f"{code}.states.{state_name} missing {required} object")
-            for section in ("default",):
-                for key, value in state.get(section, {}).items():
-                    if not isinstance(value, str):
-                        errors.append(f"{code}.states.{state_name}.{section}.{key} is not a string")
+            for key, value in state.get("default", {}).items():
+                _validate_contact_value(f"{code}.states.{state_name}.default.{key}", value, errors)
             for city_name, city in state.get("cities", {}).items():
                 if not isinstance(city, dict):
                     errors.append(f"{code} city {city_name} must be an object")
                     continue
                 for key, value in city.items():
-                    if not isinstance(value, str):
-                        errors.append(f"{code} city {city_name}.{key} is not a string")
+                    _validate_contact_value(f"{code} city {city_name}.{key}", value, errors)
             for zip_code, zip_row in state.get("zips", {}).items():
                 if not isinstance(zip_row, dict):
                     errors.append(f"{code} zip {zip_code} must be an object")
                     continue
                 for key, value in zip_row.items():
-                    if not isinstance(value, str):
-                        errors.append(f"{code} zip {zip_code}.{key} is not a string")
+                    _validate_contact_value(f"{code} zip {zip_code}.{key}", value, errors)
     return errors
 
 
