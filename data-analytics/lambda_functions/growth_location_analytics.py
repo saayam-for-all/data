@@ -130,13 +130,19 @@ def _window_mask(organizations: pd.DataFrame, window_start, window_end) -> pd.Se
     return mask
 
 
+def _end_of_day(value: pd.Timestamp) -> pd.Timestamp:
+    """Inclusive end-of-day so same-day timestamps after midnight stay in-window."""
+    return value.normalize() + pd.Timedelta(hours=23, minutes=59, seconds=59)
+
+
 def fixed_window(bucket: str, reference_date: pd.Timestamp) -> Tuple[Optional[pd.Timestamp], Optional[pd.Timestamp]]:
+    window_end = _end_of_day(reference_date)
     if bucket == "7D":
-        return reference_date - pd.Timedelta(days=7), reference_date
+        return reference_date.normalize() - pd.Timedelta(days=7), window_end
     if bucket == "30D":
-        return reference_date - pd.Timedelta(days=30), reference_date
+        return reference_date.normalize() - pd.Timedelta(days=30), window_end
     if bucket == "1Y":
-        return reference_date - pd.DateOffset(years=1), reference_date
+        return reference_date.normalize() - pd.DateOffset(years=1), window_end
     return None, None  # All
 
 
@@ -161,7 +167,7 @@ def parse_custom_range(
         raise InvalidDateRangeError(f"{start_field} must not be after {end_field}")
 
     # Inclusive end-of-day so a same-day Custom range still captures that day.
-    end = end + pd.Timedelta(hours=23, minutes=59, seconds=59)
+    end = _end_of_day(end)
     return start, end
 
 

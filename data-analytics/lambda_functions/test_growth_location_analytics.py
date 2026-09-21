@@ -276,6 +276,27 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             )
             self.assertEqual(response_one["All"]["growth_trend"]["total_organizations"][-1]["count"], 1)
 
+    def test_fixed_windows_include_end_of_reference_day(self):
+        """Orgs created later on the reference day must still fall in 7D/30D/1Y."""
+        with tempfile.TemporaryDirectory() as tmp:
+            orgs = _write_dataset(
+                Path(tmp),
+                [("ORG-1", "US-TX", "Austin", "TRUE", "2026-06-15 18:30:00")],
+            )
+            response = gla.build_growth_location_response(
+                orgs, {}, reference_date=REFERENCE
+            )
+
+        for bucket in ("7D", "30D", "1Y"):
+            totals = response[bucket]["growth_trend"]["total_organizations"]
+            self.assertTrue(totals, bucket)
+            self.assertEqual(totals[-1]["count"], 1, bucket)
+            self.assertEqual(
+                response[bucket]["organizations_by_location"],
+                [{"country": "USA", "count": 1}],
+                bucket,
+            )
+
     def test_lambda_handler_api_gateway_body(self):
         with tempfile.TemporaryDirectory() as tmp:
             _write_dataset(Path(tmp), [("ORG-1", "US-TX", "Austin", "TRUE", "2026-01-01")])
