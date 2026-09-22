@@ -23,6 +23,22 @@ _JSON_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 }
 
+# Cached per warm Lambda instance: AWS often reuses the same running
+# container across back-to-back invocations, so a cold start pays for
+# load_data() once and every subsequent warm call on that instance reuses
+# the same DataFrame instead of re-reading the CSVs from disk. This is a
+# per-instance cache only -- each of the fleet's instances still loads its
+# own copy once. A fleet-wide one-time load would need a shared cache
+# (e.g. ElastiCache) in front of this, which is a deployment decision.
+_cached_df = None
+
+
+def _get_data():
+    global _cached_df
+    if _cached_df is None:
+        _cached_df = load_data()
+    return _cached_df
+
 
 def _parse_event_body(event):
     """Accepts a direct JSON-object event or an API Gateway proxy event
@@ -65,7 +81,7 @@ def lambda_handler(event, context):
         return _response(400, {"error": str(exc)})
 
     try:
-        df = load_data()
+        df = _get_data()
     except DataLoadError as exc:
         return _response(500, {"error": f"Failed to load analytics data: {exc}"})
 

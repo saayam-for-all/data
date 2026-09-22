@@ -162,3 +162,29 @@ def test_response_body_is_a_json_string(handler, tmp_path):
     _write_fixture(tmp_path)
     result = handler({}, None)
     assert isinstance(result["body"], str)
+
+
+def test_data_is_loaded_once_per_warm_instance_not_per_call(handler, tmp_path, monkeypatch):
+    """A warm Lambda container reuses module-level state across calls, so
+    load_data() should only run on the first call -- not on every call.
+    """
+    _write_fixture(tmp_path)
+
+    loader = sys.modules["loader"]
+    real_load_data = loader.load_data
+    call_count = {"n": 0}
+
+    def counting_load_data(*args, **kwargs):
+        call_count["n"] += 1
+        return real_load_data(*args, **kwargs)
+
+    monkeypatch.setattr(loader, "load_data", counting_load_data)
+    # lambda_function imported load_data by reference, so it must be
+    # patched there too for the substitution to take effect.
+    monkeypatch.setattr(sys.modules["lambda_function"], "load_data", counting_load_data)
+
+    handler({}, None)
+    handler({"start_date": "2026-01-01", "end_date": "2026-06-30"}, None)
+    handler({}, None)
+
+    assert call_count["n"] == 1, "load_data() should run once per warm instance, not per call"
