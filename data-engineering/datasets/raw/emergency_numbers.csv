@@ -1,109 +1,253 @@
 Country,Police,Ambulance,Fire,Notes
-Country,Police,Ambulance,Fire,Notes
-Angola,113[2],112/116[2],115[2],
-Benin,117[4],112[4],118[4],
-Burundi,117[5],112[5],118[5],
-Botswana,999[6],997[6],998[6],Mobile phones –112.
-Burkina Faso,17[7],112[8],18[8],
+Algeria,1548 [ 1 ],14 [ 1 ],14 [ 1 ],Gendarme – 1055 [ 1 ]
+Angola,113 [ 2 ],112/116 [ 2 ],115 [ 2 ],
+Ascension Island,999 [ 3 ],999 [ 3 ],999 [ 3 ],
+Benin,117 [ 4 ],112 [ 4 ],118 [ 4 ],
+Burundi,117 [ 5 ],112 [ 5 ],118 [ 5 ],
+Botswana,999 [ 6 ],997 [ 6 ],998 [ 6 ],Mobile phones – 112 .
+Burkina Faso,17 [ 7 ],112 [ 8 ],18 [ 8 ],
+Cameroon,112,112,112,Police – 117 ; Ambulance – 119 ; Fire – 118 ; Electricity emergency – 8010 .
 Cape Verde,132,130,131,
 Central African Republic,117,1220,118,
-Chad,17,2251-4242,18,Ambulance –2251-1237.
-Comoros,17,772-03-73,18,Ambulance –773-26-04.
-Republic of Congo,117,,118[9],
-Democratic Republic of Congo,112[10],,118,
+Chad,17,2251-4242,18,Ambulance – 2251-1237 .
+Comoros,17,772-03-73,18,Ambulance – 773-26-04 .
+Republic of Congo,117,,118 [ 9 ],
+Democratic Republic of Congo,112 [ 10 ],,118,
 Djibouti,17,19,18,
-Egypt,112or122,123,180,Tourist police –126; Traffic police –128; Electricity emergency –121; Gas emergency –129; Mobile phones –112.
-Equatorial Guinea,114,115,112,Traffic police –116.
-Eritrea,113,114,116,
+Egypt,112 or 122,123,180,Tourist police – 126 ; Traffic police – 128 ; Electricity emergency – 121 ; Gas emergency – 129 ; Mobile phones – 112 .
+Equatorial Guinea,114,115,112,Traffic police – 116 .
+Eritrea,113 [ 11 ],114 [ 11 ],116 [ 11 ],Emergency call – 112 ; Traffic police – 115 . [ 11 ]
 Eswatini,999,977,933,
-Gabon,1730[13],1300,18,
-Gambia,117,116,118,Police –112; Electricity emergency –124; Water emergency –125.
-Guinea,117,18,442-020,Maritime Emergency Service –19; Gendarmerie –118; National Gendarmerie –122
-Ivory Coast,110or111or170,185,180,
+Ethiopia,911 [ 12 ],911 [ 12 ],911 [ 12 ],Police – 991 ; [ 13 ] Ambulance – 907 ; [ 13 ] Fire – 939 ; [ 13 ] Traffic police – 945 .
+Gabon,1730 [ 14 ],1300,18,
+Gambia,117,116,118,Police – 112 ; Electricity emergency – 124 ; Water emergency – 125 .
+Ghana,112 [ 15 ],112 [ 15 ],112 [ 15 ],Police – 191 ; Ambulance – 193 ; Fire – 192 .
+Guinea,117,18,442-020,Maritime Emergency Service – 19 ; Gendarmerie – 118 ; National Gendarmerie – 122
+Guinea-Bissau,112,112,112,Police – 117 ; Ambulance – 119 ; Fire – 118 .
+Ivory Coast,110 or 111 or 170,185,180,
+Liberia,911,911,911,
+Kenya,112 or 999 or 911,112 or 999 or 911,112 or 999 or 911,
+Libya,1515,1515,1515,Ambulance – 193 .
 Lesotho,123,121,122,
-Madagascar,117,124,118,Traffic police –3600.
-Malawi,997,998,999,Police –990.
-Mali,17,15,18,"Ambulance –112, Fire –112."
-Mauritania,117,101,118,Gendarmerie –116; Traffic police –119.
-Mauritius,112,114,115,Police –999; Fire –995.
+Madagascar,117,124,118,Traffic police – 3600 .
+Malawi,997,998,999,Police – 990 .
+Mali,17,15,18,"Ambulance – 112 , Fire – 112 ."
+Mauritania,117,101,118,Gendarmerie – 116 ; Traffic police – 119 .
+Mauritius,112,114,115,Police – 999 ; Fire – 995 .
+Mayotte,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Morocco,19,15,15,Royal gendarmerie – 177 ; Drugs & alcohol service – 113 ; Racial discrimination hotline – 114 ; Non-emergency disturbances – 110 ; General information – 160 ; National Freeway call center – 5050 ; Mobile phones – 112 .
 Mozambique,119,117,198,
-Namibia,10 111,depending on town/city,depending on town/city,
+Namibia,10 111,depends on town/city,depends on town/city,
 Niger,17,15,18,
-Rwanda,112[16],912,112[16],Traffic police –113.
+Nigeria,112 [ 16 ],112 [ 16 ],112 [ 16 ],
+Réunion,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Rwanda,112 [ 17 ],912,112 [ 17 ],Traffic police – 113 .
+Saint Helena,999,999,999,
+Sao Tome and Principe,112,112,112,
 Senegal,17,18,1515,
-Somalia,888,999,555,Traffic police –777.
-Tanzania,112,114,115,Police –999.
+Seychelles,112 or 999,112 or 999,112 or 999,Police – 133 ; Ambulance – 151 .
+Sierra Leone,019,999,999,
+Somalia,888,999,555,Traffic police – 777 .
+South Africa,10 111,10 177,10 177,Emergency in Cape Town – 107 ; Mobile phones – 112 .
+Sudan,999,999,999,Traffic police – 777 777 .
+South Sudan,999 [ 18 ],999 [ 18 ],999 [ 18 ],
+Tanzania,112,114,115,Police – 999 ; Health call centre - 199 [ 19 ]
 Togo,117,8200,118,
 Tristan da Cunha,999,911,999,
-Tunisia,197,190,198,National guard –193.
-Uganda,112,911,112,Police –999; Fire –999.
-Country,Police,Ambulance,Fire,Notes
-Country,Police,Ambulance,Fire,Notes
-Afghanistan,119[19],112[20],119[21],
-Bhutan,113,112,110,
-Brunei,993,991,995,Search and Rescue –998
-Cambodia,117,119,118,Child helpline –1280
-People's Republic of China,110,120,119,Traffic accident reports –122[23]
-Iran,110,115,125,General emergencies is also110. Social Emergency –123; Roads Traffic Information Center –141; Iranian Red Crescent –112(non-mobile phones).112and911redirect to110on mobile phones.
-Israel,100,101,102,Israel Electric Corporation–103;Home Front Command–104; Online child abuse hotline –105; Non-emergency municipal hazards –106; Non-emergency police inquiries –110; Mobile phones –112.
-Laos,191,195,190,
-Lebanon,999or112,140,175,Police –160; Civil defense –125.
-Maldives,119,100,118,
-Nepal,100,102,101,Traffic police –103; From mobile phones –112.
-Pakistan,15,115and1122,16,Ambulance –1122;[38]Traffic police –1915; Mobile phones –112;PunjabWomen's toll free helpline –1043;[39]Tourist police –1422;[40]National Highways & Motorway Police –130;[41]Child Protection & Welfare Bureau –1121.[42]
-Palestine,100,101,102,
-Syria,112,110,113,Traffic police –115.
-Thailand,191[43],1669,199,191will be used as the only national emergency number in the future.[44]Ambulance (Bangkok only) –1646; Tourist police –1155; Traffic control center (Bangkok Metro only) –1197; Highway patrol –1193; Mobile Phones –112.[45]
-Uzbekistan,102,101,103,Emergency service –1050; Gas leaks –104; Housing and communal services –1055.112is slated to become the number for all emergencies on 1 January 2024 in Tashkent and in all Uzbekistan by the end of 2024.[47]
-Vietnam,113,115,114,111– Child abuse
-Country,Police,Ambulance,Fire,Notes
-Albania,129,127,128,Traffic police –126; Emergency at sea –125.[48]Mobile phones ambulance –112
-Andorra,110,116,118,112– Mountain / Sky Rescue collaboration with Spanish (Catalan) and French authorities[49]
-Austria,112or133,144,122,"Gas emergency –128; Mountain rescue –140; Doctors –141; Crisis hotline –142; Support for children and teens –147; Non-emergency police –059 133; Deaf fax/SMS –0800 133 133; Poisoning Informations Center –01 406 43 43. The emergency telephone number112will be answered by the police, but will also handle other emergency services."
-Azerbaijan,112[51]or102,112or103,112or101,Gas Service –104; Traffic police –902; Electricity emergency –199; Emergency –112.
-Belarus,102,103,101,Gas emergency –104.
-Bosnia and Herzegovina,122,124,123,Civil protection –121.
-Bulgaria,112 or 166,112 or 150,112 or 160,
-Croatia,112 or 192,112 or 194,112 or 193,Search and rescue at sea –112 or 195;Road help–1987.
-Czech Republic,112or158,112or155,112or150,Municipal police –156.
-France,112or17,112or15,112or18,Deaf FAX/SMS –114; Hotline for beaten children –119; Missing children –116 000; Maritime rescue –196.[61]
-Greece,100,166,199,General emergencies –112; Forest fire –1591;Coast guard–108; Counter-narcotics –109; Tourist police –171; Social aid –197.
-Hungary,112or107,112or104,112or105,Water emergency –1817.[62]
-Kosovo,192,194,193,
-Liechtenstein,117,144,118,
-Monaco,17,112or15,112or18,112 15 and 18 redirects to fire brigade15 only works with a mobile phone and not with landlines
-Montenegro,122or112,124or112,123or112,Emergency at sea:129
-North Macedonia,192or112[b],194or112[b],193or112[b],Police –192; Ambulance –194; Fire –193.
-Northern Cyprus[69],155,112,199,Forest Fire –177; Coast Guard –158; Civil Defense –101.
-Norway,112[70],113[70],110[70],Emergency at sea:120; non-emergency police:02 800;[71]child abuse and family violence:116 111; text phone:1412;[70]nearest health care outside office hours:116 117;[72]911redirects to112.[73]
-Poland,997 or 112[74],999 or 112[74],998 or 112[74],"Road help –981, Elevator emergency –982, Veterinary emergency –983, Rescue on lakes and rivers –984or+48 601 100 100, Sea and mountain rescue –985or+48 601 100 300,Municipal police (where operating) –986, Crisis Management Centre (focus depends on voivodeship) –987,  Electricity emergency –991, Gas emergency –992, Heat engineering emergency –993, Water emergency –994, Child alert (operated by Police) –995, Counterterrorism emergency –996, Missing children (EU hotline) –116 000[75][76]Warsaw additionally maintains some local emergency numbers.[77][78]911redirects to112.[79]"
-Russia,102or112,103or112,101or112,Gas emergency –104;112came into effect (for any emergency) in 2013
-San Marino,113,118,115,
-Serbia,192or112,194,193,"Civil protection –1985;112redirects to192. It is possible to dial 112 and get direct connection with the emergency services by pressing 1 for police, 2 for ambulance and 3 for fire on Vip operator mobile phones.[80]"
-Slovakia,158,155,150,Municipal police –159.
-Switzerland,117,144,118,"Poison control –145; Road help –0800 140 140; Psychological support –143; Psychological support for teens and children –147;Regaair rescue –1414or by radio on 161.300 MHz;Air Glaciersair-rescue (Valaisonly) –1415.[81]The emergency number112is used differently based on theCanton. While in some cantons 112, 117, 118 and 114 are routed to a common emergency call center, in other cantons 112 together with 117 is directly routed to the police."
-Ukraine,102,103,101,General emergencies –112;[83]Gas emergency –104.
-Country,Police,Ambulance,Fire,Notes
-Nauru,110,111,112,[95]
-Niue,(+683) 4333,(+683) 4202,(+683) 4133,[97]
-Papua New Guinea,112,111,110,
-Tokelau,(+690) 2116,(+690) 2112,,[101]
-Vanuatu,111,112,113,[102][103]
-Country,Police,Ambulance,Fire,Notes
-El Salvador,911[106],132,913,
-Guatemala,110,128,122,Police –120; Fire –123.
-Honduras,911,195,198,
-Nicaragua,118,128,115,Fire –911.[107]
-Country,Police,Ambulance,Fire,Notes
+Tunisia,197,190,198,National guard – 193 .
+Uganda,112,911,112,Police – 999 ; Fire – 999 .
+Western Sahara,150,150,150,
+Zambia,999,999,999,Police – 911 ; Ambulance – 992 ; Fire – 993 ; Mobile phones – 112 .
+Zimbabwe,999,999,999,Police – 995 ; Ambulance – 994 ; Fire – 993 ; Mobile phones – 112 .
+Anguilla,911,911,911,
+Antigua and Barbuda,911 or 999,911 or 999,911 or 999,
+Aruba,911,911,911,
+The Bahamas,911 or 919 [ 20 ],911 or 919 [ 20 ],911 or 919 [ 20 ],Mobile phones – 112 .
 Barbados,211,511,311,
+Bermuda,911,911,911,
+British Virgin Islands,911 or 999,911 or 999,911 or 999,Police – 311 . [ 21 ]
+Caribbean Netherlands,911,911,911,
+Cayman Islands,911,911,911,
 Cuba,106,104,105,
-Curacao,911[110],912,911,
-Haiti,114,116,115,Police –122.[107]
-Saint Martin,17,15,18,[112]
-Sint Maarten,911,912,919,[114]
-Trinidad and Tobago,999or911,811,990,
-Country,Police,Ambulance,Fire,Notes
-Country,Police,Ambulance,Fire,Notes
-Brazil,190,192,193,Federal highway police –191; Federal police –194; Civil police –197; State highway police –198; Civil defense –199; Municipal guard –153; Human rights –100; Emergency in Mercosul area –128.112and911redirect to190on mobile phones;188– Hotline Help.
-Chile,133,131,132,"Useful mnemonic isABC123:Ambulancia (Ambulance) – 131,Bomberos (Fire) – 132,Carabineros (Police) – 133.911and112redirect to133."
-Guyana,911,913,912,"Childcare Protection Agency –227-0979; Human Trafficking –227-4083, 623-5030; Domestic Violence –914.[120]"
+Curacao,911,910 and 912,911 [ 22 ],Calls to 112 forward to 911. Please consult the current list for Emergency Services
+Dominica,999,999,999,
+Dominican Republic,911,911,911,112 redirects to 911 on mobile phones.
+Grenada,911,911,911,
+Guadeloupe,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Haiti,114,116,115,Police – 122 . [ 23 ]
+Jamaica,119,110,110,
+Martinique,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Montserrat,911 or 999,911 or 999,911 or 999,
+Puerto Rico,911,911,911,
+Saint Barthélemy,17,17,18,[ 24 ]
+Saint Kitts and Nevis,911,911,911,
+Saint Lucia,911 or 999,911 or 999,911 or 999,
+Saint Martin,17,15,18,[ 25 ]
+Saint Vincent and the Grenadines,999 or 911 or 112 [ 26 ],999 or 911 or 112 [ 26 ],999 or 911 or 112 [ 26 ],
+Sint Maarten,911,912,919,[ 27 ]
+Trinidad and Tobago,999 or 911,811,990,
+Turks and Caicos,911 [ 28 ],911 [ 28 ],911 [ 28 ],
+U.S. Virgin Islands,911,911,911,
+Belize,911,911,911,
+Clipperton Island,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Costa Rica,911,911,911,Mobile phones – 112 .
+El Salvador,911 [ 29 ],132,913,
+Guatemala,110,"122 CBV (national) 123 CBM (municipal local only) 1554 ASOBOMBD (municipalities associations, national)","122 CBV (national) 123 CBM (municipal local only) 1554 ASOBOMBD (municipalities associations, national)",Red Cross – 125 limited coverage; Conred – 119 Disaster relief (national).
+Honduras,911,195,198,
+Nicaragua,118,128,115,Fire – 911 . [ 23 ]
+Panama,911,911,911,Police – 104 ; Fire – 103 .
+Canada,911,911,911,Suicide hotline – 988 Nonemergency social services - 211. Municipal services – 311 (metros only). 112 may redirect to 911 on certain mobile phones.
+Mexico,911,911,911,Emergency – 911 ; Anonymous complaint – 089 .
+Saint Pierre and Miquelon,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+United States of America,911,911,911,"Suicide hotline – 988 Text-to-9-1-1 is available in many regions and will respond with an error anywhere else. Various services available through regional or national N11 codes (e.g.: 211 and 311 for non-emergency police or city services) in certain areas. Calling #77 from a mobile phone may reach the highway patrol in some states. [ 30 ] Calling 112 from a mobile phone may redirect to 911 in some states/localities, but emergency officials recommend callers use the standard 911. [ 31 ] [ 30 ]"
+Argentina,911,911,911,Police – 101 ; Ambulance – 107 ; Fire – 100 ; Civil defense – 103 ; Forest fire – 105 ; Coast guard – 106 . 112 redirects to 911 on mobile phones.
+Bolivia,911 [ 32 ],911 [ 32 ],911 [ 32 ],Police – 110 ; Ambulance – 118 ; Fire – 119 ; Civil protection – 114 ; National police – 120 .
+Brazil,190,192,193,Federal highway police – 191 ; Federal police – 194 ; Civil police – 197 ; State highway police – 198 ; Civil defense – 199 ; Municipal guard – 153 ; Human rights – 100 ; Emergency in Mercosul area – 128 . 112 and 911 redirect to 190 on mobile phones; 188 – Hotline Help.
+Chile,133,131,132,"Useful mnemonic is ABC123 : A mbulancia (Ambulance) – 13 1 , B omberos (Fire) – 13 2 , C arabineros (Police) – 13 3 . 911 and 112 redirect to 133 ."
+Colombia,112,125,119,General emergency - 123; Anti-kidnapping and extortion hotline – 165 . [ 33 ]
+Ecuador,911,911,911,Police – 101 ; Ambulance – 131 ; Fire – 102 ; Emergency in Guayaquil – 112 ; Traffic police in Guayaquil – 103 .
+Falkland Islands,112 or 999,112 or 999,112 or 999,
+French Guiana,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Guyana,911,913,912,"Childcare Protection Agency – 227-0979 ; Human Trafficking – 227-4083, 623-5030 ; Domestic Violence – 914. [ 34 ]"
+Paraguay,911 [ 35 ],911 [ 35 ],911 [ 35 ],Police – 912 ; Ambulance – 141 ; Fire – 132 .; [ 36 ] Rescue – 131 [ 35 ]
+Peru,911,911,911,Police – 105 ; Ambulance (SAMU) – 106 ; Fire – 116 ; Civil defense – 115 ; Domestic violence – 100 .
+South Georgia and the South Sandwich Islands,999,999,999,
+Suriname,115,115,115,Police – 115 ; Ambulance – 113 ; Fire – 110 .
+Uruguay,911,911,911,Police – 109 ; Ambulance – 105 ; Fire – 104 .
+Venezuela,911 and 171,911 and 171,911 and 171,
+Antarctica,McMurdo Station : 911 (fire and medical emergency dispatch) [ 37 ],McMurdo Station : 911 (fire and medical emergency dispatch) [ 37 ],McMurdo Station : 911 (fire and medical emergency dispatch) [ 37 ],
+Abkhazia,102,103,101,
+Afghanistan,119 [ 38 ],112 [ 39 ],119 [ 40 ],
+Bahrain,999,999,999,"Mobile phones – 112 , Traffic police – 199 , Coast Guard – 994 ."
+Bangladesh,999 [ 41 ],999 [ 41 ],999 [ 41 ],"Anti Corruption Commission – 106 , Agricultural Information Services – 16123 , Health Services – 16263 , Dhaka WASA – 16162 , Women and Children Ministry – 109 , Legal Services – 16430 , National Information Service — 333 , IEDCR Helpline for COVID-19 – 10655 [ 41 ]"
+Bhutan,113,112,110,
+British Indian Ocean Territory,112 or 999,112 or 999,112 or 999,
+Brunei,993,991,995,Search and Rescue – 998
+Cambodia,117,119,118,Child helpline – 1280
+People's Republic of China,110,120,119,Traffic accident reports – 122 ; [ 42 ] Coast guard – 95110
+Christmas Island,000,000,000,
+Cocos (Keeling) Islands,000,000,000,
+East Timor,112,112,112,
+Hong Kong,999,999,999,Mobile phones – 911 [ citation needed ] or 112 [ 43 ] (Automatically redirects to 999 ).
+India,112 [ 44 ],112 [ 44 ],112 [ 44 ],Gas leakage – 1906 Tourist Helpline – 1363 Child Helpline – 1098 Disaster management – 104 Women Helpline – 181 Police – 100 Ambulance – 108 Fire brigade – 101 [ 45 ]
+Indonesia,112 [ 46 ],112 [ 46 ],112 [ 46 ],Police – 110 ; [ 47 ] Ambulance – 118 or 119 ; Fire – 113 or 1131 ; Search & rescue – 115 ; Natural disasters – 129 ; Electricity emergency – 123 ; [ 48 ] Mental health – 1-500-454 . [ 49 ]
+Iran,110,115,125,General emergencies is also 110 . Social Emergency – 123 ; Roads Traffic Information Center – 141 ; Iranian Red Crescent – 112 (non-mobile phones). 112 and 911 redirect to 110 on mobile phones.
+Iraq,112 or 911,112 or 911,112 or 911,Police – 104 ; Ambulance – 122 ; Fire – 115 .
+Israel,100,101,102,Israel Electric Corporation – 103 ; Home Front Command – 104 ; Online child abuse hotline – 105 ; Non-emergency municipal hazards – 106 ; Non-emergency police inquiries – 110 ; Mobile phones – 112 .
+Japan,110,119,119,Coast guard – 118 ; [ 50 ] Information about emergencies – #7119 free call; Information about emergencies – #9110 pay call; Roadside assistance – #8139 . 112 and 911 redirect to 110 on mobile phones and telephones that are present at all United States military installations .
+Jordan,911,911,911,Mobile phones – 112 .
+Kazakhstan,112,112,112,Police – 102 ; Ambulance – 103 ; Fire – 101 ; Gas leaks – 104 .
+Democratic People's Republic of Korea,local numbers only [ 51 ],local numbers only [ 51 ],110 [ a ] [ 52 ] or 8119 [ 53 ],
+Republic of Korea,112,119,119,Non Emergency – 110 ; [ 54 ] National security – 111 ; Reporting spies – 113 ; Narcotics Report – 127 ; Lost and Found Center – 182 ; Travel Hotline – 1330 . [ 55 ]
+Kuwait,112,112,112,
+Kyrgyzstan,112 [ 56 ],112 [ 56 ],112 [ 56 ],
+Laos,191,195,190,
+Lebanon,999 or 112,140,175,Police – 160 ; Civil defense – 125 .
+Macau,999,999,999,From mobile phones – 110 or 112 (all redirects to 999 ); Judiciary Police – 993
+Malaysia,999 [ 57 ],999 [ 57 ],999 [ 57 ],From mobile phones – 112
+Maldives,911 [ 58 ],911 [ 58 ],911 [ 58 ],Police – 119 ; Ambulance – 100 ; Fire – 118; Coastguard – 191; For Natural Disasters – 115 .
+Mongolia,105,105,105,Police – 102 ; Ambulance – 103 ; Fire – 101 .
+Myanmar,999,999,999,Police – 199 ; Ambulance – 192 ; Fire – 191 (can also call for Natural disasters) Highway police – 1880 ; Relief – 067-340-4222 (Ministry hotline); International hotline – 122 ; COVID-19 hotline – 2019 .
+Nepal,100,102,101,Traffic police – 103 ; From mobile phones – 112 .
+Oman,9999,9999,9999,From mobile phones – 112 .
+Pakistan,15,115 and 1122,16,Ambulance – 1122 ; [ 59 ] Traffic police – 1915 ; Mobile phones – 112 ; Punjab Women's toll free helpline – 1043 ; [ 60 ] Tourist police – 1422; [ 61 ] National Highways & Motorway Police – 130; [ 62 ] Child Protection & Welfare Bureau – 1121 . [ 63 ]
+Palestine,100,101,102,
+Philippines,911,911,911,Child abuse ( Bantay Bata ) – 163 ; Human trafficking – 1343 ; From mobile phones – 112
+Qatar,999,999,999,Mobile phones – 112 .
+Saudi Arabia,911,911,911,Police – 999 ; Ambulance – 997 ; Fire – 998 ; Traffic police – 993 .
+Singapore,999,995,995,Mobile phones – 112 or 911 ; Non-emergency ambulance – 1777 ; Police hotline – 1800 255 0000 ; Traffic police – 6547 0000 .
+South Ossetia,102,103,101,
+Sri Lanka,119,110,110,Traffic police – 112 691 111 .
+Syria,112,110,113,Traffic police – 115 .
+Republic of China ( Taiwan ),110,119,119,112 on mobile phones – after call is connected 0 redirects 110 and 9 redirects 119; Domestic violence – 113 ; Coast guard – 118
+Tajikistan,112,112,112,Police – 102 ; Ambulance – 103 ; Fire – 101 ; Gas leaks – 104 .
+Thailand,191 [ 64 ],1669,199,"It's been proposed that the number 1669 be discontinued and be replaced with 191 . However, as of 2026, the number 191 , 199 and 1669 remain available. [ 65 ] Ambulance (Bangkok only) – 1646 ; Tourist police – 1155 ; Traffic control center (Bangkok Metro only) – 1197 ; Highway patrol – 1193 ; Mobile Phones – 112. [ 66 ]"
+Turkey,112 or 911 or 153,112 [ 67 ] or 911,112 [ 67 ] or 911,"Municipal police – 153 ( 112 connects to national police ); Gas emergency and outages – 187 ; Electricity emergency and outages – 186 ; Water emergency and outages – 185 ; Non-emergency medical consultation - 184 ; Child abuse and family violence – 183 ; Telephone emergency and outages – 121 ; Poison control – 114 . 911 automatically connects to 112. Current service is the result of consolidation of firefighter, emergency police, Gendarmerie , Coast Guard , forest fire, search and rescue, natural disaster and medical emergency numbers into medical emergency former solo number 112 ."
+Turkmenistan,02,03,01,For mobile phones: Fire - 001 ; Police - 002 ; Ambulance - 003 ; Gas leak - 004 . For gas leaks - 04 on landline.
+United Arab Emirates,999,998,997,Coast guard – 996 ; Non-emergency police – 901 ; Water failure – 922; Electricity failure – 991 [ 68 ]
+Uzbekistan,102,103,101,Emergency service – 1050 ; Gas leaks – 104 ; Housing and communal services – 1055 . 112 is being introduced as the number for all emergencies on 1 January 2024 in Uzbekistan by the end of 2024. [ 69 ] [ 70 ]
+Vietnam,113,115,114,"111 – Child abuse, 112 – Livesaving services [ 71 ]"
+Yemen,194,191,191,
+Akrotiri and Dhekelia,112 or 999,112 or 999,112 or 999,
+Åland Islands,112,112,112,Non-emergency police – 018 527 100 ; Poison control – 09 471 977 .
+Albania,129,127,128,Traffic police – 126 ; Emergency at sea – 125 . [ 72 ] Mobile phones ambulance – 112
+Andorra,110,116,118,112 – Mountain / Sky Rescue collaboration with Spanish (Catalan) and French authorities [ 73 ]
+Armenia,112 or 911 [ 74 ],112 or 911 [ 74 ],112 or 911 [ 74 ],Police – 102 ; Ambulance – 103 ; Fire – 101 ; Gas emergency – 104 ; Traffic police – 177 ; Search & rescue – 108 .
+Austria,112 or 133,144,122,"Gas emergency – 128 ; Mountain rescue – 140 ; Doctors – 141 ; Crisis hotline – 142 ; Support for children and teens – 147 ; Non-emergency police – 059 133 ; Deaf fax/SMS – 0800 133 133 ; Poisoning Informations Center – 01 406 43 43 . The emergency telephone number 112 will be answered by the police, but will also handle other emergency services."
+Azerbaijan,112 [ 75 ] or 102,112 or 103,112 or 101,Gas Service – 104 ; Traffic police – 902 ; Electricity emergency – 199 ; Emergency – 112 .
+Belarus,102,103,101,Gas emergency – 104 .
+Belgium [ 76 ],101 or 112,112,112,Non-emergency number for the fire department – 1722 . [ 77 ]
+Bosnia and Herzegovina,122,124,123,Civil protection – 121 .
+Bulgaria,112 or 166,112 or 150,112 or 160,
+Croatia,112 or 192,112 or 194,112 or 193,Search and rescue at sea – 112 or 195 ; Road help – 1987 .
+Cyprus,112 or 199,112 or 199,112 or 199,Air/sea rescue – 1441 ; [ 78 ] Anti-drug support – 1410 or 1498 ; Poison control – 1401 .
+Czech Republic,112 or 158,112 or 155,112 or 150,Municipal police – 156 ; Mountain rescue – 1210 .
+Denmark,112,112,112,Non-emergency police – 114 .
+Estonia,112 [ 79 ],112 [ 79 ],112 [ 79 ],
+Faroe Islands,112,112,112,Non-emergency police – 114 .
+Finland,112 [ 80 ],112 [ 80 ],112 [ 80 ],+358 9 2297 0908 from abroad; [ 81 ] Maritime rescue – 02 94 1000 ; [ 82 ] Poison Control – 0800 147 111 ; [ 83 ] Medical Helpline – 116 117 (except in Åland ); [ 84 ] Report lost or stolen credit card – 020 333 (for most Finnish banks) [ 85 ]
+France,112 or 17,112 or 15,112 or 18,Deaf FAX/SMS – 114 ; Hotline for beaten children – 119 ; Missing children – 116 000 ; Maritime rescue – 196 . [ 86 ] in 80% of departments 112 will redirect to fire and rescue service in the rest of cases 112 will be handled either by a common platform or by ambulance (SAMU)
+Georgia,112,112,112,
+Germany,110,112,112,Traditionally 110 for the police and 112 for the fire brigade and rescue service. Due to EU Directive 112 works also for the police; 911 redirects to 112 on telephones used in USAFE bases. Rescue service additionally (outdating) 19222 . Non-emergency medical on-call duty: 116 117 . Debit and credit card locking call 116 116 . Military police: 0800 190 9999 . Federal (incl. railway) police: 0800 6 888 000 .
+Gibraltar,199 or 112 or 999,190 or 112 or 999,190 or 112 or 999,
+Greece [ 87 ],100 or 112,166 or 112,199 or 112,European emergency service line – 112 ; Coast guard – 108 ; National Child Protection Helpline – 1056 ; European Hotline for Missing Children – 116000 ; EU Helpline for Children and Teenagers – 116111
+Greenland,112,112,112,"Mobile phones only. From landline phones dial the local police station, hospital or fire brigade."
+Guernsey,112 or 999,112 or 999,112 or 999,
+Hungary,112 or 107,112 or 104,112 or 105,Water emergency – 1817 . [ 88 ]
+Iceland,112,112,112,Non-emergency police Reykjavík area – 444 10 00 ; 911 redirects to 112 on mobile phones; +354 570 2112 from abroad.
+Ireland,112 or 999,112 or 999,112 or 999,SMS messages can be sent to 112 .
+Isle of Man,112 or 999,112 or 999,112 or 999,
+Italy,112 [ 89 ],112 [ 89 ],112 [ 89 ],"The 112 was originally the national emergency number of the Carabinieri ; it is now the European single emergency number; NUE 112 is operational throughout Italy (except Veneto and Campania ). In areas where the NUE is operational, calls to the traditional emergency numbers 113 ( Police ), 115 ( Fire ), 118 ( Ambulance ) are routed to the 112 emergency response centre. Other numbers: Child abuse – 114 ; Financial Gendarmerie – 117 ; Forest service – 1515 ; Anti-violence and anti-stalking service – 1522 ; Environmental emergency – 1525 ; Coast guard – 1530 ."
+Jersey,112 or 999,112 or 999,112 or 999,
+Kosovo,192,194,193,
+Latvia,112,112,112,Police – 110 ; Ambulance – 113 ; Gas emergency – 114 .
+Lithuania,112 [ 90 ],112 [ 90 ],112 [ 90 ],Police – 022 ; Ambulance – 033 ; Fire – 011 .
+Liechtenstein,117,144,118,
+Luxembourg,112,112,112,Police – 113 .
+Malta,112,112,112,
+Moldova,112 [ 91 ],112 [ 91 ],112 [ 91 ],
+Monaco,17,112 or 18,112 or 18,112 and 18 redirects to fire and rescue service which can also handle ambulance service
+Montenegro,122 or 112,124 or 112,123 or 112,Emergency at sea: 129
+Netherlands,112,112,112,Text phone – 0800 81 12 ; Non-emergency police – 0900 88 44 [ b ] or 0343 578 844 ; [ 92 ] Non-emergency police (text phone) – 0900 18 44 ; Suicide prevention – 0800-0113 ; Animal emergency – 144 ; Child abuse – 0900 123 12 30 ; [ b ] Anti-bullying hotline – 0800 90 50 .
+North Macedonia,192 or 112 [ c ],194 or 112 [ c ],193 or 112 [ c ],Police – 192 ; Ambulance – 194 ; Fire – 193 .
+Northern Cyprus [ 95 ],155,112,199,Forest Fire – 177 ; Coast Guard – 158 ; Civil Defense – 101 .
+Norway,112 [ 96 ],113 [ 96 ],110 [ 96 ],Emergency at sea: 120 ; non-emergency police: 02 800 ; [ 97 ] child abuse and family violence: 116 111 ; text phone: 1412 ; [ 96 ] nearest health care outside office hours: 116 117 ; [ 98 ] 911 redirects to 112 . [ 99 ]
+Poland,997 or 112 [ 100 ],999 or 112 [ 100 ],998 or 112 [ 100 ],"Road help – 981 , Elevator emergency – 982 , Veterinary emergency – 983 , Rescue on lakes and rivers – 984 or +48 601 100 100 , Sea and mountain rescue – 985 or +48 601 100 300 , Municipal police (where operating) – 986 , Crisis Management Centre (focus depends on voivodeship) – 987 ,  Electricity emergency – 991 , Gas emergency – 992 , Heat engineering emergency – 993 , Water emergency – 994 , Child alert (operated by Police) – 995 , Counterterrorism emergency – 996 , Missing children (EU hotline) – 116 000 [ 101 ] [ 102 ] Warsaw additionally maintains some local emergency numbers. [ 103 ] [ 104 ] 911 redirects to 112 . [ 105 ]"
+Portugal,112,112,112,Forest fire – 117 ; Social emergency – 144 . 911 redirects to 112 on telephones located at Lajes Air Station .
+Romania,112,112,112,911 redirects to 112
+Russia,102 or 112,103 or 112,101 or 112,Gas emergency – 104 ; 112 came into effect (for any emergency) in 2013
+San Marino,112 or 113 [ 106 ],118 [ 106 ],115 [ 106 ],"112 , 113 and 115 reach the Interforce Operations Centre."
+Serbia,192 or 112,194,193,"Civil protection – 1985 ; 112 redirects to 192 . It is possible to dial 112 and get direct connection with the emergency services by pressing 1 for police, 2 for ambulance and 3 for fire on Vip operator mobile phones. [ 107 ]"
+Slovakia,112 or 158,112 or 155,112 or 150,Municipal police – 159 .
+Slovenia,112,112,112,Police – 113 ; Road help – 1987 ; Emergency at sea – 080 18 00 .
+Spain,112,112,112,"Police: National Police – 091 ; Civil Guard – 062 ; Autonomic Police – 112 ; Municipal Police – 092 . Fire: Local Firefighters – 080 ; Autonomic Firefighters – 085 . Ambulance: SAMUR – 061 . Others: Civil Protection – 1006 , Maritime Rescue – 902 202 202 ; Red Cross – 901 222 222 ."
+Sweden,112,112,112,Non-emergency police – 114 14 ; Non-emergency medical advice – 1177 ; Information during accidents and crises – 113 13 .
+Switzerland,117,144,118,"Poison control – 145 ; Road help – 0800 140 140 ; Psychological support – 143 ; Psychological support for teens and children – 147 ; Rega air rescue – 1414 or by radio on 161.300 MHz ; Air-Glaciers [ fr ] air-rescue ( Valais only) – 1415 . [ 108 ] The emergency number 112 is used differently based on the Canton . While in some cantons 112, 117, 118 and 114 are routed to a common emergency call center, in other cantons 112 together with 117 is directly routed to the police."
+Transnistria,102,103,101,
+Turkey,112 or 911 or 153,112 [ 67 ] or 911,112 [ 67 ] or 911,"Municipal police – 153 ( 112 connects to national police ); Gas emergency and outages – 187 ; Electricity emergency and outages – 186 ; Water emergency and outages – 185 ; Non-emergency medical consultation - 184 ; Child abuse and family violence – 183 ; Telephone emergency and outages – 121 ; Poison control – 114 . 911 automatically connects to 112. Current service is the result of consolidation of firefighter, emergency police, Gendarmerie , Coast Guard , forest fire, search and rescue, natural disaster and medical emergency numbers into medical emergency former solo number 112 ."
+Ukraine,102,103,101,General emergencies – 112 ; [ 109 ] Gas emergency – 104 .
+United Kingdom,999 or 112,999 or 112,999 or 112,Non-emergency police – 101 ; Power outages – 105 ; [ 110 ] [ 111 ] Non-emergency health issues – 111 ; COVID-19 testing helpline – 119 ; gas leaks – 0800 111 999 . [ 112 ] SMS messages can be sent to 999 after registration by sending a text message with the word 'Register' to 999 . 911 redirects to 999 on mobile phones/public phonebooths [ citation needed ] and on telephones used in USAFE bases.
+Vatican City,112 [ 113 ],112 [ 113 ],112 [ 113 ],Emergency calls are handled by the Gendarmerie Corps. The Fire Brigade can also be reached at +39 06 698112 .
+American Samoa,911,911,911,
+Australia,000,000,000,"Mobile phones – 112 or 000 ; [ 114 ] State Emergency Service – 132 500 ; National relay service – 106 ; Non-emergency police – 131 444 ( NSW , QLD , VIC , SA , WA , NT , TAS & ACT ); Crime Stoppers – 1800 333 000 ; Threats to national security – 1800 123 400 ; Poison control – 13 11 26 ; Lifeline – 13 11 14 ."
+Cook Islands,999,999,999,[ 115 ] [ 116 ]
+Fiji,911,911,911,Police – 917 ; Fire – 910 ; Crime Stoppers – 919 . [ 117 ]
+French Polynesia,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+Guam,911,911,911,[ 118 ]
+Kiribati,100 [ 116 ] or 999 [ 119 ],100 [ 116 ] or 999 [ 119 ],100 [ 116 ] or 999 [ 119 ],Police – 192 ; Ambulance – 194 and 195 ; Fire – 193 .
+Marshall Islands,911 [ 120 ],911 [ 120 ],911 [ 120 ],
+Micronesia,911,911,911,
+Nauru,110,111,112,[ 116 ]
+New Caledonia,112,112,112,Police – 17 ; Ambulance – 15 ; Fire – 18 .
+New Zealand,111,111,111,SMS messages can be sent to 111 from registered mobile phones. Traffic – *555 (mobile phones only). 112 and 911 redirect to 111 on mobile phones. [ 121 ] Dialing 000 and 999 plays a pre-recorded message advising the caller to call 111 . Crime Stoppers – 0800 555 111 . Police non-emergency – 105 .
+Niue,(+683) 4333,(+683) 4202,(+683) 4133,[ 116 ]
+Northern Mariana Islands,911,911,911,[ 122 ]
+Palau,911,911,911,
+Papua New Guinea,112,111,110,
+Samoa,999,999,999,Police – 995 ; Ambulance – 996 ; Fire – 994 .
+Solomon Islands,911 or 999,911 or 999,911 or 999,"Police – 999 ; Ambulance – 111 ; Fire – 988 . [ 116 ] In cities, local numbers exist which connect more quickly than either 911 or 999 . [ 123 ]"
+Tokelau,(+690) 2116,(+690) 2112,,[ 116 ]
+Tonga,911,911,911,Police – 922 ; Ambulance – 933 ; Fire – 999 .
+Tuvalu,911,911,911,Police – 911 ; Ambulance – 999 ; Fire – 000 .
+Vanuatu,111,112,113,[ 124 ] [ 116 ]
+Wallis and Futuna,15,15,15,[ 125 ] [ 126 ]

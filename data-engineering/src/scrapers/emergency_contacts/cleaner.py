@@ -1,37 +1,39 @@
+"""Clean the collected CSV, then rebuild JSON and its provenance together."""
+
+from pathlib import Path
+
 import pandas as pd
-import re
-import os
 
-# Get the project root directory (data-engineering/)
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+if __package__:
+    from .build_emergency_numbers import build_with_provenance, save_dataset, strip_references
+else:
+    from build_emergency_numbers import build_with_provenance, save_dataset, strip_references
 
-# Step 1: Load the CSV data into a DataFrame
-df = pd.read_csv(os.path.join(PROJECT_ROOT, 'datasets', 'raw', 'emergency_numbers.csv'))
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+RAW_CSV_PATH = PROJECT_ROOT / "datasets/raw/emergency_numbers.csv"
+CLEANED_CSV_PATH = PROJECT_ROOT / "datasets/cleaned/cleaned_emergency_numbers.csv"
+CLEANED_JSON_PATH = PROJECT_ROOT / "datasets/cleaned/emergency_numbers.json"
+PROVENANCE_PATH = PROJECT_ROOT / "datasets/cleaned/emergency_numbers_provenance.json"
 
-# Step 2: Remove duplicate header rows
-# Keep only the first occurrence of the headers
-df = df[df['Country'] != 'Country']
 
-# Step 3: Clean up special characters (e.g., references like [2], [3])
-# Use a regex to remove square brackets and their contents
-df = df.replace(to_replace=r'\[\d+\]', value='', regex=True)
+def clean_emergency_data(raw_path=RAW_CSV_PATH, csv_path=CLEANED_CSV_PATH,
+                         json_path=CLEANED_JSON_PATH, provenance_path=PROVENANCE_PATH):
+    """Preserve phone strings and notes; never infer values for missing cells."""
+    data = pd.read_csv(raw_path, dtype=str, keep_default_na=False)
+    expected = {"Country", "Police", "Ambulance", "Fire", "Notes"}
+    if not expected.issubset(data.columns):
+        raise ValueError(f"Missing CSV columns: {expected - set(data.columns)}")
+    data = data[data["Country"] != "Country"].copy()
+    for column in expected:
+        data[column] = data[column].map(strip_references)
+    Path(csv_path).parent.mkdir(parents=True, exist_ok=True)
+    data.to_csv(csv_path, index=False, encoding="utf-8")
+    dataset, report = build_with_provenance(csv_path)
+    save_dataset(dataset, json_path)
+    save_dataset(report, provenance_path)
+    return dataset, report
 
-# Step 4: Handle missing data
-# Replace empty strings with None (or NaN in pandas)
-df = df.replace('', None)
 
-# Step 5: Format the data consistently
-# Example: Remove leading/trailing whitespace, fix case, etc.
-df['Country'] = df['Country'].str.strip()
-df['Police'] = df['Police'].str.strip()
-df['Ambulance'] = df['Ambulance'].str.strip()
-df['Fire'] = df['Fire'].str.strip()
-df['Notes'] = df['Notes'].str.strip()
-
-# Optional: Normalize the case of the data (e.g., all uppercase)
-df['Country'] = df['Country'].str.title()
-
-# Step 6: Save the cleaned DataFrame to a new CSV file
-df.to_csv(os.path.join(PROJECT_ROOT, 'datasets', 'cleaned', 'cleaned_emergency_numbers.csv'), index=False)
-
-print("Data has been cleaned and saved to 'datasets/cleaned/cleaned_emergency_numbers.csv'.")
+if __name__ == "__main__":
+    dataset, report = clean_emergency_data()
+    print(f"Rebuilt {len(dataset)} countries and {len(report['contacts'])} sourced contacts.")

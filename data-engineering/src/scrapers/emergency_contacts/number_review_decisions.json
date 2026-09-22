@@ -1,0 +1,380 @@
+{
+  "additional_cases": [
+    {
+      "country": "DZ",
+      "numbers": [
+        "17",
+        "1548"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/algeria/getting-help"
+    },
+    {
+      "country": "AR",
+      "numbers": [
+        "911",
+        "101"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/argentina/getting-help"
+    },
+    {
+      "country": "BZ",
+      "numbers": [
+        "911",
+        "90"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/belize/getting-help"
+    },
+    {
+      "country": "BQ",
+      "numbers": [
+        "911",
+        "912",
+        "913"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bonaire-st-eustatius-saba/getting-help"
+    },
+    {
+      "country": "BR",
+      "numbers": [
+        "190",
+        "911"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/brazil/getting-help"
+    },
+    {
+      "country": "KM",
+      "numbers": [
+        "113",
+        "114"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/comoros/getting-help"
+    },
+    {
+      "country": "DJ",
+      "numbers": [
+        "21350962",
+        "21352712"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/djibouti/getting-help"
+    },
+    {
+      "country": "GQ",
+      "numbers": [
+        "666404040",
+        "666303030"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/equatorial-guinea/getting-help"
+    },
+    {
+      "country": "GA",
+      "numbers": [
+        "1300",
+        "0174",
+        "0880"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/gabon/getting-help"
+    },
+    {
+      "country": "GH",
+      "numbers": [
+        "999",
+        "112"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/ghana/getting-help"
+    },
+    {
+      "country": "GN",
+      "numbers": [
+        "+224621350101",
+        "+224664269853"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/guinea/getting-help"
+    },
+    {
+      "country": "LA",
+      "numbers": [
+        "1195",
+        "0305257239",
+        "241162",
+        "241163",
+        "241164",
+        "212703"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/laos/getting-help"
+    },
+    {
+      "country": "MW",
+      "numbers": [
+        "990",
+        "997"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/malawi/getting-help"
+    },
+    {
+      "country": "MU",
+      "numbers": [
+        "999",
+        "114",
+        "115",
+        "112"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mauritius/getting-help"
+    },
+    {
+      "country": "MZ",
+      "numbers": [
+        "848888",
+        "823388"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mozambique/getting-help"
+    },
+    {
+      "country": "ST",
+      "numbers": [
+        "113",
+        "2222222"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/sao-tome-and-principe/getting-help"
+    },
+    {
+      "country": "LK",
+      "numbers": [
+        "118",
+        "119",
+        "0112691111",
+        "1990"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/sri-lanka/getting-help"
+    },
+    {
+      "country": "KN",
+      "numbers": [
+        "4658484",
+        "4669280"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-kitts-and-nevis/getting-help"
+    },
+    {
+      "country": "TL",
+      "numbers": [
+        "110",
+        "+6703311044",
+        "115",
+        "+6703310340",
+        "112",
+        "+6703311380"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/timor-leste/getting-help"
+    },
+    {
+      "country": "TG",
+      "numbers": [
+        "117",
+        "177"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/togo/getting-help"
+    },
+    {
+      "country": "VU",
+      "numbers": [
+        "111",
+        "22222"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/vanuatu/getting-help"
+    },
+    {
+      "country": "WF",
+      "numbers": [
+        "112",
+        "721772"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/wallis-and-futuna/getting-help"
+    },
+    {
+      "country": "YE",
+      "numbers": [
+        "199",
+        "194"
+      ],
+      "source_url": "https://www.gov.uk/foreign-travel-advice/yemen/getting-help"
+    }
+  ],
+  "withheld": [
+    {
+      "country": "AO",
+      "number": "116",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://inacom.gov.ao/wp-content/uploads/2025/06/decreto_presidencial_no_181_19-28_maio_de_2019-9_de_dezembro_de_2019-1.pdf",
+      "reason": "Regulator plan page 3515 assigns 116 to ambulance service and marks it for harmonization with SADC numbering plans. Current implementation of this marked assignment has not been established; retain as an ambulance candidate in the audit pending operator confirmation."
+    },
+    {
+      "country": "VC",
+      "number": "112",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-vincent-and-the-grenadines/getting-help",
+      "reason": "Government guidance supports 911 and 999. The additional 112 route and any network restriction remain unconfirmed."
+    },
+    {
+      "country": "FK",
+      "number": "112",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/falkland-islands/getting-help",
+      "reason": "Travel guidance publishes 999. A traffic-law reference also mentions 112, but current operator routing was not established."
+    },
+    {
+      "country": "VE",
+      "number": "171",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.itu.int/net/itu-t/inrdb/e129_important_numbers.aspx",
+      "reason": "ITU lists 171 for police/fire/medical in a 2012 assignment. Current guidance publishes 911; current scope of 171 and claimed network restrictions remain unconfirmed."
+    },
+    {
+      "country": "IO",
+      "number": "112",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/british-indian-ocean-territory/getting-help",
+      "reason": "No reviewed territory-wide short-code service. Guidance provides the full Diego Garcia police number, stored at that location; UK emergency codes cannot be inherited by assumption."
+    },
+    {
+      "country": "IO",
+      "number": "999",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/british-indian-ocean-territory/getting-help",
+      "reason": "No reviewed territory-wide short-code service. Guidance provides the full Diego Garcia police number, stored at that location; UK emergency codes cannot be inherited by assumption."
+    },
+    {
+      "country": "KP",
+      "number": "110",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/north-korea/getting-help",
+      "reason": "No suitable primary/operator source establishing the purpose, location and availability of these fire-number candidates was found."
+    },
+    {
+      "country": "KP",
+      "number": "8119",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/north-korea/getting-help",
+      "reason": "No suitable primary/operator source establishing the purpose, location and availability of these fire-number candidates was found."
+    },
+    {
+      "country": "LB",
+      "number": "999",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/lebanon/getting-help",
+      "reason": "Reviewed guidance supports police 112. A separate official routing or purpose statement for 999 has not been established."
+    },
+    {
+      "country": "TR",
+      "number": "911",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.112.gov.tr/",
+      "reason": "Official service publishes unified 112. Automatic forwarding of 911 is not confirmed by the reviewed official material; do not infer it from foreign-country examples."
+    },
+    {
+      "country": "AM",
+      "number": "911",
+      "disposition": "superseded",
+      "checked_on": "2026-09-22",
+      "source_url": "https://mia.gov.am/2026/02/11/112-4/",
+      "reason": "The ministry launched combined police/rescue 112 on 15 February 2026. Older 911 guidance is superseded; legacy forwarding is not asserted."
+    },
+    {
+      "country": "GI",
+      "number": "112",
+      "disposition": "superseded",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.police.gi/news/new-999-emergency-number-1251",
+      "reason": "Police announcement replaces former police 112/199 and fire/ambulance 190 with 999. Other police pages still mention 112; use the explicit replacement announcement pending resolution."
+    },
+    {
+      "country": "GI",
+      "number": "190",
+      "disposition": "superseded",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.police.gi/news/new-999-emergency-number-1251",
+      "reason": "Police announcement replaces former police 112/199 and fire/ambulance 190 with 999. Other police pages still mention 112; use the explicit replacement announcement pending resolution."
+    },
+    {
+      "country": "GI",
+      "number": "199",
+      "disposition": "superseded",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.police.gi/news/new-999-emergency-number-1251",
+      "reason": "Police announcement replaces former police 112/199 and fire/ambulance 190 with 999. Other police pages still mention 112; use the explicit replacement announcement pending resolution."
+    },
+    {
+      "country": "KI",
+      "number": "100",
+      "disposition": "not_emergency",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.cck.ki/downloads.html?catid=4&id=6&m=0&task=download.send",
+      "reason": "Regulator numbering plan labels 100 Faults and Service Difficulties, not emergency dispatch. Do not classify it as police, fire or ambulance."
+    },
+    {
+      "country": "GA",
+      "number": "1300",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/gabon/getting-help",
+      "reason": "SOS Medecins medical assistance numbers depend on the mobile network. UK and Canadian guidance do not identify which network uses each code. Keep candidates in the audit until actual network mappings are verified."
+    },
+    {
+      "country": "GA",
+      "number": "0174",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/gabon/getting-help",
+      "reason": "SOS Medecins medical assistance numbers depend on the mobile network. UK and Canadian guidance do not identify which network uses each code. Keep candidates in the audit until actual network mappings are verified."
+    },
+    {
+      "country": "GA",
+      "number": "0880",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/gabon/getting-help",
+      "reason": "SOS Medecins medical assistance numbers depend on the mobile network. UK and Canadian guidance do not identify which network uses each code. Keep candidates in the audit until actual network mappings are verified."
+    },
+    {
+      "country": "LA",
+      "number": "241162",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/laos/getting-help",
+      "reason": "Guidance labels these alternative police-station numbers without identifying station locations or dialling prefixes. Do not promote them into national contacts."
+    },
+    {
+      "country": "LA",
+      "number": "241163",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/laos/getting-help",
+      "reason": "Guidance labels these alternative police-station numbers without identifying station locations or dialling prefixes. Do not promote them into national contacts."
+    },
+    {
+      "country": "LA",
+      "number": "241164",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/laos/getting-help",
+      "reason": "Guidance labels these alternative police-station numbers without identifying station locations or dialling prefixes. Do not promote them into national contacts."
+    },
+    {
+      "country": "LA",
+      "number": "212703",
+      "disposition": "needs_verification",
+      "checked_on": "2026-09-22",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/laos/getting-help",
+      "reason": "Guidance labels these alternative police-station numbers without identifying station locations or dialling prefixes. Do not promote them into national contacts."
+    }
+  ]
+}

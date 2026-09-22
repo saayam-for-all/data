@@ -1,0 +1,60 @@
+{
+  "BV": {
+    "source_urls": [
+      "https://www.regjeringen.no/no/dokumenter/meld.-st.-33-20142015/id2415895/?ch=2"
+    ],
+    "note": "Norwegian government describes an uninhabited remote island. No public emergency telephone service was established by this collection; no mainland number is inferred.",
+    "checked_on": "2026-09-15"
+  },
+  "HM": {
+    "source_urls": [
+      "https://www.antarctica.gov.au/antarctic-operations/stations-and-field-locations/heard-island/"
+    ],
+    "note": "Australian Antarctic Program describes islands unoccupied by humans. No territorial emergency telephone service was established by this collection; no mainland number is inferred.",
+    "checked_on": "2026-09-15"
+  },
+  "TF": {
+    "source_urls": [
+      "https://taaf.fr/collectivites/presentation/"
+    ],
+    "note": "Territorial administration describes districts without a permanent civilian population. Station or expedition contacts were not established as public emergency services; French mainland numbers are not assumed.",
+    "checked_on": "2026-09-15"
+  },
+  "UM": {
+    "source_urls": [
+      "https://www.fws.gov/national-monument/pacific-islands-heritage-marine/visit-us"
+    ],
+    "note": "The ISO code groups remote islands under different local arrangements. The refuge authority describes restricted access to many islands. No shared emergency number was established for the entire ISO territory; US911 is not assumed.",
+    "checked_on": "2026-09-15"
+  },
+  "PN": {
+    "source_urls": [
+      "https://www.gov.uk/foreign-travel-advice/pitcairn-island/getting-help"
+    ],
+    "note": "Government guidance lists a police officer and locally raised VHF fire alarms, but no emergency telephone number.911 is unsupported.",
+    "checked_on": "2026-09-15"
+  },
+  "GS": {
+    "source_urls": [
+      "https://www.gov.uk/foreign-travel-advice/south-georgia-and-south-sandwich-islands/getting-help"
+    ],
+    "note": "Government guidance directs visitors to their expedition leader or operator. No public emergency telephone number was established by this collection.",
+    "checked_on": "2026-09-15"
+  },
+  "KP": {
+    "source_urls": [
+      "https://www.gov.uk/foreign-travel-advice/north-korea/getting-help",
+      "https://www.smartraveller.gov.au/destinations/asia/north-korea-democratic-peoples-republic-korea"
+    ],
+    "note": "Government guidance reviewed does not establish public countrywide emergency dialing numbers. Unreviewed local-only numbers from the secondary table are withheld. An empty object does not prove that no service exists.",
+    "checked_on": "2026-09-15"
+  },
+  "SS": {
+    "source_urls": [
+      "https://www.gov.uk/foreign-travel-advice/south-sudan/getting-help",
+      "https://www.itu.int/net/itu-t/inrdb/e129_important_numbers.aspx"
+    ],
+    "note": "Current travel guidance states there are no central emergency numbers. ITU2023 reports112/777 police allocations, but operation and scope conflict with the current guidance; numbers are withheld pending reliable operational clarification.",
+    "checked_on": "2026-09-15"
+  }
+}

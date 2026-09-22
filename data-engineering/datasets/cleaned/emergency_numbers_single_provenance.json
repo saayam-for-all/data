@@ -1,0 +1,3174 @@
+{
+  "selection_rule": "general_emergency, otherwise national police, otherwise empty string",
+  "police_fallback_note": "Police numbers may not provide ambulance or fire assistance.",
+  "source_counts": {
+    "police": 97,
+    "general_emergency": 127,
+    "blank": 25
+  },
+  "countries_without_number": [
+    "AQ",
+    "BF",
+    "BV",
+    "CD",
+    "CF",
+    "CM",
+    "CX",
+    "GN",
+    "GS",
+    "HM",
+    "IO",
+    "KP",
+    "MC",
+    "MG",
+    "PN",
+    "PS",
+    "SH",
+    "SJ",
+    "SS",
+    "TF",
+    "TJ",
+    "TM",
+    "TN",
+    "UM",
+    "ZW"
+  ],
+  "contacts": [
+    {
+      "country": "AD",
+      "selected_service": "police",
+      "path": [
+        "AD",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/andorra/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AE",
+      "selected_service": "police",
+      "path": [
+        "AE",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/united-arab-emirates/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AF",
+      "selected_service": "police",
+      "path": [
+        "AF",
+        "default",
+        "police"
+      ],
+      "number": "119",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/afghanistan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AG",
+      "selected_service": "general_emergency",
+      "path": [
+        "AG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/antigua-and-barbuda/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AI",
+      "selected_service": "general_emergency",
+      "path": [
+        "AI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/anguilla/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AL",
+      "selected_service": "police",
+      "path": [
+        "AL",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/albania/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AM",
+      "selected_service": "general_emergency",
+      "path": [
+        "AM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://mia.gov.am/2026/02/11/112-4/",
+      "checked_on": "2026-09-22",
+      "note": "From 15 February 2026, 112 combines police and rescue calls. This announcement does not establish ambulance routing; do not infer it. Supersedes older 911 general-emergency guidance.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "AO",
+      "selected_service": "general_emergency",
+      "path": [
+        "AO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "111",
+      "source_url": "https://sic.gov.ao/aplicacao-sic/",
+      "checked_on": "2026-09-15",
+      "note": "Angolan Criminal Investigation Service emergency contact. ITU national report also identifies 111 as Integrated Public Security Center, updated 2024-04-02. Conflicting FCDO 110 is not used.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "AR",
+      "selected_service": "police",
+      "path": [
+        "AR",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/argentina/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AS",
+      "selected_service": "general_emergency",
+      "path": [
+        "AS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://travel.gc.ca/destinations/american-samoa",
+      "checked_on": "2026-09-15",
+      "note": "Canadian government travel guidance explicitly identifies 911 for emergency assistance.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AT",
+      "selected_service": "general_emergency",
+      "path": [
+        "AT",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "checked_on": "2026-09-22",
+      "note": "European general emergency and national service-specific numbers are separate services.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "AU",
+      "selected_service": "general_emergency",
+      "path": [
+        "AU",
+        "default",
+        "general_emergency"
+      ],
+      "number": "000",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/australia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AW",
+      "selected_service": "police",
+      "path": [
+        "AW",
+        "default",
+        "police"
+      ],
+      "number": "100",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/aruba/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "AX",
+      "selected_service": "general_emergency",
+      "path": [
+        "AX",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.alandliving.ax/en/welcome-guide/nordic-welcome-guide",
+      "checked_on": "2026-09-15",
+      "note": "Official Aland relocation guide directs callers to 112 in emergencies.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "AZ",
+      "selected_service": "police",
+      "path": [
+        "AZ",
+        "default",
+        "police"
+      ],
+      "number": "102",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/azerbaijan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BA",
+      "selected_service": "police",
+      "path": [
+        "BA",
+        "default",
+        "police"
+      ],
+      "number": "122",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bosnia-and-herzegovina/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BB",
+      "selected_service": "police",
+      "path": [
+        "BB",
+        "default",
+        "police"
+      ],
+      "number": "211",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/barbados/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BD",
+      "selected_service": "general_emergency",
+      "path": [
+        "BD",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bangladesh/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BE",
+      "selected_service": "general_emergency",
+      "path": [
+        "BE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/belgium/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BG",
+      "selected_service": "general_emergency",
+      "path": [
+        "BG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bulgaria/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BH",
+      "selected_service": "general_emergency",
+      "path": [
+        "BH",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://bh.bh/new/en/emergency-cc_en.html",
+      "checked_on": "2026-09-15",
+      "note": "Emergency Call Centre covers police, ambulance and fire.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "BI",
+      "selected_service": "general_emergency",
+      "path": [
+        "BI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/burundi/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BJ",
+      "selected_service": "police",
+      "path": [
+        "BJ",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/benin/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BL",
+      "selected_service": "general_emergency",
+      "path": [
+        "BL",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-martin-and-st-barthelemy/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BM",
+      "selected_service": "general_emergency",
+      "path": [
+        "BM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bermuda/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BN",
+      "selected_service": "police",
+      "path": [
+        "BN",
+        "default",
+        "police"
+      ],
+      "number": "993",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/brunei/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BO",
+      "selected_service": "police",
+      "path": [
+        "BO",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bolivia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BQ",
+      "selected_service": "police",
+      "path": [
+        "BQ",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bonaire-st-eustatius-saba/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BR",
+      "selected_service": "police",
+      "path": [
+        "BR",
+        "default",
+        "police"
+      ],
+      "number": "190",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/brazil/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BS",
+      "selected_service": "general_emergency",
+      "path": [
+        "BS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bahamas/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BT",
+      "selected_service": "police",
+      "path": [
+        "BT",
+        "default",
+        "police"
+      ],
+      "number": "113",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/bhutan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BW",
+      "selected_service": "police",
+      "path": [
+        "BW",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/botswana/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BY",
+      "selected_service": "police",
+      "path": [
+        "BY",
+        "default",
+        "police"
+      ],
+      "number": "102",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/belarus/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "BZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "BZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/belize/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CA",
+      "selected_service": "general_emergency",
+      "path": [
+        "CA",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/canada/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CC",
+      "selected_service": "police",
+      "path": [
+        "CC",
+        "default",
+        "police"
+      ],
+      "number": "000",
+      "source_url": "https://www.dcceew.gov.au/sites/default/files/env/pages/a579a111-7d66-4212-a2e7-4855c15f8b69/files/e2011-0054-attachment-emp-part-1.pdf",
+      "checked_on": "2026-09-15",
+      "note": "Government-published 2011 emergency contact table lists 000 or 0891626600 for Cocos federal police; not inferred for other services.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CG",
+      "selected_service": "police",
+      "path": [
+        "CG",
+        "default",
+        "police"
+      ],
+      "number": "066654804",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/congo/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Government guidance provides this crime-reporting police contact; no central medical emergency number is provided. Response may be unreliable.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CH",
+      "selected_service": "general_emergency",
+      "path": [
+        "CH",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/switzerland/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CI",
+      "selected_service": "police",
+      "path": [
+        "CI",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cote-d-ivoire/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CK",
+      "selected_service": "general_emergency",
+      "path": [
+        "CK",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cook-islands-tokelau-and-niue/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CL",
+      "selected_service": "police",
+      "path": [
+        "CL",
+        "default",
+        "police"
+      ],
+      "number": "133",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/chile/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CN",
+      "selected_service": "police",
+      "path": [
+        "CN",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/china/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CO",
+      "selected_service": "police",
+      "path": [
+        "CO",
+        "default",
+        "police"
+      ],
+      "number": "123",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/colombia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CR",
+      "selected_service": "general_emergency",
+      "path": [
+        "CR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/costa-rica/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CU",
+      "selected_service": "police",
+      "path": [
+        "CU",
+        "default",
+        "police"
+      ],
+      "number": "106",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cuba/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CV",
+      "selected_service": "police",
+      "path": [
+        "CV",
+        "default",
+        "police"
+      ],
+      "number": "132",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cape-verde/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CW",
+      "selected_service": "police",
+      "path": [
+        "CW",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/curacao/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CY",
+      "selected_service": "general_emergency",
+      "path": [
+        "CY",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cyprus/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "CZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "CZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/czechia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "DE",
+      "selected_service": "police",
+      "path": [
+        "DE",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/germany/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "DJ",
+      "selected_service": "police",
+      "path": [
+        "DJ",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/djibouti/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "DK",
+      "selected_service": "general_emergency",
+      "path": [
+        "DK",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/denmark/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "DM",
+      "selected_service": "general_emergency",
+      "path": [
+        "DM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/dominica/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "DO",
+      "selected_service": "general_emergency",
+      "path": [
+        "DO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/dominican-republic/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. 911 coverage is incomplete; availability must be checked locally.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "DZ",
+      "selected_service": "police",
+      "path": [
+        "DZ",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/algeria/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "EC",
+      "selected_service": "general_emergency",
+      "path": [
+        "EC",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/ecuador/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "EE",
+      "selected_service": "general_emergency",
+      "path": [
+        "EE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/estonia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "EG",
+      "selected_service": "general_emergency",
+      "path": [
+        "EG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.tra.gov.eg/ar/atrc-faq/important-telephone-numbers/",
+      "checked_on": "2026-09-22",
+      "note": "Regulator lists 112 for general emergency; police 122 remains separate.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "EH",
+      "selected_service": "general_emergency",
+      "path": [
+        "EH",
+        "default",
+        "general_emergency"
+      ],
+      "number": "150",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/western-sahara/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ER",
+      "selected_service": "police",
+      "path": [
+        "ER",
+        "default",
+        "police"
+      ],
+      "number": "113",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/eritrea/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ES",
+      "selected_service": "general_emergency",
+      "path": [
+        "ES",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/spain/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ET",
+      "selected_service": "general_emergency",
+      "path": [
+        "ET",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/ethiopia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "FI",
+      "selected_service": "general_emergency",
+      "path": [
+        "FI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/finland/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "FJ",
+      "selected_service": "general_emergency",
+      "path": [
+        "FJ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/fiji/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "FK",
+      "selected_service": "general_emergency",
+      "path": [
+        "FK",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/falkland-islands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "FM",
+      "selected_service": "general_emergency",
+      "path": [
+        "FM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/federated-states-of-micronesia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "FO",
+      "selected_service": "general_emergency",
+      "path": [
+        "FO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://politi.fo/en",
+      "checked_on": "2026-09-15",
+      "note": "Faroe Islands Police lists 112 emergency and 114 service numbers.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "FR",
+      "selected_service": "general_emergency",
+      "path": [
+        "FR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/france/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GA",
+      "selected_service": "police",
+      "path": [
+        "GA",
+        "default",
+        "police"
+      ],
+      "number": "177",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/gabon/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GB",
+      "selected_service": "general_emergency",
+      "path": [
+        "GB",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/guidance/999-and-112-the-uks-national-emergency-numbers",
+      "checked_on": "2026-09-15",
+      "note": "National emergency response connects police, ambulance, fire and coastguard.112 is an alternative.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "GD",
+      "selected_service": "police",
+      "path": [
+        "GD",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/grenada/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GE",
+      "selected_service": "general_emergency",
+      "path": [
+        "GE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/georgia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GF",
+      "selected_service": "general_emergency",
+      "path": [
+        "GF",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/french-guiana/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GG",
+      "selected_service": "general_emergency",
+      "path": [
+        "GG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gcra.gg/sites/default/files/case-document/telecom-network-licensees-emergency-calls-call-for-information.pdf",
+      "checked_on": "2026-09-22",
+      "note": "Guernsey regulator confirms 112/999 access to police, ambulance, fire and maritime rescue (page 2).",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "GH",
+      "selected_service": "general_emergency",
+      "path": [
+        "GH",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/ghana/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GI",
+      "selected_service": "general_emergency",
+      "path": [
+        "GI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/gibraltar/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GL",
+      "selected_service": "police",
+      "path": [
+        "GL",
+        "default",
+        "police"
+      ],
+      "number": "+299701448",
+      "source_url": "https://politi.gl/en/nuuk-police-station",
+      "checked_on": "2026-09-15",
+      "note": "Greenland Police identifies its nationwide 24-hour contact. Not assumed to dispatch all medical emergencies.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "GM",
+      "selected_service": "police",
+      "path": [
+        "GM",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://pura.gm/wp-content/uploads/2026/03/ANNUAL-REPORT-2024.pdf",
+      "checked_on": "2026-09-15",
+      "note": "National regulator emergency-shortcodes panel, page 73, confirms service contacts across The Gambia. This local evidence takes precedence over travel guidance that omits central numbers.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "GP",
+      "selected_service": "general_emergency",
+      "path": [
+        "GP",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/guadeloupe/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GQ",
+      "selected_service": "police",
+      "path": [
+        "GQ",
+        "default",
+        "police"
+      ],
+      "number": "666404040",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/equatorial-guinea/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GR",
+      "selected_service": "general_emergency",
+      "path": [
+        "GR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/greece/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GT",
+      "selected_service": "police",
+      "path": [
+        "GT",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/guatemala/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GU",
+      "selected_service": "general_emergency",
+      "path": [
+        "GU",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://governor.guam.gov/press_release/next-generation-911-system-set-to-go-live/",
+      "checked_on": "2026-09-15",
+      "note": "Guam government describes integrated 911 police, fire and emergency medical dispatch.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "GW",
+      "selected_service": "police",
+      "path": [
+        "GW",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/guinea-bissau/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "GY",
+      "selected_service": "police",
+      "path": [
+        "GY",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/guyana/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "HK",
+      "selected_service": "general_emergency",
+      "path": [
+        "HK",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/hong-kong/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "HN",
+      "selected_service": "general_emergency",
+      "path": [
+        "HN",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/honduras/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "HR",
+      "selected_service": "general_emergency",
+      "path": [
+        "HR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/croatia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "HT",
+      "selected_service": "police",
+      "path": [
+        "HT",
+        "default",
+        "police"
+      ],
+      "number": "122",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/haiti/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "HU",
+      "selected_service": "general_emergency",
+      "path": [
+        "HU",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/hungary/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ID",
+      "selected_service": "police",
+      "path": [
+        "ID",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/indonesia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IE",
+      "selected_service": "general_emergency",
+      "path": [
+        "IE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/ireland/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IL",
+      "selected_service": "police",
+      "path": [
+        "IL",
+        "default",
+        "police"
+      ],
+      "number": "100",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/israel/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IM",
+      "selected_service": "general_emergency",
+      "path": [
+        "IM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.im/categories/travel-traffic-and-motoring/harbours/",
+      "checked_on": "2026-09-15",
+      "note": "Government emergency directory lists 999 as emergency contact.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "IN",
+      "selected_service": "general_emergency",
+      "path": [
+        "IN",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/india/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IQ",
+      "selected_service": "general_emergency",
+      "path": [
+        "IQ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://travel.state.gov/en/international-travel/travel-advisories/iraq.html",
+      "checked_on": "2026-09-22",
+      "note": "US government identifies 911 for all emergencies and 112 as National Emergency Hotline. Published alternative, with no distinct network restriction stated.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IR",
+      "selected_service": "police",
+      "path": [
+        "IR",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/iran/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IS",
+      "selected_service": "general_emergency",
+      "path": [
+        "IS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/iceland/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "IT",
+      "selected_service": "police",
+      "path": [
+        "IT",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/italy/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "JE",
+      "selected_service": "general_emergency",
+      "path": [
+        "JE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.je/LifeEvents/MovingToJersey/WhenYouArrive/pages/contactemergencyservices.aspx",
+      "checked_on": "2026-09-15",
+      "note": "Jersey government confirms 999 or 112 routes to police, fire, ambulance and coastguard.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "JM",
+      "selected_service": "police",
+      "path": [
+        "JM",
+        "default",
+        "police"
+      ],
+      "number": "119",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/jamaica/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "JO",
+      "selected_service": "general_emergency",
+      "path": [
+        "JO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/jordan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "JP",
+      "selected_service": "police",
+      "path": [
+        "JP",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/japan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KE",
+      "selected_service": "general_emergency",
+      "path": [
+        "KE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/kenya/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KG",
+      "selected_service": "general_emergency",
+      "path": [
+        "KG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/kyrgyzstan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KH",
+      "selected_service": "police",
+      "path": [
+        "KH",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cambodia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KI",
+      "selected_service": "general_emergency",
+      "path": [
+        "KI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/kiribati/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KM",
+      "selected_service": "police",
+      "path": [
+        "KM",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/comoros/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KN",
+      "selected_service": "police",
+      "path": [
+        "KN",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-kitts-and-nevis/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KR",
+      "selected_service": "police",
+      "path": [
+        "KR",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/south-korea/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KW",
+      "selected_service": "general_emergency",
+      "path": [
+        "KW",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/kuwait/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KY",
+      "selected_service": "general_emergency",
+      "path": [
+        "KY",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cayman-islands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "KZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "KZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/kazakhstan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LA",
+      "selected_service": "police",
+      "path": [
+        "LA",
+        "default",
+        "police"
+      ],
+      "number": "1191",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/laos/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LB",
+      "selected_service": "police",
+      "path": [
+        "LB",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/lebanon/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LC",
+      "selected_service": "general_emergency",
+      "path": [
+        "LC",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-lucia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LI",
+      "selected_service": "police",
+      "path": [
+        "LI",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/liechtenstein/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LK",
+      "selected_service": "police",
+      "path": [
+        "LK",
+        "default",
+        "police"
+      ],
+      "number": "119",
+      "source_url": "https://www.police.lk/?page_id=1334",
+      "checked_on": "2026-09-22",
+      "note": "Police emergency service is 119; 118 is the emergency information service, not an indistinguishable police-number alternative.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "LR",
+      "selected_service": "police",
+      "path": [
+        "LR",
+        "default",
+        "police"
+      ],
+      "number": "+231770800911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/liberia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LS",
+      "selected_service": "general_emergency",
+      "path": [
+        "LS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/lesotho/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LT",
+      "selected_service": "general_emergency",
+      "path": [
+        "LT",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/lithuania/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LU",
+      "selected_service": "police",
+      "path": [
+        "LU",
+        "default",
+        "police"
+      ],
+      "number": "113",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/luxembourg/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LV",
+      "selected_service": "police",
+      "path": [
+        "LV",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/latvia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "LY",
+      "selected_service": "general_emergency",
+      "path": [
+        "LY",
+        "default",
+        "general_emergency"
+      ],
+      "number": "1415",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/libya/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MA",
+      "selected_service": "police",
+      "path": [
+        "MA",
+        "default",
+        "police"
+      ],
+      "number": "190",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/morocco/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MD",
+      "selected_service": "general_emergency",
+      "path": [
+        "MD",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/moldova/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ME",
+      "selected_service": "general_emergency",
+      "path": [
+        "ME",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/montenegro/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MF",
+      "selected_service": "general_emergency",
+      "path": [
+        "MF",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-martin-and-st-barthelemy/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MH",
+      "selected_service": "police",
+      "path": [
+        "MH",
+        "default",
+        "police"
+      ],
+      "number": "6258666",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/marshall-islands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "FCDO lists police 6258666; also corroborated by US State Department guidance.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MK",
+      "selected_service": "general_emergency",
+      "path": [
+        "MK",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://cuk.gov.mk/",
+      "checked_on": "2026-09-22",
+      "note": "Crisis Management Centre nationwide emergency call service, including fire and natural disasters.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "ML",
+      "selected_service": "police",
+      "path": [
+        "ML",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mali/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MM",
+      "selected_service": "police",
+      "path": [
+        "MM",
+        "default",
+        "police"
+      ],
+      "number": "199",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/myanmar/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MN",
+      "selected_service": "police",
+      "path": [
+        "MN",
+        "default",
+        "police"
+      ],
+      "number": "102",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mongolia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MO",
+      "selected_service": "general_emergency",
+      "path": [
+        "MO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/macao/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MP",
+      "selected_service": "general_emergency",
+      "path": [
+        "MP",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://travel.gc.ca/destinations/northern-marianas",
+      "checked_on": "2026-09-15",
+      "note": "Canadian government travel guidance explicitly identifies 911 for emergency assistance.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MQ",
+      "selected_service": "general_emergency",
+      "path": [
+        "MQ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/martinique/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MR",
+      "selected_service": "police",
+      "path": [
+        "MR",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mauritania/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MS",
+      "selected_service": "general_emergency",
+      "path": [
+        "MS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/montserrat/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MT",
+      "selected_service": "general_emergency",
+      "path": [
+        "MT",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/malta/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MU",
+      "selected_service": "general_emergency",
+      "path": [
+        "MU",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mauritius/getting-help",
+      "checked_on": "2026-09-22",
+      "note": "Reviewed the complete emergency-services section. Preserve separately each published service alternative and explicit landline/full-number access. No unreported mobile/provider distinction is inferred; availability limitations in the source still apply.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MV",
+      "selected_service": "police",
+      "path": [
+        "MV",
+        "default",
+        "police"
+      ],
+      "number": "119",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/maldives/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MW",
+      "selected_service": "police",
+      "path": [
+        "MW",
+        "default",
+        "police"
+      ],
+      "number": "990",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/malawi/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MX",
+      "selected_service": "general_emergency",
+      "path": [
+        "MX",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mexico/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "MY",
+      "selected_service": "general_emergency",
+      "path": [
+        "MY",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.civildefence.gov.my/999-emergency-services/?lang=en",
+      "checked_on": "2026-09-15",
+      "note": "Civil Defence confirms 991,994,999 consolidated into 999 for police, medical, fire and civil defence; supersedes conflicting travel guidance.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "MZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "MZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mozambique/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NA",
+      "selected_service": "general_emergency",
+      "path": [
+        "NA",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/namibia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NC",
+      "selected_service": "police",
+      "path": [
+        "NC",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/new-caledonia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NE",
+      "selected_service": "police",
+      "path": [
+        "NE",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/niger/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NF",
+      "selected_service": "general_emergency",
+      "path": [
+        "NF",
+        "default",
+        "general_emergency"
+      ],
+      "number": "000",
+      "source_url": "https://www.nirc.gov.au/files/assets/public/v/1/your-council/documents/nirc-media-releases/2026/2026-07-24-mr-norfolk-islands-emergency-phone-system-process.pdf",
+      "checked_on": "2026-09-15",
+      "note": "Council notice dated 24 July 2026 confirms 000 routes to ambulance, police and fire via menu options. Disaster line 999 is activated only during declared events and is not exported as an unconditional default.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "NG",
+      "selected_service": "general_emergency",
+      "path": [
+        "NG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/nigeria/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "112 is listed, but the source explicitly says there is no national ambulance service; an ambulance contact is withheld.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NI",
+      "selected_service": "general_emergency",
+      "path": [
+        "NI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/nicaragua/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NL",
+      "selected_service": "general_emergency",
+      "path": [
+        "NL",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/netherlands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NO",
+      "selected_service": "police",
+      "path": [
+        "NO",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/norway/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NP",
+      "selected_service": "police",
+      "path": [
+        "NP",
+        "default",
+        "police"
+      ],
+      "number": "100",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/nepal/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NR",
+      "selected_service": "police",
+      "path": [
+        "NR",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/nauru/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NU",
+      "selected_service": "general_emergency",
+      "path": [
+        "NU",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cook-islands-tokelau-and-niue/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "NZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "NZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "111",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/new-zealand/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "OM",
+      "selected_service": "general_emergency",
+      "path": [
+        "OM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "9999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/oman/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PA",
+      "selected_service": "general_emergency",
+      "path": [
+        "PA",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/panama/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PE",
+      "selected_service": "police",
+      "path": [
+        "PE",
+        "default",
+        "police"
+      ],
+      "number": "105",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/peru/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PF",
+      "selected_service": "police",
+      "path": [
+        "PF",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/french-polynesia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PG",
+      "selected_service": "police",
+      "path": [
+        "PG",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/papua-new-guinea/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PH",
+      "selected_service": "general_emergency",
+      "path": [
+        "PH",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/philippines/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PK",
+      "selected_service": "police",
+      "path": [
+        "PK",
+        "default",
+        "police"
+      ],
+      "number": "15",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/pakistan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PL",
+      "selected_service": "general_emergency",
+      "path": [
+        "PL",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.pl/web/numer-alarmowy-112",
+      "checked_on": "2026-09-22",
+      "note": "Unified emergency call centre. Legacy police 997 and fire 998 route to emergency notification centres; they are retained as service access codes, not separate dispatch centres.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "PM",
+      "selected_service": "general_emergency",
+      "path": [
+        "PM",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-pierre-and-miquelon/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PR",
+      "selected_service": "general_emergency",
+      "path": [
+        "PR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.911.pr.gov/sobre-nosotros",
+      "checked_on": "2026-09-15",
+      "note": "Puerto Rico 911 operator states that the emergency line dispatches assistance 24 hours every day.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "PT",
+      "selected_service": "general_emergency",
+      "path": [
+        "PT",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/portugal/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PW",
+      "selected_service": "general_emergency",
+      "path": [
+        "PW",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/palau/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "PY",
+      "selected_service": "police",
+      "path": [
+        "PY",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/paraguay/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "QA",
+      "selected_service": "general_emergency",
+      "path": [
+        "QA",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/qatar/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "RE",
+      "selected_service": "general_emergency",
+      "path": [
+        "RE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/reunion/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "RO",
+      "selected_service": "general_emergency",
+      "path": [
+        "RO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/romania/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "RS",
+      "selected_service": "general_emergency",
+      "path": [
+        "RS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/serbia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "RU",
+      "selected_service": "general_emergency",
+      "path": [
+        "RU",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/russia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "RW",
+      "selected_service": "general_emergency",
+      "path": [
+        "RW",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.police.gov.rw/",
+      "checked_on": "2026-09-15",
+      "note": "Current police emergency directory confirms service-specific toll-free numbers.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "SA",
+      "selected_service": "police",
+      "path": [
+        "SA",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://my.gov.sa/en/contact",
+      "checked_on": "2026-09-15",
+      "note": "National government portal lists police, ambulance, civil defence, and domestic violence reporting. The regional 911 service is not assumed nationwide.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "SB",
+      "selected_service": "police",
+      "path": [
+        "SB",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/solomon-islands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SC",
+      "selected_service": "general_emergency",
+      "path": [
+        "SC",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/seychelles/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SD",
+      "selected_service": "general_emergency",
+      "path": [
+        "SD",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/sudan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SE",
+      "selected_service": "general_emergency",
+      "path": [
+        "SE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/sweden/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SG",
+      "selected_service": "police",
+      "path": [
+        "SG",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/singapore/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SI",
+      "selected_service": "police",
+      "path": [
+        "SI",
+        "default",
+        "police"
+      ],
+      "number": "113",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/slovenia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SK",
+      "selected_service": "general_emergency",
+      "path": [
+        "SK",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.mod.gov.sk/important-numbers/",
+      "checked_on": "2026-09-22",
+      "note": "General emergency line alongside police 158, ambulance 155 and fire 150.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "SL",
+      "selected_service": "general_emergency",
+      "path": [
+        "SL",
+        "default",
+        "general_emergency"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/sierra-leone/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SM",
+      "selected_service": "police",
+      "path": [
+        "SM",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/san-marino/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SN",
+      "selected_service": "police",
+      "path": [
+        "SN",
+        "default",
+        "police"
+      ],
+      "number": "17",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/senegal/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SO",
+      "selected_service": "police",
+      "path": [
+        "SO",
+        "default",
+        "police"
+      ],
+      "number": "888",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/somalia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SR",
+      "selected_service": "general_emergency",
+      "path": [
+        "SR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "115",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/suriname/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ST",
+      "selected_service": "police",
+      "path": [
+        "ST",
+        "default",
+        "police"
+      ],
+      "number": "113",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/sao-tome-and-principe/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SV",
+      "selected_service": "general_emergency",
+      "path": [
+        "SV",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/el-salvador/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SX",
+      "selected_service": "police",
+      "path": [
+        "SX",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-maarten/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SY",
+      "selected_service": "police",
+      "path": [
+        "SY",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://travel.gc.ca/assistance/embassies-consulates/syria",
+      "checked_on": "2026-09-15",
+      "note": "Canadian government emergency-services guidance; these reported numbers do not guarantee response during conflict.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "SZ",
+      "selected_service": "police",
+      "path": [
+        "SZ",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/eswatini/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TC",
+      "selected_service": "general_emergency",
+      "path": [
+        "TC",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/turks-and-caicos-islands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TD",
+      "selected_service": "police",
+      "path": [
+        "TD",
+        "default",
+        "police"
+      ],
+      "number": "2020",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/chad/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TG",
+      "selected_service": "police",
+      "path": [
+        "TG",
+        "default",
+        "police"
+      ],
+      "number": "117",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/togo/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TH",
+      "selected_service": "general_emergency",
+      "path": [
+        "TH",
+        "default",
+        "general_emergency"
+      ],
+      "number": "191",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/thailand/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TK",
+      "selected_service": "police",
+      "path": [
+        "TK",
+        "default",
+        "police"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/cook-islands-tokelau-and-niue/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Shared guide lists 999; Tokelau explicitly has no hospital or ambulance service. No ambulance/general-emergency service is inferred.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TL",
+      "selected_service": "police",
+      "path": [
+        "TL",
+        "default",
+        "police"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/timor-leste/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TO",
+      "selected_service": "general_emergency",
+      "path": [
+        "TO",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/tonga/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TR",
+      "selected_service": "general_emergency",
+      "path": [
+        "TR",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/turkey/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TT",
+      "selected_service": "general_emergency",
+      "path": [
+        "TT",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://ttps.gov.tt/Branches/Branches-N-S/Special-Branch",
+      "checked_on": "2026-09-22",
+      "note": "Police service identifies Emergency 911 separately from Police 999.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "TV",
+      "selected_service": "police",
+      "path": [
+        "TV",
+        "default",
+        "police"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/tuvalu/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TW",
+      "selected_service": "police",
+      "path": [
+        "TW",
+        "default",
+        "police"
+      ],
+      "number": "110",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/taiwan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "TZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "TZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/tanzania/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "UA",
+      "selected_service": "police",
+      "path": [
+        "UA",
+        "default",
+        "police"
+      ],
+      "number": "102",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/ukraine/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "UG",
+      "selected_service": "general_emergency",
+      "path": [
+        "UG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "999",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/uganda/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "US",
+      "selected_service": "general_emergency",
+      "path": [
+        "US",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/usa/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "UY",
+      "selected_service": "general_emergency",
+      "path": [
+        "UY",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/uruguay/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "UZ",
+      "selected_service": "general_emergency",
+      "path": [
+        "UZ",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/uzbekistan/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed explicit service numbers in FCDO government travel guidance; not direct local-operator confirmation.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "VA",
+      "selected_service": "general_emergency",
+      "path": [
+        "VA",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://vaticanstate.va/it/novita/1260-al-servizio-di-pellegrini-e-visitatori-del-giubileo.html",
+      "checked_on": "2026-09-15",
+      "note": "Vatican health director describes 112 operations dispatching medical and rescue response.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "VC",
+      "selected_service": "general_emergency",
+      "path": [
+        "VC",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/st-vincent-and-the-grenadines/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "VE",
+      "selected_service": "general_emergency",
+      "path": [
+        "VE",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/venezuela/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "VG",
+      "selected_service": "general_emergency",
+      "path": [
+        "VG",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/british-virgin-islands/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "VI",
+      "selected_service": "general_emergency",
+      "path": [
+        "VI",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://vitema.vi.gov/emergency-communication-center/",
+      "checked_on": "2026-09-15",
+      "note": "Territorial emergency management authority confirms 911 voice dispatch for police, fire and medical services.",
+      "review_status": "official_or_service_operator"
+    },
+    {
+      "country": "VN",
+      "selected_service": "police",
+      "path": [
+        "VN",
+        "default",
+        "police"
+      ],
+      "number": "113",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/vietnam/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "VU",
+      "selected_service": "police",
+      "path": [
+        "VU",
+        "default",
+        "police"
+      ],
+      "number": "111",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/vanuatu/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "WF",
+      "selected_service": "general_emergency",
+      "path": [
+        "WF",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/wallis-and-futuna/getting-help",
+      "checked_on": "2026-09-22",
+      "note": "Reviewed the complete emergency-services section. Preserve separately each published service alternative and explicit landline/full-number access. No unreported mobile/provider distinction is inferred; availability limitations in the source still apply.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "WS",
+      "selected_service": "general_emergency",
+      "path": [
+        "WS",
+        "default",
+        "general_emergency"
+      ],
+      "number": "911",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/samoa/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "YE",
+      "selected_service": "police",
+      "path": [
+        "YE",
+        "default",
+        "police"
+      ],
+      "number": "199",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/yemen/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator. The source warns of limited or unreliable emergency response.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "YT",
+      "selected_service": "general_emergency",
+      "path": [
+        "YT",
+        "default",
+        "general_emergency"
+      ],
+      "number": "112",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/mayotte/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ZA",
+      "selected_service": "police",
+      "path": [
+        "ZA",
+        "default",
+        "police"
+      ],
+      "number": "10111",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/south-africa/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    },
+    {
+      "country": "ZM",
+      "selected_service": "police",
+      "path": [
+        "ZM",
+        "default",
+        "police"
+      ],
+      "number": "991",
+      "source_url": "https://www.gov.uk/foreign-travel-advice/zambia/getting-help",
+      "checked_on": "2026-09-15",
+      "note": "Reviewed FCDO government travel guidance. Initial collection record; subsequent purpose-specific records supersede or supplement this mapping. This is government guidance, not direct confirmation by a local operator.",
+      "review_status": "government_guidance"
+    }
+  ]
+}
