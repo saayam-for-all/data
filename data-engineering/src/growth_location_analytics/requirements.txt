@@ -1,0 +1,2 @@
+# pandas is expected to be provided via a Lambda Layer, not bundled here,
+# per the convention in src/saayam-org-aggregator/requirements.txt.
