@@ -151,6 +151,31 @@ def test_is_collaborator_garbage_value_fails_loud(handler, tmp_path):
     assert result["statusCode"] == 500  # loud failure, not a silent False
 
 
+def test_duplicate_state_id_fails_loud_instead_of_double_counting(handler, tmp_path):
+    """A duplicate state_id in states.csv fans out the join, silently
+    doubling every organization in that state across every metric. This
+    must be a loud failure, not a 200 with corrupted counts.
+    """
+    with open(os.path.join(tmp_path, "countries.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["country_id", "country_code"])
+        w.writerow([1, "USA"])
+
+    with open(os.path.join(tmp_path, "states.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["state_id", "state_name", "country_id"])
+        w.writerow([1, "New York", 1])
+        w.writerow([1, "New York Duplicate", 1])  # duplicate state_id
+
+    with open(os.path.join(tmp_path, "organizations.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["org_id", "state_id", "city_name", "is_collaborator", "created_at"])
+        w.writerow([1, 1, "NY", "true", "2026-01-01"])
+
+    result = handler({}, None)
+    assert result["statusCode"] == 500  # loud failure, not silent row duplication
+
+
 def test_api_gateway_proxy_event_with_string_body(handler, tmp_path):
     _write_fixture(tmp_path)
     event = {"body": json.dumps({"start_date": "2026-01-01", "end_date": "2026-06-30"})}

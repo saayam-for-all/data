@@ -82,6 +82,21 @@ def _normalize_created_at(series, filename):
     return parsed
 
 
+def _assert_unique_key(df, column, filename):
+    """A duplicate join key on the right side of a left-merge silently
+    fans out matching rows on the left -- e.g. a repeated state_id in
+    states.csv would double-count every organization in that state, with
+    no error. Catch it before the merge, not after.
+    """
+    duplicates = df[column][df[column].duplicated()]
+    if not duplicates.empty:
+        bad_ids = sorted(duplicates.unique().tolist())
+        raise DataLoadError(
+            f"{filename}: column '{column}' has duplicate value(s) {bad_ids}; "
+            f"expected each {column} to appear at most once"
+        )
+
+
 def load_data(data_dir=None):
     """Loads organizations/states/countries and returns one joined DataFrame.
 
@@ -94,6 +109,9 @@ def load_data(data_dir=None):
     organizations = _read_csv(directory, "organizations.csv", REQUIRED_COLUMNS["organizations"])
     states = _read_csv(directory, "states.csv", REQUIRED_COLUMNS["states"])
     countries = _read_csv(directory, "countries.csv", REQUIRED_COLUMNS["countries"])
+
+    _assert_unique_key(states, "state_id", "states.csv")
+    _assert_unique_key(countries, "country_id", "countries.csv")
 
     organizations = organizations.copy()
     organizations["is_collaborator"] = _normalize_is_collaborator(
