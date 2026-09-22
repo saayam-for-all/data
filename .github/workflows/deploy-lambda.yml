@@ -10,7 +10,8 @@ on:
   push:
     branches:
       - main
-      - ci-workflow-mkapure
+      - dev
+      - test
 
   workflow_dispatch:
     inputs:
