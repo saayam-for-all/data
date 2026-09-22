@@ -1,0 +1,21 @@
+When code is pushed or a pull request is created:
+1. GitHub Actions starts the CI process.
+2. Python and application dependencies are installed.
+3. The workflow runs pytest.
+4. pip-audit checks the application and categorizer dependencies.
+5. Flake8 and Bandit are currently installed but not executed. They need to be enabled once existing indications are fixed. 
+
+When a pull request to main is merged:
+1. The workflow identifies changed Lambda folders.
+2. It checks deployment authorization.
+3. It builds a deployment package for each changed Lambda
+4. It creates a ZIP file.
+5. It configures AWS credentials.
+6. It deploys the Lambda code to AWS.  
+
+When a manual deployment is requested:
+1. The user provides the Lambda source folder and function name.
+2. The workflow checks authorization.
+3. It checks out the main branch.
+4. It builds the deployment package.
+5. It uploads the package to the selected AWS Lambda function.
