@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from analytics import (
     DateRangeError,
     build_bucket,
+    compute_growth_trend,
+    compute_locations,
     fixed_windows,
     parse_custom_pair,
 )
@@ -94,12 +96,12 @@ def lambda_handler(event, context):
     location_start, location_end = location_custom if location_custom else (None, None)
 
     custom_growth_trend = (
-        build_bucket(df, growth_start, growth_end, "day")["growth_trend"]
+        compute_growth_trend(df, growth_start, growth_end, "day")
         if growth_custom
         else {"total_organizations": [], "collaborators": []}
     )
     custom_locations = (
-        build_bucket(df, location_start, location_end, "day")["organizations_by_location"]
+        compute_locations(df, location_start, location_end)
         if location_custom
         else []
     )

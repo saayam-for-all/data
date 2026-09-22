@@ -1,9 +1,8 @@
 """Loads and joins the three #336 input CSVs (organizations, states,
 countries) into a single normalized DataFrame.
 
-Two things worth calling out, both found while comparing #336's other
-in-flight implementations against a conformance checker (see
-tests/growth_location_conformance/):
+Two things worth calling out, both found while reviewing #336's other
+in-flight implementations:
 
   - is_collaborator encoding is not specified anywhere, and different mock
     CSVs in this repo use different conventions. Some implementations only
