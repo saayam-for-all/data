@@ -118,6 +118,34 @@ def test_organizations_by_location_shape(handler, tmp_path):
     assert counts == sorted(counts, reverse=True)
 
 
+def test_mixed_created_at_formats_load_correctly(handler, tmp_path):
+    """created_at may be date-only or a full timestamp depending on the
+    exporter, and a real dataset can mix both across rows over time. That
+    must not make the whole load fail.
+    """
+    with open(os.path.join(tmp_path, "countries.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["country_id", "country_code"])
+        w.writerow([1, "USA"])
+
+    with open(os.path.join(tmp_path, "states.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["state_id", "state_name", "country_id"])
+        w.writerow([1, "New York", 1])
+
+    with open(os.path.join(tmp_path, "organizations.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["org_id", "state_id", "city_name", "is_collaborator", "created_at"])
+        w.writerow([1, 1, "NY", "true", "2025-01-01"])                     # date-only
+        w.writerow([2, 1, "NY", "true", "2026-01-02T10:00:00+00:00"])      # full timestamp
+
+    result = handler({}, None)
+    assert result["statusCode"] == 200
+    body = json.loads(result["body"])
+    total = body["All"]["growth_trend"]["total_organizations"][-1]["count"]
+    assert total == 2  # both rows loaded, neither silently dropped as unparseable
+
+
 def test_lone_date_param_is_a_400(handler, tmp_path):
     _write_fixture(tmp_path)
     result = handler({"start_date": "2026-01-01"}, None)

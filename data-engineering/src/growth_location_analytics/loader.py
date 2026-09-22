@@ -75,11 +75,16 @@ def _normalize_is_collaborator(series, filename):
 
 
 def _normalize_created_at(series, filename):
-    parsed = pd.to_datetime(series, errors="coerce", utc=True)
+    # Parsed element-wise rather than via pd.to_datetime(series, ...) directly:
+    # that column-wide fast path infers ONE format from an early value and
+    # applies it to the whole column, silently marking every row in a
+    # different (but valid) format as unparseable -- exactly the mixed
+    # date-only / full-timestamp scenario this loader needs to tolerate.
+    parsed = series.apply(lambda value: pd.to_datetime(value, utc=True, errors="coerce"))
     if parsed.isna().any():
         bad_rows = series[parsed.isna()].tolist()
         raise DataLoadError(f"{filename}: column 'created_at' has unparseable values {bad_rows}")
-    return parsed
+    return pd.to_datetime(parsed, utc=True)  # normalize dtype to datetime64[ns, UTC]
 
 
 def _assert_unique_key(df, column, filename):
