@@ -17,5 +17,12 @@ build/
 htmlcov/
 .coverage
 datasets/raw/
-datasets/cleaned/
+datasets/cleaned/*
+!datasets/cleaned/emergency_numbers.json
+!datasets/cleaned/cleaned_emergency_numbers.csv
+!datasets/cleaned/emergency_numbers_provenance.json
+!datasets/cleaned/emergency_numbers_single.json
+!datasets/cleaned/emergency_numbers_single_provenance.json
 dist/
+.pytest_cache/
+.test-runs/
