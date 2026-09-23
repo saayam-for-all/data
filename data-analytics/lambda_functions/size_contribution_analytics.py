@@ -235,7 +235,9 @@ def _size_chart(frame):
     """Return one count for each size actually present in the window."""
     return [
         {"size": size, "count": int(count)}
-        for size, count in frame.groupby("org_size").size().sort_index().items()
+        for size, count in frame.groupby(
+            "org_size", observed=True, sort=False
+        ).size().items()
     ]
 
 
@@ -244,11 +246,12 @@ def _contribution_chart(frame):
     total = len(frame)
     if not total:
         return []
+    contributor_count = int(frame["is_contributor"].sum()) if "is_contributor" in frame else 0
     return [
         {"type": label, "count": count, "percentage": round(100 * count / total, 1)}
         for label, count in (
             ("Collaborator", int(frame["is_collaborator"].sum())),
-            ("Contributor", int(frame["is_contributor"].sum())),
+            ("Contributor", contributor_count),
         )
     ]
 
