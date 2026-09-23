@@ -113,6 +113,25 @@ def test_contribution_counts_are_independent_and_window_scoped(organizations):
     assert all(row["count"] <= len(thirty_days) for row in analytics._contribution_chart(thirty_days))
 
 
+def test_contribution_percentages_use_the_filtered_total_and_one_decimal(organizations):
+    rows = [
+        ("small", "non_profit", "USA", "United States", "2026-09-23", True, True),
+        ("small", "non_profit", "USA", "United States", "2026-09-22", False, False),
+        ("small", "non_profit", "USA", "United States", "2026-09-21", False, False),
+        ("small", "for_profit", "USA", "United States", "2026-09-23", True, True),
+        ("small", "non_profit", "CAN", "Canada", "2026-09-23", True, True),
+        ("small", "non_profit", "USA", "United States", "2026-09-15", True, True),
+    ]
+    frame = analytics._prepare_organizations(pd.DataFrame(rows, columns=organizations.columns))
+    window = selected(frame, "7D", "United States", "non_profit")
+
+    assert len(window) == 3
+    assert analytics._contribution_chart(window) == [
+        {"type": "Collaborator", "count": 1, "percentage": 33.3},
+        {"type": "Contributor", "count": 1, "percentage": 33.3},
+    ]
+
+
 def test_contribution_custom_window_and_shared_filters(organizations):
     frame = selected(
         organizations, "Custom", "United States", "non_profit",

@@ -48,7 +48,12 @@ def load_mock_organizations():
         "organizations.csv",
     )
     _require_columns(states, ("state_id", "country_id"), "states.csv")
-    _require_columns(countries, ("country_id", "country_code", "country_name"), "countries.csv")
+    _require_columns(countries, ("country_id",), "countries.csv")
+    country_fields = [
+        column for column in ("country_code", "country_name") if column in countries
+    ]
+    if not country_fields:
+        raise ValueError("countries.csv must contain country_code or country_name")
 
     joined = organizations.merge(
         states[["state_id", "country_id"]], on="state_id", how="inner", validate="many_to_one"
@@ -56,11 +61,14 @@ def load_mock_organizations():
     if len(joined) != len(organizations):
         raise AnalyticsDataError("organizations.csv has state_id values missing from states.csv")
     joined = joined.merge(
-        countries[["country_id", "country_code", "country_name"]],
+        countries[["country_id", *country_fields]],
         on="country_id", how="inner", validate="many_to_one",
     )
     if len(joined) != len(organizations):
         raise AnalyticsDataError("states.csv has country_id values missing from countries.csv")
+    for column in ("country_code", "country_name"):
+        if column not in joined:
+            joined[column] = pd.NA
     return _prepare_organizations(joined, source="organizations.csv")
 
 
@@ -103,9 +111,8 @@ def load_database_organizations():
             country_table = next(
                 (
                     table for table in ("countries", "country")
-                    if {"country_id", "country_code", "country_name"}.issubset(
-                        available.get(table, set())
-                    )
+                    if "country_id" in available.get(table, set())
+                    and {"country_code", "country_name"} & available.get(table, set())
                 ),
                 None,
             )
@@ -119,10 +126,13 @@ def load_database_organizations():
             if not required.issubset(organizations) or not size_column:
                 raise RuntimeError("Database organizations table lacks required analytics columns")
             contributor = "o.is_contributor" if "is_contributor" in organizations else "FALSE"
+            country_columns = available[country_table]
+            country_code = "c.country_code" if "country_code" in country_columns else "NULL"
+            country_name = "c.country_name" if "country_name" in country_columns else "NULL"
             cursor.execute(
                 f"SELECT o.org_id, o.{size_column} AS org_size, o.org_type, o.created_at, "
                 f"o.is_collaborator, {contributor} AS is_contributor, "
-                f"c.country_code, c.country_name "
+                f"{country_code} AS country_code, {country_name} AS country_name "
                 f"FROM {schema}.organizations o "
                 f"JOIN {schema}.{state_table} s ON o.{state_key} = s.{state_key} "
                 f"JOIN {schema}.{country_table} c ON s.country_id = c.country_id"
@@ -182,11 +192,11 @@ def filter_organizations(frame, country="ALL", org_type="ALL"):
 def _parse_date_pair(body, prefix):
     """Validate a complete ISO date pair before any analytics are calculated."""
     start_key, end_key = f"{prefix}_start_date", f"{prefix}_end_date"
-    start_value, end_value = body.get(start_key), body.get(end_key)
-    if start_value is None and end_value is None:
+    if start_key not in body and end_key not in body:
         return None
-    if start_value is None or end_value is None:
+    if start_key not in body or end_key not in body:
         raise ValueError(f"{start_key} and {end_key} must both be provided")
+    start_value, end_value = body[start_key], body[end_key]
     parsed = []
     for key, value in ((start_key, start_value), (end_key, end_value)):
         try:
@@ -246,11 +256,14 @@ def _contribution_chart(frame):
     total = len(frame)
     if not total:
         return []
-    contributor_count = int(frame["is_contributor"].sum()) if "is_contributor" in frame else 0
+    collaborator_count = int(frame["is_collaborator"].eq(True).sum())
+    contributor_count = (
+        int(frame["is_contributor"].eq(True).sum()) if "is_contributor" in frame else 0
+    )
     return [
         {"type": label, "count": count, "percentage": round(100 * count / total, 1)}
         for label, count in (
-            ("Collaborator", int(frame["is_collaborator"].sum())),
+            ("Collaborator", collaborator_count),
             ("Contributor", contributor_count),
         )
     ]

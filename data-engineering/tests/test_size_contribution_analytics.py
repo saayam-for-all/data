@@ -121,6 +121,25 @@ def test_country_name_and_code_filter(sample_data, country, expected):
     assert sum(row["count"] for row in body["All"]["organizations_by_size"]) == expected
 
 
+@pytest.mark.parametrize("country_column,country_filter", [
+    ("country_code", "USA"),
+    ("country_name", "United States"),
+])
+def test_country_lookup_accepts_either_filter_column(
+    sample_data, tmp_path, country_column, country_filter
+):
+    countries = pd.read_csv(tmp_path / "countries.csv")
+    countries[["country_id", country_column]].to_csv(tmp_path / "countries.csv", index=False)
+
+    status, body = call({"country": country_filter})
+    assert status == 200
+    assert sum(row["count"] for row in body["All"]["organizations_by_size"]) == 4
+    assert body["All"]["collaborator_vs_contributor"] == [
+        {"type": "Collaborator", "count": 1, "percentage": 25.0},
+        {"type": "Contributor", "count": 2, "percentage": 50.0},
+    ]
+
+
 def test_organization_type_maps_to_org_type(sample_data):
     """The public organization_type parameter filters the org_type column."""
     status, body = call({"organization_type": "for_profit", "country": "USA"})
@@ -188,6 +207,8 @@ def test_single_custom_pair_leaves_other_chart_empty(sample_data, prefix, other)
     ({"size_start_date": "2026-02-02", "size_end_date": "2026-02-01"}, "on or before"),
     ({"size_start_date": "2026-01-01", "size_end_date": "2026-01-31",
       "contribution_start_date": "bad", "contribution_end_date": "2026-01-31"}, "contribution_start_date"),
+    ({"size_start_date": None, "size_end_date": None}, "size_start_date"),
+    ({"contribution_start_date": None, "contribution_end_date": None}, "contribution_start_date"),
 ])
 def test_invalid_pairs_fail_before_results(sample_data, bad_values, expected):
     """Both pairs are checked before any partial Custom data is returned."""
@@ -244,6 +265,12 @@ def test_empty_csv_and_no_matching_window(tmp_path, monkeypatch, sample_data):
     status, body = call({"size_start_date": "2020-01-01", "size_end_date": "2020-01-01"})
     assert status == 200
     assert body["Custom"] == {"organizations_by_size": [], "collaborator_vs_contributor": []}
+
+    status, body = call({
+        "contribution_start_date": "2020-01-01", "contribution_end_date": "2020-01-01",
+    })
+    assert status == 200
+    assert body["Custom"]["collaborator_vs_contributor"] == []
 
 
 def test_mock_mode_needs_no_psycopg2(sample_data, monkeypatch):
@@ -310,7 +337,10 @@ def test_database_loader_uses_state_and_country_joins(monkeypatch):
     assert connection.closed
 
 
-def test_database_loader_handles_singular_tables_and_missing_contributor(monkeypatch):
+@pytest.mark.parametrize("country_column", ["country_code", "country_name"])
+def test_database_loader_handles_singular_tables_and_missing_contributor(
+    monkeypatch, country_column
+):
     """Documented singular lookup names and size/state_code aliases work."""
     class FakeCursor:
         description = [(name,) for name in (
@@ -337,9 +367,13 @@ def test_database_loader_handles_singular_tables_and_missing_contributor(monkeyp
                 ] + [
                     ("state", name) for name in ("state_code", "country_id")
                 ] + [
-                    ("country", name) for name in ("country_id", "country_code", "country_name")
+                    ("country", name) for name in ("country_id", country_column)
                 ]
-            return [("1", "small", "non_profit", "2026-01-01", True, False, "USA", "United States")]
+            return [(
+                "1", "small", "non_profit", "2026-01-01", True, False,
+                "USA" if country_column == "country_code" else None,
+                "United States" if country_column == "country_name" else None,
+            )]
 
     class FakeConnection:
         def __init__(self):
@@ -361,6 +395,8 @@ def test_database_loader_handles_singular_tables_and_missing_contributor(monkeyp
     frame = analytics.load_database_organizations()
     assert "o.size AS org_size" in connection.fake_cursor.query
     assert "FALSE AS is_contributor" in connection.fake_cursor.query
+    missing_column = "country_name" if country_column == "country_code" else "country_code"
+    assert f"NULL AS {missing_column}" in connection.fake_cursor.query
     assert "JOIN virginia_dev_saayam_rdbms.state s ON o.state_code = s.state_code" in connection.fake_cursor.query
     assert "JOIN virginia_dev_saayam_rdbms.country c ON s.country_id = c.country_id" in connection.fake_cursor.query
     assert not frame["is_contributor"].iloc[0]
