@@ -169,12 +169,7 @@ def _prepare_organizations(frame, source="organizations data"):
 
 def filter_organizations(frame, country="ALL", org_type="ALL"):
     """Apply country name/code and organization type filters to both charts."""
-    for name, value in (("country", country), ("organization_type", org_type)):
-        if not isinstance(value, str) or not value.strip():
-            raise ValueError(f"{name} must be a non-empty string")
-    selected_type = org_type.strip().casefold()
-    if selected_type not in ("all", *ORG_TYPES):
-        raise ValueError("organization_type must be non_profit, for_profit, or ALL")
+    selected_type = _validate_filters(country, org_type)
     result = frame
     if country.strip().upper() != "ALL":
         selected = country.strip().casefold()
@@ -183,10 +178,21 @@ def filter_organizations(frame, country="ALL", org_type="ALL"):
             | result["country_name"].astype("string").str.casefold().eq(selected).fillna(False)
         ]
     if selected_type != "all":
-        result = result[result["org_type"].astype("string").str.casefold().eq(
-            selected_type
-        ).fillna(False)]
+        source_types = result["org_type"].astype("string").str.strip().str.casefold()
+        source_types = source_types.str.replace(r"[\s-]+", "_", regex=True)
+        result = result[source_types.eq(selected_type).fillna(False)]
     return result
+
+
+def _validate_filters(country, org_type):
+    """Reject malformed filters before loading data or building any buckets."""
+    for name, value in (("country", country), ("organization_type", org_type)):
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{name} must be a non-empty string")
+    selected_type = org_type.strip().casefold()
+    if selected_type not in ("all", *ORG_TYPES):
+        raise ValueError("organization_type must be non_profit, for_profit, or ALL")
+    return selected_type
 
 
 def _parse_date_pair(body, prefix):
@@ -235,10 +241,10 @@ def filter_by_window(frame, window, today=None, custom_range=None):
     else:
         raise ValueError(f"Unsupported window: {window}")
     timestamps = frame["created_at"]
-    return frame[
-        timestamps.ge(pd.Timestamp(start))
-        & timestamps.lt(pd.Timestamp(end + timedelta(days=1)))
-    ]
+    in_window = timestamps.ge(pd.Timestamp(start))
+    if end != date.max:
+        in_window &= timestamps.lt(pd.Timestamp(end + timedelta(days=1)))
+    return frame[in_window]
 
 
 def _size_chart(frame):
@@ -305,6 +311,7 @@ def lambda_handler(event, context):
         contribution_range = _parse_date_pair(body, "contribution")
         country = body.get("country", "ALL")
         org_type = body.get("organization_type", "ALL")
+        _validate_filters(country, org_type)
         if os.getenv("USE_MOCK_DATA", "true").lower() == "true":
             organizations = load_mock_organizations()
         else:
@@ -343,12 +350,28 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
+    today = datetime.now(timezone.utc).date()
+    size_start = (today - timedelta(days=30)).isoformat()
+    contribution_start = (today - timedelta(days=7)).isoformat()
+    end = today.isoformat()
     examples = (
-        {}, {"country": "USA"}, {"organization_type": "non_profit"},
-        {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30"},
-        {"contribution_start_date": "2025-01-01", "contribution_end_date": "2025-12-31"},
-        {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30",
-         "contribution_start_date": "2025-01-01", "contribution_end_date": "2025-12-31"},
+        ("no_body", {}),
+        ("country_filter", {"country": "USA"}),
+        ("organization_type_filter", {"organization_type": "non_profit"}),
+        ("size_custom_only", {"size_start_date": size_start, "size_end_date": end}),
+        ("contribution_custom_only", {
+            "contribution_start_date": contribution_start, "contribution_end_date": end,
+        }),
+        ("both_custom_pairs", {
+            "size_start_date": size_start, "size_end_date": end,
+            "contribution_start_date": contribution_start, "contribution_end_date": end,
+        }),
     )
-    for example in examples:
-        print(json.dumps(lambda_handler(example, None)))
+    for scenario, example in examples:
+        response = lambda_handler(example, None)
+        print(json.dumps({
+            "scenario": scenario,
+            "request": example,
+            "statusCode": response["statusCode"],
+            "body": json.loads(response["body"]),
+        }))

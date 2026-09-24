@@ -1,6 +1,8 @@
 """Local CSV tests for issue #376's standalone analytics Lambda."""
 
 import json
+import os
+import subprocess
 import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -34,6 +36,14 @@ def call(event):
     """Unwrap a Lambda response for assertions."""
     response = analytics.lambda_handler(event, None)
     return response["statusCode"], json.loads(response["body"])
+
+
+def assert_bucket_shape(body, expected_buckets):
+    assert list(body) == expected_buckets
+    assert "time_filter" not in body
+    for bucket in body.values():
+        assert set(bucket) == {"organizations_by_size", "collaborator_vs_contributor"}
+        assert all(isinstance(chart, list) for chart in bucket.values())
 
 
 @pytest.fixture
@@ -113,6 +123,90 @@ def test_invalid_source_values_fail_without_partial_charts(
     assert column in body["error"]
 
 
+@pytest.mark.parametrize("event,expected_buckets,expected_sizes,expected_contributors", [
+    ({"body": None}, ["7D", "30D", "1Y", "All", "Custom"], 5, 2),
+    ({"body": json.dumps({"country": "USA"})},
+     ["7D", "30D", "1Y", "All", "Custom"], 4, 2),
+    ({"organization_type": "non_profit"},
+     ["7D", "30D", "1Y", "All", "Custom"], 4, 1),
+])
+def test_fixed_response_acceptance_shapes_and_filters(
+    sample_data, event, expected_buckets, expected_sizes, expected_contributors
+):
+    status, body = call(event)
+    assert status == 200
+    assert_bucket_shape(body, expected_buckets)
+    assert body["Custom"] == {"organizations_by_size": [], "collaborator_vs_contributor": []}
+    assert sum(row["count"] for row in body["All"]["organizations_by_size"]) == expected_sizes
+    assert body["All"]["collaborator_vs_contributor"][1]["count"] == expected_contributors
+
+
+@pytest.mark.parametrize("pair", ["size", "contribution", "both"])
+def test_custom_response_acceptance_shapes_and_filters(sample_data, pair):
+    today = datetime.now(timezone.utc).date()
+    size_day = str(today - timedelta(days=30))
+    contribution_day = str(today)
+    body = {"country": "USA", "organization_type": "non_profit"}
+    if pair in ("size", "both"):
+        body.update(size_start_date=size_day, size_end_date=size_day)
+    if pair in ("contribution", "both"):
+        body.update(
+            contribution_start_date=contribution_day,
+            contribution_end_date=contribution_day,
+        )
+    status, result = call({"body": json.dumps(body)})
+    assert status == 200
+    assert_bucket_shape(result, ["Custom"])
+    assert result["Custom"]["organizations_by_size"] == (
+        [{"size": "small", "count": 1}] if pair in ("size", "both") else []
+    )
+    assert result["Custom"]["collaborator_vs_contributor"] == (
+        [
+            {"type": "Collaborator", "count": 1, "percentage": 100.0},
+            {"type": "Contributor", "count": 1, "percentage": 100.0},
+        ] if pair in ("contribution", "both") else []
+    )
+
+
+def test_custom_skips_fixed_bucket_calculations(sample_data, monkeypatch):
+    original = analytics.filter_by_window
+
+    def custom_only(frame, window, **kwargs):
+        assert window == "Custom"
+        return original(frame, window, **kwargs)
+
+    monkeypatch.setattr(analytics, "filter_by_window", custom_only)
+    today = str(datetime.now(timezone.utc).date())
+    status, body = call({"size_start_date": today, "size_end_date": today})
+    assert status == 200
+    assert_bucket_shape(body, ["Custom"])
+
+
+def test_main_prints_six_decoded_json_scenarios(sample_data):
+    runner = Path(analytics.__file__)
+    completed = subprocess.run(
+        [sys.executable, str(runner)], env=os.environ.copy(), capture_output=True,
+        text=True, check=True,
+    )
+    lines = [json.loads(line) for line in completed.stdout.splitlines()]
+    assert [line["scenario"] for line in lines] == [
+        "no_body", "country_filter", "organization_type_filter",
+        "size_custom_only", "contribution_custom_only", "both_custom_pairs",
+    ]
+    assert all(line["statusCode"] == 200 for line in lines)
+    for line in lines:
+        assert_bucket_shape(
+            line["body"],
+            ["7D", "30D", "1Y", "All", "Custom"]
+            if line["scenario"] in ("no_body", "country_filter", "organization_type_filter")
+            else ["Custom"],
+        )
+    assert lines[3]["body"]["Custom"]["collaborator_vs_contributor"] == []
+    assert lines[4]["body"]["Custom"]["organizations_by_size"] == []
+    assert lines[5]["body"]["Custom"]["organizations_by_size"] == lines[3]["body"]["Custom"]["organizations_by_size"]
+    assert lines[5]["body"]["Custom"]["collaborator_vs_contributor"] == lines[4]["body"]["Custom"]["collaborator_vs_contributor"]
+
+
 @pytest.mark.parametrize("country,expected", [("USA", 4), ("united states", 4), ("CAN", 1)])
 def test_country_name_and_code_filter(sample_data, country, expected):
     """Country filters use the joined country rather than state text."""
@@ -143,6 +237,20 @@ def test_country_lookup_accepts_either_filter_column(
 def test_organization_type_maps_to_org_type(sample_data):
     """The public organization_type parameter filters the org_type column."""
     status, body = call({"organization_type": "for_profit", "country": "USA"})
+    assert status == 200
+    assert body["All"]["organizations_by_size"] == [{"size": "medium", "count": 1}]
+
+
+def test_organization_type_accepts_source_csv_spelling(sample_data, tmp_path):
+    organizations = pd.read_csv(tmp_path / "organizations.csv")
+    organizations["org_type"] = organizations["org_type"].replace({
+        "non_profit": "Non-Profit", "for_profit": "For-profit",
+    })
+    organizations.to_csv(tmp_path / "organizations.csv", index=False)
+    status, body = call({"organization_type": "non_profit"})
+    assert status == 200
+    assert sum(row["count"] for row in body["All"]["organizations_by_size"]) == 4
+    status, body = call({"organization_type": "for_profit"})
     assert status == 200
     assert body["All"]["organizations_by_size"] == [{"size": "medium", "count": 1}]
 
@@ -188,6 +296,29 @@ def test_custom_ranges_are_independent_and_end_day_is_inclusive(sample_data):
     ]
 
 
+def test_custom_range_accepts_maximum_iso_end_date(sample_data):
+    status, body = call({
+        "size_start_date": "2020-01-01", "size_end_date": "9999-12-31",
+        "contribution_start_date": "2020-01-01",
+        "contribution_end_date": "9999-12-31",
+    })
+    assert status == 200
+    assert_bucket_shape(body, ["Custom"])
+    assert sum(row["count"] for row in body["Custom"]["organizations_by_size"]) == 5
+    assert body["Custom"]["collaborator_vs_contributor"] == [
+        {"type": "Collaborator", "count": 2, "percentage": 40.0},
+        {"type": "Contributor", "count": 2, "percentage": 40.0},
+    ]
+
+    status, body = call({
+        "size_start_date": "9999-12-31", "size_end_date": "9999-12-31",
+    })
+    assert status == 200
+    assert body == {"Custom": {
+        "organizations_by_size": [], "collaborator_vs_contributor": [],
+    }}
+
+
 @pytest.mark.parametrize("prefix,other", [("size", "contribution"), ("contribution", "size")])
 def test_single_custom_pair_leaves_other_chart_empty(sample_data, prefix, other):
     """A single valid pair creates a Custom-only response."""
@@ -218,6 +349,46 @@ def test_invalid_pairs_fail_before_results(sample_data, bad_values, expected):
     assert "Custom" not in body
 
 
+@pytest.mark.parametrize("bad_body,expected", [
+    ({"country": ""}, "country"),
+    ({"country": "   "}, "country"),
+    ({"country": 12}, "country"),
+    ({"country": None}, "country"),
+    ({"organization_type": []}, "organization_type"),
+    ({"organization_type": "unknown"}, "organization_type"),
+    ({"organization_type": ""}, "organization_type"),
+])
+def test_malformed_filters_have_error_only_responses(sample_data, bad_body, expected):
+    status, body = call(bad_body)
+    assert status == 400
+    assert list(body) == ["error"]
+    assert expected in body["error"]
+
+
+@pytest.mark.parametrize("event,expected", [
+    ({"body": "{not json"}, "valid JSON"),
+    ({"body": "[]"}, "JSON object"),
+    (["not an object"], "event must be a JSON object"),
+])
+def test_malformed_event_has_error_only_response(sample_data, event, expected):
+    status, body = call(event)
+    assert status == 400
+    assert list(body) == ["error"]
+    assert expected in body["error"]
+
+
+def test_invalid_filters_and_pairs_precede_data_loading(monkeypatch):
+    monkeypatch.delenv("MOCK_DATA_DIR", raising=False)
+    for event, expected in (
+        ({"country": 5}, "country"),
+        ({"size_start_date": "2026-01-01"}, "size_start_date"),
+    ):
+        status, body = call(event)
+        assert status == 400
+        assert list(body) == ["error"]
+        assert expected in body["error"]
+
+
 def test_missing_is_contributor_is_zero(tmp_path, monkeypatch, sample_data):
     """Older CSVs without the contributor column still produce two rows."""
     rows = [{key: value for key, value in sample_data[0].items() if key != "is_contributor"}]
@@ -225,6 +396,16 @@ def test_missing_is_contributor_is_zero(tmp_path, monkeypatch, sample_data):
     status, body = call({})
     assert status == 200
     assert body["All"]["collaborator_vs_contributor"] == [
+        {"type": "Collaborator", "count": 1, "percentage": 100.0},
+        {"type": "Contributor", "count": 0, "percentage": 0.0},
+    ]
+    today = str(datetime.now(timezone.utc).date())
+    status, body = call({
+        "contribution_start_date": today, "contribution_end_date": today,
+    })
+    assert status == 200
+    assert_bucket_shape(body, ["Custom"])
+    assert body["Custom"]["collaborator_vs_contributor"] == [
         {"type": "Collaborator", "count": 1, "percentage": 100.0},
         {"type": "Contributor", "count": 0, "percentage": 0.0},
     ]
@@ -271,6 +452,22 @@ def test_empty_csv_and_no_matching_window(tmp_path, monkeypatch, sample_data):
     })
     assert status == 200
     assert body["Custom"]["collaborator_vs_contributor"] == []
+
+
+def test_one_custom_chart_can_be_empty_while_other_has_data(sample_data):
+    today = str(datetime.now(timezone.utc).date())
+    status, body = call({
+        "size_start_date": "2020-01-01", "size_end_date": "2020-01-01",
+        "contribution_start_date": today, "contribution_end_date": today,
+        "country": "USA", "organization_type": "non_profit",
+    })
+    assert status == 200
+    assert_bucket_shape(body, ["Custom"])
+    assert body["Custom"]["organizations_by_size"] == []
+    assert body["Custom"]["collaborator_vs_contributor"] == [
+        {"type": "Collaborator", "count": 1, "percentage": 100.0},
+        {"type": "Contributor", "count": 1, "percentage": 100.0},
+    ]
 
 
 def test_mock_mode_needs_no_psycopg2(sample_data, monkeypatch):
