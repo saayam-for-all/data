@@ -237,8 +237,10 @@ def get_fixed_ranges(organizations):
             today,
             "day",
         ),
+        # 1Y is a trailing 365-day inclusive window.  Subtracting 365
+        # days and keeping both endpoints would include 366 calendar days.
         "1Y": (
-            today - pd.DateOffset(years=1),
+            today - pd.Timedelta(days=364),
             today,
             "month",
         ),
@@ -432,7 +434,7 @@ def build_response(status_code, body):
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
         },
-        "body": body,
+        "body": json.dumps(body),
     }
 
 
