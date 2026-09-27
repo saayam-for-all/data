@@ -1,4 +1,5 @@
 
+import json
 import os
 import tempfile
 import unittest
@@ -11,6 +12,13 @@ import growth_location_analytics as api
 
 
 class GrowthLocationAnalyticsTests(unittest.TestCase):
+    @staticmethod
+    def decode_body(response):
+        body = response["body"]
+        if not isinstance(body, str):
+            raise AssertionError("Lambda proxy response body must be a string")
+        return json.loads(body)
+
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
         self.data_dir = Path(self.temp_dir.name)
@@ -92,12 +100,12 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
 
         self.assertEqual(response["statusCode"], 200)
         self.assertEqual(
-            list(response["body"].keys()),
+            list(self.decode_body(response).keys()),
             ["7D", "30D", "1Y", "All", "Custom"],
         )
 
     def test_each_bucket_has_exact_required_keys(self):
-        body = api.lambda_handler({}, None)["body"]
+        body = self.decode_body(api.lambda_handler({}, None))
 
         for bucket in ["7D", "30D", "1Y", "All", "Custom"]:
             self.assertEqual(
@@ -110,7 +118,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             )
 
     def test_custom_is_empty_when_no_dates_are_supplied(self):
-        custom = api.lambda_handler({}, None)["body"]["Custom"]
+        custom = self.decode_body(api.lambda_handler({}, None))["Custom"]
 
         self.assertEqual(
             custom["growth_trend"],
@@ -124,7 +132,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             "end_date": "2026-06-30",
         }
 
-        custom = api.lambda_handler(event, None)["body"]["Custom"]
+        custom = self.decode_body(api.lambda_handler(event, None))["Custom"]
 
         self.assertTrue(custom["growth_trend"]["total_organizations"])
         self.assertEqual(custom["organizations_by_location"], [])
@@ -135,7 +143,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             "location_end_date": "2026-06-30",
         }
 
-        custom = api.lambda_handler(event, None)["body"]["Custom"]
+        custom = self.decode_body(api.lambda_handler(event, None))["Custom"]
 
         self.assertEqual(
             custom["growth_trend"],
@@ -151,7 +159,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             "location_end_date": "2026-06-30",
         }
 
-        custom = api.lambda_handler(event, None)["body"]["Custom"]
+        custom = self.decode_body(api.lambda_handler(event, None))["Custom"]
 
         growth_periods = [
             row["period"]
@@ -172,7 +180,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
         )
 
         self.assertEqual(response["statusCode"], 400)
-        self.assertEqual(set(response["body"].keys()), {"error"})
+        self.assertEqual(set(self.decode_body(response).keys()), {"error"})
 
     def test_partial_location_date_pair_returns_400(self):
         response = api.lambda_handler(
@@ -210,7 +218,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             "end_date": "2026-02-28",
         }
 
-        totals = api.lambda_handler(event, None)["body"]["Custom"][
+        totals = self.decode_body(api.lambda_handler(event, None))["Custom"][
             "growth_trend"
         ]["total_organizations"]
 
@@ -229,7 +237,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             "end_date": "2026-02-28",
         }
 
-        collaborators = api.lambda_handler(event, None)["body"]["Custom"][
+        collaborators = self.decode_body(api.lambda_handler(event, None))["Custom"][
             "growth_trend"
         ]["collaborators"]
 
@@ -243,7 +251,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
         )
 
     def test_growth_series_share_same_periods(self):
-        trend = api.lambda_handler({}, None)["body"]["1Y"]["growth_trend"]
+        trend = self.decode_body(api.lambda_handler({}, None))["1Y"]["growth_trend"]
 
         total_periods = [
             row["period"] for row in trend["total_organizations"]
@@ -255,14 +263,14 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
         self.assertEqual(total_periods, collaborator_periods)
 
     def test_7d_and_30d_use_daily_periods(self):
-        body = api.lambda_handler({}, None)["body"]
+        body = self.decode_body(api.lambda_handler({}, None))
 
         for bucket in ["7D", "30D"]:
             for row in body[bucket]["growth_trend"]["total_organizations"]:
                 self.assertRegex(row["period"], r"^\d{4}-\d{2}-\d{2}$")
 
     def test_1y_and_all_use_monthly_periods(self):
-        body = api.lambda_handler({}, None)["body"]
+        body = self.decode_body(api.lambda_handler({}, None))
 
         for bucket in ["1Y", "All"]:
             for row in body[bucket]["growth_trend"]["total_organizations"]:
@@ -271,7 +279,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
     def test_sparse_periods_are_not_zero_filled(self):
         periods = [
             row["period"]
-            for row in api.lambda_handler({}, None)["body"]["7D"][
+            for row in self.decode_body(api.lambda_handler({}, None))["7D"][
                 "growth_trend"
             ]["total_organizations"]
         ]
@@ -279,7 +287,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
         self.assertNotIn("2026-09-15", periods)
 
     def test_location_is_aggregated_by_country_and_limited_to_four(self):
-        locations = api.lambda_handler({}, None)["body"]["All"][
+        locations = self.decode_body(api.lambda_handler({}, None))["All"][
             "organizations_by_location"
         ]
 
@@ -295,7 +303,7 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
             self.assertNotEqual(row["country"], "Other")
 
     def test_all_last_total_equals_dataset_row_count(self):
-        body = api.lambda_handler({}, None)["body"]
+        body = self.decode_body(api.lambda_handler({}, None))
 
         last_total = body["All"]["growth_trend"]["total_organizations"][-1][
             "count"
@@ -320,11 +328,11 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
 
         for bucket in ["7D", "30D", "1Y", "All", "Custom"]:
             self.assertEqual(
-                response["body"][bucket]["growth_trend"],
+                self.decode_body(response)[bucket]["growth_trend"],
                 {"total_organizations": [], "collaborators": []},
             )
             self.assertEqual(
-                response["body"][bucket]["organizations_by_location"],
+                self.decode_body(response)[bucket]["organizations_by_location"],
                 [],
             )
 
@@ -352,11 +360,19 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
 
         self.assertEqual(response["statusCode"], 200)
         self.assertEqual(
-            response["body"]["All"]["growth_trend"]["total_organizations"],
+            self.decode_body(response)["All"]["growth_trend"]["total_organizations"],
             [{"period": "2026-09", "count": 1}],
         )
 
-    def test_api_gateway_string_body_is_supported(self):
+    def test_one_year_window_is_exactly_365_inclusive_days(self):
+        organizations = pd.DataFrame({"created_date": [pd.Timestamp("2026-09-18")]})
+
+        start_date, end_date, granularity = api.get_fixed_ranges(organizations)["1Y"]
+
+        self.assertEqual((end_date - start_date).days + 1, 365)
+        self.assertEqual(granularity, "month")
+
+    def test_api_gateway_body_is_a_json_string(self):
         event = {
             "body": (
                 '{"start_date":"2026-01-01",'
@@ -367,8 +383,10 @@ class GrowthLocationAnalyticsTests(unittest.TestCase):
         response = api.lambda_handler(event, None)
 
         self.assertEqual(response["statusCode"], 200)
+        self.assertIsInstance(response["body"], str)
+        body = self.decode_body(response)
         self.assertTrue(
-            response["body"]["Custom"]["growth_trend"][
+            body["Custom"]["growth_trend"][
                 "total_organizations"
             ]
         )
