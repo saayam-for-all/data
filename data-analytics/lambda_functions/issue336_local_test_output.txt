@@ -1,0 +1,105 @@
+$ python -m unittest discover -s data-analytics/lambda_functions -p 'test_growth_location_analytics.py' -v
+test_1y_and_all_use_monthly_periods (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_1y_and_all_use_monthly_periods) ... ok
+test_7d_and_30d_use_daily_periods (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_7d_and_30d_use_daily_periods) ... ok
+test_all_last_total_equals_dataset_row_count (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_all_last_total_equals_dataset_row_count) ... ok
+test_api_gateway_body_is_a_json_string (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_api_gateway_body_is_a_json_string) ... ok
+test_both_custom_ranges_work_independently (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_both_custom_ranges_work_independently) ... ok
+test_collaborators_are_per_period_not_cumulative (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_collaborators_are_per_period_not_cumulative) ... ok
+test_custom_is_empty_when_no_dates_are_supplied (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_custom_is_empty_when_no_dates_are_supplied) ... ok
+test_each_bucket_has_exact_required_keys (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_each_bucket_has_exact_required_keys) ... ok
+test_empty_organizations_file_does_not_crash (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_empty_organizations_file_does_not_crash) ... ok
+test_growth_custom_range_populates_only_growth (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_growth_custom_range_populates_only_growth) ... ok
+test_growth_series_share_same_periods (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_growth_series_share_same_periods) ... ok
+test_invalid_date_format_returns_400 (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_invalid_date_format_returns_400) ... ok
+test_location_custom_range_populates_only_location (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_location_custom_range_populates_only_location) ... ok
+test_location_is_aggregated_by_country_and_limited_to_four (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_location_is_aggregated_by_country_and_limited_to_four) ... ok
+test_no_body_has_exact_five_top_level_keys (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_no_body_has_exact_five_top_level_keys) ... ok
+test_one_row_organizations_file_does_not_crash (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_one_row_organizations_file_does_not_crash) ... ok
+test_one_year_window_is_exactly_365_inclusive_days (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_one_year_window_is_exactly_365_inclusive_days) ... ok
+test_partial_growth_date_pair_returns_400 (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_partial_growth_date_pair_returns_400) ... ok
+test_partial_location_date_pair_returns_400 (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_partial_location_date_pair_returns_400) ... ok
+test_sparse_periods_are_not_zero_filled (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_sparse_periods_are_not_zero_filled) ... ok
+test_start_after_end_returns_400 (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_start_after_end_returns_400) ... ok
+test_total_organizations_is_all_time_cumulative (test_growth_location_analytics.GrowthLocationAnalyticsTests.test_total_organizations_is_all_time_cumulative) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.839s
+
+OK
+
+$ MOCK_DATA_DIR=local_mock_data python data-analytics/lambda_functions/growth_location_analytics.py
+======================================================================
+No body
+======================================================================
+Request:
+{}
+
+Response:
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"7D\": {\"growth_trend\": {\"total_organizations\": [], \"collaborators\": []}, \"organizations_by_location\": []}, \"30D\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2026-09-12\", \"count\": 10}, {\"period\": \"2026-09-13\", \"count\": 11}, {\"period\": \"2026-09-14\", \"count\": 12}, {\"period\": \"2026-09-16\", \"count\": 13}, {\"period\": \"2026-09-17\", \"count\": 14}, {\"period\": \"2026-09-18\", \"count\": 15}], \"collaborators\": [{\"period\": \"2026-09-12\", \"count\": 1}, {\"period\": \"2026-09-13\", \"count\": 1}, {\"period\": \"2026-09-14\", \"count\": 0}, {\"period\": \"2026-09-16\", \"count\": 1}, {\"period\": \"2026-09-17\", \"count\": 0}, {\"period\": \"2026-09-18\", \"count\": 1}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 2}, {\"country\": \"AUS\", \"count\": 1}, {\"country\": \"CAN\", \"count\": 1}, {\"country\": \"GBR\", \"count\": 1}]}, \"1Y\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 4}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"All\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 2}, {\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 0}, {\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 6}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"Custom\": {\"growth_trend\": {\"total_organizations\": [], \"collaborators\": []}, \"organizations_by_location\": []}}"
+}
+
+======================================================================
+Growth custom range only
+======================================================================
+Request:
+{
+  "start_date": "2026-01-01",
+  "end_date": "2026-06-30"
+}
+
+Response:
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"7D\": {\"growth_trend\": {\"total_organizations\": [], \"collaborators\": []}, \"organizations_by_location\": []}, \"30D\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2026-09-12\", \"count\": 10}, {\"period\": \"2026-09-13\", \"count\": 11}, {\"period\": \"2026-09-14\", \"count\": 12}, {\"period\": \"2026-09-16\", \"count\": 13}, {\"period\": \"2026-09-17\", \"count\": 14}, {\"period\": \"2026-09-18\", \"count\": 15}], \"collaborators\": [{\"period\": \"2026-09-12\", \"count\": 1}, {\"period\": \"2026-09-13\", \"count\": 1}, {\"period\": \"2026-09-14\", \"count\": 0}, {\"period\": \"2026-09-16\", \"count\": 1}, {\"period\": \"2026-09-17\", \"count\": 0}, {\"period\": \"2026-09-18\", \"count\": 1}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 2}, {\"country\": \"AUS\", \"count\": 1}, {\"country\": \"CAN\", \"count\": 1}, {\"country\": \"GBR\", \"count\": 1}]}, \"1Y\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 4}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"All\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 2}, {\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 0}, {\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 6}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"Custom\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2026-01-10\", \"count\": 4}, {\"period\": \"2026-01-11\", \"count\": 5}, {\"period\": \"2026-02-10\", \"count\": 6}, {\"period\": \"2026-03-10\", \"count\": 7}, {\"period\": \"2026-06-05\", \"count\": 8}], \"collaborators\": [{\"period\": \"2026-01-10\", \"count\": 1}, {\"period\": \"2026-01-11\", \"count\": 0}, {\"period\": \"2026-02-10\", \"count\": 1}, {\"period\": \"2026-03-10\", \"count\": 0}, {\"period\": \"2026-06-05\", \"count\": 1}]}, \"organizations_by_location\": []}}"
+}
+
+======================================================================
+Location custom range only
+======================================================================
+Request:
+{
+  "location_start_date": "2025-01-01",
+  "location_end_date": "2025-12-31"
+}
+
+Response:
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"7D\": {\"growth_trend\": {\"total_organizations\": [], \"collaborators\": []}, \"organizations_by_location\": []}, \"30D\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2026-09-12\", \"count\": 10}, {\"period\": \"2026-09-13\", \"count\": 11}, {\"period\": \"2026-09-14\", \"count\": 12}, {\"period\": \"2026-09-16\", \"count\": 13}, {\"period\": \"2026-09-17\", \"count\": 14}, {\"period\": \"2026-09-18\", \"count\": 15}], \"collaborators\": [{\"period\": \"2026-09-12\", \"count\": 1}, {\"period\": \"2026-09-13\", \"count\": 1}, {\"period\": \"2026-09-14\", \"count\": 0}, {\"period\": \"2026-09-16\", \"count\": 1}, {\"period\": \"2026-09-17\", \"count\": 0}, {\"period\": \"2026-09-18\", \"count\": 1}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 2}, {\"country\": \"AUS\", \"count\": 1}, {\"country\": \"CAN\", \"count\": 1}, {\"country\": \"GBR\", \"count\": 1}]}, \"1Y\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 4}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"All\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 2}, {\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 0}, {\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 6}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"Custom\": {\"growth_trend\": {\"total_organizations\": [], \"collaborators\": []}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 2}]}}"
+}
+
+======================================================================
+Both custom ranges
+======================================================================
+Request:
+{
+  "start_date": "2026-01-01",
+  "end_date": "2026-06-30",
+  "location_start_date": "2025-01-01",
+  "location_end_date": "2025-12-31"
+}
+
+Response:
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"7D\": {\"growth_trend\": {\"total_organizations\": [], \"collaborators\": []}, \"organizations_by_location\": []}, \"30D\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2026-09-12\", \"count\": 10}, {\"period\": \"2026-09-13\", \"count\": 11}, {\"period\": \"2026-09-14\", \"count\": 12}, {\"period\": \"2026-09-16\", \"count\": 13}, {\"period\": \"2026-09-17\", \"count\": 14}, {\"period\": \"2026-09-18\", \"count\": 15}], \"collaborators\": [{\"period\": \"2026-09-12\", \"count\": 1}, {\"period\": \"2026-09-13\", \"count\": 1}, {\"period\": \"2026-09-14\", \"count\": 0}, {\"period\": \"2026-09-16\", \"count\": 1}, {\"period\": \"2026-09-17\", \"count\": 0}, {\"period\": \"2026-09-18\", \"count\": 1}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 2}, {\"country\": \"AUS\", \"count\": 1}, {\"country\": \"CAN\", \"count\": 1}, {\"country\": \"GBR\", \"count\": 1}]}, \"1Y\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 4}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"All\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 2}, {\"period\": \"2025-10\", \"count\": 3}, {\"period\": \"2026-01\", \"count\": 5}, {\"period\": \"2026-02\", \"count\": 6}, {\"period\": \"2026-03\", \"count\": 7}, {\"period\": \"2026-06\", \"count\": 8}, {\"period\": \"2026-08\", \"count\": 9}, {\"period\": \"2026-09\", \"count\": 15}], \"collaborators\": [{\"period\": \"2024-01\", \"count\": 1}, {\"period\": \"2025-09\", \"count\": 0}, {\"period\": \"2025-10\", \"count\": 1}, {\"period\": \"2026-01\", \"count\": 1}, {\"period\": \"2026-02\", \"count\": 1}, {\"period\": \"2026-03\", \"count\": 0}, {\"period\": \"2026-06\", \"count\": 1}, {\"period\": \"2026-08\", \"count\": 0}, {\"period\": \"2026-09\", \"count\": 4}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 6}, {\"country\": \"IND\", \"count\": 3}, {\"country\": \"AUS\", \"count\": 2}, {\"country\": \"CAN\", \"count\": 2}]}, \"Custom\": {\"growth_trend\": {\"total_organizations\": [{\"period\": \"2026-01-10\", \"count\": 4}, {\"period\": \"2026-01-11\", \"count\": 5}, {\"period\": \"2026-02-10\", \"count\": 6}, {\"period\": \"2026-03-10\", \"count\": 7}, {\"period\": \"2026-06-05\", \"count\": 8}], \"collaborators\": [{\"period\": \"2026-01-10\", \"count\": 1}, {\"period\": \"2026-01-11\", \"count\": 0}, {\"period\": \"2026-02-10\", \"count\": 1}, {\"period\": \"2026-03-10\", \"count\": 0}, {\"period\": \"2026-06-05\", \"count\": 1}]}, \"organizations_by_location\": [{\"country\": \"USA\", \"count\": 2}]}}"
+}
+
