@@ -327,6 +327,44 @@ def test_one_row_organizations_csv_does_not_crash(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# 11. Fixed bucket windows cover exactly N inclusive days/years, not N+1
+#     (regression test for the 7D actually being an 8D window bug)
+# ---------------------------------------------------------------------------
+
+def test_7d_and_30d_windows_are_exactly_n_days_not_n_plus_one(tmp_path):
+    organizations = _write_dataset(tmp_path, [
+        ("ORG-IN-7D", "US-TX", "Austin", "FALSE", _days_before(6)),       # last of 7 inclusive days -> in 7D
+        ("ORG-OUT-7D", "IN-DL", "Delhi", "FALSE", _days_before(7)),       # one day too early for 7D, in 30D
+        ("ORG-IN-30D", "GB-LDN", "London", "FALSE", _days_before(29)),    # last of 30 inclusive days -> in 30D
+        ("ORG-OUT-30D", "CA-ON", "Ottawa", "FALSE", _days_before(30)),    # one day too early for 30D
+    ])
+
+    response = gla.build_growth_location_response(organizations, {}, reference_date=REFERENCE)
+
+    assert response["7D"]["organizations_by_location"] == [{"country": "USA", "count": 1}]
+    assert response["30D"]["organizations_by_location"] == [
+        {"country": "GBR", "count": 1},
+        {"country": "IND", "count": 1},
+        {"country": "USA", "count": 1},
+    ]
+
+
+def test_1y_window_covers_exactly_one_year_not_one_year_plus_a_day(tmp_path):
+    one_year_before = (REFERENCE - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+    one_year_before_plus_a_day = (
+        REFERENCE - pd.DateOffset(years=1) + pd.Timedelta(days=1)
+    ).strftime("%Y-%m-%d")
+    organizations = _write_dataset(tmp_path, [
+        ("ORG-IN-1Y", "US-TX", "Austin", "FALSE", one_year_before_plus_a_day),  # exactly at window start -> in
+        ("ORG-OUT-1Y", "IN-DL", "Delhi", "FALSE", one_year_before),            # one day too early -> out
+    ])
+
+    response = gla.build_growth_location_response(organizations, {}, reference_date=REFERENCE)
+
+    assert response["1Y"]["organizations_by_location"] == [{"country": "USA", "count": 1}]
+
+
+# ---------------------------------------------------------------------------
 # Misc: unknown/unmatched state_id doesn't crash and is labeled Unknown
 # ---------------------------------------------------------------------------
 

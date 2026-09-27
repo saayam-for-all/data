@@ -160,13 +160,19 @@ def _window_mask(organizations, window_start, window_end):
 
 
 def _fixed_window(bucket, reference_date):
-    """Returns (window_start, window_end) for a fixed (non-Custom) bucket."""
+    """
+    Returns (window_start, window_end) for a fixed (non-Custom) bucket.
+    _window_mask treats both bounds as inclusive, so each window's start is
+    offset by one less than the bucket's nominal size (e.g. 7D subtracts 6
+    days, not 7) to land on exactly that many inclusive days/years - not one
+    extra.
+    """
     if bucket == "7D":
-        return reference_date - pd.Timedelta(days=7), reference_date
+        return reference_date - pd.Timedelta(days=6), reference_date
     if bucket == "30D":
-        return reference_date - pd.Timedelta(days=30), reference_date
+        return reference_date - pd.Timedelta(days=29), reference_date
     if bucket == "1Y":
-        return reference_date - pd.DateOffset(years=1), reference_date
+        return reference_date - pd.DateOffset(years=1) + pd.Timedelta(days=1), reference_date
     return None, None  # "All"
 
 
@@ -347,20 +353,10 @@ if __name__ == "__main__":
     # Local run only - point MOCK_DATA_DIR at a folder with organizations.csv
     # / states.csv / countries.csv (see the issue for required columns), or
     # drop them in a "mock_data" folder next to this file.
-    test_events = [
-        {},
-        {"start_date": "2026-01-01", "end_date": "2026-06-30"},
-        {"location_start_date": "2025-01-01", "location_end_date": "2025-12-31"},
-        {
-            "start_date": "2026-01-01", "end_date": "2026-06-30",
-            "location_start_date": "2025-01-01", "location_end_date": "2025-12-31",
-        },
-    ]
-
-    for test_event in test_events:
-        print(f"--- Testing payload: {test_event} ---")
-        result = lambda_handler(test_event, None)
-        if result["statusCode"] == 200:
-            print(json.dumps(json.loads(result["body"]), indent=2))
-        else:
-            print(json.dumps(result, indent=2))
+    # Only the no-payload ({}) case is run/printed here; the Custom-range
+    # scenarios are covered by the pytest unit tests instead.
+    result = lambda_handler({}, None)
+    if result["statusCode"] == 200:
+        print(json.dumps(json.loads(result["body"]), indent=2))
+    else:
+        print(json.dumps(result, indent=2))
