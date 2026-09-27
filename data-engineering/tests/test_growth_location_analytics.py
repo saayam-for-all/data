@@ -18,8 +18,8 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 IMPL_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "src", "growth_location_analytics",
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+    "data-analytics", "lambda_functions",
 )
 
 NOW = datetime(2026, 9, 21, tzinfo=timezone.utc)
@@ -64,21 +64,40 @@ def _write_fixture(tmp_path, collab_encoder=None):
 def handler(tmp_path, monkeypatch):
     monkeypatch.setenv("MOCK_DATA_DIR", str(tmp_path))
     monkeypatch.syspath_prepend(IMPL_DIR)
-    for name in ("lambda_function", "analytics", "loader"):
-        sys.modules.pop(name, None)
-    lambda_function = importlib.import_module("lambda_function")
-    return lambda_function.lambda_handler
+    sys.modules.pop("growth_location_analytics", None)
+    module = importlib.import_module("growth_location_analytics")
+    return module.lambda_handler
 
 
-def test_top_level_keys(handler, tmp_path):
+def test_top_level_keys_have_no_custom_by_default(handler, tmp_path):
     _write_fixture(tmp_path)
     result = handler({}, None)
     assert result["statusCode"] == 200
     body = json.loads(result["body"])
-    assert set(body.keys()) == {"7D", "30D", "1Y", "All", "Custom"}
+    assert set(body.keys()) == {"7D", "30D", "1Y", "All"}
     for bucket in ["7D", "30D", "1Y", "All"]:
         assert set(body[bucket].keys()) == {"growth_trend", "organizations_by_location"}
         assert set(body[bucket]["growth_trend"].keys()) == {"total_organizations", "collaborators"}
+
+
+def test_custom_key_present_only_when_growth_range_given(handler, tmp_path):
+    _write_fixture(tmp_path)
+    result = handler({"start_date": "2026-01-01", "end_date": "2026-06-30"}, None)
+    assert result["statusCode"] == 200
+    body = json.loads(result["body"])
+    assert set(body.keys()) == {"7D", "30D", "1Y", "All", "Custom"}
+    assert body["Custom"]["organizations_by_location"] == []
+
+
+def test_custom_key_present_only_when_location_range_given(handler, tmp_path):
+    _write_fixture(tmp_path)
+    result = handler(
+        {"location_start_date": "2025-01-01", "location_end_date": "2025-12-31"}, None
+    )
+    assert result["statusCode"] == 200
+    body = json.loads(result["body"])
+    assert set(body.keys()) == {"7D", "30D", "1Y", "All", "Custom"}
+    assert body["Custom"]["growth_trend"] == {"total_organizations": [], "collaborators": []}
 
 
 def test_total_organizations_is_all_time_cumulative_not_windowed(handler, tmp_path):
@@ -223,18 +242,15 @@ def test_data_is_loaded_once_per_warm_instance_not_per_call(handler, tmp_path, m
     """
     _write_fixture(tmp_path)
 
-    loader = sys.modules["loader"]
-    real_load_data = loader.load_data
+    module = sys.modules["growth_location_analytics"]
+    real_load_data = module.load_data
     call_count = {"n": 0}
 
     def counting_load_data(*args, **kwargs):
         call_count["n"] += 1
         return real_load_data(*args, **kwargs)
 
-    monkeypatch.setattr(loader, "load_data", counting_load_data)
-    # lambda_function imported load_data by reference, so it must be
-    # patched there too for the substitution to take effect.
-    monkeypatch.setattr(sys.modules["lambda_function"], "load_data", counting_load_data)
+    monkeypatch.setattr(module, "load_data", counting_load_data)
 
     handler({}, None)
     handler({"start_date": "2026-01-01", "end_date": "2026-06-30"}, None)
