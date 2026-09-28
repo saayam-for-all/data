@@ -30,15 +30,13 @@ def get_bucket_range(bucket, now=None):
         now = datetime.now()
 
     if bucket == "7D":
-        return now - timedelta(days=7), now
+        return now - timedelta(days=6), now
     elif bucket == "30D":
-        return now - timedelta(days=30), now
+        return now - timedelta(days=29), now
     elif bucket == "1Y":
-        return now - timedelta(days=365), now
+        return now.replace(year=now.year - 1) + timedelta(days=1), now
     elif bucket == "All":
         return None, now
-    else:
-        raise ValueError(f"get_bucket_range doesn't handle bucket: {bucket}")
 
 def compute_growth_trend(df, window_start, window_end, granularity):
     if granularity == "day":
@@ -90,8 +88,14 @@ def parse_date_or_error(date_str, field_name):
 
 
 def validate_date_range(start_str, end_str, start_field, end_field):
-    if start_str is None or end_str is None:
+    if start_str is None and end_str is None:
         return None, None, None
+
+    if start_str is None:
+        return None, None, f"{start_field} is required when {end_field} is provided"
+
+    if end_str is None:
+        return None, None, f"{end_field} is required when {start_field} is provided"
 
     start_dt, err = parse_date_or_error(start_str, start_field)
     if err:
@@ -190,4 +194,12 @@ if __name__ == "__main__":
 
     print("\n=== Test 5: Invalid date range (should be 400) ===")
     result = lambda_handler({"start_date": "2026-06-30", "end_date": "2026-01-01"}, None)
+    print(result["statusCode"], result["body"])
+
+    print("\n=== Test 6: Only start_date provided, no end_date (should be 400) ===")
+    result = lambda_handler({"start_date": "2026-01-01"}, None)
+    print(result["statusCode"], result["body"])
+
+    print("\n=== Test 7: Only location_end_date provided, no location_start_date (should be 400) ===")
+    result = lambda_handler({"location_end_date": "2026-06-30"}, None)
     print(result["statusCode"], result["body"])
