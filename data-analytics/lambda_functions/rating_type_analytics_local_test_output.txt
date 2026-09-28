@@ -1,0 +1,759 @@
+# Local test output - Rating & Type Analytics API (issue #380)
+# Generated 2026-09-27 23:56 UTC against local mock CSVs (not committed).
+
+## 1. Local run: python3 rating_type_analytics.py (USE_MOCK_DATA=true, MOCK_DATA_DIR=./mock_data)
+
+===== No body =====
+Event: {}
+Status: 200
+{
+  "7D": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  },
+  "30D": {
+    "rating_distribution": [
+      {
+        "rating": 3,
+        "count": 1
+      },
+      {
+        "rating": 4,
+        "count": 2
+      },
+      {
+        "rating": 5,
+        "count": 1
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-09-14",
+          "count": 10
+        },
+        {
+          "period": "2026-09-19",
+          "count": 11
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-09-05",
+          "count": 7
+        },
+        {
+          "period": "2026-09-15",
+          "count": 8
+        }
+      ]
+    }
+  },
+  "1Y": {
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "count": 1
+      },
+      {
+        "rating": 2,
+        "count": 1
+      },
+      {
+        "rating": 3,
+        "count": 3
+      },
+      {
+        "rating": 4,
+        "count": 5
+      },
+      {
+        "rating": 5,
+        "count": 5
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2025-12",
+          "count": 3
+        },
+        {
+          "period": "2026-01",
+          "count": 4
+        },
+        {
+          "period": "2026-02",
+          "count": 5
+        },
+        {
+          "period": "2026-05",
+          "count": 6
+        },
+        {
+          "period": "2026-06",
+          "count": 7
+        },
+        {
+          "period": "2026-08",
+          "count": 9
+        },
+        {
+          "period": "2026-09",
+          "count": 11
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2025-10",
+          "count": 3
+        },
+        {
+          "period": "2026-03",
+          "count": 4
+        },
+        {
+          "period": "2026-04",
+          "count": 5
+        },
+        {
+          "period": "2026-07",
+          "count": 6
+        },
+        {
+          "period": "2026-09",
+          "count": 8
+        }
+      ]
+    }
+  },
+  "All": {
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "count": 1
+      },
+      {
+        "rating": 2,
+        "count": 2
+      },
+      {
+        "rating": 3,
+        "count": 4
+      },
+      {
+        "rating": 4,
+        "count": 6
+      },
+      {
+        "rating": 5,
+        "count": 6
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2025-03",
+          "count": 1
+        },
+        {
+          "period": "2025-09",
+          "count": 2
+        },
+        {
+          "period": "2025-12",
+          "count": 3
+        },
+        {
+          "period": "2026-01",
+          "count": 4
+        },
+        {
+          "period": "2026-02",
+          "count": 5
+        },
+        {
+          "period": "2026-05",
+          "count": 6
+        },
+        {
+          "period": "2026-06",
+          "count": 7
+        },
+        {
+          "period": "2026-08",
+          "count": 9
+        },
+        {
+          "period": "2026-09",
+          "count": 11
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2024-11",
+          "count": 1
+        },
+        {
+          "period": "2025-06",
+          "count": 2
+        },
+        {
+          "period": "2025-10",
+          "count": 3
+        },
+        {
+          "period": "2026-03",
+          "count": 4
+        },
+        {
+          "period": "2026-04",
+          "count": 5
+        },
+        {
+          "period": "2026-07",
+          "count": 6
+        },
+        {
+          "period": "2026-09",
+          "count": 8
+        }
+      ]
+    }
+  },
+  "Custom": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  }
+}
+Sanity check [No body]: PASS
+
+===== Country filter (USA) =====
+Event: {"country": "USA"}
+Status: 200
+{
+  "7D": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  },
+  "30D": {
+    "rating_distribution": [
+      {
+        "rating": 3,
+        "count": 1
+      },
+      {
+        "rating": 4,
+        "count": 2
+      },
+      {
+        "rating": 5,
+        "count": 1
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-09-14",
+          "count": 4
+        },
+        {
+          "period": "2026-09-19",
+          "count": 5
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-09-05",
+          "count": 2
+        },
+        {
+          "period": "2026-09-15",
+          "count": 3
+        }
+      ]
+    }
+  },
+  "1Y": {
+    "rating_distribution": [
+      {
+        "rating": 3,
+        "count": 2
+      },
+      {
+        "rating": 4,
+        "count": 3
+      },
+      {
+        "rating": 5,
+        "count": 3
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-06",
+          "count": 2
+        },
+        {
+          "period": "2026-08",
+          "count": 3
+        },
+        {
+          "period": "2026-09",
+          "count": 5
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-04",
+          "count": 1
+        },
+        {
+          "period": "2026-09",
+          "count": 3
+        }
+      ]
+    }
+  },
+  "All": {
+    "rating_distribution": [
+      {
+        "rating": 3,
+        "count": 2
+      },
+      {
+        "rating": 4,
+        "count": 3
+      },
+      {
+        "rating": 5,
+        "count": 3
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-06",
+          "count": 2
+        },
+        {
+          "period": "2026-08",
+          "count": 3
+        },
+        {
+          "period": "2026-09",
+          "count": 5
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-04",
+          "count": 1
+        },
+        {
+          "period": "2026-09",
+          "count": 3
+        }
+      ]
+    }
+  },
+  "Custom": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  }
+}
+Sanity check [Country filter (USA)]: PASS
+
+===== Rating Custom range only =====
+Event: {"rating_start_date": "2026-01-01", "rating_end_date": "2026-06-30"}
+Status: 200
+{
+  "Custom": {
+    "rating_distribution": [
+      {
+        "rating": 3,
+        "count": 2
+      },
+      {
+        "rating": 4,
+        "count": 2
+      },
+      {
+        "rating": 5,
+        "count": 2
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  }
+}
+Sanity check [Rating Custom range only]: PASS
+
+===== Type Custom range only =====
+Event: {"type_start_date": "2025-01-01", "type_end_date": "2025-12-31"}
+Status: 200
+{
+  "Custom": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2025-03-01",
+          "count": 1
+        },
+        {
+          "period": "2025-09-25",
+          "count": 2
+        },
+        {
+          "period": "2025-12-05",
+          "count": 3
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2025-06-15",
+          "count": 2
+        },
+        {
+          "period": "2025-10-10",
+          "count": 3
+        }
+      ]
+    }
+  }
+}
+Sanity check [Type Custom range only]: PASS
+
+===== Both Custom ranges + country =====
+Event: {"country": "USA", "rating_start_date": "2026-01-01", "rating_end_date": "2026-06-30", "type_start_date": "2025-01-01", "type_end_date": "2026-12-31"}
+Status: 200
+{
+  "Custom": {
+    "rating_distribution": [
+      {
+        "rating": 3,
+        "count": 1
+      },
+      {
+        "rating": 4,
+        "count": 1
+      },
+      {
+        "rating": 5,
+        "count": 1
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-02-14",
+          "count": 1
+        },
+        {
+          "period": "2026-06-20",
+          "count": 2
+        },
+        {
+          "period": "2026-08-28",
+          "count": 3
+        },
+        {
+          "period": "2026-09-14",
+          "count": 4
+        },
+        {
+          "period": "2026-09-19",
+          "count": 5
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-04-01",
+          "count": 1
+        },
+        {
+          "period": "2026-09-05",
+          "count": 2
+        },
+        {
+          "period": "2026-09-15",
+          "count": 3
+        }
+      ]
+    }
+  }
+}
+Sanity check [Both Custom ranges + country]: PASS
+
+===== Custom range with no organizations =====
+Event: {"rating_start_date": "2000-01-01", "rating_end_date": "2000-01-31", "type_start_date": "2000-01-01", "type_end_date": "2000-01-31"}
+Status: 200
+{
+  "Custom": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  }
+}
+Sanity check [Custom range with no organizations]: PASS
+
+===== API Gateway-style event (JSON string body) =====
+Event: {"body": "{\"country\": \"ind\"}"}
+Status: 200
+{
+  "7D": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  },
+  "30D": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  },
+  "1Y": {
+    "rating_distribution": [
+      {
+        "rating": 2,
+        "count": 1
+      },
+      {
+        "rating": 3,
+        "count": 1
+      },
+      {
+        "rating": 4,
+        "count": 1
+      },
+      {
+        "rating": 5,
+        "count": 1
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-05",
+          "count": 1
+        },
+        {
+          "period": "2026-08",
+          "count": 2
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-03",
+          "count": 1
+        },
+        {
+          "period": "2026-07",
+          "count": 2
+        }
+      ]
+    }
+  },
+  "All": {
+    "rating_distribution": [
+      {
+        "rating": 2,
+        "count": 1
+      },
+      {
+        "rating": 3,
+        "count": 1
+      },
+      {
+        "rating": 4,
+        "count": 1
+      },
+      {
+        "rating": 5,
+        "count": 1
+      }
+    ],
+    "organization_mix_trend": {
+      "non_profit": [
+        {
+          "period": "2026-05",
+          "count": 1
+        },
+        {
+          "period": "2026-08",
+          "count": 2
+        }
+      ],
+      "for_profit": [
+        {
+          "period": "2026-03",
+          "count": 1
+        },
+        {
+          "period": "2026-07",
+          "count": 2
+        }
+      ]
+    }
+  },
+  "Custom": {
+    "rating_distribution": [],
+    "organization_mix_trend": {
+      "non_profit": [],
+      "for_profit": []
+    }
+  }
+}
+Sanity check [API Gateway-style event (JSON string body)]: PASS
+
+===== Missing half of rating pair (expect 400) =====
+Event: {"rating_start_date": "2026-01-01"}
+Status: 400
+{
+  "error": "Both rating_start_date and rating_end_date are required together"
+}
+Sanity check [Missing half of rating pair]: PASS
+
+===== Bad type date format (expect 400) =====
+Event: {"type_start_date": "2025/01/01", "type_end_date": "2025-12-31"}
+Status: 400
+{
+  "error": "type_start_date must be a valid date in YYYY-MM-DD format, got '2025/01/01'"
+}
+Sanity check [Bad type date format]: PASS
+
+===== Impossible calendar date (expect 400) =====
+Event: {"rating_start_date": "2026-02-30", "rating_end_date": "2026-03-01"}
+Status: 400
+{
+  "error": "rating_start_date must be a valid date in YYYY-MM-DD format, got '2026-02-30'"
+}
+Sanity check [Impossible calendar date]: PASS
+
+===== Start after end (expect 400) =====
+Event: {"type_start_date": "2025-12-31", "type_end_date": "2025-01-01"}
+Status: 400
+{
+  "error": "type_start_date must not be after type_end_date"
+}
+Sanity check [Start after end]: PASS
+
+===== Unknown country (expect 400) =====
+Event: {"country": "Atlantis"}
+Status: 400
+{
+  "error": "Unknown country: 'Atlantis'"
+}
+Sanity check [Unknown country]: PASS
+
+## 2. Unit tests: pytest tests/test_rating_type_analytics.py -v
+============================= test session starts ==============================
+
+
+collecting ... collected 74 items
+
+tests/test_rating_type_analytics.py::test_no_body_returns_five_keys_and_empty_custom PASSED [  1%]
+tests/test_rating_type_analytics.py::test_handler_no_body_and_api_gateway_body PASSED [  2%]
+tests/test_rating_type_analytics.py::test_unknown_request_fields_are_ignored PASSED [  4%]
+tests/test_rating_type_analytics.py::test_country_filter_by_code_or_name_only_counts_that_country[USA] PASSED [  5%]
+tests/test_rating_type_analytics.py::test_country_filter_by_code_or_name_only_counts_that_country[usa] PASSED [  6%]
+tests/test_rating_type_analytics.py::test_country_filter_by_code_or_name_only_counts_that_country[ USA ] PASSED [  8%]
+tests/test_rating_type_analytics.py::test_country_filter_by_code_or_name_only_counts_that_country[United_States] PASSED [  9%]
+tests/test_rating_type_analytics.py::test_country_filter_by_code_or_name_only_counts_that_country[united states] PASSED [ 10%]
+tests/test_rating_type_analytics.py::test_country_filter_by_code_or_name_only_counts_that_country[United-States] PASSED [ 12%]
+tests/test_rating_type_analytics.py::test_country_filter_applies_to_custom_response PASSED [ 13%]
+tests/test_rating_type_analytics.py::test_country_all_or_missing_counts_every_organization[ALL] PASSED [ 14%]
+tests/test_rating_type_analytics.py::test_country_all_or_missing_counts_every_organization[all] PASSED [ 16%]
+tests/test_rating_type_analytics.py::test_country_all_or_missing_counts_every_organization[None] PASSED [ 17%]
+tests/test_rating_type_analytics.py::test_country_with_no_organizations_returns_empty_arrays PASSED [ 18%]
+tests/test_rating_type_analytics.py::test_org_with_unknown_state_counts_for_all_but_not_a_country PASSED [ 20%]
+tests/test_rating_type_analytics.py::test_invalid_country_is_a_400[Atlantis] PASSED [ 21%]
+tests/test_rating_type_analytics.py::test_invalid_country_is_a_400[] PASSED [ 22%]
+tests/test_rating_type_analytics.py::test_invalid_country_is_a_400[   ] PASSED [ 24%]
+tests/test_rating_type_analytics.py::test_invalid_country_is_a_400[123] PASSED [ 25%]
+tests/test_rating_type_analytics.py::test_invalid_country_is_a_400[country4] PASSED [ 27%]
+tests/test_rating_type_analytics.py::test_only_rating_range_returns_custom_only_with_rating_populated PASSED [ 28%]
+tests/test_rating_type_analytics.py::test_only_type_range_returns_custom_only_with_mix_populated PASSED [ 29%]
+tests/test_rating_type_analytics.py::test_both_ranges_populate_both_charts_each_from_its_own_range PASSED [ 31%]
+tests/test_rating_type_analytics.py::test_custom_range_is_inclusive_of_both_end_days PASSED [ 32%]
+tests/test_rating_type_analytics.py::test_single_day_custom_range PASSED [ 33%]
+tests/test_rating_type_analytics.py::test_custom_range_with_no_organizations_returns_empty_arrays PASSED [ 35%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload0] PASSED [ 36%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload1] PASSED [ 37%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload2] PASSED [ 39%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload3] PASSED [ 40%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload4] PASSED [ 41%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload5] PASSED [ 43%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload6] PASSED [ 44%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload7] PASSED [ 45%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload8] PASSED [ 47%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload9] PASSED [ 48%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload10] PASSED [ 50%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload11] PASSED [ 51%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload12] PASSED [ 52%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload13] PASSED [ 54%]
+tests/test_rating_type_analytics.py::test_malformed_or_incomplete_dates_return_400[payload14] PASSED [ 55%]
+tests/test_rating_type_analytics.py::test_malformed_body_returns_400[event0] PASSED [ 56%]
+tests/test_rating_type_analytics.py::test_malformed_body_returns_400[event1] PASSED [ 58%]
+tests/test_rating_type_analytics.py::test_malformed_body_returns_400[event2] PASSED [ 59%]
+tests/test_rating_type_analytics.py::test_malformed_body_returns_400[not-a-dict] PASSED [ 60%]
+tests/test_rating_type_analytics.py::test_blank_date_pair_counts_as_not_supplied PASSED [ 62%]
+tests/test_rating_type_analytics.py::test_mix_trend_is_all_time_cumulative_and_sparse PASSED [ 63%]
+tests/test_rating_type_analytics.py::test_mix_trend_counts_are_non_decreasing_in_every_bucket PASSED [ 64%]
+tests/test_rating_type_analytics.py::test_period_formats_per_bucket PASSED [ 66%]
+tests/test_rating_type_analytics.py::test_monthly_running_total_includes_the_whole_month PASSED [ 67%]
+tests/test_rating_type_analytics.py::test_org_type_variants_are_normalized_and_others_excluded_from_mix PASSED [ 68%]
+tests/test_rating_type_analytics.py::test_rating_distribution_uses_literal_integer_and_no_zero_fill PASSED [ 70%]
+tests/test_rating_type_analytics.py::test_rating_distribution_is_sorted_by_rating PASSED [ 71%]
+tests/test_rating_type_analytics.py::test_day_bucket_boundaries[7D-6-7] PASSED [ 72%]
+tests/test_rating_type_analytics.py::test_day_bucket_boundaries[30D-29-30] PASSED [ 74%]
+tests/test_rating_type_analytics.py::test_1y_bucket_boundary PASSED      [ 75%]
+tests/test_rating_type_analytics.py::test_org_created_later_on_reference_day_is_included PASSED [ 77%]
+tests/test_rating_type_analytics.py::test_timezone_aware_created_at_is_supported PASSED [ 78%]
+tests/test_rating_type_analytics.py::test_empty_organizations_csv_does_not_crash[payload0] PASSED [ 79%]
+tests/test_rating_type_analytics.py::test_empty_organizations_csv_does_not_crash[payload1] PASSED [ 81%]
+tests/test_rating_type_analytics.py::test_empty_organizations_csv_does_not_crash[payload2] PASSED [ 82%]
+tests/test_rating_type_analytics.py::test_empty_organizations_csv_does_not_crash[payload3] PASSED [ 83%]
+tests/test_rating_type_analytics.py::test_empty_organizations_csv_does_not_crash[payload4] PASSED [ 85%]
+tests/test_rating_type_analytics.py::test_one_row_organizations_csv_does_not_crash[payload0] PASSED [ 86%]
+tests/test_rating_type_analytics.py::test_one_row_organizations_csv_does_not_crash[payload1] PASSED [ 87%]
+tests/test_rating_type_analytics.py::test_one_row_organizations_csv_does_not_crash[payload2] PASSED [ 89%]
+tests/test_rating_type_analytics.py::test_one_row_organizations_csv_does_not_crash[payload3] PASSED [ 90%]
+tests/test_rating_type_analytics.py::test_one_row_organizations_csv_does_not_crash[payload4] PASSED [ 91%]
+tests/test_rating_type_analytics.py::test_unparseable_created_at_is_skipped PASSED [ 93%]
+tests/test_rating_type_analytics.py::test_missing_required_column_returns_500 PASSED [ 94%]
+tests/test_rating_type_analytics.py::test_missing_csv_directory_returns_500 PASSED [ 95%]
+tests/test_rating_type_analytics.py::test_invalid_request_is_rejected_before_loading_data PASSED [ 97%]
+tests/test_rating_type_analytics.py::test_real_db_path_without_psycopg2_returns_500 PASSED [ 98%]
+tests/test_rating_type_analytics.py::test_response_headers PASSED        [100%]
+
+============================== 74 passed in 0.88s ==============================
