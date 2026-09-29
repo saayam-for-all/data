@@ -365,3 +365,179 @@ def test_location_counts_are_window_scoped(monkeypatch, fixture_dir):
         {"country": "CAN", "count": 1},
         {"country": "IND", "count": 1},
     ]
+
+def test_missing_country_mapping_falls_back_to_unknown(tmp_path: Path):
+    write_csv(
+        tmp_path / "countries.csv",
+        [{"country_id": "1", "country_code": "USA"}],
+        ["country_id", "country_code"],
+    )
+    write_csv(
+        tmp_path / "states.csv",
+        [
+            {"state_id": "TX", "state_name": "TEXAS", "country_id": "1"},
+            {"state_id": "XX", "state_name": "UNKNOWN", "country_id": "99"},
+        ],
+        ["state_id", "state_name", "country_id"],
+    )
+    write_csv(
+        tmp_path / "organizations.csv",
+        [
+            {
+                "org_id": "ORG1",
+                "state_id": "TX",
+                "city_name": "Austin",
+                "is_collaborator": "TRUE",
+                "created_at": "2026-01-10",
+            },
+            {
+                "org_id": "ORG2",
+                "state_id": "XX",
+                "city_name": "Unknown",
+                "is_collaborator": "FALSE",
+                "created_at": "2026-01-11",
+            },
+        ],
+        ["org_id", "state_id", "city_name", "is_collaborator", "created_at"],
+    )
+
+    organizations, _, _ = api.load_data(tmp_path)
+
+    assert set(organizations["country_code"]) == {"USA", "Unknown"}
+
+    result = api.organizations_by_location(
+        organizations,
+        pd.Timestamp("2026-01-01"),
+        pd.Timestamp("2026-12-31"),
+    )
+
+    assert result == [
+        {"country": "USA", "count": 1},
+        {"country": "Unknown", "count": 1},
+    ]
+
+
+def test_missing_state_mapping_falls_back_to_unknown(tmp_path: Path):
+    write_csv(
+        tmp_path / "countries.csv",
+        [{"country_id": "1", "country_code": "USA"}],
+        ["country_id", "country_code"],
+    )
+    write_csv(
+        tmp_path / "states.csv",
+        [{"state_id": "TX", "state_name": "TEXAS", "country_id": "1"}],
+        ["state_id", "state_name", "country_id"],
+    )
+    write_csv(
+        tmp_path / "organizations.csv",
+        [
+            {
+                "org_id": "ORG1",
+                "state_id": "TX",
+                "city_name": "Austin",
+                "is_collaborator": "TRUE",
+                "created_at": "2026-01-10",
+            },
+            {
+                "org_id": "ORG2",
+                "state_id": "MISSING",
+                "city_name": "Unknown",
+                "is_collaborator": "FALSE",
+                "created_at": "2026-01-11",
+            },
+        ],
+        ["org_id", "state_id", "city_name", "is_collaborator", "created_at"],
+    )
+
+    organizations, _, _ = api.load_data(tmp_path)
+
+    assert set(organizations["country_code"]) == {"USA", "Unknown"}
+
+
+def test_missing_required_mock_file_returns_500(tmp_path: Path, monkeypatch):
+    write_csv(
+        tmp_path / "countries.csv",
+        [{"country_id": "1", "country_code": "USA"}],
+        ["country_id", "country_code"],
+    )
+    write_csv(
+        tmp_path / "states.csv",
+        [{"state_id": "TX", "state_name": "TEXAS", "country_id": "1"}],
+        ["state_id", "state_name", "country_id"],
+    )
+    monkeypatch.setenv("MOCK_DATA_DIR", str(tmp_path))
+
+    response = api.lambda_handler({})
+
+    assert response["statusCode"] == 500
+    assert body(response) == {"error": "Server-side data error"}
+
+
+def test_missing_required_mock_column_returns_500(tmp_path: Path, monkeypatch):
+    write_csv(
+        tmp_path / "countries.csv",
+        [{"country_id": "1", "country_code": "USA"}],
+        ["country_id", "country_code"],
+    )
+    write_csv(
+        tmp_path / "states.csv",
+        [{"state_id": "TX", "state_name": "TEXAS", "country_id": "1"}],
+        ["state_id", "state_name", "country_id"],
+    )
+    write_csv(
+        tmp_path / "organizations.csv",
+        [
+            {
+                "org_id": "ORG1",
+                "state_id": "TX",
+                "city_name": "Austin",
+                "created_at": "2026-01-10",
+            }
+        ],
+        ["org_id", "state_id", "city_name", "created_at"],
+    )
+    monkeypatch.setenv("MOCK_DATA_DIR", str(tmp_path))
+
+    response = api.lambda_handler({})
+
+    assert response["statusCode"] == 500
+    assert body(response) == {"error": "Server-side data error"}
+
+
+def test_invalid_server_boolean_returns_500(tmp_path: Path, monkeypatch):
+    write_csv(
+        tmp_path / "countries.csv",
+        [{"country_id": "1", "country_code": "USA"}],
+        ["country_id", "country_code"],
+    )
+    write_csv(
+        tmp_path / "states.csv",
+        [{"state_id": "TX", "state_name": "TEXAS", "country_id": "1"}],
+        ["state_id", "state_name", "country_id"],
+    )
+    write_csv(
+        tmp_path / "organizations.csv",
+        [
+            {
+                "org_id": "ORG1",
+                "state_id": "TX",
+                "city_name": "Austin",
+                "is_collaborator": "INVALID",
+                "created_at": "2026-01-10",
+            }
+        ],
+        [
+            "org_id",
+            "state_id",
+            "city_name",
+            "is_collaborator",
+            "created_at",
+        ],
+    )
+    monkeypatch.setenv("MOCK_DATA_DIR", str(tmp_path))
+
+    response = api.lambda_handler({})
+
+    assert response["statusCode"] == 500
+    assert body(response) == {"error": "Server-side data error"}
+

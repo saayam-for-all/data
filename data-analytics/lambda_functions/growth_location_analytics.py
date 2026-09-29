@@ -7,7 +7,7 @@ from typing import Any
 import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_MOCK_DATA_DIR = BASE_DIR.parent / "mock-data-generation"
+DEFAULT_MOCK_DATA_DIR = BASE_DIR / "mock_data"
 MOCK_DATA_DIR = Path(os.environ.get("MOCK_DATA_DIR", str(DEFAULT_MOCK_DATA_DIR)))
 
 REQUIRED_COLUMNS = {
@@ -30,15 +30,19 @@ REQUIRED_COLUMNS = {
 }
 
 
+class DataError(Exception):
+    """Raised when required server-side data is missing or invalid."""
+
+
 def _read_csv(data_dir: Path, filename: str, columns: list[str]) -> pd.DataFrame:
     path = data_dir / filename
     if not path.exists():
-        raise FileNotFoundError(f"Missing required mock data file: {path}")
+        raise DataError(f"Missing required mock data file: {path}")
 
     df = pd.read_csv(path, dtype=str)
     missing = [column for column in columns if column not in df.columns]
     if missing:
-        raise ValueError(
+        raise DataError(
             f"{filename} is missing required columns: {', '.join(missing)}"
         )
     return df[columns].copy()
@@ -65,7 +69,7 @@ def load_data(data_dir: Path | str | None = None) -> tuple[pd.DataFrame, pd.Data
     normalized = organizations["is_collaborator"].astype(str).str.strip().str.lower()
     invalid_values = sorted(set(normalized.dropna()) - {"true", "false"})
     if invalid_values:
-        raise ValueError(
+        raise DataError(
             "organizations.csv contains invalid is_collaborator values: "
             + ", ".join(invalid_values)
         )
@@ -81,8 +85,17 @@ def load_data(data_dir: Path | str | None = None) -> tuple[pd.DataFrame, pd.Data
         how="left",
         validate="many_to_one",
     )
-    if location_map["country_code"].isna().any():
-        raise ValueError("states.csv contains country_id values missing from countries.csv")
+    missing_country_mapping = (
+        location_map["country_code"].isna()
+        | location_map["country_code"].astype(str).str.strip().eq("")
+    )
+
+    if missing_country_mapping.any():
+        print(
+            "WARNING: Some state records have no matching country_code. "
+            "Using 'Unknown' for affected organizations."
+        )
+        location_map.loc[missing_country_mapping, "country_code"] = "Unknown"
 
     organizations = organizations.merge(
         location_map[["state_id", "country_id", "country_code"]],
@@ -90,8 +103,17 @@ def load_data(data_dir: Path | str | None = None) -> tuple[pd.DataFrame, pd.Data
         how="left",
         validate="many_to_one",
     )
-    if organizations["country_code"].isna().any():
-        raise ValueError("organizations.csv contains state_id values missing from states.csv")
+    missing_state_mapping = (
+        organizations["country_code"].isna()
+        | organizations["country_code"].astype(str).str.strip().eq("")
+    )
+
+    if missing_state_mapping.any():
+        print(
+            "WARNING: Some organizations have no matching state/country mapping. "
+            "Using 'Unknown' for affected organizations."
+        )
+        organizations.loc[missing_state_mapping, "country_code"] = "Unknown"
 
     return organizations, states, countries
 
@@ -315,11 +337,18 @@ def lambda_handler(event: Any, context: Any = None) -> dict[str, Any]:
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps(body, separators=(",", ":")),
         }
-    except (ValueError, FileNotFoundError) as exc:
+    except ValueError as exc:
         return {
             "statusCode": 400,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps({"error": str(exc)}),
+        }
+    except DataError as exc:
+        print(f"ERROR: {exc}")
+        return {
+            "statusCode": 500,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": "Server-side data error"}),
         }
 
 
