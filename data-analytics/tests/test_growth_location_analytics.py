@@ -302,6 +302,20 @@ def test_running_total_does_not_reset_at_window_start():
     ]
 
 
+def test_one_year_window_is_exactly_365_inclusive_days(monkeypatch):
+    monkeypatch.setattr(
+        api,
+        "current_date",
+        lambda: pd.Timestamp("2026-09-29"),
+    )
+
+    start_date, end_date = api.get_fixed_window("1Y")
+
+    assert start_date == pd.Timestamp("2025-09-30")
+    assert end_date == pd.Timestamp("2026-09-29")
+    assert (end_date - start_date).days + 1 == 365
+
+
 def test_day_and_month_grouping():
     organizations = make_organizations()
 

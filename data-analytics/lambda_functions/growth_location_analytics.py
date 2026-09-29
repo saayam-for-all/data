@@ -173,7 +173,7 @@ def get_fixed_window(bucket):
         return today - pd.Timedelta(days=29), today
 
     if bucket == "1Y":
-        return today - pd.DateOffset(years=1), today
+        return today - pd.Timedelta(days=364), today
 
     if bucket == "All":
         return None
