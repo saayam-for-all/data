@@ -1,0 +1,298 @@
+
+===== No body =====
+{
+  "statusCode": 200,
+  "body": {
+    "7D": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    },
+    "30D": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    },
+    "1Y": {
+      "organizations_by_size": [
+        {
+          "size": "Large",
+          "count": 4
+        },
+        {
+          "size": "Small",
+          "count": 2
+        },
+        {
+          "size": "Medium",
+          "count": 2
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 3,
+          "percentage": 37.5
+        },
+        {
+          "type": "Contributor",
+          "count": 5,
+          "percentage": 62.5
+        }
+      ]
+    },
+    "All": {
+      "organizations_by_size": [
+        {
+          "size": "Small",
+          "count": 10
+        },
+        {
+          "size": "Large",
+          "count": 21
+        },
+        {
+          "size": "Medium",
+          "count": 9
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 21,
+          "percentage": 52.5
+        },
+        {
+          "type": "Contributor",
+          "count": 19,
+          "percentage": 47.5
+        }
+      ]
+    },
+    "Custom": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    }
+  }
+}
+
+===== Country filter =====
+{
+  "statusCode": 200,
+  "body": {
+    "7D": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    },
+    "30D": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    },
+    "1Y": {
+      "organizations_by_size": [
+        {
+          "size": "Large",
+          "count": 4
+        },
+        {
+          "size": "Small",
+          "count": 2
+        },
+        {
+          "size": "Medium",
+          "count": 2
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 3,
+          "percentage": 37.5
+        },
+        {
+          "type": "Contributor",
+          "count": 5,
+          "percentage": 62.5
+        }
+      ]
+    },
+    "All": {
+      "organizations_by_size": [
+        {
+          "size": "Small",
+          "count": 10
+        },
+        {
+          "size": "Large",
+          "count": 21
+        },
+        {
+          "size": "Medium",
+          "count": 9
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 21,
+          "percentage": 52.5
+        },
+        {
+          "type": "Contributor",
+          "count": 19,
+          "percentage": 47.5
+        }
+      ]
+    },
+    "Custom": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    }
+  }
+}
+
+===== Organization type filter =====
+{
+  "statusCode": 200,
+  "body": {
+    "7D": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    },
+    "30D": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    },
+    "1Y": {
+      "organizations_by_size": [
+        {
+          "size": "Large",
+          "count": 4
+        },
+        {
+          "size": "Small",
+          "count": 1
+        },
+        {
+          "size": "Medium",
+          "count": 1
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 3,
+          "percentage": 50.0
+        },
+        {
+          "type": "Contributor",
+          "count": 3,
+          "percentage": 50.0
+        }
+      ]
+    },
+    "All": {
+      "organizations_by_size": [
+        {
+          "size": "Small",
+          "count": 5
+        },
+        {
+          "size": "Medium",
+          "count": 5
+        },
+        {
+          "size": "Large",
+          "count": 11
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 11,
+          "percentage": 52.4
+        },
+        {
+          "type": "Contributor",
+          "count": 10,
+          "percentage": 47.6
+        }
+      ]
+    },
+    "Custom": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": []
+    }
+  }
+}
+
+===== Size Custom only =====
+{
+  "statusCode": 200,
+  "body": {
+    "Custom": {
+      "organizations_by_size": [
+        {
+          "size": "Small",
+          "count": 4
+        },
+        {
+          "size": "Large",
+          "count": 13
+        },
+        {
+          "size": "Medium",
+          "count": 3
+        }
+      ],
+      "collaborator_vs_contributor": []
+    }
+  }
+}
+
+===== Contribution Custom only =====
+{
+  "statusCode": 200,
+  "body": {
+    "Custom": {
+      "organizations_by_size": [],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 8,
+          "percentage": 42.1
+        },
+        {
+          "type": "Contributor",
+          "count": 11,
+          "percentage": 57.9
+        }
+      ]
+    }
+  }
+}
+
+===== Both Custom ranges =====
+{
+  "statusCode": 200,
+  "body": {
+    "Custom": {
+      "organizations_by_size": [
+        {
+          "size": "Medium",
+          "count": 1
+        }
+      ],
+      "collaborator_vs_contributor": [
+        {
+          "type": "Collaborator",
+          "count": 5,
+          "percentage": 45.5
+        },
+        {
+          "type": "Contributor",
+          "count": 6,
+          "percentage": 54.5
+        }
+      ]
+    }
+  }
+}
