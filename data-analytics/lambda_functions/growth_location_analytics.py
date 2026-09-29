@@ -25,6 +25,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
+TRUE_VALUES = {"true", "t", "1", "yes", "y"}
+FALSE_VALUES = {"false", "f", "0", "no", "n", ""}
+
 MOCK_DATA_DIR = os.environ.get(
     "MOCK_DATA_DIR",
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_data"),
@@ -78,6 +81,30 @@ def get_default_response():
 # Data loading
 # ---------------------------------------------------------------------------
 
+def _coerce_bool(value):
+    """Converts a CSV cell to a real bool, handling bool/numeric/string forms.
+
+    Plain `.astype(bool)` is unsafe here: pandas may read a boolean column
+    as dtype=object (e.g. mixed casing, blanks, or numeric-looking values),
+    and Python's bool() on any non-empty string -- including "False" or
+    "0" -- returns True. This overcounts collaborators silently.
+    """
+    if isinstance(value, bool):
+        return value
+    if pd.isna(value):
+        return False
+    if isinstance(value, (int, float)):
+        return bool(value)
+    text = str(value).strip().lower()
+    if text in TRUE_VALUES:
+        return True
+    if text in FALSE_VALUES:
+        return False
+    # Unrecognized value: don't silently guess true/false.
+    print(f"Unrecognized is_collaborator value {value!r}; treating as False")
+    return False
+
+
 def load_data(data_dir=None):
     """Loads organizations/states/countries CSVs into DataFrames.
 
@@ -92,7 +119,7 @@ def load_data(data_dir=None):
         df_orgs = pd.read_csv(org_path)
         df_orgs["created_at"] = pd.to_datetime(df_orgs["created_at"], errors="coerce")
         if "is_collaborator" in df_orgs.columns:
-            df_orgs["is_collaborator"] = df_orgs["is_collaborator"].astype(bool)
+            df_orgs["is_collaborator"] = df_orgs["is_collaborator"].apply(_coerce_bool)
     except (FileNotFoundError, pd.errors.EmptyDataError):
         df_orgs = pd.DataFrame(columns=["org_id", "state_id", "city_name", "is_collaborator", "created_at"])
 
@@ -148,7 +175,9 @@ def get_fixed_window(bucket, now=None):
     if bucket == "30D":
         return end_ts - timedelta(days=30), end_ts
     if bucket == "1Y":
-        return end_ts - timedelta(days=365), end_ts
+        # Calendar year, not a fixed 365-day approximation (which drifts
+        # around leap years and doesn't line up with "the last 12 months").
+        return end_ts - pd.DateOffset(years=1), end_ts
     if bucket == "All":
         return None, end_ts
     raise ValueError(f"Unknown fixed bucket: {bucket}")
@@ -266,8 +295,37 @@ def _run_bucket(label, response_body, df_orgs, df_states, df_countries, window_s
         print(f"{label} organizations_by_location failed: {e}")
 
 
+def _extract_payload(event):
+    """Returns the request parameters as a plain dict.
+
+    Supports two invocation shapes:
+    - Direct dict (local testing / direct Lambda invoke), e.g. {"start_date": ...}.
+    - API Gateway proxy integration, where the actual payload is a JSON
+      string under event["body"] (event["body"] may also be None for a
+      request with no body).
+    """
+    if not event:
+        return {}
+    if "body" in event:
+        body = event.get("body")
+        if body is None or body == "":
+            return {}
+        if isinstance(body, dict):
+            return body
+        try:
+            parsed = json.loads(body)
+        except (TypeError, json.JSONDecodeError):
+            raise InvalidFilterError("Request body must be valid JSON")
+        return parsed if isinstance(parsed, dict) else {}
+    return event
+
+
 def lambda_handler(event, context):
-    event = event or {}
+    try:
+        event = _extract_payload(event)
+    except InvalidFilterError as e:
+        return build_response(400, {"error": str(e)})
+
     response_body = get_default_response()
 
     try:
@@ -286,8 +344,8 @@ def lambda_handler(event, context):
     try:
         df_orgs, df_states, df_countries = load_data()
     except Exception as e:
-        print(f"Failed to load mock data: {e}")
-        return build_response(200, response_body)
+        print(f"Failed to load analytics data: {e}")
+        return build_response(500, {"error": "Failed to load analytics data"})
 
     for bucket in ["7D", "30D", "1Y", "All"]:
         window_start, window_end = get_fixed_window(bucket)
@@ -328,6 +386,10 @@ if __name__ == "__main__":
         ("Invalid: start_date after end_date -> 400", {
             "start_date": "2026-06-30", "end_date": "2026-01-01",
         }),
+        ("API Gateway proxy shape (JSON string body)", {
+            "body": json.dumps({"start_date": "2026-01-01", "end_date": "2026-06-30"}),
+        }),
+        ("API Gateway proxy shape, no body (null)", {"body": None}),
     ]
 
     for title, event in scenarios:
