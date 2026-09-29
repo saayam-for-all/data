@@ -22,6 +22,15 @@ TEST_TODAY = pd.Timestamp("2026-09-22", tz="UTC")
 # -------------------------------------------------------------------
 # Test data
 # -------------------------------------------------------------------
+@pytest.fixture(autouse=True)
+def reset_data_cache():
+    analytics._DATA_CACHE = None
+    analytics._DATA_CACHE_LOADED_AT = None
+
+    yield
+
+    analytics._DATA_CACHE = None
+    analytics._DATA_CACHE_LOADED_AT = None
 
 
 @pytest.fixture
@@ -1058,3 +1067,94 @@ def test_local_mock_csv_files_can_be_loaded(
             all_locations = result["All"]["organizations_by_location"]
 
             assert len(all_locations) == 1
+
+
+def test_data_cache_refreshes_after_ttl(
+    monkeypatch,
+    organizations,
+    states,
+    countries,
+):
+    load_count = 0
+
+    def fake_read_source_data():
+        nonlocal load_count
+        load_count += 1
+
+        return (
+            organizations,
+            states,
+            countries,
+        )
+
+    times = iter(
+        [
+            100.0,
+            200.0,
+            500.0,
+        ]
+    )
+
+    monkeypatch.setattr(
+        analytics,
+        "_read_source_data",
+        fake_read_source_data,
+    )
+
+    monkeypatch.setattr(
+        analytics.time,
+        "monotonic",
+        lambda: next(times),
+    )
+
+    monkeypatch.setattr(
+        analytics,
+        "DATA_CACHE_TTL_SECONDS",
+        300,
+    )
+
+    analytics._DATA_CACHE = None
+    analytics._DATA_CACHE_LOADED_AT = None
+
+    analytics.load_data()
+    assert load_count == 1
+
+    analytics.load_data()
+    assert load_count == 1
+
+    analytics.load_data()
+    assert load_count == 2
+
+
+def test_1y_window_covers_exactly_12_calendar_months():
+    today = pd.Timestamp(
+        "2026-09-29",
+        tz="UTC",
+    )
+
+    windows = analytics.get_fixed_windows(today=today)
+
+    one_year = windows["1Y"]
+
+    assert one_year["start"].isoformat() == "2025-10-01"
+    assert one_year["end"].isoformat() == "2026-09-29"
+    assert one_year["granularity"] == "month"
+
+
+def test_1y_window_spans_12_calendar_months():
+    today = pd.Timestamp(
+        "2026-09-29",
+        tz="UTC",
+    )
+
+    windows = analytics.get_fixed_windows(today=today)
+
+    one_year = windows["1Y"]
+
+    months = pd.period_range(
+        start=one_year["start"],
+        end=one_year["end"],
+        freq="M",
+    )
+
+    assert len(months) == 12

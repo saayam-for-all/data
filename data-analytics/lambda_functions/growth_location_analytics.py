@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -11,6 +12,8 @@ import pandas as pd
 DEFAULT_MOCK_DATA_DIR = Path(__file__).resolve().parent / "mock_data"
 
 MOCK_DATA_DIR = Path(os.getenv("MOCK_DATA_DIR", str(DEFAULT_MOCK_DATA_DIR)))
+
+DATA_CACHE_TTL_SECONDS = int(os.getenv("DATA_CACHE_TTL_SECONDS", "300"))
 
 
 # Required CSV columns
@@ -38,7 +41,7 @@ COUNTRY_COLUMNS = {
 # Warm Lambda instance cache
 
 _DATA_CACHE = None
-
+_DATA_CACHE_LOADED_AT = None
 
 # Data validation helpers
 
@@ -133,14 +136,25 @@ def load_data():
     """
     Return source data.
 
-    Data is physically loaded only once for each warm Lambda
-    execution environment.
+    Data is reused within a warm Lambda execution environment,
+    but refreshed after the configured cache TTL.
     """
 
     global _DATA_CACHE
+    global _DATA_CACHE_LOADED_AT
 
-    if _DATA_CACHE is None:
+    now = time.monotonic()
+
+    cache_missing = _DATA_CACHE is None
+
+    cache_expired = (
+        _DATA_CACHE_LOADED_AT is not None
+        and now - _DATA_CACHE_LOADED_AT >= DATA_CACHE_TTL_SECONDS
+    )
+
+    if cache_missing or cache_expired:
         _DATA_CACHE = _read_source_data()
+        _DATA_CACHE_LOADED_AT = now
 
     return _DATA_CACHE
 
@@ -349,7 +363,7 @@ def get_fixed_windows(today=None):
             "granularity": "day",
         },
         "1Y": {
-            "start": (today - pd.DateOffset(years=1)).date(),
+            "start": (today - pd.DateOffset(months=11)).replace(day=1).date(),
             "end": today.date(),
             "granularity": "month",
         },
