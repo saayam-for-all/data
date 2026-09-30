@@ -1,0 +1,450 @@
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 40,
+      "non_profit_organizations": 21,
+      "for_profit_organizations": 19,
+      "collaborator_organizations": 21,
+      "non_collaborator_organizations": 19,
+      "contributor_organizations": 19,
+      "non_contributor_organizations": 21
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2023-09-01",
+        "count": 2
+      },
+      {
+        "period": "2023-11-01",
+        "count": 1
+      },
+      {
+        "period": "2023-12-01",
+        "count": 2
+      },
+      {
+        "period": "2024-02-01",
+        "count": 2
+      },
+      {
+        "period": "2024-04-01",
+        "count": 2
+      },
+      {
+        "period": "2024-06-01",
+        "count": 1
+      },
+      {
+        "period": "2024-07-01",
+        "count": 2
+      },
+      {
+        "period": "2024-08-01",
+        "count": 2
+      },
+      {
+        "period": "2024-09-01",
+        "count": 3
+      },
+      {
+        "period": "2024-11-01",
+        "count": 2
+      },
+      {
+        "period": "2024-12-01",
+        "count": 1
+      },
+      {
+        "period": "2025-01-01",
+        "count": 3
+      },
+      {
+        "period": "2025-04-01",
+        "count": 1
+      },
+      {
+        "period": "2025-06-01",
+        "count": 1
+      },
+      {
+        "period": "2025-08-01",
+        "count": 4
+      },
+      {
+        "period": "2025-09-01",
+        "count": 3
+      },
+      {
+        "period": "2025-10-01",
+        "count": 1
+      },
+      {
+        "period": "2025-11-01",
+        "count": 3
+      },
+      {
+        "period": "2025-12-01",
+        "count": 3
+      },
+      {
+        "period": "2026-01-01",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "org_type": "non_profit",
+        "count": 21
+      },
+      {
+        "org_type": "for_profit",
+        "count": 19
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "org_size": "large",
+        "count": 21
+      },
+      {
+        "org_size": "small",
+        "count": 10
+      },
+      {
+        "org_size": "medium",
+        "count": 9
+      }
+    ],
+    "organizations_by_location": {
+      "by_state": [
+        {
+          "state_id": "TX",
+          "state_name": "Texas",
+          "count": 3
+        },
+        {
+          "state_id": "AR",
+          "state_name": "Arkansas",
+          "count": 2
+        },
+        {
+          "state_id": "FL",
+          "state_name": "Florida",
+          "count": 2
+        },
+        {
+          "state_id": "IN",
+          "state_name": "Indiana",
+          "count": 2
+        },
+        {
+          "state_id": "IA",
+          "state_name": "Iowa",
+          "count": 2
+        },
+        {
+          "state_id": "KS",
+          "state_name": "Kansas",
+          "count": 2
+        },
+        {
+          "state_id": "MN",
+          "state_name": "Minnesota",
+          "count": 2
+        },
+        {
+          "state_id": "MT",
+          "state_name": "Montana",
+          "count": 2
+        },
+        {
+          "state_id": "NC",
+          "state_name": "North Carolina",
+          "count": 2
+        },
+        {
+          "state_id": "RI",
+          "state_name": "Rhode Island",
+          "count": 2
+        },
+        {
+          "state_id": "AL",
+          "state_name": "Alabama",
+          "count": 1
+        },
+        {
+          "state_id": "AK",
+          "state_name": "Alaska",
+          "count": 1
+        },
+        {
+          "state_id": "AZ",
+          "state_name": "Arizona",
+          "count": 1
+        },
+        {
+          "state_id": "CA",
+          "state_name": "California",
+          "count": 1
+        },
+        {
+          "state_id": "ME",
+          "state_name": "Maine",
+          "count": 1
+        },
+        {
+          "state_id": "MI",
+          "state_name": "Michigan",
+          "count": 1
+        },
+        {
+          "state_id": "MO",
+          "state_name": "Missouri",
+          "count": 1
+        },
+        {
+          "state_id": "NE",
+          "state_name": "Nebraska",
+          "count": 1
+        },
+        {
+          "state_id": "NV",
+          "state_name": "Nevada",
+          "count": 1
+        },
+        {
+          "state_id": "NJ",
+          "state_name": "New Jersey",
+          "count": 1
+        },
+        {
+          "state_id": "OH",
+          "state_name": "Ohio",
+          "count": 1
+        },
+        {
+          "state_id": "OK",
+          "state_name": "Oklahoma",
+          "count": 1
+        },
+        {
+          "state_id": "OR",
+          "state_name": "Oregon",
+          "count": 1
+        },
+        {
+          "state_id": "UT",
+          "state_name": "Utah",
+          "count": 1
+        },
+        {
+          "state_id": "VT",
+          "state_name": "Vermont",
+          "count": 1
+        },
+        {
+          "state_id": "VA",
+          "state_name": "Virginia",
+          "count": 1
+        },
+        {
+          "state_id": "WA",
+          "state_name": "Washington",
+          "count": 1
+        },
+        {
+          "state_id": "WI",
+          "state_name": "Wisconsin",
+          "count": 1
+        },
+        {
+          "state_id": "WY",
+          "state_name": "Wyoming",
+          "count": 1
+        }
+      ],
+      "by_city": [
+        {
+          "city_name": "Barkerfurt",
+          "count": 1
+        },
+        {
+          "city_name": "Burchborough",
+          "count": 1
+        },
+        {
+          "city_name": "East Amanda",
+          "count": 1
+        },
+        {
+          "city_name": "East Jenniferfort",
+          "count": 1
+        },
+        {
+          "city_name": "Hortonberg",
+          "count": 1
+        },
+        {
+          "city_name": "Jeremyburgh",
+          "count": 1
+        },
+        {
+          "city_name": "Johnberg",
+          "count": 1
+        },
+        {
+          "city_name": "Kingborough",
+          "count": 1
+        },
+        {
+          "city_name": "Kyleborough",
+          "count": 1
+        },
+        {
+          "city_name": "Lake Debbie",
+          "count": 1
+        },
+        {
+          "city_name": "Lake Deniseville",
+          "count": 1
+        },
+        {
+          "city_name": "Lake Nancyview",
+          "count": 1
+        },
+        {
+          "city_name": "Leehaven",
+          "count": 1
+        },
+        {
+          "city_name": "Martinezbury",
+          "count": 1
+        },
+        {
+          "city_name": "Mitchellside",
+          "count": 1
+        },
+        {
+          "city_name": "New Amyhaven",
+          "count": 1
+        },
+        {
+          "city_name": "New Susanville",
+          "count": 1
+        },
+        {
+          "city_name": "New Thomas",
+          "count": 1
+        },
+        {
+          "city_name": "North Donnaport",
+          "count": 1
+        },
+        {
+          "city_name": "North Jamesborough",
+          "count": 1
+        },
+        {
+          "city_name": "North Judithbury",
+          "count": 1
+        },
+        {
+          "city_name": "Ortizmouth",
+          "count": 1
+        },
+        {
+          "city_name": "Port Andrew",
+          "count": 1
+        },
+        {
+          "city_name": "Robertfort",
+          "count": 1
+        },
+        {
+          "city_name": "Robinfort",
+          "count": 1
+        },
+        {
+          "city_name": "Ronaldview",
+          "count": 1
+        },
+        {
+          "city_name": "Sandrastad",
+          "count": 1
+        },
+        {
+          "city_name": "Smithberg",
+          "count": 1
+        },
+        {
+          "city_name": "South Jeffrey",
+          "count": 1
+        },
+        {
+          "city_name": "South Monicamouth",
+          "count": 1
+        },
+        {
+          "city_name": "South Rachelborough",
+          "count": 1
+        },
+        {
+          "city_name": "South Williamton",
+          "count": 1
+        },
+        {
+          "city_name": "Stephaniemouth",
+          "count": 1
+        },
+        {
+          "city_name": "Thomasberg",
+          "count": 1
+        },
+        {
+          "city_name": "Victoriaport",
+          "count": 1
+        },
+        {
+          "city_name": "Wendyville",
+          "count": 1
+        },
+        {
+          "city_name": "West Amandastad",
+          "count": 1
+        },
+        {
+          "city_name": "West Erik",
+          "count": 1
+        },
+        {
+          "city_name": "West Williamport",
+          "count": 1
+        },
+        {
+          "city_name": "Williamview",
+          "count": 1
+        }
+      ]
+    },
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 21
+      },
+      {
+        "is_collaborator": false,
+        "count": 19
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 19
+      },
+      {
+        "is_contributor": false,
+        "count": 21
+      }
+    ]
+  }
+}
