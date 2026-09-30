@@ -28,6 +28,13 @@ An optional country_code (ISO alpha-3, as stored in countries.csv) filters
 organizations via organizations.state_id -> states.country_id ->
 countries.country_code before either chart is computed. There is no
 organization_type filter: it would be redundant with organization_mix_trend.
+
+load_organizations() caches its joined result per MOCK_DATA_DIR, keyed by
+each CSV's mtime and size, so a warm Lambda container reuses it across
+invocations instead of re-reading and re-joining unchanged files on every
+call. This assumes the classic Lambda execution model (one invocation
+handled at a time per container); it is not safe to share across threads
+running invocations concurrently in the same process.
 """
 
 import json
@@ -56,6 +63,18 @@ MIN_RATING = 1
 MAX_RATING = 5
 WINDOW_DAYS = {"7D": 7, "30D": 30}
 TRAILING_MONTHS = 12  # "1Y": the current month plus this many preceding it
+
+FileSignature = tuple[str, int, int] | None
+_ORGANIZATIONS_CACHE: dict[Path, tuple[pd.DataFrame, tuple[FileSignature, ...]]] = {}
+
+
+def _file_signature(path: Path) -> FileSignature:
+    """Identify a file's contents cheaply, without reading it."""
+    try:
+        stat = path.stat()
+    except OSError:
+        return None
+    return (str(path), stat.st_mtime_ns, stat.st_size)
 
 
 def parse_body(event: dict | None) -> dict:
@@ -109,14 +128,31 @@ def parse_country_code(body: dict) -> str | None:
 
 
 def load_organizations() -> pd.DataFrame:
+    """Return the joined organizations table, reusing a cached copy when
+    the CSVs under MOCK_DATA_DIR have not changed since the last call.
+    """
+    root = Path(os.environ.get(
+        "MOCK_DATA_DIR", str(Path(__file__).parent / "mock_data")
+    ))
+    signature = tuple(
+        _file_signature(root / name)
+        for name in ("organizations.csv", "states.csv", "countries.csv")
+    )
+    cached = _ORGANIZATIONS_CACHE.get(root)
+    if cached is not None and cached[1] == signature:
+        return cached[0]
+
+    joined = _read_and_join_organizations(root)
+    _ORGANIZATIONS_CACHE[root] = (joined, signature)
+    return joined
+
+
+def _read_and_join_organizations(root: Path) -> pd.DataFrame:
     """Join CSVs using their IDs without losing or multiplying rows.
 
     Local test CSVs must have consistent state-to-country references.
     Country codes are taken from the data, never mapped to a hardcoded ID.
     """
-    root = Path(os.environ.get(
-        "MOCK_DATA_DIR", str(Path(__file__).parent / "mock_data")
-    ))
     organization_columns = {"org_id", "org_rating", "org_type", "state_id", "created_at"}
     try:
         organizations = pd.read_csv(
