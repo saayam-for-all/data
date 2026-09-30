@@ -22,8 +22,8 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 
 | Sub-Team | Focus | Leads |
 |----------|-------|-------|
-| **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Saquib Baig** · **Sana Desai** |
-| **Data Analytics** | Dashboards, analytics, insights, reporting | **Prachi Deshpande** · **Vighnesh Sridhar** |
+| **Data Engineering** | Data pipelines, scraping, Lambda functions, data processing | **Sana Desai** |
+| **Data Analytics** | Dashboards, analytics, insights, reporting | **Sahil Mane** · **Vighnesh Sridhar** |
 | **Project Management** | Task planning, coordination, timelines | **Janhavi Chavan** · **Ruthwik Dhaipulle** |
 
 ---
@@ -36,7 +36,7 @@ The **Data** group at Saayam consists of two sub-teams that share one WhatsApp g
 |---|---|
 | **When** | Every **Tuesday** — **1:00 PM PST**|
 | **Who** | Both Data Engineering and Data Analytics |
-| **Where** | Zoom link (**https://us04web.zoom.us/j/77345571053?pwd=0EfORCsIzoxdeP3Pio3Cvo6q8p5k9T.1**) |
+| **Where** | Zoom (**link will be shared in group, message leads/PM for meeting link**)|
 
 This is the most important meeting. This is where you give updates, ask questions, get unblocked, and sync with the team. **Save your questions for this meeting** — mid-week, people get busy and responses take time.
 
@@ -49,7 +49,7 @@ This is the most important meeting. This is where you give updates, ask question
 | **When** | Every weekday at **10:00 AM PST** |
 | **Who** | All Saayam tech volunteers |
 | **Led by** | **Rao Bhethanabotla** |
-|**Where** |**Zoom link** (**https://us05web.zoom.us/j/84510208580?pwd=Fay4wfByjXNiDyBbKyEaL5JYrPXyKI.1#success**) |
+|**Where** | Zoom link (**link will be shared in group, message leads/PM for meeting link**) |
 
 This is an org-wide standup. Useful for getting context on what other teams are doing and for getting help from Rao directly. **Mandatory if you have an offer letter.** If you cannot attend, send your status to the WhatsApp group.
 
@@ -108,7 +108,7 @@ Show up, introduce yourself, and you'll be guided from there.
   Here are the rules:
 
 - **If you are assigned a task and have no updates, no heads up, and no valid reason — you will be removed from the task.**
-- **If you miss 4 weekly team meetings in a row — you will be removed from the group.**
+- **If you miss 2 weekly team meetings in a row — you will be removed from the group.**
 - If life gets in the way, just tell us. Communication is everything. Nobody will be upset if you need time off — what causes problems is silence.
 
 ### Timesheets
@@ -128,11 +128,11 @@ Most tasks are assigned to 2+ people. Coordinate with your pair. If you need to 
 
 | Role | Who | Reach Via |
 |------|-----|-----------|
-| **Data Engineering Leads** | **Saquib Baig** · **Sana Desai** | Team WhatsApp group |
-| **Data Analytics Leads** | **Prachi Deshpande** · **Vighnesh Sridhar** | Team WhatsApp group |
+| **Data Engineering Leads** | **Sana Desai** | Team WhatsApp group |
+| **Data Analytics Leads** | **Sahil Mane** · **Vighnesh Sridhar** | Team WhatsApp group |
 | **Project Managers** | **Janhavi Chavan** · **Ruthwik Dhaipulle** | Team WhatsApp group |
-| **Org Lead / Scrum** | **Rao Bhethanabotla** | (408) 390-1725 — escalation only |
-| **Offer Letters** | **Sri Tejaswi Vadapalli** / **Sharanya Gowda** | WhatsApp |
+| **Org Lead / Scrum** | **Rao Bhethanabotla** |
+| **Offer Letters** |  **HR** | WhatsApp |
 | **Access Issues** | [Access Hub Form](https://forms.gle/Mg8J3fSvA7AAHVxq5) | Google Form |
 
 ---
