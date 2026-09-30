@@ -1,0 +1,549 @@
+=== payload: {} ===
+statusCode: 200
+{
+  "7D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "30D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "1Y": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 3
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "All": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2025-06",
+          "count": 1
+        },
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2025-06",
+          "count": 0
+        },
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 4
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "Custom": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  }
+}
+
+=== payload: {"start_date": "2026-01-01", "end_date": "2026-06-30"} ===
+statusCode: 200
+{
+  "7D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "30D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "1Y": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 3
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "All": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2025-06",
+          "count": 1
+        },
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2025-06",
+          "count": 0
+        },
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 4
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "Custom": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2026-01-10",
+          "count": 2
+        },
+        {
+          "period": "2026-02-12",
+          "count": 3
+        },
+        {
+          "period": "2026-02-20",
+          "count": 4
+        },
+        {
+          "period": "2026-03-05",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2026-01-10",
+          "count": 1
+        },
+        {
+          "period": "2026-02-12",
+          "count": 0
+        },
+        {
+          "period": "2026-02-20",
+          "count": 1
+        },
+        {
+          "period": "2026-03-05",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": []
+  }
+}
+
+=== payload: {"location_start_date": "2025-01-01", "location_end_date": "2025-12-31"} ===
+statusCode: 200
+{
+  "7D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "30D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "1Y": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 3
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "All": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2025-06",
+          "count": 1
+        },
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2025-06",
+          "count": 0
+        },
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 4
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "Custom": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 1
+      }
+    ]
+  }
+}
+
+=== payload: {"start_date": "2026-01-01", "end_date": "2026-06-30", "location_start_date": "2025-01-01", "location_end_date": "2025-12-31"} ===
+statusCode: 200
+{
+  "7D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "30D": {
+    "growth_trend": {
+      "total_organizations": [],
+      "collaborators": []
+    },
+    "organizations_by_location": []
+  },
+  "1Y": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 3
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "All": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2025-06",
+          "count": 1
+        },
+        {
+          "period": "2026-01",
+          "count": 2
+        },
+        {
+          "period": "2026-02",
+          "count": 4
+        },
+        {
+          "period": "2026-03",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2025-06",
+          "count": 0
+        },
+        {
+          "period": "2026-01",
+          "count": 1
+        },
+        {
+          "period": "2026-02",
+          "count": 1
+        },
+        {
+          "period": "2026-03",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 4
+      },
+      {
+        "country": "IND",
+        "count": 1
+      }
+    ]
+  },
+  "Custom": {
+    "growth_trend": {
+      "total_organizations": [
+        {
+          "period": "2026-01-10",
+          "count": 2
+        },
+        {
+          "period": "2026-02-12",
+          "count": 3
+        },
+        {
+          "period": "2026-02-20",
+          "count": 4
+        },
+        {
+          "period": "2026-03-05",
+          "count": 5
+        }
+      ],
+      "collaborators": [
+        {
+          "period": "2026-01-10",
+          "count": 1
+        },
+        {
+          "period": "2026-02-12",
+          "count": 0
+        },
+        {
+          "period": "2026-02-20",
+          "count": 1
+        },
+        {
+          "period": "2026-03-05",
+          "count": 1
+        }
+      ]
+    },
+    "organizations_by_location": [
+      {
+        "country": "USA",
+        "count": 1
+      }
+    ]
+  }
+}
