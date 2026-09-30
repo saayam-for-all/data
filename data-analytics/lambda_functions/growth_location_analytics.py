@@ -1,11 +1,27 @@
+"""Growth & Location Analytics API for the Organization Dashboard (issue #336).
 
+Standalone function for the Growth & Location tab. Returns all fixed time
+buckets (7D/30D/1Y/All) plus an independently-driven Custom bucket in a
+single response, so the frontend can flip either chart's range without a
+new API call.
+
+Reads organizations.csv / states.csv / countries.csv from a local mock
+data directory (no AWS Parameter Store, no live AWS connection). Point
+MOCK_DATA_DIR at wherever you keep those CSVs locally for testing; do not
+commit the CSVs themselves.
+
+This is a new function -- it does not reuse or modify organization_analytics.py.
+"""
 
 import json
 import os
 
 import pandas as pd
 
-
+# TODO: confirm with the ticket owner whether this repo's `states.csv` is the
+# same file as organization_analytics.py's `state.csv` (singular, no
+# country_id today) or a separate/renamed file. This function assumes a
+# `states.csv` with state_id, state_name, country_id as specced in #336.
 DEFAULT_MOCK_DATA_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "sql"
 )
@@ -26,13 +42,15 @@ def build_response(status_code, body):
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
         },
-        "body": body,
+        # API Gateway's Lambda proxy integration requires `body` to be a
+        # JSON-encoded string, not a raw dict.
+        "body": json.dumps(body),
     }
 
 
-
+# --------------------------------------------------------------------------
 # Data loading / joining
-
+# --------------------------------------------------------------------------
 
 def load_data(mock_data_dir):
     orgs = pd.read_csv(os.path.join(mock_data_dir, "organizations.csv"))
@@ -56,9 +74,9 @@ def attach_country(orgs, states, countries):
     return merged
 
 
-
+# --------------------------------------------------------------------------
 # Date parsing / validation
-
+# --------------------------------------------------------------------------
 
 def parse_date_pair(params, start_key, end_key):
     """Returns (start_inclusive, end_exclusive) as Timestamps, or None if
@@ -87,9 +105,9 @@ def parse_date_pair(params, start_key, end_key):
     return start, end + pd.Timedelta(days=1)
 
 
-
+# --------------------------------------------------------------------------
 # Window / period helpers
-
+# --------------------------------------------------------------------------
 
 def filter_window(df, start, end, col="created_at"):
     """start inclusive, end exclusive. Either may be None (unbounded)."""
@@ -118,19 +136,31 @@ def period_upper_bound(period, granularity):
 
 def get_fixed_windows():
     """(start_inclusive, end_exclusive, granularity) for each fixed bucket.
-    All = no window at all (entire dataset)."""
-    now = pd.Timestamp.now()
+    All = no window at all (entire dataset).
+
+    Windows are anchored to calendar-day (and calendar-month, for 1Y)
+    boundaries so each bucket spans exactly N calendar units, not N+1:
+    - 7D / 30D: today plus the previous 6 / 29 days = 7 / 30 calendar days.
+    - 1Y: the current calendar month plus the previous 11 months = 12
+      calendar months, rather than a raw 365/366-day offset.
+    """
+    today = pd.Timestamp.now().normalize()
+    end_exclusive = today + pd.Timedelta(days=1)  # through end of today
+
+    current_month_start = today.replace(day=1)
+    one_year_start = current_month_start - pd.DateOffset(months=11)
+
     return {
-        "7D": (now - pd.Timedelta(days=7), now, "day"),
-        "30D": (now - pd.Timedelta(days=30), now, "day"),
-        "1Y": (now - pd.DateOffset(years=1), now, "month"),
+        "7D": (today - pd.Timedelta(days=6), end_exclusive, "day"),
+        "30D": (today - pd.Timedelta(days=29), end_exclusive, "day"),
+        "1Y": (one_year_start, end_exclusive, "month"),
         "All": (None, None, "month"),
     }
 
 
-
+# --------------------------------------------------------------------------
 # Chart computations
-
+# --------------------------------------------------------------------------
 
 def compute_growth_trend(full_df, start, end, granularity):
     """total_organizations: cumulative, all-time, as of each period.
@@ -183,9 +213,9 @@ def build_bucket(df, start, end, granularity):
     }
 
 
-
+# --------------------------------------------------------------------------
 # Handler
-
+# --------------------------------------------------------------------------
 
 def build_analytics(df, params):
     try:
