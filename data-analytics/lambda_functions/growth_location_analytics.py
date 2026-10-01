@@ -10,7 +10,6 @@ data directory (no AWS Parameter Store, no live AWS connection). Point
 MOCK_DATA_DIR at wherever you keep those CSVs locally for testing; do not
 commit the CSVs themselves.
 
-This is a new function -- it does not reuse or modify organization_analytics.py.
 """
 
 import json
