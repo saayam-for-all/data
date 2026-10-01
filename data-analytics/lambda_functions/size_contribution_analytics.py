@@ -82,8 +82,8 @@ def build_response(status_code, body):
 
 def load_data(mock_data_dir):
     orgs = pd.read_csv(os.path.join(mock_data_dir, "organizations.csv"))
-    states = pd.read_csv(os.path.join(mock_data_dir, "states.csv"))
-    countries = pd.read_csv(os.path.join(mock_data_dir, "countries.csv"))
+    states = pd.read_csv(os.path.join(mock_data_dir, "state.csv"))
+    countries = pd.read_csv(os.path.join(mock_data_dir, "country.csv"))
 
     orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce")
     orgs["is_collaborator"] = orgs["is_collaborator"].map(BOOL_MAP).fillna(False)
@@ -127,10 +127,13 @@ def apply_filters(df, params):
             mask |= filtered["country_name"].astype(str).str.upper() == target
         filtered = filtered[mask]
 
+    def _normalize(value):
+        return str(value).lower().replace("-", "").replace("_", "").replace(" ", "")
+
     org_type = params.get("organization_type")
     if org_type and str(org_type).upper() != "ALL":
         filtered = filtered[
-            filtered["org_type"].astype(str).str.lower() == str(org_type).lower()
+            filtered["org_type"].apply(_normalize) == _normalize(org_type)
         ]
 
     return filtered
