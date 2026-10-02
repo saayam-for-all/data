@@ -66,8 +66,22 @@ class EmergencyNumbersTests(unittest.TestCase):
         self.assertEqual(self.data["QA"]["default"]["general_emergency"], "999")
         self.assertEqual(self.data["US"]["states"], {})
         self.assertEqual(self.data["GB"]["default"]["police"], "999")
-        self.assertEqual(self.data["GB"]["default"]["general_emergency"], "112")
+        # 999 is the number UK residents know best; 112 also works.
+        self.assertEqual(self.data["GB"]["default"]["general_emergency"], "999")
+        self.assertEqual(self.data["GB"]["default"]["general_emergency_alternate"], "112")
         self.assertEqual(self.data["AU"]["default"]["police"], "000")
+
+    def test_review_number_corrections(self):
+        """Corrections from #334 / ai#202 review of the emergency numbers dataset."""
+        # Turkey: 155 = Police Emergency; 153 is Municipal Police (Zabıta).
+        self.assertEqual(self.data["TR"]["default"]["police"], "155")
+        # Ukraine: keep 112 so the app has a general emergency fallback.
+        self.assertEqual(self.data["UA"]["default"]["general_emergency"], "112")
+        # Colombia: 123 is the national general emergency; 112 is police.
+        self.assertEqual(self.data["CO"]["default"]["general_emergency"], "123")
+        self.assertEqual(self.data["CO"]["default"]["police"], "112")
+        # Pakistan: Rescue 1122 as primary ambulance line.
+        self.assertEqual(self.data["PK"]["default"]["ambulance"], "1122")
 
     def test_france_splits_service_numbers(self):
         france = self.data["FR"]["default"]

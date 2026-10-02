@@ -426,7 +426,7 @@
   },
   "CO": {
     "default": {
-      "general_emergency": "112",
+      "general_emergency": "123",
       "police": "112",
       "ambulance": "125",
       "fire": "119"
@@ -679,8 +679,8 @@
   },
   "GB": {
     "default": {
-      "general_emergency": "112",
-      "general_emergency_alternate": "999",
+      "general_emergency": "999",
+      "general_emergency_alternate": "112",
       "police": "999",
       "ambulance": "999",
       "fire": "999"
@@ -1613,7 +1613,7 @@
   "PK": {
     "default": {
       "police": "15",
-      "ambulance": "115",
+      "ambulance": "1122",
       "fire": "16",
       "traffic_police": "1915"
     },
@@ -2024,7 +2024,7 @@
     "default": {
       "general_emergency": "112",
       "general_emergency_alternate": "911",
-      "police": "153",
+      "police": "155",
       "ambulance": "112",
       "fire": "112"
     },
@@ -2070,6 +2070,7 @@
   },
   "UA": {
     "default": {
+      "general_emergency": "112",
       "police": "102",
       "ambulance": "103",
       "fire": "101"
