@@ -148,6 +148,19 @@ def test_organization_type_filter(call):
     assert sum(r["count"] for r in body["All"]["organizations_by_size"]) == 3   # medium,small,medium
 
 
+@pytest.mark.parametrize("stored, filter_value", [
+    ("Non-Profit", "non_profit"),      # real data.csv spelling vs. the documented enum
+    ("non_profit", "Non-Profit"),      # the reverse: clean data, messy filter
+    ("NON PROFIT", "non-profit"),
+    ("non_profit", "non_profit"),      # already matching needs no normalization to still work
+])
+def test_organization_type_filter_ignores_case_and_separators(call, stored, filter_value):
+    orgs = [("TX", day(1), "false", "false", "small", stored),
+            ("TX", day(1), "false", "false", "small", "for_profit")]
+    _, body = call(orgs, {"organization_type": filter_value})
+    assert sum(r["count"] for r in body["30D"]["organizations_by_size"]) == 1
+
+
 def test_filters_apply_in_every_response_shape(call):
     _, full = call(ORGS, {"country": "USA"})
     _, custom = call(ORGS, {"country": "USA", "size_start_date": "2023-01-01", "size_end_date": "2026-12-31"})
@@ -233,6 +246,30 @@ def test_percentage_is_rounded_to_one_decimal(call):
 
 
 # --- empty / malformed input --------------------------------------------------------------
+def test_7d_window_spans_exactly_seven_calendar_days(call):
+    # day(6) is the oldest day still inside "7D" (today + the 6 days before it = 7 days);
+    # day(7) is one day older and must fall outside it.
+    orgs = [("TX", day(6), "false", "false", "small", "non_profit"),
+            ("TX", day(7), "false", "false", "medium", "non_profit")]
+    _, body = call(orgs)
+    assert body["7D"]["organizations_by_size"] == [{"size": "small", "count": 1}]
+
+
+def test_30d_window_spans_exactly_thirty_calendar_days(call):
+    orgs = [("TX", day(29), "false", "false", "small", "non_profit"),
+            ("TX", day(30), "false", "false", "medium", "non_profit")]
+    _, body = call(orgs)
+    assert body["30D"]["organizations_by_size"] == [{"size": "small", "count": 1}]
+
+
+@pytest.mark.parametrize("today, bucket, start", [
+    ("2026-06-15", "7D", "2026-06-09"),    # 6/9 .. 6/15 inclusive = 7 days
+    ("2026-06-15", "30D", "2026-05-17"),   # 5/17 .. 6/15 inclusive = 30 days
+])
+def test_window_start_boundaries(today, bucket, start):
+    assert sca.window_start(bucket, pd.Timestamp(today)) == pd.Timestamp(start)
+
+
 def test_window_with_no_organizations_returns_empty_arrays(call):
     _, body = call([("TX", "2020-01-01 00:00:00", "true", "true", "small", "non_profit")])
     for bucket in ("7D", "30D", "1Y"):

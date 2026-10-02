@@ -122,13 +122,28 @@ def normalize_filter(value):
     return None if value == "" or value.upper() == "ALL" else value
 
 
+_SEPARATORS = re.compile(r"[\s_-]+")
+
+
+def normalize_enum(value):
+    """Case- and separator-insensitive form of an enum-ish value, e.g. "Non-Profit",
+    "non_profit" and "non profit" all normalize to "nonprofit". org_type is stored
+    as the clean non_profit/for_profit enum in some data and as a messier free-text
+    equivalent (e.g. "Non-Profit") in other data (such as the legacy sample CSV
+    under data-analytics/sql/), so the filter needs to match either spelling."""
+    return _SEPARATORS.sub("", str(value).strip().lower())
+
+
 # --- fixed-bucket windows (same definitions as growth_location_analytics.py) --------
 def window_start(bucket, today):
-    """First day of a fixed bucket's window (it always ends today); None means unbounded."""
+    """First day of a fixed bucket's window (it always ends today, inclusive of both
+    ends); None means unbounded. "7D"/"30D" span exactly 7/30 calendar days (today
+    and the 6/29 days before it) - not today's date offset by 7/30, which would be
+    one day too many."""
     if bucket == "7D":
-        return today - pd.Timedelta(days=7)
+        return today - pd.Timedelta(days=6)
     if bucket == "30D":
-        return today - pd.Timedelta(days=30)
+        return today - pd.Timedelta(days=29)
     if bucket == "1Y":  # trailing 12 calendar months: this month plus the 11 before it
         return (today.to_period("M") - 11).start_time
     return None  # "All"
@@ -200,7 +215,8 @@ def apply_filters(orgs, country, organization_type):
         orgs = orgs[(orgs["country_code"].fillna("").str.lower() == needle) |
                    (orgs["country_name"].fillna("").str.lower() == needle)]
     if organization_type is not None:
-        orgs = orgs[orgs["org_type"].fillna("").str.lower() == organization_type.lower()]
+        needle = normalize_enum(organization_type)
+        orgs = orgs[orgs["org_type"].fillna("").map(normalize_enum) == needle]
     return orgs
 
 
@@ -276,8 +292,11 @@ def _db_filters(country, organization_type):
         clauses.append("(LOWER(c.country_code) = %s OR LOWER(c.country_name) = %s)")
         params += [country.lower(), country.lower()]
     if organization_type is not None:
-        clauses.append("LOWER(o.org_type::text) = %s")
-        params.append(organization_type.lower())
+        # same case/separator normalization as the mock path (normalize_enum), so this
+        # still matches a column holding "Non-Profit"-style values, not just the clean
+        # non_profit/for_profit enum spelling
+        clauses.append(r"REGEXP_REPLACE(LOWER(o.org_type::text), '[\s_-]+', '', 'g') = %s")
+        params.append(normalize_enum(organization_type))
     return clauses, params
 
 
