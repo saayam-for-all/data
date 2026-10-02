@@ -261,11 +261,13 @@ def test_day_buckets_for_7d_30d_custom_and_month_buckets_for_1y_all(call):
 
 
 def test_window_boundaries_are_inclusive_calendar_days(call):
-    orgs = [("TX", day(7), "true"), ("TX", day(8), "true"), ("TX", day(30), "false"), ("TX", day(31), "false")]
+    # "7D"/"30D" span exactly 7/30 calendar days: day(6)/day(29) are the oldest day
+    # still inside each window, and day(7)/day(30) are one day older and fall outside.
+    orgs = [("TX", day(6), "true"), ("TX", day(7), "true"), ("TX", day(29), "false"), ("TX", day(30), "false")]
     _, body = call(orgs)
-    assert [p["period"] for p in body["7D"]["growth_trend"]["total_organizations"]] == [day(7)[:10]]
+    assert [p["period"] for p in body["7D"]["growth_trend"]["total_organizations"]] == [day(6)[:10]]
     assert [p["period"] for p in body["30D"]["growth_trend"]["total_organizations"]] == \
-           [day(30)[:10], day(8)[:10], day(7)[:10]]
+           [day(29)[:10], day(7)[:10], day(6)[:10]]
 
 
 def test_1y_is_the_trailing_12_calendar_months(call):
@@ -297,8 +299,8 @@ def test_1y_never_has_more_than_12_monthly_periods(call):
 def test_window_starts(today, start_1y):
     today = pd.Timestamp(today)
     assert gla.window_start("1Y", today) == pd.Timestamp(start_1y)
-    assert gla.window_start("7D", today) == today - pd.Timedelta(days=7)
-    assert gla.window_start("30D", today) == today - pd.Timedelta(days=30)
+    assert gla.window_start("7D", today) == today - pd.Timedelta(days=6)
+    assert gla.window_start("30D", today) == today - pd.Timedelta(days=29)
     assert gla.window_start("All", today) is None
 
 

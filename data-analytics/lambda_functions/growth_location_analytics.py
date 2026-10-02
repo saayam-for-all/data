@@ -188,11 +188,14 @@ def organizations_by_location(orgs, start, end):
 
 
 def window_start(bucket, today):
-    """First day of a fixed bucket's window (it always ends today); None means unbounded."""
+    """First day of a fixed bucket's window (it always ends today, inclusive of both
+    ends); None means unbounded. "7D"/"30D" span exactly 7/30 calendar days (today
+    and the 6/29 days before it) - not today's date offset by 7/30, which would be
+    one day too many."""
     if bucket == "7D":
-        return today - pd.Timedelta(days=7)
+        return today - pd.Timedelta(days=6)
     if bucket == "30D":
-        return today - pd.Timedelta(days=30)
+        return today - pd.Timedelta(days=29)
     if bucket == "1Y":  # trailing 12 calendar months: this month plus the 11 before it
         return (today.to_period("M") - 11).start_time
     return None
