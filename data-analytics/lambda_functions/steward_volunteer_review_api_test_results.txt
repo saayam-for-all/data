@@ -1,0 +1,29 @@
+--- Test Case 1: Page 1, Size 2 ---
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"data\": [{\"user_id\": \"SID-00-000-000-371\", \"updated_time\": \"2026-06-19T08:13:21Z\", \"volunteer_review\": \"Review\"}, {\"user_id\": \"SID-00-000-000-091\", \"updated_time\": \"2026-06-17T22:16:35Z\", \"volunteer_review\": \"Review\"}], \"pagination\": {\"current_page\": 1, \"page_size\": 2, \"total_records\": 19, \"total_pages\": 10}}"
+}
+
+--- Test Case 2: Page 2, Size 2 ---
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"data\": [{\"user_id\": \"SID-00-000-000-079\", \"updated_time\": \"2026-06-12T06:36:08Z\", \"volunteer_review\": \"Review\"}, {\"user_id\": \"SID-00-000-000-096\", \"updated_time\": \"2026-05-30T13:03:58Z\", \"volunteer_review\": \"Review\"}], \"pagination\": {\"current_page\": 2, \"page_size\": 2, \"total_records\": 19, \"total_pages\": 10}}"
+}
+
+--- Test Case 3: Empty Results (Invalid Status) ---
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": "{\"data\": [], \"pagination\": {\"current_page\": 999, \"page_size\": 5, \"total_records\": 19, \"total_pages\": 4}}"
+}
