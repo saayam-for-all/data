@@ -79,3 +79,30 @@ def trend_bucket(time_filter: str) -> str:
     if normalized == "1Y":
         return "month"
     return "month"
+
+
+# Explicit UI-selected grouping (as opposed to trend_bucket's auto-pick from the
+# time_filter span). Used by dashboards that expose their own "group by" control,
+# e.g. the Organization Dashboard (issue #228).
+VALID_GROUP_BY = {"daily", "weekly", "monthly", "yearly"}
+
+_GROUP_BY_TO_BUCKET = {
+    "daily": "day",
+    "weekly": "week",
+    "monthly": "month",
+    "yearly": "year",
+}
+
+
+def resolve_group_by(group_by: Optional[str], default: str = "monthly") -> str:
+    """Maps a UI group_by value (daily/weekly/monthly/yearly) to a Postgres
+    date_trunc unit. Falls back to `default` when group_by is omitted.
+    Raises HTTPException(400) on an unrecognized value.
+    """
+    normalized = (group_by or default).lower()
+    if normalized not in VALID_GROUP_BY:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid group_by '{group_by}'. Must be one of {sorted(VALID_GROUP_BY)}",
+        )
+    return _GROUP_BY_TO_BUCKET[normalized]
