@@ -1,0 +1,1410 @@
+{
+  "AD": {
+    "default": {
+      "police": "110",
+      "ambulance": "116",
+      "fire": "118",
+      "other_emergency_services": "112– Mountain / Sky Rescue collaboration with Spanish (Catalan) and French authorities"
+    },
+    "states": {}
+  },
+  "AE": {
+    "default": {},
+    "states": {}
+  },
+  "AF": {
+    "default": {
+      "police": "119",
+      "ambulance": "112",
+      "fire": "119"
+    },
+    "states": {}
+  },
+  "AG": {
+    "default": {},
+    "states": {}
+  },
+  "AI": {
+    "default": {},
+    "states": {}
+  },
+  "AL": {
+    "default": {
+      "police": "129",
+      "ambulance": "127",
+      "fire": "128",
+      "other_emergency_services": "Traffic police –126; Emergency at sea –125.Mobile phones ambulance –112"
+    },
+    "states": {}
+  },
+  "AM": {
+    "default": {},
+    "states": {}
+  },
+  "AO": {
+    "default": {
+      "police": "113",
+      "ambulance": "112/116",
+      "fire": "115"
+    },
+    "states": {}
+  },
+  "AQ": {
+    "default": {},
+    "states": {}
+  },
+  "AR": {
+    "default": {},
+    "states": {}
+  },
+  "AS": {
+    "default": {},
+    "states": {}
+  },
+  "AT": {
+    "default": {
+      "police": "112or133",
+      "ambulance": "144",
+      "fire": "122",
+      "other_emergency_services": "Gas emergency –128; Mountain rescue –140; Doctors –141; Crisis hotline –142; Support for children and teens –147; Non-emergency police –059 133; Deaf fax/SMS –0800 133 133; Poisoning Informations Center –01 406 43 43. The emergency telephone number112will be answered by the police, but will also handle other emergency services."
+    },
+    "states": {}
+  },
+  "AU": {
+    "default": {},
+    "states": {}
+  },
+  "AW": {
+    "default": {},
+    "states": {}
+  },
+  "AX": {
+    "default": {},
+    "states": {}
+  },
+  "AZ": {
+    "default": {
+      "police": "112or102",
+      "ambulance": "112or103",
+      "fire": "112or101",
+      "other_emergency_services": "Gas Service –104; Traffic police –902; Electricity emergency –199; Emergency –112."
+    },
+    "states": {}
+  },
+  "BA": {
+    "default": {
+      "police": "122",
+      "ambulance": "124",
+      "fire": "123",
+      "other_emergency_services": "Civil protection –121."
+    },
+    "states": {}
+  },
+  "BB": {
+    "default": {
+      "police": "211",
+      "ambulance": "511",
+      "fire": "311"
+    },
+    "states": {}
+  },
+  "BD": {
+    "default": {},
+    "states": {}
+  },
+  "BE": {
+    "default": {},
+    "states": {}
+  },
+  "BF": {
+    "default": {
+      "police": "17",
+      "ambulance": "112",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "BG": {
+    "default": {
+      "police": "112 or 166",
+      "ambulance": "112 or 150",
+      "fire": "112 or 160"
+    },
+    "states": {}
+  },
+  "BH": {
+    "default": {},
+    "states": {}
+  },
+  "BI": {
+    "default": {
+      "police": "117",
+      "ambulance": "112",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "BJ": {
+    "default": {
+      "police": "117",
+      "ambulance": "112",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "BL": {
+    "default": {},
+    "states": {}
+  },
+  "BM": {
+    "default": {},
+    "states": {}
+  },
+  "BN": {
+    "default": {},
+    "states": {}
+  },
+  "BO": {
+    "default": {},
+    "states": {}
+  },
+  "BQ": {
+    "default": {},
+    "states": {}
+  },
+  "BR": {
+    "default": {
+      "police": "190",
+      "ambulance": "192",
+      "fire": "193",
+      "other_emergency_services": "Federal highway police –191; Federal police –194; Civil police –197; State highway police –198; Civil defense –199; Municipal guard –153; Human rights –100; Emergency in Mercosul area –128.112and911redirect to190on mobile phones;188– Hotline Help."
+    },
+    "states": {}
+  },
+  "BS": {
+    "default": {},
+    "states": {}
+  },
+  "BT": {
+    "default": {
+      "police": "113",
+      "ambulance": "112",
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "BV": {
+    "default": {},
+    "states": {}
+  },
+  "BW": {
+    "default": {
+      "police": "999",
+      "ambulance": "997",
+      "fire": "998",
+      "other_emergency_services": "Mobile phones –112."
+    },
+    "states": {}
+  },
+  "BY": {
+    "default": {
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "other_emergency_services": "Gas emergency –104."
+    },
+    "states": {}
+  },
+  "BZ": {
+    "default": {},
+    "states": {}
+  },
+  "CA": {
+    "default": {},
+    "states": {}
+  },
+  "CC": {
+    "default": {},
+    "states": {}
+  },
+  "CD": {
+    "default": {
+      "police": "112",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CF": {
+    "default": {
+      "police": "117",
+      "ambulance": "1220",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CG": {
+    "default": {
+      "police": "117",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "CH": {
+    "default": {
+      "police": "117",
+      "ambulance": "144",
+      "fire": "118",
+      "other_emergency_services": "Poison control –145; Road help –0800 140 140; Psychological support –143; Psychological support for teens and children –147;Regaair rescue –1414or by radio on 161.300 MHz;Air Glaciersair-rescue (Valaisonly) –1415.The emergency number112is used differently based on theCanton. While in some cantons 112, 117, 118 and 114 are routed to a common emergency call center, in other cantons 112 together with 117 is directly routed to the police."
+    },
+    "states": {}
+  },
+  "CI": {
+    "default": {},
+    "states": {}
+  },
+  "CK": {
+    "default": {},
+    "states": {}
+  },
+  "CL": {
+    "default": {
+      "police": "133",
+      "ambulance": "131",
+      "fire": "132",
+      "other_emergency_services": "Useful mnemonic isABC123:Ambulancia (Ambulance) – 131,Bomberos (Fire) – 132,Carabineros (Police) – 133.911and112redirect to133."
+    },
+    "states": {}
+  },
+  "CM": {
+    "default": {},
+    "states": {}
+  },
+  "CN": {
+    "default": {
+      "police": "110",
+      "ambulance": "120",
+      "fire": "119",
+      "other_emergency_services": "Traffic accident reports –122"
+    },
+    "states": {}
+  },
+  "CO": {
+    "default": {},
+    "states": {}
+  },
+  "CR": {
+    "default": {},
+    "states": {}
+  },
+  "CU": {
+    "default": {
+      "police": "106",
+      "ambulance": "104",
+      "fire": "105"
+    },
+    "states": {}
+  },
+  "CV": {
+    "default": {},
+    "states": {}
+  },
+  "CW": {
+    "default": {},
+    "states": {}
+  },
+  "CX": {
+    "default": {},
+    "states": {}
+  },
+  "CY": {
+    "default": {},
+    "states": {}
+  },
+  "CZ": {
+    "default": {
+      "police": "112or158",
+      "ambulance": "112or155",
+      "fire": "112or150",
+      "other_emergency_services": "Municipal police –156."
+    },
+    "states": {}
+  },
+  "DE": {
+    "default": {},
+    "states": {}
+  },
+  "DJ": {
+    "default": {
+      "police": "17",
+      "ambulance": "19",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "DK": {
+    "default": {},
+    "states": {}
+  },
+  "DM": {
+    "default": {},
+    "states": {}
+  },
+  "DO": {
+    "default": {},
+    "states": {}
+  },
+  "DZ": {
+    "default": {},
+    "states": {}
+  },
+  "EC": {
+    "default": {},
+    "states": {}
+  },
+  "EE": {
+    "default": {},
+    "states": {}
+  },
+  "EG": {
+    "default": {
+      "police": "112or122",
+      "ambulance": "123",
+      "fire": "180",
+      "other_emergency_services": "Tourist police –126; Traffic police –128; Electricity emergency –121; Gas emergency –129; Mobile phones –112."
+    },
+    "states": {}
+  },
+  "EH": {
+    "default": {},
+    "states": {}
+  },
+  "ER": {
+    "default": {
+      "police": "113",
+      "ambulance": "114",
+      "fire": "116"
+    },
+    "states": {}
+  },
+  "ES": {
+    "default": {},
+    "states": {}
+  },
+  "ET": {
+    "default": {},
+    "states": {}
+  },
+  "FI": {
+    "default": {},
+    "states": {}
+  },
+  "FJ": {
+    "default": {},
+    "states": {}
+  },
+  "FK": {
+    "default": {},
+    "states": {}
+  },
+  "FM": {
+    "default": {},
+    "states": {}
+  },
+  "FO": {
+    "default": {},
+    "states": {}
+  },
+  "FR": {
+    "default": {
+      "police": "112or17",
+      "ambulance": "112or15",
+      "fire": "112or18",
+      "other_emergency_services": "Deaf FAX/SMS –114; Hotline for beaten children –119; Missing children –116 000; Maritime rescue –196."
+    },
+    "states": {}
+  },
+  "GA": {
+    "default": {
+      "police": "1730",
+      "ambulance": "1300",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "GB": {
+    "default": {},
+    "states": {}
+  },
+  "GD": {
+    "default": {},
+    "states": {}
+  },
+  "GE": {
+    "default": {},
+    "states": {}
+  },
+  "GF": {
+    "default": {},
+    "states": {}
+  },
+  "GG": {
+    "default": {},
+    "states": {}
+  },
+  "GH": {
+    "default": {},
+    "states": {}
+  },
+  "GI": {
+    "default": {},
+    "states": {}
+  },
+  "GL": {
+    "default": {},
+    "states": {}
+  },
+  "GM": {
+    "default": {
+      "police": "117",
+      "ambulance": "116",
+      "fire": "118",
+      "other_emergency_services": "Police –112; Electricity emergency –124; Water emergency –125."
+    },
+    "states": {}
+  },
+  "GN": {
+    "default": {
+      "police": "117",
+      "ambulance": "18",
+      "fire": "442-020",
+      "other_emergency_services": "Maritime Emergency Service –19; Gendarmerie –118; National Gendarmerie –122"
+    },
+    "states": {}
+  },
+  "GP": {
+    "default": {},
+    "states": {}
+  },
+  "GQ": {
+    "default": {
+      "police": "114",
+      "ambulance": "115",
+      "fire": "112",
+      "other_emergency_services": "Traffic police –116."
+    },
+    "states": {}
+  },
+  "GR": {
+    "default": {
+      "police": "100",
+      "ambulance": "166",
+      "fire": "199",
+      "other_emergency_services": "General emergencies –112; Forest fire –1591;Coast guard–108; Counter-narcotics –109; Tourist police –171; Social aid –197."
+    },
+    "states": {}
+  },
+  "GS": {
+    "default": {},
+    "states": {}
+  },
+  "GT": {
+    "default": {
+      "police": "110",
+      "ambulance": "128",
+      "fire": "122",
+      "other_emergency_services": "Police –120; Fire –123."
+    },
+    "states": {}
+  },
+  "GU": {
+    "default": {},
+    "states": {}
+  },
+  "GW": {
+    "default": {},
+    "states": {}
+  },
+  "GY": {
+    "default": {
+      "police": "911",
+      "ambulance": "913",
+      "fire": "912",
+      "other_emergency_services": "Childcare Protection Agency –227-0979; Human Trafficking –227-4083, 623-5030; Domestic Violence –914."
+    },
+    "states": {}
+  },
+  "HK": {
+    "default": {},
+    "states": {}
+  },
+  "HM": {
+    "default": {},
+    "states": {}
+  },
+  "HN": {
+    "default": {
+      "police": "911",
+      "ambulance": "195",
+      "fire": "198"
+    },
+    "states": {}
+  },
+  "HR": {
+    "default": {
+      "police": "112 or 192",
+      "ambulance": "112 or 194",
+      "fire": "112 or 193",
+      "other_emergency_services": "Search and rescue at sea –112 or 195;Road help–1987."
+    },
+    "states": {}
+  },
+  "HT": {
+    "default": {
+      "police": "114",
+      "ambulance": "116",
+      "fire": "115",
+      "other_emergency_services": "Police –122."
+    },
+    "states": {}
+  },
+  "HU": {
+    "default": {
+      "police": "112or107",
+      "ambulance": "112or104",
+      "fire": "112or105",
+      "other_emergency_services": "Water emergency –1817."
+    },
+    "states": {}
+  },
+  "ID": {
+    "default": {},
+    "states": {}
+  },
+  "IE": {
+    "default": {},
+    "states": {}
+  },
+  "IL": {
+    "default": {
+      "police": "100",
+      "ambulance": "101",
+      "fire": "102",
+      "other_emergency_services": "Israel Electric Corporation–103;Home Front Command–104; Online child abuse hotline –105; Non-emergency municipal hazards –106; Non-emergency police inquiries –110; Mobile phones –112."
+    },
+    "states": {}
+  },
+  "IM": {
+    "default": {},
+    "states": {}
+  },
+  "IN": {
+    "default": {},
+    "states": {}
+  },
+  "IO": {
+    "default": {},
+    "states": {}
+  },
+  "IQ": {
+    "default": {},
+    "states": {}
+  },
+  "IR": {
+    "default": {
+      "police": "110",
+      "ambulance": "115",
+      "fire": "125",
+      "other_emergency_services": "General emergencies is also110. Social Emergency –123; Roads Traffic Information Center –141; Iranian Red Crescent –112(non-mobile phones).112and911redirect to110on mobile phones."
+    },
+    "states": {}
+  },
+  "IS": {
+    "default": {},
+    "states": {}
+  },
+  "IT": {
+    "default": {},
+    "states": {}
+  },
+  "JE": {
+    "default": {},
+    "states": {}
+  },
+  "JM": {
+    "default": {},
+    "states": {}
+  },
+  "JO": {
+    "default": {},
+    "states": {}
+  },
+  "JP": {
+    "default": {},
+    "states": {}
+  },
+  "KE": {
+    "default": {},
+    "states": {}
+  },
+  "KG": {
+    "default": {},
+    "states": {}
+  },
+  "KH": {
+    "default": {
+      "police": "117",
+      "ambulance": "119",
+      "fire": "118",
+      "other_emergency_services": "Child helpline –1280"
+    },
+    "states": {}
+  },
+  "KI": {
+    "default": {},
+    "states": {}
+  },
+  "KM": {
+    "default": {
+      "police": "17",
+      "ambulance": "772-03-73",
+      "fire": "18",
+      "other_emergency_services": "Ambulance –773-26-04."
+    },
+    "states": {}
+  },
+  "KN": {
+    "default": {},
+    "states": {}
+  },
+  "KP": {
+    "default": {},
+    "states": {}
+  },
+  "KR": {
+    "default": {},
+    "states": {}
+  },
+  "KW": {
+    "default": {},
+    "states": {}
+  },
+  "KY": {
+    "default": {},
+    "states": {}
+  },
+  "KZ": {
+    "default": {},
+    "states": {}
+  },
+  "LA": {
+    "default": {
+      "police": "191",
+      "ambulance": "195",
+      "fire": "190"
+    },
+    "states": {}
+  },
+  "LB": {
+    "default": {
+      "police": "999or112",
+      "ambulance": "140",
+      "fire": "175",
+      "other_emergency_services": "Police –160; Civil defense –125."
+    },
+    "states": {}
+  },
+  "LC": {
+    "default": {},
+    "states": {}
+  },
+  "LI": {
+    "default": {
+      "police": "117",
+      "ambulance": "144",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "LK": {
+    "default": {},
+    "states": {}
+  },
+  "LR": {
+    "default": {},
+    "states": {}
+  },
+  "LS": {
+    "default": {
+      "police": "123",
+      "ambulance": "121",
+      "fire": "122"
+    },
+    "states": {}
+  },
+  "LT": {
+    "default": {},
+    "states": {}
+  },
+  "LU": {
+    "default": {},
+    "states": {}
+  },
+  "LV": {
+    "default": {},
+    "states": {}
+  },
+  "LY": {
+    "default": {},
+    "states": {}
+  },
+  "MA": {
+    "default": {},
+    "states": {}
+  },
+  "MC": {
+    "default": {
+      "police": "17",
+      "ambulance": "112or15",
+      "fire": "112or18",
+      "other_emergency_services": "112 15 and 18 redirects to fire brigade15 only works with a mobile phone and not with landlines"
+    },
+    "states": {}
+  },
+  "MD": {
+    "default": {},
+    "states": {}
+  },
+  "ME": {
+    "default": {
+      "police": "122or112",
+      "ambulance": "124or112",
+      "fire": "123or112",
+      "other_emergency_services": "Emergency at sea:129"
+    },
+    "states": {}
+  },
+  "MF": {
+    "default": {},
+    "states": {}
+  },
+  "MG": {
+    "default": {
+      "police": "117",
+      "ambulance": "124",
+      "fire": "118",
+      "other_emergency_services": "Traffic police –3600."
+    },
+    "states": {}
+  },
+  "MH": {
+    "default": {},
+    "states": {}
+  },
+  "MK": {
+    "default": {
+      "police": "192or112[b]",
+      "ambulance": "194or112[b]",
+      "fire": "193or112[b]",
+      "other_emergency_services": "Police –192; Ambulance –194; Fire –193."
+    },
+    "states": {}
+  },
+  "ML": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18",
+      "other_emergency_services": "Ambulance –112, Fire –112."
+    },
+    "states": {}
+  },
+  "MM": {
+    "default": {},
+    "states": {}
+  },
+  "MN": {
+    "default": {},
+    "states": {}
+  },
+  "MO": {
+    "default": {},
+    "states": {}
+  },
+  "MP": {
+    "default": {},
+    "states": {}
+  },
+  "MQ": {
+    "default": {},
+    "states": {}
+  },
+  "MR": {
+    "default": {
+      "police": "117",
+      "ambulance": "101",
+      "fire": "118",
+      "other_emergency_services": "Gendarmerie –116; Traffic police –119."
+    },
+    "states": {}
+  },
+  "MS": {
+    "default": {},
+    "states": {}
+  },
+  "MT": {
+    "default": {},
+    "states": {}
+  },
+  "MU": {
+    "default": {
+      "police": "112",
+      "ambulance": "114",
+      "fire": "115",
+      "other_emergency_services": "Police –999; Fire –995."
+    },
+    "states": {}
+  },
+  "MV": {
+    "default": {
+      "police": "119",
+      "ambulance": "100",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "MW": {
+    "default": {
+      "police": "997",
+      "ambulance": "998",
+      "fire": "999",
+      "other_emergency_services": "Police –990."
+    },
+    "states": {}
+  },
+  "MX": {
+    "default": {},
+    "states": {}
+  },
+  "MY": {
+    "default": {},
+    "states": {}
+  },
+  "MZ": {
+    "default": {
+      "police": "119",
+      "ambulance": "117",
+      "fire": "198"
+    },
+    "states": {}
+  },
+  "NA": {
+    "default": {
+      "police": "10 111",
+      "ambulance": "depending on town/city",
+      "fire": "depending on town/city"
+    },
+    "states": {}
+  },
+  "NC": {
+    "default": {},
+    "states": {}
+  },
+  "NE": {
+    "default": {
+      "police": "17",
+      "ambulance": "15",
+      "fire": "18"
+    },
+    "states": {}
+  },
+  "NF": {
+    "default": {},
+    "states": {}
+  },
+  "NG": {
+    "default": {},
+    "states": {}
+  },
+  "NI": {
+    "default": {
+      "police": "118",
+      "ambulance": "128",
+      "fire": "115",
+      "other_emergency_services": "Fire –911."
+    },
+    "states": {}
+  },
+  "NL": {
+    "default": {},
+    "states": {}
+  },
+  "NO": {
+    "default": {
+      "police": "112",
+      "ambulance": "113",
+      "fire": "110",
+      "other_emergency_services": "Emergency at sea:120; non-emergency police:02 800;child abuse and family violence:116 111; text phone:1412;nearest health care outside office hours:116 117;911redirects to112."
+    },
+    "states": {}
+  },
+  "NP": {
+    "default": {
+      "police": "100",
+      "ambulance": "102",
+      "fire": "101",
+      "other_emergency_services": "Traffic police –103; From mobile phones –112."
+    },
+    "states": {}
+  },
+  "NR": {
+    "default": {
+      "police": "110",
+      "ambulance": "111",
+      "fire": "112"
+    },
+    "states": {}
+  },
+  "NU": {
+    "default": {
+      "police": "(+683) 4333",
+      "ambulance": "(+683) 4202",
+      "fire": "(+683) 4133"
+    },
+    "states": {}
+  },
+  "NZ": {
+    "default": {},
+    "states": {}
+  },
+  "OM": {
+    "default": {},
+    "states": {}
+  },
+  "PA": {
+    "default": {},
+    "states": {}
+  },
+  "PE": {
+    "default": {},
+    "states": {}
+  },
+  "PF": {
+    "default": {},
+    "states": {}
+  },
+  "PG": {
+    "default": {
+      "police": "112",
+      "ambulance": "111",
+      "fire": "110"
+    },
+    "states": {}
+  },
+  "PH": {
+    "default": {},
+    "states": {}
+  },
+  "PK": {
+    "default": {
+      "police": "15",
+      "ambulance": "115and1122",
+      "fire": "16",
+      "other_emergency_services": "Ambulance –1122;Traffic police –1915; Mobile phones –112;PunjabWomen's toll free helpline –1043;Tourist police –1422;National Highways & Motorway Police –130;Child Protection & Welfare Bureau –1121."
+    },
+    "states": {}
+  },
+  "PL": {
+    "default": {
+      "police": "997 or 112",
+      "ambulance": "999 or 112",
+      "fire": "998 or 112",
+      "other_emergency_services": "Road help –981, Elevator emergency –982, Veterinary emergency –983, Rescue on lakes and rivers –984or+48 601 100 100, Sea and mountain rescue –985or+48 601 100 300,Municipal police (where operating) –986, Crisis Management Centre (focus depends on voivodeship) –987, Electricity emergency –991, Gas emergency –992, Heat engineering emergency –993, Water emergency –994, Child alert (operated by Police) –995, Counterterrorism emergency –996, Missing children (EU hotline) –116 000Warsaw additionally maintains some local emergency numbers.911redirects to112."
+    },
+    "states": {}
+  },
+  "PM": {
+    "default": {},
+    "states": {}
+  },
+  "PN": {
+    "default": {},
+    "states": {}
+  },
+  "PR": {
+    "default": {},
+    "states": {}
+  },
+  "PS": {
+    "default": {
+      "police": "100",
+      "ambulance": "101",
+      "fire": "102"
+    },
+    "states": {}
+  },
+  "PT": {
+    "default": {},
+    "states": {}
+  },
+  "PW": {
+    "default": {},
+    "states": {}
+  },
+  "PY": {
+    "default": {},
+    "states": {}
+  },
+  "QA": {
+    "default": {},
+    "states": {}
+  },
+  "RE": {
+    "default": {},
+    "states": {}
+  },
+  "RO": {
+    "default": {},
+    "states": {}
+  },
+  "RS": {
+    "default": {
+      "police": "192or112",
+      "ambulance": "194",
+      "fire": "193",
+      "other_emergency_services": "Civil protection –1985;112redirects to192. It is possible to dial 112 and get direct connection with the emergency services by pressing 1 for police, 2 for ambulance and 3 for fire on Vip operator mobile phones."
+    },
+    "states": {}
+  },
+  "RU": {
+    "default": {
+      "police": "102or112",
+      "ambulance": "103or112",
+      "fire": "101or112",
+      "other_emergency_services": "Gas emergency –104;112came into effect (for any emergency) in 2013"
+    },
+    "states": {}
+  },
+  "RW": {
+    "default": {
+      "police": "112",
+      "ambulance": "912",
+      "fire": "112",
+      "other_emergency_services": "Traffic police –113."
+    },
+    "states": {}
+  },
+  "SA": {
+    "default": {},
+    "states": {}
+  },
+  "SB": {
+    "default": {},
+    "states": {}
+  },
+  "SC": {
+    "default": {},
+    "states": {}
+  },
+  "SD": {
+    "default": {},
+    "states": {}
+  },
+  "SE": {
+    "default": {},
+    "states": {}
+  },
+  "SG": {
+    "default": {},
+    "states": {}
+  },
+  "SH": {
+    "default": {},
+    "states": {}
+  },
+  "SI": {
+    "default": {},
+    "states": {}
+  },
+  "SJ": {
+    "default": {},
+    "states": {}
+  },
+  "SK": {
+    "default": {
+      "police": "158",
+      "ambulance": "155",
+      "fire": "150",
+      "other_emergency_services": "Municipal police –159."
+    },
+    "states": {}
+  },
+  "SL": {
+    "default": {},
+    "states": {}
+  },
+  "SM": {
+    "default": {
+      "police": "113",
+      "ambulance": "118",
+      "fire": "115"
+    },
+    "states": {}
+  },
+  "SN": {
+    "default": {
+      "police": "17",
+      "ambulance": "18",
+      "fire": "1515"
+    },
+    "states": {}
+  },
+  "SO": {
+    "default": {
+      "police": "888",
+      "ambulance": "999",
+      "fire": "555",
+      "other_emergency_services": "Traffic police –777."
+    },
+    "states": {}
+  },
+  "SR": {
+    "default": {},
+    "states": {}
+  },
+  "SS": {
+    "default": {},
+    "states": {}
+  },
+  "ST": {
+    "default": {},
+    "states": {}
+  },
+  "SV": {
+    "default": {
+      "police": "911",
+      "ambulance": "132",
+      "fire": "913"
+    },
+    "states": {}
+  },
+  "SX": {
+    "default": {},
+    "states": {}
+  },
+  "SY": {
+    "default": {
+      "police": "112",
+      "ambulance": "110",
+      "fire": "113",
+      "other_emergency_services": "Traffic police –115."
+    },
+    "states": {}
+  },
+  "SZ": {
+    "default": {
+      "police": "999",
+      "ambulance": "977",
+      "fire": "933"
+    },
+    "states": {}
+  },
+  "TC": {
+    "default": {},
+    "states": {}
+  },
+  "TD": {
+    "default": {
+      "police": "17",
+      "ambulance": "2251-4242",
+      "fire": "18",
+      "other_emergency_services": "Ambulance –2251-1237."
+    },
+    "states": {}
+  },
+  "TF": {
+    "default": {},
+    "states": {}
+  },
+  "TG": {
+    "default": {
+      "police": "117",
+      "ambulance": "8200",
+      "fire": "118"
+    },
+    "states": {}
+  },
+  "TH": {
+    "default": {
+      "police": "191",
+      "ambulance": "1669",
+      "fire": "199",
+      "other_emergency_services": "191will be used as the only national emergency number in the future.Ambulance (Bangkok only) –1646; Tourist police –1155; Traffic control center (Bangkok Metro only) –1197; Highway patrol –1193; Mobile Phones –112."
+    },
+    "states": {}
+  },
+  "TJ": {
+    "default": {},
+    "states": {}
+  },
+  "TK": {
+    "default": {
+      "police": "(+690) 2116",
+      "ambulance": "(+690) 2112"
+    },
+    "states": {}
+  },
+  "TL": {
+    "default": {},
+    "states": {}
+  },
+  "TM": {
+    "default": {},
+    "states": {}
+  },
+  "TN": {
+    "default": {
+      "police": "197",
+      "ambulance": "190",
+      "fire": "198",
+      "other_emergency_services": "National guard –193."
+    },
+    "states": {}
+  },
+  "TO": {
+    "default": {},
+    "states": {}
+  },
+  "TR": {
+    "default": {},
+    "states": {}
+  },
+  "TT": {
+    "default": {
+      "police": "999or911",
+      "ambulance": "811",
+      "fire": "990"
+    },
+    "states": {}
+  },
+  "TV": {
+    "default": {},
+    "states": {}
+  },
+  "TW": {
+    "default": {},
+    "states": {}
+  },
+  "TZ": {
+    "default": {
+      "police": "112",
+      "ambulance": "114",
+      "fire": "115",
+      "other_emergency_services": "Police –999."
+    },
+    "states": {}
+  },
+  "UA": {
+    "default": {
+      "police": "102",
+      "ambulance": "103",
+      "fire": "101",
+      "other_emergency_services": "General emergencies –112;Gas emergency –104."
+    },
+    "states": {}
+  },
+  "UG": {
+    "default": {
+      "police": "112",
+      "ambulance": "911",
+      "fire": "112",
+      "other_emergency_services": "Police –999; Fire –999."
+    },
+    "states": {}
+  },
+  "UM": {
+    "default": {},
+    "states": {}
+  },
+  "US": {
+    "default": {},
+    "states": {}
+  },
+  "UY": {
+    "default": {},
+    "states": {}
+  },
+  "UZ": {
+    "default": {
+      "police": "102",
+      "ambulance": "101",
+      "fire": "103",
+      "other_emergency_services": "Emergency service –1050; Gas leaks –104; Housing and communal services –1055.112is slated to become the number for all emergencies on 1 January 2024 in Tashkent and in all Uzbekistan by the end of 2024."
+    },
+    "states": {}
+  },
+  "VA": {
+    "default": {},
+    "states": {}
+  },
+  "VC": {
+    "default": {},
+    "states": {}
+  },
+  "VE": {
+    "default": {},
+    "states": {}
+  },
+  "VG": {
+    "default": {},
+    "states": {}
+  },
+  "VI": {
+    "default": {},
+    "states": {}
+  },
+  "VN": {
+    "default": {
+      "police": "113",
+      "ambulance": "115",
+      "fire": "114",
+      "other_emergency_services": "111– Child abuse"
+    },
+    "states": {}
+  },
+  "VU": {
+    "default": {
+      "police": "111",
+      "ambulance": "112",
+      "fire": "113"
+    },
+    "states": {}
+  },
+  "WF": {
+    "default": {},
+    "states": {}
+  },
+  "WS": {
+    "default": {},
+    "states": {}
+  },
+  "YE": {
+    "default": {},
+    "states": {}
+  },
+  "YT": {
+    "default": {},
+    "states": {}
+  },
+  "ZA": {
+    "default": {},
+    "states": {}
+  },
+  "ZM": {
+    "default": {},
+    "states": {}
+  },
+  "ZW": {
+    "default": {},
+    "states": {}
+  }
+}
