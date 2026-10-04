@@ -4,11 +4,13 @@ from datetime import datetime, timedelta
 from src.models.fraud_requests import FraudRequests
 from src import config
 from src.translation.lang_detection import translate_to_english
+from src.organization_analytics import organization_analytics
 
 app = Flask(__name__)
 
 app.config.from_object(config)
 db.init_app(app)
+app.register_blueprint(organization_analytics)
 
 with app.app_context():
         db.create_all()
@@ -82,5 +84,5 @@ def translate_request_content():
     return jsonify(response), 200
 
 # Run the application
-if __name__ in "main":
+if __name__ == "__main__":
     app.run(debug=True)
