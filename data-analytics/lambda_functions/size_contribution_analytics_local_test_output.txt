@@ -1,0 +1,762 @@
+
+===== No body =====
+Event: {}
+Status: 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 2
+      },
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 4
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 4,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 4,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 8
+      },
+      {
+        "size": "medium",
+        "count": 6
+      },
+      {
+        "size": "large",
+        "count": 5
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 10,
+        "percentage": 52.6
+      },
+      {
+        "type": "Contributor",
+        "count": 10,
+        "percentage": 52.6
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 10
+      },
+      {
+        "size": "medium",
+        "count": 7
+      },
+      {
+        "size": "large",
+        "count": 6
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 12,
+        "percentage": 52.2
+      },
+      {
+        "type": "Contributor",
+        "count": 12,
+        "percentage": 52.2
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [No body]: PASS
+
+===== Country filter (USA) =====
+Event: {"country": "USA"}
+Status: 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 0,
+        "percentage": 0.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 4
+      },
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 33.3
+      },
+      {
+        "type": "Contributor",
+        "count": 3,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 6
+      },
+      {
+        "size": "medium",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 5,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 6,
+        "percentage": 60.0
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 6
+      },
+      {
+        "size": "medium",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 5,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 6,
+        "percentage": 60.0
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [Country filter (USA)]: PASS
+
+===== Organization type filter (non_profit) =====
+Event: {"organization_type": "non_profit"}
+Status: 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 0,
+        "percentage": 0.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 6
+      },
+      {
+        "size": "medium",
+        "count": 4
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 6,
+        "percentage": 54.5
+      },
+      {
+        "type": "Contributor",
+        "count": 5,
+        "percentage": 45.5
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 8
+      },
+      {
+        "size": "medium",
+        "count": 4
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 8,
+        "percentage": 61.5
+      },
+      {
+        "type": "Contributor",
+        "count": 6,
+        "percentage": 46.2
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [Organization type filter (non_profit)]: PASS
+
+===== Organization type filter (for_profit) =====
+Event: {"organization_type": "for_profit"}
+Status: 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 100.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 2
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 4
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 4,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 5,
+        "percentage": 62.5
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 2
+      },
+      {
+        "size": "medium",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 5
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 4,
+        "percentage": 40.0
+      },
+      {
+        "type": "Contributor",
+        "count": 6,
+        "percentage": 60.0
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [Organization type filter (for_profit)]: PASS
+
+===== Size Custom range only =====
+Event: {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30"}
+Status: 200
+{
+  "Custom": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [Size Custom range only]: PASS
+
+===== Contribution Custom range only =====
+Event: {"contribution_start_date": "2025-01-01", "contribution_end_date": "2025-12-31"}
+Status: 200
+{
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 3,
+        "percentage": 60.0
+      },
+      {
+        "type": "Contributor",
+        "count": 3,
+        "percentage": 60.0
+      }
+    ]
+  }
+}
+Sanity check [Contribution Custom range only]: PASS
+
+===== Both Custom ranges together =====
+Event: {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30", "contribution_start_date": "2025-01-01", "contribution_end_date": "2025-12-31"}
+Status: 200
+{
+  "Custom": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 3,
+        "percentage": 60.0
+      },
+      {
+        "type": "Contributor",
+        "count": 3,
+        "percentage": 60.0
+      }
+    ]
+  }
+}
+Sanity check [Both Custom ranges together]: PASS
+
+===== Both Custom ranges + country + organization_type =====
+Event: {"country": "USA", "organization_type": "non_profit", "size_start_date": "2026-01-01", "size_end_date": "2026-06-30", "contribution_start_date": "2025-01-01", "contribution_end_date": "2026-12-31"}
+Status: 200
+{
+  "Custom": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 5,
+        "percentage": 71.4
+      },
+      {
+        "type": "Contributor",
+        "count": 4,
+        "percentage": 57.1
+      }
+    ]
+  }
+}
+Sanity check [Both Custom ranges + country + organization_type]: PASS
+
+===== Custom ranges with no organizations =====
+Event: {"size_start_date": "2000-01-01", "size_end_date": "2000-01-31", "contribution_start_date": "2000-01-01", "contribution_end_date": "2000-01-31"}
+Status: 200
+{
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [Custom ranges with no organizations]: PASS
+
+===== API Gateway-style event (JSON string body) =====
+Event: {"body": "{\"country\": \"ind\"}"}
+Status: 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "medium",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 1,
+        "percentage": 100.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 100.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "medium",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 1,
+        "percentage": 100.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 100.0
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 3,
+        "percentage": 60.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 40.0
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 3,
+        "percentage": 60.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 40.0
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+Sanity check [API Gateway-style event (JSON string body)]: PASS
+
+===== Missing half of size pair (expect 400) =====
+Event: {"size_start_date": "2026-01-01"}
+Status: 400
+{
+  "error": "Both size_start_date and size_end_date are required together"
+}
+Sanity check [Missing half of size pair]: PASS
+
+===== Missing half of contribution pair (expect 400) =====
+Event: {"contribution_end_date": "2025-12-31"}
+Status: 400
+{
+  "error": "Both contribution_start_date and contribution_end_date are required together"
+}
+Sanity check [Missing half of contribution pair]: PASS
+
+===== Bad size date format (expect 400) =====
+Event: {"size_start_date": "2026/01/01", "size_end_date": "2026-06-30"}
+Status: 400
+{
+  "error": "size_start_date must be a valid date in YYYY-MM-DD format, got '2026/01/01'"
+}
+Sanity check [Bad size date format]: PASS
+
+===== Impossible calendar date (expect 400) =====
+Event: {"contribution_start_date": "2025-02-30", "contribution_end_date": "2025-03-01"}
+Status: 400
+{
+  "error": "contribution_start_date must be a valid date in YYYY-MM-DD format, got '2025-02-30'"
+}
+Sanity check [Impossible calendar date]: PASS
+
+===== Size start after end (expect 400) =====
+Event: {"size_start_date": "2026-06-30", "size_end_date": "2026-01-01"}
+Status: 400
+{
+  "error": "size_start_date must not be after size_end_date"
+}
+Sanity check [Size start after end]: PASS
+
+===== Contribution start after end (size pair valid) (expect 400) =====
+Event: {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30", "contribution_start_date": "2025-12-31", "contribution_end_date": "2025-01-01"}
+Status: 400
+{
+  "error": "contribution_start_date must not be after contribution_end_date"
+}
+Sanity check [Contribution start after end (size pair valid)]: PASS
+
+===== Invalid organization_type (expect 400) =====
+Event: {"organization_type": "government"}
+Status: 400
+{
+  "error": "organization_type must be one of: non_profit, for_profit, ALL - got 'government'"
+}
+Sanity check [Invalid organization_type]: PASS
+
+===== Unknown country (expect 400) =====
+Event: {"country": "Atlantis"}
+Status: 400
+{
+  "error": "Unknown country: 'Atlantis'"
+}
+Sanity check [Unknown country]: PASS
