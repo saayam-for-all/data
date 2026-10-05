@@ -1,0 +1,28 @@
+$ python3 -m unittest -v test_rating_type_analytics
+test_rating_type_analytics (unittest.loader._FailedTest.test_rating_type_analytics) ... ERROR
+
+======================================================================
+ERROR: test_rating_type_analytics (unittest.loader._FailedTest.test_rating_type_analytics)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_rating_type_analytics
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/akashthota/Documents/saayam/data/data-analytics/lambda_functions/rating_type_analytics/test_rating_type_analytics.py", line 17, in <module>
+    import rating_type_analytics as rta  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/akashthota/Documents/saayam/data/data-analytics/lambda_functions/rating_type_analytics/rating_type_analytics.py", line 28, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+$ USE_MOCK_DATA=true python3 rating_type_analytics.py
+Traceback (most recent call last):
+  File "/Users/akashthota/Documents/saayam/data/data-analytics/lambda_functions/rating_type_analytics/rating_type_analytics.py", line 28, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
