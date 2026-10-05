@@ -315,7 +315,10 @@ def build_analytics(df, params):
 def lambda_handler(event, context):
     params = event
     if isinstance(event.get("body"), str):
-        params = json.loads(event["body"])
+        try:
+            params = json.loads(event["body"])
+        except json.JSONDecodeError:
+            return build_response(400, {"error": "request body is not valid JSON"})
 
     try:
         orgs, states, countries = load_data(get_mock_data_dir())
@@ -334,6 +337,7 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     sample_events = {
         "no body": {},
+        "malformed JSON body": {"body": "{not valid json"},
         "country filter": {"body": json.dumps({"country": "USA"})},
         "organization_type filter": {"body": json.dumps({"organization_type": "non_profit"})},
         "size range only": {
