@@ -1,0 +1,688 @@
+
+===== No body =====
+{
+  "statusCode": 200,
+  "body": {
+    "7D": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    },
+    "30D": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    },
+    "1Y": {
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 3
+        },
+        {
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "rating": 3,
+          "count": 1
+        },
+        {
+          "rating": 5,
+          "count": 2
+        }
+      ],
+      "organization_mix_trend": {
+        "non_profit": [
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 20
+          },
+          {
+            "period": "2026-01",
+            "count": 21
+          }
+        ],
+        "for_profit": [
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 19
+          }
+        ]
+      }
+    },
+    "All": {
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 5
+        },
+        {
+          "rating": 2,
+          "count": 9
+        },
+        {
+          "rating": 3,
+          "count": 10
+        },
+        {
+          "rating": 4,
+          "count": 4
+        },
+        {
+          "rating": 5,
+          "count": 12
+        }
+      ],
+      "organization_mix_trend": {
+        "non_profit": [
+          {
+            "period": "2023-09",
+            "count": 1
+          },
+          {
+            "period": "2023-11",
+            "count": 2
+          },
+          {
+            "period": "2023-12",
+            "count": 3
+          },
+          {
+            "period": "2024-04",
+            "count": 4
+          },
+          {
+            "period": "2024-06",
+            "count": 5
+          },
+          {
+            "period": "2024-09",
+            "count": 7
+          },
+          {
+            "period": "2024-11",
+            "count": 8
+          },
+          {
+            "period": "2024-12",
+            "count": 9
+          },
+          {
+            "period": "2025-01",
+            "count": 10
+          },
+          {
+            "period": "2025-06",
+            "count": 11
+          },
+          {
+            "period": "2025-08",
+            "count": 13
+          },
+          {
+            "period": "2025-09",
+            "count": 15
+          },
+          {
+            "period": "2025-10",
+            "count": 16
+          },
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 20
+          },
+          {
+            "period": "2026-01",
+            "count": 21
+          }
+        ],
+        "for_profit": [
+          {
+            "period": "2023-09",
+            "count": 1
+          },
+          {
+            "period": "2023-12",
+            "count": 2
+          },
+          {
+            "period": "2024-02",
+            "count": 4
+          },
+          {
+            "period": "2024-04",
+            "count": 5
+          },
+          {
+            "period": "2024-07",
+            "count": 7
+          },
+          {
+            "period": "2024-08",
+            "count": 9
+          },
+          {
+            "period": "2024-09",
+            "count": 10
+          },
+          {
+            "period": "2024-11",
+            "count": 11
+          },
+          {
+            "period": "2025-01",
+            "count": 13
+          },
+          {
+            "period": "2025-04",
+            "count": 14
+          },
+          {
+            "period": "2025-08",
+            "count": 16
+          },
+          {
+            "period": "2025-09",
+            "count": 17
+          },
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 19
+          }
+        ]
+      }
+    },
+    "Custom": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    }
+  }
+}
+
+===== Country filter =====
+{
+  "statusCode": 200,
+  "body": {
+    "7D": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    },
+    "30D": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    },
+    "1Y": {
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 3
+        },
+        {
+          "rating": 2,
+          "count": 1
+        },
+        {
+          "rating": 3,
+          "count": 1
+        },
+        {
+          "rating": 5,
+          "count": 2
+        }
+      ],
+      "organization_mix_trend": {
+        "non_profit": [
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 20
+          },
+          {
+            "period": "2026-01",
+            "count": 21
+          }
+        ],
+        "for_profit": [
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 19
+          }
+        ]
+      }
+    },
+    "All": {
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 5
+        },
+        {
+          "rating": 2,
+          "count": 9
+        },
+        {
+          "rating": 3,
+          "count": 10
+        },
+        {
+          "rating": 4,
+          "count": 4
+        },
+        {
+          "rating": 5,
+          "count": 12
+        }
+      ],
+      "organization_mix_trend": {
+        "non_profit": [
+          {
+            "period": "2023-09",
+            "count": 1
+          },
+          {
+            "period": "2023-11",
+            "count": 2
+          },
+          {
+            "period": "2023-12",
+            "count": 3
+          },
+          {
+            "period": "2024-04",
+            "count": 4
+          },
+          {
+            "period": "2024-06",
+            "count": 5
+          },
+          {
+            "period": "2024-09",
+            "count": 7
+          },
+          {
+            "period": "2024-11",
+            "count": 8
+          },
+          {
+            "period": "2024-12",
+            "count": 9
+          },
+          {
+            "period": "2025-01",
+            "count": 10
+          },
+          {
+            "period": "2025-06",
+            "count": 11
+          },
+          {
+            "period": "2025-08",
+            "count": 13
+          },
+          {
+            "period": "2025-09",
+            "count": 15
+          },
+          {
+            "period": "2025-10",
+            "count": 16
+          },
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 20
+          },
+          {
+            "period": "2026-01",
+            "count": 21
+          }
+        ],
+        "for_profit": [
+          {
+            "period": "2023-09",
+            "count": 1
+          },
+          {
+            "period": "2023-12",
+            "count": 2
+          },
+          {
+            "period": "2024-02",
+            "count": 4
+          },
+          {
+            "period": "2024-04",
+            "count": 5
+          },
+          {
+            "period": "2024-07",
+            "count": 7
+          },
+          {
+            "period": "2024-08",
+            "count": 9
+          },
+          {
+            "period": "2024-09",
+            "count": 10
+          },
+          {
+            "period": "2024-11",
+            "count": 11
+          },
+          {
+            "period": "2025-01",
+            "count": 13
+          },
+          {
+            "period": "2025-04",
+            "count": 14
+          },
+          {
+            "period": "2025-08",
+            "count": 16
+          },
+          {
+            "period": "2025-09",
+            "count": 17
+          },
+          {
+            "period": "2025-11",
+            "count": 18
+          },
+          {
+            "period": "2025-12",
+            "count": 19
+          }
+        ]
+      }
+    },
+    "Custom": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    }
+  }
+}
+
+===== Rating Custom only =====
+{
+  "statusCode": 200,
+  "body": {
+    "Custom": {
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 4
+        },
+        {
+          "rating": 2,
+          "count": 3
+        },
+        {
+          "rating": 3,
+          "count": 6
+        },
+        {
+          "rating": 4,
+          "count": 2
+        },
+        {
+          "rating": 5,
+          "count": 5
+        }
+      ],
+      "organization_mix_trend": {
+        "non_profit": [],
+        "for_profit": []
+      }
+    }
+  }
+}
+
+===== Type Custom only =====
+{
+  "statusCode": 200,
+  "body": {
+    "Custom": {
+      "rating_distribution": [],
+      "organization_mix_trend": {
+        "non_profit": [
+          {
+            "period": "2025-01-13",
+            "count": 10
+          },
+          {
+            "period": "2025-06-01",
+            "count": 11
+          },
+          {
+            "period": "2025-08-04",
+            "count": 12
+          },
+          {
+            "period": "2025-08-06",
+            "count": 13
+          },
+          {
+            "period": "2025-09-01",
+            "count": 14
+          },
+          {
+            "period": "2025-09-26",
+            "count": 15
+          },
+          {
+            "period": "2025-10-01",
+            "count": 16
+          },
+          {
+            "period": "2025-11-03",
+            "count": 17
+          },
+          {
+            "period": "2025-11-20",
+            "count": 18
+          },
+          {
+            "period": "2025-12-16",
+            "count": 19
+          },
+          {
+            "period": "2025-12-17",
+            "count": 20
+          },
+          {
+            "period": "2026-01-10",
+            "count": 21
+          }
+        ],
+        "for_profit": [
+          {
+            "period": "2025-01-05",
+            "count": 12
+          },
+          {
+            "period": "2025-01-08",
+            "count": 13
+          },
+          {
+            "period": "2025-04-05",
+            "count": 14
+          },
+          {
+            "period": "2025-08-01",
+            "count": 16
+          },
+          {
+            "period": "2025-09-03",
+            "count": 17
+          },
+          {
+            "period": "2025-11-28",
+            "count": 18
+          },
+          {
+            "period": "2025-12-19",
+            "count": 19
+          }
+        ]
+      }
+    }
+  }
+}
+
+===== Both Custom ranges =====
+{
+  "statusCode": 200,
+  "body": {
+    "Custom": {
+      "rating_distribution": [
+        {
+          "rating": 1,
+          "count": 4
+        },
+        {
+          "rating": 2,
+          "count": 3
+        },
+        {
+          "rating": 3,
+          "count": 6
+        },
+        {
+          "rating": 4,
+          "count": 2
+        },
+        {
+          "rating": 5,
+          "count": 5
+        }
+      ],
+      "organization_mix_trend": {
+        "non_profit": [
+          {
+            "period": "2025-01-13",
+            "count": 10
+          },
+          {
+            "period": "2025-06-01",
+            "count": 11
+          },
+          {
+            "period": "2025-08-04",
+            "count": 12
+          },
+          {
+            "period": "2025-08-06",
+            "count": 13
+          },
+          {
+            "period": "2025-09-01",
+            "count": 14
+          },
+          {
+            "period": "2025-09-26",
+            "count": 15
+          },
+          {
+            "period": "2025-10-01",
+            "count": 16
+          },
+          {
+            "period": "2025-11-03",
+            "count": 17
+          },
+          {
+            "period": "2025-11-20",
+            "count": 18
+          },
+          {
+            "period": "2025-12-16",
+            "count": 19
+          },
+          {
+            "period": "2025-12-17",
+            "count": 20
+          },
+          {
+            "period": "2026-01-10",
+            "count": 21
+          }
+        ],
+        "for_profit": [
+          {
+            "period": "2025-01-05",
+            "count": 12
+          },
+          {
+            "period": "2025-01-08",
+            "count": 13
+          },
+          {
+            "period": "2025-04-05",
+            "count": 14
+          },
+          {
+            "period": "2025-08-01",
+            "count": 16
+          },
+          {
+            "period": "2025-09-03",
+            "count": 17
+          },
+          {
+            "period": "2025-11-28",
+            "count": 18
+          },
+          {
+            "period": "2025-12-19",
+            "count": 19
+          }
+        ]
+      }
+    }
+  }
+}
