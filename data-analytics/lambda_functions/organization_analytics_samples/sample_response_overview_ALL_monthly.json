@@ -1,0 +1,382 @@
+{
+  "request": {
+    "dashboard_type": "overview",
+    "time_filter": "ALL",
+    "group_by": "monthly"
+  },
+  "statusCode": 200,
+  "response": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 40,
+        "non_profit_organizations": 21,
+        "for_profit_organizations": 19,
+        "collaborator_organizations": 21,
+        "non_collaborator_organizations": 19,
+        "contributor_organizations": 19,
+        "non_contributor_organizations": 21
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2023-09-01",
+          "new_organizations": 2,
+          "total_organizations": 2
+        },
+        {
+          "period": "2023-11-01",
+          "new_organizations": 1,
+          "total_organizations": 3
+        },
+        {
+          "period": "2023-12-01",
+          "new_organizations": 2,
+          "total_organizations": 5
+        },
+        {
+          "period": "2024-02-01",
+          "new_organizations": 2,
+          "total_organizations": 7
+        },
+        {
+          "period": "2024-04-01",
+          "new_organizations": 2,
+          "total_organizations": 9
+        },
+        {
+          "period": "2024-06-01",
+          "new_organizations": 1,
+          "total_organizations": 10
+        },
+        {
+          "period": "2024-07-01",
+          "new_organizations": 2,
+          "total_organizations": 12
+        },
+        {
+          "period": "2024-08-01",
+          "new_organizations": 2,
+          "total_organizations": 14
+        },
+        {
+          "period": "2024-09-01",
+          "new_organizations": 3,
+          "total_organizations": 17
+        },
+        {
+          "period": "2024-11-01",
+          "new_organizations": 2,
+          "total_organizations": 19
+        },
+        {
+          "period": "2024-12-01",
+          "new_organizations": 1,
+          "total_organizations": 20
+        },
+        {
+          "period": "2025-01-01",
+          "new_organizations": 3,
+          "total_organizations": 23
+        },
+        {
+          "period": "2025-04-01",
+          "new_organizations": 1,
+          "total_organizations": 24
+        },
+        {
+          "period": "2025-06-01",
+          "new_organizations": 1,
+          "total_organizations": 25
+        },
+        {
+          "period": "2025-08-01",
+          "new_organizations": 4,
+          "total_organizations": 29
+        },
+        {
+          "period": "2025-09-01",
+          "new_organizations": 3,
+          "total_organizations": 32
+        },
+        {
+          "period": "2025-10-01",
+          "new_organizations": 1,
+          "total_organizations": 33
+        },
+        {
+          "period": "2025-11-01",
+          "new_organizations": 3,
+          "total_organizations": 36
+        },
+        {
+          "period": "2025-12-01",
+          "new_organizations": 3,
+          "total_organizations": 39
+        },
+        {
+          "period": "2026-01-01",
+          "new_organizations": 1,
+          "total_organizations": 40
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "type": "non_profit",
+          "count": 21
+        },
+        {
+          "type": "for_profit",
+          "count": 19
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "size": "large",
+          "count": 21
+        },
+        {
+          "size": "small",
+          "count": 10
+        },
+        {
+          "size": "medium",
+          "count": 9
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state": "North Carolina",
+          "city": "Robinfort",
+          "count": 1
+        },
+        {
+          "state": "Arkansas",
+          "city": "Robertfort",
+          "count": 1
+        },
+        {
+          "state": "Alaska",
+          "city": "North Judithbury",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Victoriaport",
+          "count": 1
+        },
+        {
+          "state": "New Jersey",
+          "city": "South Williamton",
+          "count": 1
+        },
+        {
+          "state": "Alabama",
+          "city": "Smithberg",
+          "count": 1
+        },
+        {
+          "state": "California",
+          "city": "New Susanville",
+          "count": 1
+        },
+        {
+          "state": "Oklahoma",
+          "city": "Jeremyburgh",
+          "count": 1
+        },
+        {
+          "state": "Iowa",
+          "city": "Lake Debbie",
+          "count": 1
+        },
+        {
+          "state": "Rhode Island",
+          "city": "South Rachelborough",
+          "count": 1
+        },
+        {
+          "state": "Wyoming",
+          "city": "Kingborough",
+          "count": 1
+        },
+        {
+          "state": "Kansas",
+          "city": "Port Andrew",
+          "count": 1
+        },
+        {
+          "state": "Indiana",
+          "city": "South Monicamouth",
+          "count": 1
+        },
+        {
+          "state": "Iowa",
+          "city": "West Erik",
+          "count": 1
+        },
+        {
+          "state": "Rhode Island",
+          "city": "Mitchellside",
+          "count": 1
+        },
+        {
+          "state": "Oregon",
+          "city": "Johnberg",
+          "count": 1
+        },
+        {
+          "state": "Montana",
+          "city": "Wendyville",
+          "count": 1
+        },
+        {
+          "state": "Nevada",
+          "city": "Leehaven",
+          "count": 1
+        },
+        {
+          "state": "Virginia",
+          "city": "Sandrastad",
+          "count": 1
+        },
+        {
+          "state": "Florida",
+          "city": "West Amandastad",
+          "count": 1
+        },
+        {
+          "state": "Montana",
+          "city": "Williamview",
+          "count": 1
+        },
+        {
+          "state": "Washington",
+          "city": "Stephaniemouth",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Hortonberg",
+          "count": 1
+        },
+        {
+          "state": "Vermont",
+          "city": "Ortizmouth",
+          "count": 1
+        },
+        {
+          "state": "Florida",
+          "city": "North Jamesborough",
+          "count": 1
+        },
+        {
+          "state": "Michigan",
+          "city": "West Williamport",
+          "count": 1
+        },
+        {
+          "state": "Utah",
+          "city": "New Thomas",
+          "count": 1
+        },
+        {
+          "state": "Minnesota",
+          "city": "New Amyhaven",
+          "count": 1
+        },
+        {
+          "state": "Maine",
+          "city": "Martinezbury",
+          "count": 1
+        },
+        {
+          "state": "North Carolina",
+          "city": "Ronaldview",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "East Jenniferfort",
+          "count": 1
+        },
+        {
+          "state": "Arkansas",
+          "city": "East Amanda",
+          "count": 1
+        },
+        {
+          "state": "Missouri",
+          "city": "Lake Deniseville",
+          "count": 1
+        },
+        {
+          "state": "Wisconsin",
+          "city": "Thomasberg",
+          "count": 1
+        },
+        {
+          "state": "Ohio",
+          "city": "South Jeffrey",
+          "count": 1
+        },
+        {
+          "state": "Arizona",
+          "city": "Kyleborough",
+          "count": 1
+        },
+        {
+          "state": "Minnesota",
+          "city": "Lake Nancyview",
+          "count": 1
+        },
+        {
+          "state": "Nebraska",
+          "city": "Barkerfurt",
+          "count": 1
+        },
+        {
+          "state": "Kansas",
+          "city": "Burchborough",
+          "count": 1
+        },
+        {
+          "state": "Indiana",
+          "city": "North Donnaport",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "category": "collaborator",
+          "count": 21
+        },
+        {
+          "category": "non_collaborator",
+          "count": 19
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "category": "contributor",
+          "count": 19
+        },
+        {
+          "category": "non_contributor",
+          "count": 21
+        }
+      ]
+    },
+    "filters_applied": {
+      "time_filter": "ALL",
+      "start_date": null,
+      "end_date": null,
+      "org_type": null,
+      "org_size": null,
+      "state_id": null,
+      "city_name": null,
+      "org_rating": null,
+      "is_collaborator": null,
+      "is_contributor": null,
+      "group_by": "monthly"
+    }
+  }
+}
