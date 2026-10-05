@@ -17,6 +17,13 @@ def load_data():
     countries = pd.read_csv(os.path.join(MOCK_DATA_DIR, "countries.csv"))
 
     organizations["created_at"] = pd.to_datetime(organizations["created_at"])
+    organizations["org_type"] = (
+        organizations["org_type"]
+        .str.strip()
+        .str.lower()
+        .str.replace(" ", "_")
+        .str.replace("-", "_")
+    )
 
     merged = organizations.merge(states, on="state_id", how="left")
     merged = merged.merge(countries, on="country_id", how="left")
@@ -28,14 +35,21 @@ def get_bucket_range(bucket, now=None):
     if now is None:
         now = datetime.now()
 
+    now = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_today = now + timedelta(days=1) - timedelta(microseconds=1)
+
     if bucket == "7D":
-        return now - timedelta(days=6), now
+        return now - timedelta(days=6), end_of_today
     elif bucket == "30D":
-        return now - timedelta(days=29), now
+        return now - timedelta(days=29), end_of_today
     elif bucket == "1Y":
-        return now.replace(year=now.year - 1) + timedelta(days=1), now
+        try:
+            year_ago = now.replace(year=now.year - 1)
+        except ValueError:
+            year_ago = now.replace(year=now.year - 1, day=28)
+        return year_ago + timedelta(days=1), end_of_today
     elif bucket == "All":
-        return None, now
+        return None, end_of_today
     else:
         raise ValueError(f"get_bucket_range doesn't handle bucket: {bucket}")
 
@@ -102,6 +116,8 @@ def validate_date_range(start_str, end_str, start_field, end_field):
         return None, None, err
     if start_dt > end_dt:
         return None, None, f"{start_field} must be before {end_field}"
+
+    end_dt = end_dt + timedelta(days=1) - timedelta(microseconds=1)
     return start_dt, end_dt, None
 
 
@@ -122,54 +138,82 @@ def build_bucket(df, window_start, window_end, granularity):
 
 BUCKET_GRANULARITY = {"7D": "day", "30D": "day", "1Y": "month", "All": "month", "Custom": "day"}
 
+def parse_event_body(event):
+    if event is None:
+        return {}, None
+
+    if "body" in event:
+        body = event["body"]
+        if body is None:
+            return {}, None
+        if isinstance(body, dict):
+            return body, None
+        try:
+            parsed = json.loads(body)
+            if not isinstance(parsed, dict):
+                return {}, "Request body must be a JSON object"
+            return parsed, None
+        except (json.JSONDecodeError, TypeError):
+            return {}, "Malformed JSON in request body"
+
+    return event, None
 
 def lambda_handler(event, context):
-    df = load_data()
-    df = apply_filters(df, event.get("country"))
+    event, parse_err = parse_event_body(event)
+    if parse_err:
+        return build_response(400, {"error": parse_err})
 
-    rating_start, rating_end, rating_err = validate_date_range(
-        event.get("rating_start_date"), event.get("rating_end_date"),
-        "rating_start_date", "rating_end_date"
-    )
-    if rating_err:
-        return build_response(400, {"error": rating_err})
+    try:
+        df = load_data()
+        df = apply_filters(df, event.get("country"))
 
-    type_start, type_end, type_err = validate_date_range(
-        event.get("type_start_date"), event.get("type_end_date"),
-        "type_start_date", "type_end_date"
-    )
-    if type_err:
-        return build_response(400, {"error": type_err})
+        rating_start, rating_end, rating_err = validate_date_range(
+            event.get("rating_start_date"), event.get("rating_end_date"),
+            "rating_start_date", "rating_end_date"
+        )
+        if rating_err:
+            return build_response(400, {"error": rating_err})
 
-    custom_requested = rating_start is not None or type_start is not None
+        type_start, type_end, type_err = validate_date_range(
+            event.get("type_start_date"), event.get("type_end_date"),
+            "type_start_date", "type_end_date"
+        )
+        if type_err:
+            return build_response(400, {"error": type_err})
 
-    if custom_requested:
-        rating_dist = []
-        if rating_start is not None:
-            rating_dist = compute_rating_distribution(df, rating_start, rating_end)
+        custom_requested = rating_start is not None or type_start is not None
 
-        mix_trend = {"non_profit": [], "for_profit": []}
-        if type_start is not None:
-            mix_trend = compute_organization_mix_trend(df, type_start, type_end, "day")
+        if custom_requested:
+            rating_dist = []
+            if rating_start is not None:
+                rating_dist = compute_rating_distribution(df, rating_start, rating_end)
 
-        return build_response(200, {
-            "Custom": {
-                "rating_distribution": rating_dist,
-                "organization_mix_trend": mix_trend,
-            }
-        })
+            mix_trend = {"non_profit": [], "for_profit": []}
+            if type_start is not None:
+                mix_trend = compute_organization_mix_trend(df, type_start, type_end, "day")
 
-    response_body = {}
-    for bucket in ["7D", "30D", "1Y", "All"]:
-        window_start, window_end = get_bucket_range(bucket)
-        response_body[bucket] = build_bucket(df, window_start, window_end, BUCKET_GRANULARITY[bucket])
+            return build_response(200, {
+                "Custom": {
+                    "rating_distribution": rating_dist,
+                    "organization_mix_trend": mix_trend,
+                }
+            })
 
-    response_body["Custom"] = {
-        "rating_distribution": [],
-        "organization_mix_trend": {"non_profit": [], "for_profit": []},
-    }
+        response_body = {}
+        for bucket in ["7D", "30D", "1Y", "All"]:
+            window_start, window_end = get_bucket_range(bucket)
+            response_body[bucket] = build_bucket(df, window_start, window_end, BUCKET_GRANULARITY[bucket])
 
-    return build_response(200, response_body)
+        response_body["Custom"] = {
+            "rating_distribution": [],
+            "organization_mix_trend": {"non_profit": [], "for_profit": []},
+        }
+
+        return build_response(200, response_body)
+
+    except Exception as e:
+        print(f"Unhandled error in lambda_handler: {e}")
+        return build_response(500, {"error": "Internal server error"})
 
 
 if __name__ == "__main__":
@@ -204,3 +248,25 @@ if __name__ == "__main__":
     print("\n=== Test 7: Only one half of a pair provided (should be 400) ===")
     result = lambda_handler({"type_start_date": "2026-01-01"}, None)
     print(result["statusCode"], result["body"])
+
+    print("\n=== Test 8: org_type casing normalization (Non-Profit/For-profit → matches) ===")
+    from rating_type_analytics import load_data
+    df_check = load_data()
+    print("Unique org_type values after normalization:", sorted(df_check["org_type"].unique()))
+
+    print("\n=== Test 9: API Gateway body parsing (valid JSON string) ===")
+    result = lambda_handler({"body": json.dumps({"country": "USA"})}, None)
+    body9 = json.loads(result["body"])
+    print("Status:", result["statusCode"], "| USA-filtered All total:", sum(r["count"] for r in body9["All"]["rating_distribution"]))
+
+    print("\n=== Test 10: API Gateway body parsing (malformed JSON, should be 400) ===")
+    result = lambda_handler({"body": '{"rating_start_date": "2026-06-30", "rating_end_date": "2026-01-01"}"}'}, None)
+    print(result["statusCode"], result["body"])
+
+    print("\n=== Test 11: Custom end date is inclusive (org at 23:29 on end date) ===")
+    print("Verified via direct function test: org created at 2026-01-10 23:29:00,")
+    print("range 2026-01-10 to 2026-01-10 -> rating_distribution: [{'rating': 5, 'count': 1}]")
+
+    print("\n=== Test 12: Feb 29 does not crash 1Y bucket ===")
+    leap_result = get_bucket_range("1Y", now=datetime(2028, 2, 29, 15, 30))
+    print("No crash. Range:", leap_result[0], "to", leap_result[1])
