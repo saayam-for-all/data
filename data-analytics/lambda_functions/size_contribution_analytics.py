@@ -12,7 +12,7 @@ import json
 import logging
 import os
 import re
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 import pandas as pd
 
@@ -71,6 +71,11 @@ def normalize_country(value):
     return " ".join(str(value).replace("_", " ").split()).upper()
 
 
+def normalize_org_type(value):
+    """Lowercase and treat '-' and spaces like '_', so 'Non-Profit' == 'non_profit'."""
+    return str(value).strip().lower().replace("-", "_").replace(" ", "_")
+
+
 def parse_filters(body):
     """Returns (country, org_type). None means ALL."""
     country = body.get("country") or "ALL"
@@ -78,7 +83,7 @@ def parse_filters(body):
     if not isinstance(country, str) or not isinstance(org_type, str):
         raise BadRequestError("country and organization_type must be text")
     country = normalize_country(country)
-    org_type = org_type.strip().lower()
+    org_type = normalize_org_type(org_type)
     if org_type not in ORGANIZATION_TYPES + ("all",):
         raise BadRequestError("organization_type must be non_profit, for_profit or ALL")
     return (
@@ -125,12 +130,14 @@ def fixed_window(bucket, today):
     if bucket == "All":
         return None, None
     if bucket == "1Y":
-        try:
-            start = today.replace(year=today.year - 1)
-        except ValueError:  # today is Feb 29
-            start = today.replace(year=today.year - 1, day=28)
+        # current month plus the 11 months before it
+        year, month = today.year, today.month - 11
+        if month < 1:
+            year, month = year - 1, month + 12
+        start = date(year, month, 1)
     else:
-        start = today - timedelta(days=7 if bucket == "7D" else 30)
+        # today counts as one of the days, so 7D = today + the 6 days before
+        start = today - timedelta(days=6 if bucket == "7D" else 29)
     return midnight(start), midnight(today + timedelta(days=1))
 
 
@@ -142,7 +149,9 @@ def custom_window(date_pair):
 
 def size_chart(size_counts):
     """Only sizes that show up in the data, sorted small/medium/large."""
-    rows = sorted(size_counts.items(), key=lambda row: (SIZE_ORDER.get(row[0], 99), row[0]))
+    rows = sorted(
+        size_counts.items(), key=lambda row: (SIZE_ORDER.get(str(row[0]).lower(), 99), row[0])
+    )
     return [{"size": size, "count": int(count)} for size, count in rows]
 
 
@@ -193,12 +202,14 @@ def build_body(count, size_pair, contribution_pair, today):
     return {"Custom": custom}
 
 
-def read_mock_csv(filename):
-    """Read a CSV from MOCK_DATA_DIR as plain text."""
-    path = os.path.join(os.getenv("MOCK_DATA_DIR") or DEFAULT_MOCK_DATA_DIR, filename)
-    if not os.path.exists(path):
-        raise DataSourceError(f"{filename} not found in MOCK_DATA_DIR")
-    return pd.read_csv(path, dtype=str)
+def read_mock_csv(*filenames):
+    """Read the first of these CSVs found in MOCK_DATA_DIR, as plain text."""
+    folder = os.getenv("MOCK_DATA_DIR") or DEFAULT_MOCK_DATA_DIR
+    for filename in filenames:
+        path = os.path.join(folder, filename)
+        if os.path.exists(path):
+            return pd.read_csv(path, dtype=str)
+    raise DataSourceError(f"{filenames[0]} not found in MOCK_DATA_DIR")
 
 
 def to_bool(series):
@@ -222,11 +233,12 @@ def mock_counter(country, org_type):
         orgs["is_contributor"] = False
 
     if org_type:
-        orgs = orgs[orgs["org_type"] == org_type]
+        orgs = orgs[orgs["org_type"].fillna("").map(normalize_org_type) == org_type]
     if country:
         # org -> state -> country
-        states = read_mock_csv("states.csv")
-        countries = read_mock_csv("countries.csv")
+        # the repo's sample data uses state.csv / country.csv
+        states = read_mock_csv("states.csv", "state.csv")
+        countries = read_mock_csv("countries.csv", "country.csv")
         match = countries["country_code"].fillna("").map(normalize_country) == country
         if "country_name" in countries.columns:
             match |= countries["country_name"].fillna("").map(normalize_country) == country
@@ -293,7 +305,9 @@ def db_counter(cursor, country, org_type):
         conditions.append(f"({code} = %s OR {name} = %s)")
         params += [country, country]
     if org_type:
-        conditions.append("o.org_type = %s")
+        conditions.append(
+            "REPLACE(REPLACE(LOWER(BTRIM(o.org_type::text)), '-', '_'), ' ', '_') = %s"
+        )
         params.append(org_type)
 
     def count(start, end):

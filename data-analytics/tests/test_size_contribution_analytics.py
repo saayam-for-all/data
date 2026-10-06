@@ -29,12 +29,12 @@ STATES = [("TX", "1"), ("FL", "1"), ("MH", "2")]
 # org_id, org_size, is_collaborator, is_contributor, org_type, state_id, created_at
 ORGANIZATIONS = [
     ("O1", "small", "True", "True", "non_profit", "TX", "2026-09-29 12:00:00"),
-    ("O2", "small", "False", "False", "for_profit", "FL", "2026-09-22 00:00:00"),
-    ("O3", "medium", "false", "TRUE", "non_profit", "MH", "2026-09-25 08:00:00"),
-    ("O4", "large", "1", "0", "non_profit", "TX", "2026-09-21 23:59:59"),
-    ("O5", "medium", "True", "True", "for_profit", "MH", "2026-08-30 00:00:00"),
-    ("O6", "small", "False", "True", "non_profit", "TX", "2026-08-29 10:00:00"),
-    ("O7", "large", "False", "False", "non_profit", "FL", "2025-09-29 00:00:00"),
+    ("O2", "small", "False", "False", "For-profit", "FL", "2026-09-23 00:00:00"),
+    ("O3", "medium", "false", "TRUE", "Non-Profit", "MH", "2026-09-25 08:00:00"),
+    ("O4", "large", "1", "0", "non_profit", "TX", "2026-09-22 23:59:59"),
+    ("O5", "medium", "True", "True", "for_profit", "MH", "2026-08-31 00:00:00"),
+    ("O6", "small", "False", "True", "non_profit", "TX", "2026-08-30 10:00:00"),
+    ("O7", "large", "False", "False", "non_profit", "FL", "2025-10-01 00:00:00"),
     ("O8", "medium", "True", "False", "for_profit", "MH", "2026-03-15 10:00:00"),
     ("O9", "small", "True", "True", "non_profit", "TX", "2024-05-01 09:30:00"),
 ]
@@ -176,6 +176,20 @@ class SizeContributionTests(unittest.TestCase):
             collab_rows(3, 50.0, 4, 66.7),
         )
         self.assertEqual(self.call({"organization_type": "ALL"}), self.call())
+        # real CSVs spell it "Non-Profit" / "For-profit"; all spellings should match
+        for spelling in ("Non-Profit", "non-profit", "NON_PROFIT"):
+            self.assertEqual(self.call({"organization_type": spelling}), non_profit)
+
+    def test_repo_sample_file_names_work(self):
+        # data-analytics/sql uses state.csv / country.csv instead
+        folder = self.folder.name
+        os.rename(os.path.join(folder, "states.csv"), os.path.join(folder, "state.csv"))
+        os.rename(os.path.join(folder, "countries.csv"), os.path.join(folder, "country.csv"))
+        result = self.call({"country": "USA"})
+        self.assertEqual(
+            result["All"]["organizations_by_size"],
+            [{"size": "small", "count": 4}, {"size": "large", "count": 2}],
+        )
 
     def test_country_and_type_together_also_apply_to_custom(self):
         result = self.call(
@@ -193,7 +207,7 @@ class SizeContributionTests(unittest.TestCase):
     # custom date ranges
 
     def test_size_range_only(self):
-        result = self.call({"size_start_date": "2026-09-22", "size_end_date": "2026-09-29"})
+        result = self.call({"size_start_date": "2026-09-23", "size_end_date": "2026-09-29"})
         self.assertEqual(list(result), ["Custom"])
         self.assertEqual(
             result["Custom"]["organizations_by_size"],
@@ -213,7 +227,7 @@ class SizeContributionTests(unittest.TestCase):
         )
 
     def test_both_ranges_are_calculated_independently(self):
-        size_only = {"size_start_date": "2026-09-22", "size_end_date": "2026-09-29"}
+        size_only = {"size_start_date": "2026-09-23", "size_end_date": "2026-09-29"}
         contribution_only = {
             "contribution_start_date": "2024-01-01",
             "contribution_end_date": "2025-12-31",
@@ -230,7 +244,7 @@ class SizeContributionTests(unittest.TestCase):
         )
 
     def test_end_date_includes_the_whole_day(self):
-        result = self.call({"size_start_date": "2026-09-21", "size_end_date": "2026-09-21"})
+        result = self.call({"size_start_date": "2026-09-22", "size_end_date": "2026-09-22"})
         self.assertEqual(result["Custom"]["organizations_by_size"], [{"size": "large", "count": 1}])
 
     def test_range_with_no_organizations_returns_empty_arrays(self):
@@ -309,6 +323,20 @@ class SizeContributionTests(unittest.TestCase):
     def test_missing_file_returns_500(self):
         os.remove(os.path.join(self.folder.name, "organizations.csv"))
         self.assertIn("organizations.csv", self.call(None, 500)["error"])
+
+
+class FixedWindowTest(unittest.TestCase):
+    def test_window_lengths(self):
+        start, end = sca.fixed_window("7D", TODAY)
+        self.assertEqual((start.date(), (end - start).days), (date(2026, 9, 23), 7))
+        start, end = sca.fixed_window("30D", TODAY)
+        self.assertEqual((start.date(), (end - start).days), (date(2026, 8, 31), 30))
+
+    def test_1y_is_current_month_plus_previous_11(self):
+        self.assertEqual(sca.fixed_window("1Y", TODAY)[0].date(), date(2025, 10, 1))
+        self.assertEqual(sca.fixed_window("1Y", date(2026, 1, 15))[0].date(), date(2025, 2, 1))
+        self.assertEqual(sca.fixed_window("1Y", date(2026, 12, 31))[0].date(), date(2026, 1, 1))
+        self.assertEqual(sca.fixed_window("All", TODAY), (None, None))
 
 
 class NoPsycopg2Test(unittest.TestCase):
