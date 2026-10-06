@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+.venv/
+mock_data/
+*.csv
+.env
+

@@ -1,0 +1,431 @@
+Task 376 - local verification
+Verified on 2026-09-29; no live PostgreSQL connection or AWS deployment.
+Python 3.12.3
+pandas 2.2.2
+psycopg2 2.9.9 (dt dec pq3 ext lo64)
+
+Completed test command:
+python -m unittest discover -s 'data-analytics/lambda_functions/Task 376' -p 'test_*.py' -v
+Summary copied from the completed test run:
+Ran 29 tests in 4.178s
+OK (all 29 passed; no skipped tests)
+
+Demo command: python size_contribution_analytics.py
+USE_MOCK_DATA=true; MOCK_DATA_DIR=Task 376/mock_data
+Actual printed output follows:
+
+No body
+Request: {}
+HTTP 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 66.7
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 33.3
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "small",
+        "count": 3
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 3,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 3,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "small",
+        "count": 4
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 3,
+        "percentage": 42.9
+      },
+      {
+        "type": "Contributor",
+        "count": 4,
+        "percentage": 57.1
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+
+Country filter
+Request: {"body": "{\"country\": \"USA\"}"}
+HTTP 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 1,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 1,
+        "percentage": 33.3
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 66.7
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 1
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 1,
+        "percentage": 33.3
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 66.7
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "type": "Contributor",
+        "count": 3,
+        "percentage": 75.0
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+
+Organization type filter
+Request: {"organization_type": "non_profit"}
+HTTP 200
+{
+  "7D": {
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 100.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "30D": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 2
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 66.7
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 66.7
+      }
+    ]
+  },
+  "1Y": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 3
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 50.0
+      },
+      {
+        "type": "Contributor",
+        "count": 2,
+        "percentage": 50.0
+      }
+    ]
+  },
+  "All": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 1
+      },
+      {
+        "size": "small",
+        "count": 4
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 2,
+        "percentage": 40.0
+      },
+      {
+        "type": "Contributor",
+        "count": 3,
+        "percentage": 60.0
+      }
+    ]
+  },
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": []
+  }
+}
+
+Size Custom only
+Request: {"size_start_date": "2026-01-01", "size_end_date": "2026-12-31"}
+HTTP 200
+{
+  "Custom": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 2
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "small",
+        "count": 3
+      }
+    ],
+    "collaborator_vs_contributor": []
+  }
+}
+
+Contribution Custom only
+Request: {"contribution_start_date": "2025-01-01", "contribution_end_date": "2025-12-31"}
+HTTP 200
+{
+  "Custom": {
+    "organizations_by_size": [],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 0,
+        "percentage": 0.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 100.0
+      }
+    ]
+  }
+}
+
+Both Custom ranges
+Request: {"size_start_date": "2026-01-01", "size_end_date": "2026-12-31", "contribution_start_date": "2025-01-01", "contribution_end_date": "2025-12-31"}
+HTTP 200
+{
+  "Custom": {
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 2
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "small",
+        "count": 3
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "Collaborator",
+        "count": 0,
+        "percentage": 0.0
+      },
+      {
+        "type": "Contributor",
+        "count": 1,
+        "percentage": 100.0
+      }
+    ]
+  }
+}
