@@ -74,6 +74,26 @@ Use a private bucket and decide who may read it before enabling the schedule.
 Watch `run_log` for `failed`, `interrupted`, a stuck `running`, and the age of
 the last `success`.
 
+## Status of the shared dev instance (checked in the AWS console)
+
+The dev RDS instance is PostgreSQL 16.14 in `us-east-1`, which supports
+`aws_s3`. These gaps mean the export cannot run there yet:
+
+- **No IAM role is attached for S3 export.** The instance's "Current IAM roles"
+  list is empty. Until a role with feature `s3Export` is attached,
+  `aws_s3.query_export_to_s3` cannot write to S3.
+- **`aws_s3` may not be created in the database.** Run
+  `CREATE EXTENSION IF NOT EXISTS aws_s3 CASCADE;` as an admin.
+- **No `pg_cron`.** The instance uses the default parameter group, which cannot
+  be edited. Scheduling needs a custom parameter group with `pg_cron` in
+  `shared_preload_libraries`, then a reboot.
+- **No archive bucket has been confirmed.**
+
+So the first real test is a manual `CALL request_archive.run();` once the role
+and bucket exist. Apply `003_schedule.sql` only after that run is verified and
+`pg_cron` is available. Until then, any external scheduler that runs the same
+`CALL` on its own connection works too.
+
 ## Tests
 
 ```sh
