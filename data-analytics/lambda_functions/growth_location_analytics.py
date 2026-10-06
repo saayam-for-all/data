@@ -1,409 +1,298 @@
+"""Growth & Location Analytics API for the Organization Dashboard (issue #336).
+
+Standalone function for the Growth & Location tab. Returns all fixed time
+buckets (7D/30D/1Y/All) plus an independently-driven Custom bucket in a
+single response, so the frontend can flip either chart's range without a
+new API call.
+
+Reads organizations.csv / states.csv / countries.csv from a local mock
+data directory (no AWS Parameter Store, no live AWS connection). Point
+MOCK_DATA_DIR at wherever you keep those CSVs locally for testing; do not
+commit the CSVs themselves.
+
+"""
 
 import json
 import os
-import re
-from datetime import datetime, date, timedelta
 
 import pandas as pd
 
-
-# Path to the local mock CSV datasets
-MOCK_DATA_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)),
-    "mock-data-generation"
+# TODO: confirm with the ticket owner whether this repo's `states.csv` is the
+# same file as organization_analytics.py's `state.csv` (singular, no
+# country_id today) or a separate/renamed file. This function assumes a
+# `states.csv` with state_id, state_name, country_id as specced in #336.
+DEFAULT_MOCK_DATA_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "sql"
 )
 
+BOOL_MAP = {"TRUE": True, "FALSE": False, True: True, False: False}
 
-# Required CSV files
-ORGANIZATIONS_CSV = os.path.join(
-    MOCK_DATA_DIR, "organizations.csv"
-)
-
-STATES_CSV = os.path.join(
-    MOCK_DATA_DIR, "states.csv"
-)
-
-COUNTRIES_CSV = os.path.join(
-    MOCK_DATA_DIR, "countries.csv"
-)
+DATE_FORMAT = "%Y-%m-%d"
 
 
-# Load the three local CSV datasets
-def load_data():
-    organizations = pd.read_csv(
-        ORGANIZATIONS_CSV,
-        encoding="utf-8-sig",
-        dtype={"state_id": str}
-    )
-
-    states = pd.read_csv(
-        STATES_CSV,
-        encoding="utf-8-sig",
-        dtype={"state_id": str, "country_id": str}
-    )
-
-    countries = pd.read_csv(
-        COUNTRIES_CSV,
-        encoding="utf-8-sig",
-        dtype={"country_id": str}
-    )
-
-    # Convert organization creation dates to datetime
-    organizations["created_at"] = pd.to_datetime(
-        organizations["created_at"],
-        errors="coerce"
-    )
-
-    return organizations, states, countries
+def get_mock_data_dir():
+    return os.environ.get("MOCK_DATA_DIR", DEFAULT_MOCK_DATA_DIR)
 
 
-# Filter organizations by the selected time range
-def filter_by_date(organizations, time_range,
-                   start_date=None, end_date=None):
-
-    today = pd.Timestamp.now().normalize()
-
-    if time_range == "7D":
-        cutoff = today - pd.Timedelta(days=6)
-        return organizations[
-            organizations["created_at"] >= cutoff
-        ].copy()
-
-    elif time_range == "30D":
-        cutoff = today - pd.Timedelta(days=29)
-        return organizations[
-            organizations["created_at"] >= cutoff
-        ].copy()
-
-    elif time_range == "1Y":
-        cutoff = today - pd.Timedelta(days=364)
-        return organizations[
-            organizations["created_at"] >= cutoff
-        ].copy()
-
-    elif time_range == "All":
-        return organizations.copy()
-
-    elif time_range == "Custom":
-        if start_date is None or end_date is None:
-            return organizations.iloc[0:0].copy()
-
-        start = pd.Timestamp(start_date)
-        end = pd.Timestamp(end_date) + pd.Timedelta(days=1)
-
-        return organizations[
-            (organizations["created_at"] >= start) &
-            (organizations["created_at"] < end)
-        ].copy()
-
-    else:
-        raise ValueError("Invalid time range")
-
-    
-# Calculate organization growth over time
-def calculate_growth_trend(organizations, time_range,
-                           start_date=None, end_date=None):
-
-    # Select organizations within the requested time window
-    filtered = filter_by_date(
-        organizations,
-        time_range,
-        start_date,
-        end_date
-    )
-
-    # Return empty series if no organizations were created
-    if filtered.empty:
-        return {
-            "total_organizations": [],
-            "collaborators": []
-        }
-
-    # Group by day for 7D, 30D and Custom
-    # Group by month for 1Y and All
-    if time_range in ["7D", "30D", "Custom"]:
-        period_format = "%Y-%m-%d"
-    else:
-        period_format = "%Y-%m"
-
-    filtered = filtered.copy()
-
-    filtered["period"] = (
-        filtered["created_at"].dt.strftime(period_format)
-    )
-
-    # Count organizations created in each period
-    period_counts = (
-        filtered.groupby("period")
-        .size()
-        .sort_index()
-    )
-
-    # Count collaborators created in each period
-    collaborator_counts = (
-        filtered[
-            filtered["is_collaborator"].astype(str).str.lower()
-            == "true"
-        ]
-        .groupby("period")
-        .size()
-    )
-
-    total_organizations = []
-    collaborators = []
-
-    for period in period_counts.index:
-
-        # End of the current day or month
-        if period_format == "%Y-%m-%d":
-            period_end = (
-                pd.Timestamp(period)
-                + pd.Timedelta(days=1)
-            )
-        else:
-            period_end = (
-                pd.Timestamp(period)
-                + pd.DateOffset(months=1)
-            )
-
-        # Absolute cumulative count across the entire dataset
-        cumulative_count = int(
-            (
-                organizations["created_at"] < period_end
-            ).sum()
-        )
-
-        total_organizations.append({
-            "period": period,
-            "count": cumulative_count
-        })
-
-        collaborators.append({
-            "period": period,
-            "count": int(
-                collaborator_counts.get(period, 0)
-            )
-        })
-
+def build_response(status_code, body):
     return {
-        "total_organizations": total_organizations,
-        "collaborators": collaborators
+        "statusCode": status_code,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        # API Gateway's Lambda proxy integration requires `body` to be a
+        # JSON-encoded string, not a raw dict.
+        "body": json.dumps(body),
     }
 
 
-# Calculate organization counts by country
-def calculate_organizations_by_location(
-    organizations,
-    states,
-    countries,
-    time_range,
-    start_date=None,
-    end_date=None
-):
+# --------------------------------------------------------------------------
+# Data loading / joining
+# --------------------------------------------------------------------------
 
-    # Select organizations within the requested time window
-    filtered = filter_by_date(
-        organizations,
-        time_range,
-        start_date,
-        end_date
+def load_data(mock_data_dir):
+    orgs = pd.read_csv(os.path.join(mock_data_dir, "organizations.csv"))
+    states = pd.read_csv(os.path.join(mock_data_dir, "states.csv"))
+    countries = pd.read_csv(os.path.join(mock_data_dir, "countries.csv"))
+
+    orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce")
+    orgs["is_collaborator"] = orgs["is_collaborator"].map(BOOL_MAP).fillna(False)
+
+    return orgs, states, countries
+
+
+def attach_country(orgs, states, countries):
+    """organizations.state_id -> states.country_id -> countries.country_code"""
+    merged = orgs.merge(
+        states[["state_id", "country_id"]], on="state_id", how="left"
     )
+    merged = merged.merge(
+        countries[["country_id", "country_code"]], on="country_id", how="left"
+    )
+    return merged
 
-    # Return an empty list when there are no organizations
-    if filtered.empty:
+
+# --------------------------------------------------------------------------
+# Date parsing / validation
+# --------------------------------------------------------------------------
+
+def parse_date_pair(params, start_key, end_key):
+    """Returns (start_inclusive, end_exclusive) as Timestamps, or None if
+    neither param was supplied. Raises ValueError (-> 400) on bad input.
+    """
+    start_raw = params.get(start_key)
+    end_raw = params.get(end_key)
+
+    if start_raw is None and end_raw is None:
+        return None
+    if start_raw is None or end_raw is None:
+        raise ValueError(f"Both {start_key} and {end_key} must be provided together")
+
+    try:
+        start = pd.to_datetime(start_raw, format=DATE_FORMAT)
+        end = pd.to_datetime(end_raw, format=DATE_FORMAT)
+    except (ValueError, TypeError):
+        raise ValueError(
+            f"Invalid date format for {start_key}/{end_key}; expected YYYY-MM-DD"
+        )
+
+    if start > end:
+        raise ValueError(f"{start_key} must not be after {end_key}")
+
+    # end is inclusive of the given calendar date -> exclusive upper bound
+    return start, end + pd.Timedelta(days=1)
+
+
+# --------------------------------------------------------------------------
+# Window / period helpers
+# --------------------------------------------------------------------------
+
+def filter_window(df, start, end, col="created_at"):
+    """start inclusive, end exclusive. Either may be None (unbounded)."""
+    mask = pd.Series(True, index=df.index)
+    if start is not None:
+        mask &= df[col] >= start
+    if end is not None:
+        mask &= df[col] < end
+    return df[mask]
+
+
+def period_key(series, granularity):
+    if granularity == "day":
+        return series.dt.strftime("%Y-%m-%d")
+    return series.dt.strftime("%Y-%m")  # month
+
+
+def period_upper_bound(period, granularity):
+    """Exclusive upper-bound timestamp for a period label."""
+    if granularity == "day":
+        start_ts = pd.Timestamp(period)
+        return start_ts + pd.Timedelta(days=1)
+    start_ts = pd.Timestamp(period + "-01")
+    return start_ts + pd.DateOffset(months=1)
+
+
+def get_fixed_windows():
+    """(start_inclusive, end_exclusive, granularity) for each fixed bucket.
+    All = no window at all (entire dataset).
+
+    Windows are anchored to calendar-day (and calendar-month, for 1Y)
+    boundaries so each bucket spans exactly N calendar units, not N+1:
+    - 7D / 30D: today plus the previous 6 / 29 days = 7 / 30 calendar days.
+    - 1Y: the current calendar month plus the previous 11 months = 12
+      calendar months, rather than a raw 365/366-day offset.
+    """
+    today = pd.Timestamp.now().normalize()
+    end_exclusive = today + pd.Timedelta(days=1)  # through end of today
+
+    current_month_start = today.replace(day=1)
+    one_year_start = current_month_start - pd.DateOffset(months=11)
+
+    return {
+        "7D": (today - pd.Timedelta(days=6), end_exclusive, "day"),
+        "30D": (today - pd.Timedelta(days=29), end_exclusive, "day"),
+        "1Y": (one_year_start, end_exclusive, "month"),
+        "All": (None, None, "month"),
+    }
+
+
+# --------------------------------------------------------------------------
+# Chart computations
+# --------------------------------------------------------------------------
+
+def compute_growth_trend(full_df, start, end, granularity):
+    """total_organizations: cumulative, all-time, as of each period.
+    collaborators: per-period count, scoped to this window only.
+    Both series share the same (sparse) set of periods.
+    """
+    window_df = filter_window(full_df, start, end)
+    if window_df.empty:
+        return {"total_organizations": [], "collaborators": []}
+
+    work = window_df.copy()
+    work["period"] = period_key(work["created_at"], granularity)
+    periods = sorted(work["period"].unique())
+
+    total_series = []
+    collaborators_series = []
+    for period in periods:
+        upper_bound = period_upper_bound(period, granularity)
+        total_count = int((full_df["created_at"] < upper_bound).sum())
+        total_series.append({"period": period, "count": total_count})
+
+        collab_count = int(
+            ((work["period"] == period) & work["is_collaborator"]).sum()
+        )
+        collaborators_series.append({"period": period, "count": collab_count})
+
+    return {
+        "total_organizations": total_series,
+        "collaborators": collaborators_series,
+    }
+
+
+def compute_locations(df, start, end):
+    """Top 4 countries by count, window-scoped. No 'Other', no percentage."""
+    window_df = filter_window(df, start, end)
+    if window_df.empty:
         return []
 
-    # Connect organizations to their states
-    merged = filtered.merge(
-        states[["state_id", "country_id"]],
-        on="state_id",
-        how="left"
+    counts = (
+        window_df.groupby("country_code").size().sort_values(ascending=False)
     )
+    top = counts.head(4)
+    return [{"country": country, "count": int(count)} for country, count in top.items()]
 
-    # Connect states to their countries
-    merged = merged.merge(
-        countries[["country_id", "country_code"]],
-        on="country_id",
-        how="left"
-    )
 
-    # Count organizations belonging to each country
-    location_counts = (
-        merged.groupby("country_code")["org_id"]
-        .nunique()
-        .sort_values(ascending=False)
-        .head(4)
-    )
+def build_bucket(df, start, end, granularity):
+    return {
+        "growth_trend": compute_growth_trend(df, start, end, granularity),
+        "organizations_by_location": compute_locations(df, start, end),
+    }
 
-    # Format the response for the dashboard
-    result = []
 
-    for country, count in location_counts.items():
-        result.append({
-            "country": str(country),
-            "count": int(count)
-        })
+# --------------------------------------------------------------------------
+# Handler
+# --------------------------------------------------------------------------
 
-    return result
+def build_analytics(df, params):
+    try:
+        growth_range = parse_date_pair(params, "start_date", "end_date")
+        location_range = parse_date_pair(
+            params, "location_start_date", "location_end_date"
+        )
+    except ValueError as e:
+        return None, str(e)
+
+    response = {}
+    for bucket_name, (start, end, granularity) in get_fixed_windows().items():
+        response[bucket_name] = build_bucket(df, start, end, granularity)
+
+    if growth_range:
+        custom_growth = compute_growth_trend(df, growth_range[0], growth_range[1], "day")
+    else:
+        custom_growth = {"total_organizations": [], "collaborators": []}
+
+    if location_range:
+        custom_locations = compute_locations(df, location_range[0], location_range[1])
+    else:
+        custom_locations = []
+
+    response["Custom"] = {
+        "growth_trend": custom_growth,
+        "organizations_by_location": custom_locations,
+    }
+
+    return response, None
 
 
 def lambda_handler(event, context):
-    """
-    Return growth and location analytics for all five
-    dashboard time ranges in a single API response.
-    """
+    params = event
+    if isinstance(event.get("body"), str):
+        params = json.loads(event["body"])
 
     try:
-        # Step 1: Read the request
-        event = event or {}
+        orgs, states, countries = load_data(get_mock_data_dir())
+        df = attach_country(orgs, states, countries)
+    except Exception as e:  # noqa: BLE001
+        print(f"growth_location_analytics failed to load data: {e}")
+        return build_response(500, {"error": "failed to load data"})
 
-        if isinstance(event.get("body"), str):
-            event = json.loads(event["body"])
+    response, error = build_analytics(df, params)
+    if error:
+        return build_response(400, {"error": error})
 
-        elif isinstance(event.get("body"), dict):
-            event = event["body"]
+    return build_response(200, response)
 
-        if not isinstance(event, dict):
-            raise ValueError("Request body must be a JSON object")
 
-        # Step 2: Read the independent Custom date ranges
-        start_date = event.get("start_date")
-        end_date = event.get("end_date")
+if __name__ == "__main__":
+    sample_events = {
+        "no body": {},
+        "growth range only": {
+            "body": json.dumps({"start_date": "2026-01-01", "end_date": "2026-06-30"})
+        },
+        "location range only": {
+            "body": json.dumps(
+                {"location_start_date": "2025-06-01", "location_end_date": "2025-12-31"}
+            )
+        },
+        "both ranges": {
+            "body": json.dumps(
+                {
+                    "start_date": "2026-01-01",
+                    "end_date": "2026-06-30",
+                    "location_start_date": "2025-06-01",
+                    "location_end_date": "2025-12-31",
+                }
+            )
+        },
+        "invalid date": {"body": json.dumps({"start_date": "not-a-date", "end_date": "2026-06-30"})},
+        "start after end": {
+            "body": json.dumps({"start_date": "2026-06-30", "end_date": "2026-01-01"})
+        },
+    }
 
-        location_start_date = event.get("location_start_date")
-        location_end_date = event.get("location_end_date")
-
-        # Step 3: Validate each date pair independently
-        def validate_date_pair(start, end):
-            if start is None and end is None:
-                return None, None
-
-            if not isinstance(start, str) or not isinstance(end, str):
-                raise ValueError(
-                    "Both start and end dates must be provided"
-                )
-
-            for value in (start, end):
-                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
-                    raise ValueError(
-                        "Dates must use YYYY-MM-DD format"
-                    )
-
-                try:
-                    parsed = datetime.strptime(value, "%Y-%m-%d")
-                except ValueError:
-                    raise ValueError("Invalid calendar date")
-
-                if parsed.strftime("%Y-%m-%d") != value:
-                    raise ValueError("Invalid calendar date")
-
-            if start > end:
-                raise ValueError(
-                    "Start date cannot be after end date"
-                )
-
-            return start, end
-
-        start_date, end_date = validate_date_pair(
-            start_date, end_date
-        )
-
-        location_start_date, location_end_date = validate_date_pair(
-            location_start_date, location_end_date
-        )
-
-        # Step 4: Load the local CSV datasets
-        organizations, states, countries = load_data()
-
-        # Step 5: Calculate all five time ranges
-        response = {}
-
-        for time_range in ["7D", "30D", "1Y", "All", "Custom"]:
-
-            if time_range == "Custom":
-
-                # Growth and location use independent dates
-                if start_date is not None:
-                    growth_trend = calculate_growth_trend(
-                        organizations,
-                        time_range,
-                        start_date,
-                        end_date
-                    )
-                else:
-                    growth_trend = {
-                        "total_organizations": [],
-                        "collaborators": []
-                    }
-
-                if location_start_date is not None:
-                    organizations_by_location = (
-                        calculate_organizations_by_location(
-                            organizations,
-                            states,
-                            countries,
-                            time_range,
-                            location_start_date,
-                            location_end_date
-                        )
-                    )
-                else:
-                    organizations_by_location = []
-
-            else:
-
-                # Fixed time ranges use the same calendar window
-                growth_trend = calculate_growth_trend(
-                    organizations,
-                    time_range
-                )
-
-                organizations_by_location = (
-                    calculate_organizations_by_location(
-                        organizations,
-                        states,
-                        countries,
-                        time_range
-                    )
-                )
-
-            response[time_range] = {
-                "growth_trend": growth_trend,
-                "organizations_by_location": organizations_by_location
-            }
-
-        # Step 6: Return the complete dashboard response
-        return {
-            "statusCode": 200,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps(response)
-        }
-
-    except (ValueError, TypeError) as e:
-
-        return {
-            "statusCode": 400,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps({
-                "error": str(e)
-            })
-        }
-
-    except Exception as e:
-
-        return {
-            "statusCode": 500,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps({
-                "error": "Internal server error"
-            })
-        }
+    for label, event in sample_events.items():
+        print(f"\n=== {label} ===")
+        print(json.dumps(lambda_handler(event, None), indent=2, default=str))
