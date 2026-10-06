@@ -1,6 +1,6 @@
 # Beneficiary location resolution
 
-Implements task 1 of issue #433 in the existing aggregator.
+Implements tasks 1–2 of issue #433 as independent components in the existing aggregator.
 
 `resolve_beneficiary_location(request_id, beneficiary_id, records)` uses an
 injectable `LocationRecordSource`. A matching request/beneficiary association
@@ -40,7 +40,83 @@ import and the runtime handler does not select this adapter.
 
 The mock contract was checked against locally cached `origin/main` generator
 code and CSV headers, not a live database schema. The real database adapter and
-runtime wiring remain task 5; geocoding remains task 2.
+runtime wiring remain task 5.
+
+## Task 2: organization addresses
+
+`OrganizationAddressAssembler(states=rows, countries=rows).from_database(row)`
+uses the supplied mock generator contract:
+
+`organizations.state_id -> states.state_id -> states.country_id -> countries.country_id`.
+
+It joins available `street`, stored `city_name`, resolved `state_name`, `zip_code`,
+and resolved `country_name`, in that order. Empty/malformed components and missing
+lookups are omitted; raw IDs are never address components. ZIP strings retain
+leading zeros. No cities join, city coordinates, country default, or organization
+name is substituted. The generator is at
+`data-analytics/mock-data-generation/generate_mock_data.py` in the locally cached
+`origin/main` tree; it is inspected without executing it. Older schema metadata
+under `database/` is not treated as the generator contract or live DDL.
+
+`from_genai(row)` follows the supplied
+`/Users/veerr_89/Downloads/SaayamOrgAggregatorHelper.txt`: records come from
+`body.organizations`, and `location` is the supported location field. Only a
+nonblank string is geocoding input. Structured address fields are not assumed.
+An alternate future mapping must be explicitly injected via `location_reader`.
+The live GenAI payload remains unverified; tests use clearly synthetic records.
+The caller decodes the envelope before passing individual rows to this adapter.
+
+Each adapter snapshots the organization fields in `OrganizationAddress.record`.
+Missing/unusable addresses retain that record and add `distance: None` (JSON
+`null`) and `distance_status: "unknown_location"`. Located records are retained
+unchanged; distance calculation and full response enrichment belong to task 3.
+`online_only` is an explicit optional caller classification, defaulting to
+unclassified (`None`). No name, URL, location text, or source field is used to
+guess it. Online distance status handling belongs to task 3.
+
+## Task 2: injected geocoding and cache
+
+`geocode_address(address, provider, cache)` is shared by beneficiary profile and
+organization addresses. `geocode_beneficiary_profile(location, provider, cache)`
+accepts only task 1's `requires_geocoding` / `profile_address` outcome; direct
+coordinates and identity failures continue to be handled by task 1.
+
+`GeocodingProvider.geocode` returns a `CoordinateRecord(latitude, longitude)` or
+`None` for unmatched input. Provider adapters translate rate limits to
+`GeocodingRateLimit`, timeouts to `TimeoutError`, and must enforce their own
+network timeout. The resolver performs no automatic retries or sleeps.
+`CoordinateCache.get` returns a record or `None`; `put` saves successful results.
+Both dependencies are required; no provider or cache backend is selected here.
+
+Cache keys trim only outer whitespace and otherwise preserve supplied text.
+The cache is checked before provider calls. Valid cached pairs bypass the provider.
+All cached/provider coordinates use task 1's finite/range validation, including
+valid zero. Invalid cached pairs are treated as misses and replaced on success;
+invalid provider pairs produce an error and are never saved. Only successful
+provider results are cached, as normalized numeric coordinate pairs.
+
+| Geocoding status | Meaning |
+| --- | --- |
+| `resolved` | Valid pair from `cache` or `provider` |
+| `missing_location` | Absent/blank/unusable address; no dependency calls |
+| `not_found` | Provider returned no match |
+| `deferred` | Provider reported rate limit |
+| `timeout` | Provider timed out |
+| `error` | Provider failure or invalid returned coordinates |
+
+Unavailable outcomes have no coordinates. Cache read failures permit provider
+fallback. Cache write failures preserve successful coordinates, reporting
+`cache_error: "write_error"`; read failures and invalid entries report
+`read_error` and `invalid_coordinates`. Exception text is not returned. These
+are geocoding outcomes, not the full distance-status mapping reserved for task 3.
+
+`FakeGeocodingProvider` uses explicit configured address responses or exceptions;
+unconfigured addresses are unmatched. `FakeCoordinateCache` records reads/writes
+in instance-local memory. These fakes are explicitly constructed for local tests,
+never selected by the Lambda handler. **The local fake cache does not prove
+persistence across Lambda invocations.** Approved provider, persistent-cache
+backend/configuration, key namespace, expiry, and operational policies remain
+integration points. No live helper is imported by these components or their tests.
 
 Run tests from the repository root with the existing venv:
 
