@@ -1,6 +1,6 @@
 # Beneficiary location resolution
 
-Implements tasks 1–2 of issue #433 as independent components in the existing aggregator.
+Implements tasks 1–3 of issue #433 as injectable components in the existing aggregator.
 
 `resolve_beneficiary_location(request_id, beneficiary_id, records)` uses an
 injectable `LocationRecordSource`. A matching request/beneficiary association
@@ -123,3 +123,130 @@ Run tests from the repository root with the existing venv:
 ```bash
 venv/bin/python -m pytest data-engineering/tests -q
 ```
+
+## Task 3: straight-line distance and offline aggregation
+
+`organization_distance.straight_line_miles` uses the haversine formula on a sphere
+with mean Earth radius 6371.0088 km, converted at 1.609344 km per mile. This is
+straight-line distance, not road distance. The haversine term is clamped to [0, 1]
+to protect antipodal calculations from floating-point drift. Coordinates use the
+same validation as tasks 1–2. The calculation and serialized `distance` retain
+full floating-point precision; no display rounding policy has been selected.
+
+`AggregatorDependencies` composes the record source, resolver, provider, cache,
+database-style organization source, GenAI-style organization source, and address
+assembler. Source callbacks receive a copy of the request body; they can use
+`category`, `subject`, `description`, and other explicitly supplied search fields.
+They return lists of mappings or DataFrames. The GenAI callback may instead return
+the attached helper's `statusCode` and `body.organizations` envelope, with `body`
+as a mapping or JSON string. No remote helper or live client is imported in this
+path. Explicitly supply dependencies to
+`lambda_handler(event, context, dependencies=dependencies)` to use it.
+The original two-argument handler retains its existing live path, now imported
+lazily. Production wiring, database queries, real provider configuration, and
+persistent caching remain task 5. Task 4 has not been implemented.
+
+Offline requests require `request_id`, `beneficiary_id`, and `category`. Direct
+body mappings and API Gateway JSON bodies are accepted. Beneficiary coordinates
+are resolved once through tasks 1–2; arbitrary request `location` text cannot
+replace that identity-bound resolution. A missing/mismatched beneficiary location
+retains organizations with unavailable distance. Resolver retrieval errors map to
+`error`, without leaking exception text.
+
+Organization coordinates are used only through an explicitly injected
+`coordinate_reader(OrganizationAddress) -> CoordinateRecord | None`. Returning
+`None` uses the task 2 organization address and shared cache/geocoder. Invalid
+injected coordinates map to `error`. Raw generator `latitude`/`longitude` are
+never automatically read, since they may be city centroids. An explicitly
+injected `online_reader(OrganizationAddress)` classifies online-only organizations;
+only `True` produces `online`. No classification is inferred from names or URLs.
+
+| `distance_status` | `distance` and meaning |
+| --- | --- |
+| `ok` | Finite, unrounded miles, including valid `0.0` |
+| `online` | `null`; explicitly classified online-only |
+| `unknown_location` | `null`; organization address/coordinates or beneficiary location unavailable |
+| `not_found` | `null`; beneficiary or organization address unmatched |
+| `deferred` | `null`; beneficiary or organization geocoder rate-limited |
+| `error` | `null`; timeout, invalid coordinates, resolver failure, or organization enrichment failure |
+
+Online classification takes precedence. Otherwise missing organization location
+produces `unknown_location`; if beneficiary resolution failed, its status applies
+to located organizations and unnecessary organization geocoding is skipped.
+Each response record also has `distance_unit: "miles"` and
+`distance_method: "straight_line"`, including unavailable outcomes.
+
+The attached helper's consumer fields are retained: `name`, `organization_type`,
+`collaborator`, `location`, `size`, `rating`, `contact`, `email`, `web_url`, `mission`,
+and `source`. Existing consumer names win over raw aliases. Database `org_name`,
+`org_type`, `is_collaborator`, `org_size`, `org_rating`, `phone`, and `city_name`
+and GenAI `organization_name`, `org_type`, and `is_collaborator` are normalized.
+Missing consumer fields become `null`, except that GenAI records without either
+collaborator field retain the attached helper's `false` default. Explicitly supplied
+collaborator values are preserved. Additional source fields, including
+`Representatives`, are retained. Original records are not mutated.
+
+Sources are retrieved independently, sequentially in the offline composition.
+A failing/invalid GenAI envelope retains database results; a failed DB source also
+allows AI records through. Source failures log only the source label. Two failed
+sources return 502; valid empty source results return an empty list with 200.
+Per-organization address, classification, and coordinate-reader failures retain
+that organization with `error` and allow subsequent records to continue.
+Malformed non-record entries are skipped individually; valid organizations in the
+same source are retained. Invalid source containers still count as source failures.
+Serialization uses `allow_nan=False`, converts nonfinite numeric fields and
+DataFrame missing values to JSON `null`, and preserves zeros/false values.
+Date, datetime, and pandas Timestamp values serialize as ISO strings, preserving
+supplied timezone offsets. An unsupported or circular field becomes `null` without
+discarding its organization or other records; its valid distance remains available.
+Serialization warnings contain no field values or exception text.
+
+### Runnable offline example
+
+From the repository root (all inputs below are explicitly synthetic):
+
+```bash
+PYTHONPATH=data-engineering/src/saayam-org-aggregator venv/bin/python - <<'PY'
+import json
+from lambda_function import lambda_handler
+from address_geocoding import CoordinateRecord
+from local_geocoding import FakeCoordinateCache, FakeGeocodingProvider
+from local_location_records import LocalMockLocationRecordSource
+from offline_aggregator import AggregatorDependencies
+
+records = LocalMockLocationRecordSource(synthetic_requests=[{
+    "request_id": "synthetic-request", "beneficiary_id": "synthetic-beneficiary",
+    "req_loc": "SRID=4326;POINT(0 0)",
+}])
+dependencies = AggregatorDependencies(
+    records=records,
+    provider=FakeGeocodingProvider({
+        "Synthetic City": CoordinateRecord(0, 1),
+        "Synthetic Address": CoordinateRecord(0, 0),
+    }),
+    cache=FakeCoordinateCache(),
+    db_source=lambda body: [{
+        "org_name": "Synthetic DB", "org_type": "NGO", "is_collaborator": False,
+        "city_name": "Synthetic City", "org_size": 0, "org_rating": 4,
+    }],
+    ai_source=lambda body: {"statusCode": 200, "body": {"organizations": [{
+        "organization_name": "Synthetic AI", "organization_type": "Charity",
+        "collaborator": False, "location": "Synthetic Address", "size": 2, "rating": 0,
+    }]}},
+)
+response = lambda_handler({
+    "request_id": "synthetic-request", "beneficiary_id": "synthetic-beneficiary",
+    "category": "Synthetic category",
+}, None, dependencies=dependencies)
+print(json.dumps(json.loads(response["body"]), indent=2, allow_nan=False))
+PY
+```
+
+`tests/test_organization_distance.py` verifies the helper field contract after
+Lambda serialization, spherical benchmarks (equator, NYC–London, antimeridian,
+antipodes), identical coordinates, all six statuses, both list/frame sources,
+reference mock address relationships, all beneficiary fallbacks, cache reuse,
+explicit coordinates, failure isolation, strict serialization, and import safety.
+These checks prove the supplied helper contract offline; they do not prove live
+provider behavior or frontend integration. Future PR base is `test`; no commit,
+push, PR, task 4, or deployment is part of this change.
