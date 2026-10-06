@@ -264,8 +264,21 @@ def parse_date_or_error(date_str, field_name):
         return None, f"Invalid date format for {field_name}: {date_str} (expected YYYY-MM-DD)"
 
 
+def _blank_to_none(value):
+    if isinstance(value, str) and value.strip() == "":
+        return None
+    return value
+
+
 def validate_date_range(start_str, end_str, start_field, end_field):
-    """Returns (start, end, error). (None, None, None) means the pair was not supplied."""
+    """Returns (start, end, error). (None, None, None) means the pair was not supplied.
+
+    None, "" and whitespace-only strings all count as "not supplied", so a frontend that
+    sends empty strings for untouched date pickers gets the same result as one that omits them.
+    """
+    start_str = _blank_to_none(start_str)
+    end_str = _blank_to_none(end_str)
+
     if start_str is None and end_str is None:
         return None, None, None
 
