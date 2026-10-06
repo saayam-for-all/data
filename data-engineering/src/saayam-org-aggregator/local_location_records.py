@@ -112,6 +112,16 @@ class LocalMockLocationRecordSource:
         lat, lon = parse_mock_point(row.get("req_loc")) or (None, None)
         return RequestRecord(_key(row.get("request_id")), _key(row.get("beneficiary_id")), lat, lon)
 
+    def get_request_info(self, request_id: str, beneficiary_id: str) -> dict:
+        """Read synthetic search details only after checking request association.
+
+        category/subject/description are fixture fields, not inferred generator columns.
+        """
+        row = self._requests.get(_key(request_id))
+        if row is None or _key(row.get("beneficiary_id")) != _key(beneficiary_id):
+            raise ValueError("Synthetic request/beneficiary association unavailable")
+        return {key: row.get(key) for key in ("category", "subject", "description")}
+
     def get_beneficiary_location(self, beneficiary_id: str) -> BeneficiaryLocationRecord | None:
         """Use only user_locations.curr_loc, excluding previous/viewer/volunteer locations."""
         row = self._locations.get(beneficiary_id)

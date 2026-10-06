@@ -1,6 +1,6 @@
 # Beneficiary location resolution
 
-Implements tasks 1–3 of issue #433 as injectable components in the existing aggregator.
+Implements tasks 1–4 of issue #433 as injectable components in the existing aggregator.
 
 `resolve_beneficiary_location(request_id, beneficiary_id, records)` uses an
 injectable `LocationRecordSource`. A matching request/beneficiary association
@@ -144,7 +144,7 @@ path. Explicitly supply dependencies to
 `lambda_handler(event, context, dependencies=dependencies)` to use it.
 The original two-argument handler retains its existing live path, now imported
 lazily. Production wiring, database queries, real provider configuration, and
-persistent caching remain task 5. Task 4 has not been implemented.
+persistent caching remain task 5.
 
 Offline requests require `request_id`, `beneficiary_id`, and `category`. Direct
 body mappings and API Gateway JSON bodies are accepted. Beneficiary coordinates
@@ -249,4 +249,108 @@ reference mock address relationships, all beneficiary fallbacks, cache reuse,
 explicit coordinates, failure isolation, strict serialization, and import safety.
 These checks prove the supplied helper contract offline; they do not prove live
 provider behavior or frontend integration. Future PR base is `test`; no commit,
-push, PR, task 4, or deployment is part of this change.
+push, PR, task 5, or deployment is part of this change.
+
+## Task 4: offline runner and consumer verification
+
+`AggregatorDependencies.request_info_reader(request_id, beneficiary_id)` is an
+optional injected callback returning `category`, `subject`, and `description`.
+With it selected, the handler accepts the attached handler's IDs-only input,
+either directly or inside an API Gateway JSON `body`. Retrieved request details
+take precedence over caller search fields. The callback must verify the association
+before returning details. `LocalMockLocationRecordSource.get_request_info` checks
+the synthetic request's beneficiary and reads these explicitly synthetic fixture
+fields. The generator has no requests table; these fields do not establish live DDL.
+Missing/mismatched details return 400; unexpected lookup failures return 500, with
+an `error` JSON object and no dependency exception text. A missing category returns
+400. Without this callback the existing explicit-category offline input still works.
+The lower-level `aggregate_organizations` receives an already prepared request body.
+The offline handler normalizes integer IDs to strings and trims surrounding
+whitespace on string IDs once, before both details lookup and location resolution.
+Booleans, floats, containers, and blank/missing IDs return 400. Caller inputs are
+not mutated. This normalization does not change the deployed default handler.
+
+`local_aggregator_runner.build_local_dependencies` explicitly reads `users.csv`,
+`user_locations.csv`, `states.csv`, `countries.csv`, and `organizations.csv` from
+the selected directory. It composes both organization adapters, synthetic requests,
+fake geocoder, and instance-local cache. The local sources retain the supplied
+organization rows: search filtering and pagination are not simulated.
+Known organization CSV types are decoded at the local source boundary:
+`is_collaborator` true/false text becomes a JSON boolean, and `org_rating` becomes
+a finite JSON number. Blank or malformed values become null, including nonfinite
+ratings. IDs, ZIP codes (including leading zeros), and textual sizes stay strings.
+CSV files are never rewritten.
+The deployed two-argument handler retains its previous data source and behavior;
+it never selects this runner or loads local CSVs automatically.
+
+The CLI requires every input path, performs no generation, writes no output files,
+and prints the existing API response envelope to stdout. For example, after
+preparing synthetic inputs in a disposable directory outside the checkout:
+
+```bash
+venv/bin/python data-engineering/src/saayam-org-aggregator/local_aggregator_runner.py \
+  --mock-directory /tmp/saayam-synthetic \
+  --requests /tmp/saayam-synthetic/requests.json \
+  --ai /tmp/saayam-synthetic/ai.json \
+  --geocodes /tmp/saayam-synthetic/geocodes.json \
+  --event /tmp/saayam-synthetic/event.json
+```
+
+- `requests.json`: `{"requests": [{"request_id": "r", "beneficiary_id": "b",
+  "category": "Food", "subject": "Synthetic", "description": "Synthetic",
+  "req_loc": "SRID=4326;POINT(0 0)"}]}`. The existing
+  `tests/fixtures/synthetic_requests.json` illustrates location cases; add synthetic
+  search details when using those fixtures with this runner.
+- `ai.json`: organization list or the helper's `statusCode/body.organizations`
+  envelope. An explicitly supplied boolean `online_only: true` classifies a local
+  synthetic AI record as online-only; no text-based heuristic is used.
+- `geocodes.json`: address keys mapped to `{"latitude": 0, "longitude": 1}`,
+  `null` (unmatched), or the synthetic labels `"deferred"`, `"timeout"`, `"error"`.
+  Unknown addresses are unmatched. These values are test responses, not a provider API.
+- `event.json`: `{"request_id": "r", "beneficiary_id": "b"}` or
+  `{"body": "{\"request_id\":\"r\",\"beneficiary_id\":\"b\"}"}`.
+
+Never run the generator in a directory containing user datasets. This workflow
+does not run it at all. Integration tests write invented CSV/JSON inputs only to
+pytest temporary directories. Temporary datasets, screenshots, and captured output
+belong outside Git (or in the existing locally excluded `.validation/` directory).
+
+### Ordering and rendering contract
+
+`organization_distance.nearest_first(records)` returns a stable sorted list without
+mutating the input. Finite nonnegative numeric distances with `distance_status: "ok"`
+sort ascending, with valid zero first. Null, negative, nonfinite, string, boolean,
+and unavailable-status distances sort last. Equal distances and unavailable records
+retain their original relative order. The normal aggregator keeps source order.
+The CLI's `--nearest-first` option applies the helper only to its local response.
+Live pagination and sorting require a confirmed backend/frontend contract first;
+sorting one page alone would not establish global nearest-first ordering.
+
+Frontend consumers should render a positive available distance as **`<value> mi`**,
+valid zero as **`0 mi`**, and every unavailable distance as **`N/A`**. Check status
+and null explicitly instead of testing distance truthiness. The API retains numeric
+miles and full precision; frontend rounding precision still needs agreement.
+Keep rows and existing contact/representative fields visible during partial failures.
+
+`tests/test_offline_aggregator_integration.py` exercises the actual injected handler
+and CLI with generator-shaped temporary files: IDs-only direct/Gateway inputs,
+request association, trusted details, request/current/profile precedence, full
+profile and organization addresses, both sources, shared cache reuse, all six
+distance statuses, source/record/cache failures, stable sorting, and default-handler
+separation. These are **component integration and consumer-contract tests**.
+No frontend component or browser UI is present in this test path, so rendering,
+layout, and user interaction have **not** been verified in the actual UI.
+
+Run the components and existing analytics regressions together:
+
+```bash
+PYTHONPATH=data-engineering venv/bin/python -m pytest data-engineering/tests -q
+```
+
+Remaining dependencies: confirmed live request/beneficiary and organization schema,
+database/GenAI adapters and payload validation, approved geocoding provider and
+network timeouts, persistent cache backend/namespace/expiry, online-only classification,
+runtime wiring, frontend acceptance of IDs and distance fields, rendering/rounding
+implementation and browser verification, and a confirmed pagination/sorting contract.
+Local cache reuse proves reuse of one injected instance, not cross-invocation persistence.
+Task 5 remains unstarted.

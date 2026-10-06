@@ -41,6 +41,8 @@ class AggregatorDependencies:
     The AI source may also return the helper's statusCode/body.organizations envelope.
     No default provider, live record adapter, or persistent cache is selected here.
     Classification/coordinate callbacks receive raw OrganizationAddress records.
+    Optional request_info_reader must verify request/beneficiary association and
+    return trusted search details for IDs-only handler inputs.
     """
 
     records: LocationRecordSource
@@ -52,6 +54,7 @@ class AggregatorDependencies:
     resolver: Callable = resolve_beneficiary_location
     coordinate_reader: Callable | None = None
     online_reader: Callable | None = None
+    request_info_reader: Callable[[str, str], Mapping] | None = None
 
 
 def _rows(value, *, ai=False):
@@ -164,19 +167,46 @@ def _json_record(record: dict) -> dict:
     return result
 
 
+def _request_identity(value: object) -> str:
+    """Normalize offline IDs once for both trusted lookup and location resolution."""
+    if isinstance(value, str):
+        identity = value.strip()
+    elif type(value) is int:
+        identity = str(value)
+    else:
+        identity = ""
+    if not identity:
+        raise ValueError("request_id and beneficiary_id must be nonblank strings or integers")
+    return identity
+
+
 def offline_response(event: dict, dependencies: AggregatorDependencies) -> dict:
     """Serialize an API Gateway or direct request using the helper's list response contract."""
     try:
+        if not isinstance(event, dict):
+            raise ValueError("Request must be an object")
         raw = event.get("body")
         body = json.loads(raw) if isinstance(raw, str) else (raw if raw is not None else event)
         if not isinstance(body, dict):
             raise ValueError("Request body must be an object")
-        if not body.get("request_id") or not body.get("beneficiary_id"):
-            raise ValueError("request_id and beneficiary_id are required fields")
+        body = dict(body)
+        for key in ("request_id", "beneficiary_id"):
+            body[key] = _request_identity(body.get(key))
+        if dependencies.request_info_reader is not None:
+            try:
+                info = dependencies.request_info_reader(body["request_id"], body["beneficiary_id"])
+            except (ValueError, TypeError):
+                raise ValueError("Request details or association unavailable") from None
+            if not isinstance(info, Mapping):
+                raise ValueError("Request details unavailable")
+            # Trusted request details take precedence over caller-supplied search text.
+            body.update({key: info.get(key) for key in ("category", "subject", "description")})
         if not body.get("category"):
             raise ValueError("category is required")
     except (ValueError, TypeError) as error:
         return {"statusCode": 400, "body": json.dumps({"error": str(error)})}
+    except Exception:
+        return {"statusCode": 500, "body": json.dumps({"error": "Request details unavailable"})}
     try:
         records = aggregate_organizations(body, dependencies)
     except OrganizationSourcesUnavailable:

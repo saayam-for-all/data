@@ -2,6 +2,8 @@
 
 import math
 from collections.abc import Callable, Iterable
+from decimal import Decimal
+from numbers import Real
 
 from address_geocoding import (
     CoordinateCache,
@@ -24,6 +26,27 @@ STATUS_MAP = {
     "timeout": "error",
     "error": "error",
 }
+
+
+def nearest_first(organizations: Iterable[dict]) -> list[dict]:
+    """Return a stable sorted copy; only finite nonnegative ok distances are available.
+
+    Zero sorts first. Invalid numbers, strings, booleans, and unavailable statuses
+    sort last in their original order. This helper does not change live ordering.
+    """
+    def key(record):
+        value = record.get("distance")
+        if record.get("distance_status") != "ok" or isinstance(value, bool):
+            return (1, 0)
+        if not isinstance(value, (Real, Decimal)):
+            return (1, 0)
+        try:
+            number = float(value)
+        except (ValueError, OverflowError):
+            return (1, 0)
+        return (0, number) if math.isfinite(number) and number >= 0 else (1, 0)
+
+    return sorted(organizations, key=key)
 
 
 def straight_line_miles(origin: tuple, destination: tuple) -> float:
