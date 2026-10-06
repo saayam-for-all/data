@@ -1,0 +1,3 @@
+# Heavy dependencies (aws-lambda-powertools) should be added as a Lambda
+# Layer on AWS, not bundled in the deployment package. psycopg2-binary is
+# only needed for local testing - use the psycopg2 Lambda Layer in AWS.
