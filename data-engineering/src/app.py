@@ -3,6 +3,11 @@ from src.extensions import db
 from datetime import datetime, timedelta
 from src.models.fraud_requests import FraudRequests
 from src import config
+from src.profanity_routing import (
+    InvalidProfanityScoreError,
+    ProfanityApiError,
+    evaluate_help_request_profanity,
+)
 from src.translation.lang_detection import translate_to_english
 
 app = Flask(__name__)
@@ -80,6 +85,22 @@ def translate_request_content():
         "translated": translated_content
     }
     return jsonify(response), 200
+
+
+@app.route('/api/help_requests/profanity-route', methods=['POST'])
+def route_help_request_by_profanity():
+    data = request.get_json(silent=True) or {}
+
+    try:
+        routing_result = evaluate_help_request_profanity(data)
+    except InvalidProfanityScoreError as error:
+        return jsonify({"error": str(error)}), 502
+    except ProfanityApiError as error:
+        return jsonify({"error": str(error)}), 502
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+
+    return jsonify(routing_result), 200
 
 # Run the application
 if __name__ in "main":
