@@ -1,0 +1,4 @@
+country_id,country_name,phone_code,country_code,last_updated_at,is_eu_member
+1,United States,+1,US,2026-09-01 10:00:00,False
+2,Ireland,+353,IE,2026-09-01 10:05:00,True
+3,Sweden,+46,SE,2026-09-01 10:10:00,True

@@ -1,0 +1,4 @@
+state_id,country_id,state_name,state_code,last_updated_at
+VA,1,Virginia,VA,2026-09-01 10:20:00
+CA,1,California,CA,2026-09-01 10:25:00
+NY,1,New York,NY,2026-09-01 10:30:00
