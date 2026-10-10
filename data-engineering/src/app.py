@@ -2,8 +2,10 @@ from flask import Flask, jsonify, request
 from src.extensions import db
 from datetime import datetime, timedelta
 from src.models.fraud_requests import FraudRequests
+from src.models.flagged_help_requests import FlaggedHelpRequests
 from src import config
 from src.translation.lang_detection import translate_to_english
+from src.utils.profanity_routing import evaluate_help_request
 
 app = Flask(__name__)
 
@@ -80,6 +82,37 @@ def translate_request_content():
         "translated": translated_content
     }
     return jsonify(response), 200
+
+# Profanity check and severity-based routing for Help Requests (#422)
+@app.route('/api/route_help_request', methods=['POST'])
+def route_help_request():
+    data = request.get_json(silent=True) or {}
+    user_id = data.get('user_id')
+    subject = data.get('subject', '')
+    description = data.get('description', '')
+
+    if not user_id:
+        return jsonify({"error": "user_id is required"}), 400
+    if not subject and not description:
+        return jsonify({"error": "subject or description is required"}), 400
+
+    result = evaluate_help_request(subject, description)
+
+    # Anything that does not enter matching is stored in the flagged table
+    if not result["enters_matching"]:
+        flagged_request = FlaggedHelpRequests(
+            request_id=data.get('request_id'),
+            user_id=user_id,
+            subject=subject,
+            description=description,
+            severity_score=result["severity_score"],
+            severity_category=result["category"],
+            route=result["route"]
+        )
+        db.session.add(flagged_request)
+        db.session.commit()
+
+    return jsonify(result), 200
 
 # Run the application
 if __name__ in "main":
