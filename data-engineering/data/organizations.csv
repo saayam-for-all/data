@@ -1,0 +1,7 @@
+org_id,org_size,is_collaborator,is_contributor,org_type,state_id,created_at
+1,small,true,false,non_profit,101,2026-09-25
+2,medium,false,true,for_profit,102,2026-09-20
+3,large,true,true,non_profit,103,2026-09-15
+4,small,false,false,for_profit,101,2026-09-10
+5,medium,true,false,non_profit,102,2026-08-25
+6,large,false,true,for_profit,103,2026-08-20
