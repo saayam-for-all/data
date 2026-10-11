@@ -1,0 +1,1681 @@
+
+======================================================================
+1. Overview dashboard — default filters
+Request: {}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 8,
+      "non_profit_organizations": 6,
+      "for_profit_organizations": 2,
+      "collaborator_organizations": 4,
+      "non_collaborator_organizations": 4,
+      "contributor_organizations": 4,
+      "non_contributor_organizations": 4
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-07-09",
+        "count": 1
+      },
+      {
+        "period": "2026-07-15",
+        "count": 1
+      },
+      {
+        "period": "2026-07-19",
+        "count": 1
+      },
+      {
+        "period": "2026-07-27",
+        "count": 1
+      },
+      {
+        "period": "2026-07-31",
+        "count": 1
+      },
+      {
+        "period": "2026-08-01",
+        "count": 1
+      },
+      {
+        "period": "2026-08-03",
+        "count": 1
+      },
+      {
+        "period": "2026-08-05",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 6
+      },
+      {
+        "type": "for_profit",
+        "count": 2
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 4
+      },
+      {
+        "is_collaborator": false,
+        "count": 4
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 4
+      },
+      {
+        "is_contributor": false,
+        "count": 4
+      }
+    ]
+  }
+}
+
+======================================================================
+2. Overview dashboard — all organizations
+Request: {"dashboard_type": "overview", "time_filter": "ALL", "group_by": "monthly"}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 20,
+      "non_profit_organizations": 14,
+      "for_profit_organizations": 6,
+      "collaborator_organizations": 10,
+      "non_collaborator_organizations": 10,
+      "contributor_organizations": 11,
+      "non_contributor_organizations": 9
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2024-12",
+        "count": 1
+      },
+      {
+        "period": "2025-03",
+        "count": 1
+      },
+      {
+        "period": "2025-05",
+        "count": 1
+      },
+      {
+        "period": "2025-07",
+        "count": 1
+      },
+      {
+        "period": "2025-10",
+        "count": 1
+      },
+      {
+        "period": "2025-11",
+        "count": 1
+      },
+      {
+        "period": "2026-01",
+        "count": 1
+      },
+      {
+        "period": "2026-03",
+        "count": 1
+      },
+      {
+        "period": "2026-04",
+        "count": 1
+      },
+      {
+        "period": "2026-05",
+        "count": 2
+      },
+      {
+        "period": "2026-06",
+        "count": 1
+      },
+      {
+        "period": "2026-07",
+        "count": 5
+      },
+      {
+        "period": "2026-08",
+        "count": 3
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 14
+      },
+      {
+        "type": "for_profit",
+        "count": 6
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 7
+      },
+      {
+        "size": "medium",
+        "count": 8
+      },
+      {
+        "size": "large",
+        "count": 5
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "San Jose",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Naperville",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Peoria",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Rochester",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Syracuse",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Dallas",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Houston",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "San Antonio",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Alexandria",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 10
+      },
+      {
+        "is_collaborator": false,
+        "count": 10
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 11
+      },
+      {
+        "is_contributor": false,
+        "count": 9
+      }
+    ]
+  }
+}
+
+======================================================================
+3. Overview dashboard — type, state, and size filters
+Request: {"dashboard_type": "overview", "time_filter": "ALL", "org_type": "non_profit", "org_size": "large", "state_id": "CA"}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 3,
+      "non_profit_organizations": 3,
+      "for_profit_organizations": 0,
+      "collaborator_organizations": 2,
+      "non_collaborator_organizations": 1,
+      "contributor_organizations": 2,
+      "non_contributor_organizations": 1
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2025-05-13",
+        "count": 1
+      },
+      {
+        "period": "2026-07-09",
+        "count": 1
+      },
+      {
+        "period": "2026-08-01",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 3
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "large",
+        "count": 3
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "San Jose",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 2
+      },
+      {
+        "is_collaborator": false,
+        "count": 1
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 2
+      },
+      {
+        "is_contributor": false,
+        "count": 1
+      }
+    ]
+  }
+}
+
+======================================================================
+4. Overview dashboard — case-insensitive city filter
+Request: {"dashboard_type": "overview", "time_filter": "ALL", "city_name": "chicago"}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 1,
+      "non_profit_organizations": 1,
+      "for_profit_organizations": 0,
+      "collaborator_organizations": 1,
+      "non_collaborator_organizations": 0,
+      "contributor_organizations": 1,
+      "non_contributor_organizations": 0
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-07-27",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 1
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 1
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 1
+      }
+    ]
+  }
+}
+
+======================================================================
+5. Overview dashboard — collaborator and contributor filters
+Request: {"dashboard_type": "overview", "time_filter": "ALL", "is_collaborator": false, "is_contributor": true}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 5,
+      "non_profit_organizations": 2,
+      "for_profit_organizations": 3,
+      "collaborator_organizations": 0,
+      "non_collaborator_organizations": 5,
+      "contributor_organizations": 5,
+      "non_contributor_organizations": 0
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2025-10-10",
+        "count": 1
+      },
+      {
+        "period": "2026-03-09",
+        "count": 1
+      },
+      {
+        "period": "2026-05-28",
+        "count": 1
+      },
+      {
+        "period": "2026-07-19",
+        "count": 1
+      },
+      {
+        "period": "2026-08-01",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 2
+      },
+      {
+        "type": "for_profit",
+        "count": 3
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 1
+      },
+      {
+        "size": "medium",
+        "count": 2
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": false,
+        "count": 5
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 5
+      }
+    ]
+  }
+}
+
+======================================================================
+6. Overview dashboard — custom date range
+Request: {"dashboard_type": "overview", "time_filter": "CUSTOM", "start_date": "2026-07-07", "end_date": "2026-08-06", "group_by": "weekly"}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 8,
+      "non_profit_organizations": 6,
+      "for_profit_organizations": 2,
+      "collaborator_organizations": 4,
+      "non_collaborator_organizations": 4,
+      "contributor_organizations": 4,
+      "non_contributor_organizations": 4
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-W28",
+        "count": 1
+      },
+      {
+        "period": "2026-W29",
+        "count": 2
+      },
+      {
+        "period": "2026-W31",
+        "count": 3
+      },
+      {
+        "period": "2026-W32",
+        "count": 2
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 6
+      },
+      {
+        "type": "for_profit",
+        "count": 2
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "count": 3
+      },
+      {
+        "size": "large",
+        "count": 2
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 4
+      },
+      {
+        "is_collaborator": false,
+        "count": 4
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": true,
+        "count": 4
+      },
+      {
+        "is_contributor": false,
+        "count": 4
+      }
+    ]
+  }
+}
+
+======================================================================
+7. Performance dashboard — all organizations
+Request: {"dashboard_type": "performance", "time_filter": "ALL"}
+Status code: 200
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 3.56,
+      "rated_organizations": 16,
+      "unrated_organizations": 4,
+      "five_star_organizations": 5
+    },
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "count": 1
+      },
+      {
+        "rating": 2,
+        "count": 3
+      },
+      {
+        "rating": 3,
+        "count": 3
+      },
+      {
+        "rating": 4,
+        "count": 4
+      },
+      {
+        "rating": 5,
+        "count": 5
+      },
+      {
+        "rating": null,
+        "count": 4
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-002",
+        "org_name": "Community Bridge NY",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-008",
+        "org_name": "Golden State Aid CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-013",
+        "org_name": "Pacific Relief CA",
+        "rating": 4,
+        "type": "for_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-018",
+        "org_name": "Sunshine Support CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-009",
+        "org_name": "Lone Star Volunteers TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "medium"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-002",
+        "org_name": "Community Bridge NY",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-008",
+        "org_name": "Golden State Aid CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-018",
+        "org_name": "Sunshine Support CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-009",
+        "org_name": "Lone Star Volunteers TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-014",
+        "org_name": "Southern Cross TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "large"
+      }
+    ],
+    "top_contributor_organizations": [
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-013",
+        "org_name": "Pacific Relief CA",
+        "rating": 4,
+        "type": "for_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-018",
+        "org_name": "Sunshine Support CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-009",
+        "org_name": "Lone Star Volunteers TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-014",
+        "org_name": "Southern Cross TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-006",
+        "org_name": "Care Collective VA",
+        "rating": 2,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-010",
+        "org_name": "Prairie Partners IL",
+        "rating": 2,
+        "type": "for_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-016",
+        "org_name": "Old Dominion Outreach VA",
+        "rating": 1,
+        "type": "for_profit",
+        "size": "medium"
+      }
+    ],
+    "ratings_by_organization_type": [
+      {
+        "type": "non_profit",
+        "average_rating": 4.09,
+        "count": 14
+      },
+      {
+        "type": "for_profit",
+        "average_rating": 2.4,
+        "count": 6
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "size": "small",
+        "average_rating": 4.2,
+        "count": 7
+      },
+      {
+        "size": "medium",
+        "average_rating": 3.29,
+        "count": 8
+      },
+      {
+        "size": "large",
+        "average_rating": 3.25,
+        "count": 5
+      }
+    ]
+  }
+}
+
+======================================================================
+8. Performance dashboard — five-star organizations
+Request: {"dashboard_type": "performance", "time_filter": "ALL", "org_rating": 5}
+Status code: 200
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 5.0,
+      "rated_organizations": 5,
+      "unrated_organizations": 0,
+      "five_star_organizations": 5
+    },
+    "rating_distribution": [
+      {
+        "rating": 5,
+        "count": 5
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      }
+    ],
+    "top_contributor_organizations": [
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      }
+    ],
+    "ratings_by_organization_type": [
+      {
+        "type": "non_profit",
+        "average_rating": 5.0,
+        "count": 5
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "size": "small",
+        "average_rating": 5.0,
+        "count": 3
+      },
+      {
+        "size": "medium",
+        "average_rating": 5.0,
+        "count": 2
+      }
+    ]
+  }
+}
+
+======================================================================
+9. Invalid dashboard type
+Request: {"dashboard_type": "invalid"}
+Status code: 400
+{
+  "error": "dashboard_type must be overview or performance."
+}
+
+======================================================================
+10. Invalid organization rating
+Request: {"org_rating": 6}
+Status code: 400
+{
+  "error": "org_rating must be an integer from 1 through 5."
+}
+
+======================================================================
+11. Overview — database without is_contributor
+Request: {"time_filter": "ALL"}
+Status code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 20,
+      "non_profit_organizations": 14,
+      "for_profit_organizations": 6,
+      "collaborator_organizations": 10,
+      "non_collaborator_organizations": 10,
+      "contributor_organizations": null,
+      "non_contributor_organizations": null
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2024-12-14",
+        "count": 1
+      },
+      {
+        "period": "2025-03-24",
+        "count": 1
+      },
+      {
+        "period": "2025-05-13",
+        "count": 1
+      },
+      {
+        "period": "2025-07-02",
+        "count": 1
+      },
+      {
+        "period": "2025-10-10",
+        "count": 1
+      },
+      {
+        "period": "2025-11-29",
+        "count": 1
+      },
+      {
+        "period": "2026-01-18",
+        "count": 1
+      },
+      {
+        "period": "2026-03-09",
+        "count": 1
+      },
+      {
+        "period": "2026-04-08",
+        "count": 1
+      },
+      {
+        "period": "2026-05-08",
+        "count": 1
+      },
+      {
+        "period": "2026-05-28",
+        "count": 1
+      },
+      {
+        "period": "2026-06-22",
+        "count": 1
+      },
+      {
+        "period": "2026-07-09",
+        "count": 1
+      },
+      {
+        "period": "2026-07-15",
+        "count": 1
+      },
+      {
+        "period": "2026-07-19",
+        "count": 1
+      },
+      {
+        "period": "2026-07-27",
+        "count": 1
+      },
+      {
+        "period": "2026-07-31",
+        "count": 1
+      },
+      {
+        "period": "2026-08-01",
+        "count": 1
+      },
+      {
+        "period": "2026-08-03",
+        "count": 1
+      },
+      {
+        "period": "2026-08-05",
+        "count": 1
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "type": "non_profit",
+        "count": 14
+      },
+      {
+        "type": "for_profit",
+        "count": 6
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "size": "small",
+        "count": 7
+      },
+      {
+        "size": "medium",
+        "count": 8
+      },
+      {
+        "size": "large",
+        "count": 5
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Fresno",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Oakland",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "Sacramento",
+        "count": 1
+      },
+      {
+        "state": "California",
+        "state_code": "CA",
+        "city": "San Jose",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Chicago",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Naperville",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Peoria",
+        "count": 1
+      },
+      {
+        "state": "Illinois",
+        "state_code": "IL",
+        "city": "Springfield",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Albany",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Buffalo",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Rochester",
+        "count": 1
+      },
+      {
+        "state": "New York",
+        "state_code": "NY",
+        "city": "Syracuse",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Austin",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Dallas",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "Houston",
+        "count": 1
+      },
+      {
+        "state": "Texas",
+        "state_code": "TX",
+        "city": "San Antonio",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Alexandria",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Ashburn",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Norfolk",
+        "count": 1
+      },
+      {
+        "state": "Virginia",
+        "state_code": "VA",
+        "city": "Richmond",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": true,
+        "count": 10
+      },
+      {
+        "is_collaborator": false,
+        "count": 10
+      }
+    ],
+    "contributor_distribution": []
+  }
+}
+
+======================================================================
+12. Performance — database without is_contributor
+Request: {"dashboard_type": "performance", "time_filter": "ALL"}
+Status code: 200
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 3.56,
+      "rated_organizations": 16,
+      "unrated_organizations": 4,
+      "five_star_organizations": 5
+    },
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "count": 1
+      },
+      {
+        "rating": 2,
+        "count": 3
+      },
+      {
+        "rating": 3,
+        "count": 3
+      },
+      {
+        "rating": 4,
+        "count": 4
+      },
+      {
+        "rating": 5,
+        "count": 5
+      },
+      {
+        "rating": null,
+        "count": 4
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-002",
+        "org_name": "Community Bridge NY",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-008",
+        "org_name": "Golden State Aid CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-013",
+        "org_name": "Pacific Relief CA",
+        "rating": 4,
+        "type": "for_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-018",
+        "org_name": "Sunshine Support CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-009",
+        "org_name": "Lone Star Volunteers TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "medium"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "ORG-LOCAL-011",
+        "org_name": "Capitol Care VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-020",
+        "org_name": "Great Lakes Giving IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-001",
+        "org_name": "Helping Hands VA",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-005",
+        "org_name": "Neighbor Network IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "small"
+      },
+      {
+        "org_id": "ORG-LOCAL-015",
+        "org_name": "Windy City Works IL",
+        "rating": 5,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-002",
+        "org_name": "Community Bridge NY",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-008",
+        "org_name": "Golden State Aid CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-018",
+        "org_name": "Sunshine Support CA",
+        "rating": 4,
+        "type": "non_profit",
+        "size": "large"
+      },
+      {
+        "org_id": "ORG-LOCAL-009",
+        "org_name": "Lone Star Volunteers TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "medium"
+      },
+      {
+        "org_id": "ORG-LOCAL-014",
+        "org_name": "Southern Cross TX",
+        "rating": 3,
+        "type": "non_profit",
+        "size": "large"
+      }
+    ],
+    "top_contributor_organizations": [],
+    "ratings_by_organization_type": [
+      {
+        "type": "non_profit",
+        "average_rating": 4.09,
+        "count": 14
+      },
+      {
+        "type": "for_profit",
+        "average_rating": 2.4,
+        "count": 6
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "size": "small",
+        "average_rating": 4.2,
+        "count": 7
+      },
+      {
+        "size": "medium",
+        "average_rating": 3.29,
+        "count": 8
+      },
+      {
+        "size": "large",
+        "average_rating": 3.25,
+        "count": 5
+      }
+    ]
+  }
+}
+
+======================================================================
+13. Contributor filter without database column
+Request: {"time_filter": "ALL", "is_contributor": true}
+Status code: 400
+{
+  "error": "is_contributor filtering is unavailable because the database does not yet contain the is_contributor column."
+}
