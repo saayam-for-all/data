@@ -1,0 +1,23 @@
+﻿
+Rating & Type Analytics Acceptance Verification
+
+PASS: No body
+PASS: Country filter
+PASS: Rating Custom only
+PASS: Type Custom only
+PASS: Both Custom ranges
+PASS: Fixed cumulative counts
+PASS: Period formats
+PASS: Sparse periods
+PASS: Missing rating end date
+PASS: Missing type start date
+PASS: Bad rating date format
+PASS: Bad type date format
+PASS: Rating start after end
+PASS: Type start after end
+PASS: Empty Custom range
+PASS: Empty organizations DataFrame
+PASS: One-row organizations DataFrame
+
+Completed 17 tests. Failures: 0
+All acceptance verification tests passed.

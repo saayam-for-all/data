@@ -1,0 +1,6 @@
+# Python generated files
+__pycache__/
+*.pyc
+
+# Local analytics mock data - do not commit
+data-analytics/mock-data-generation/*.csv
