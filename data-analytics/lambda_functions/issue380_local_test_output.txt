@@ -1,0 +1,89 @@
+USE_MOCK_DATA=true
+MOCK_DATA_DIR=C:\SUDHA\Saayam For All\mock-data
+Reference date (today)=2026-10-03
+
+===== 1. No body =====
+Request: {}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+===== 2. Country filter (USA) =====
+Request: {"country": "USA"}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+===== 3. Country filter by name (India) =====
+Request: {"country": "India"}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+===== 4. Rating Custom range only =====
+Request: {"rating_start_date": "2026-01-01", "rating_end_date": "2026-06-30"}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+===== 5. Type Custom range only =====
+Request: {"type_start_date": "2025-01-01", "type_end_date": "2025-12-31"}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+===== 6. Both Custom ranges + country =====
+Request: {"country": "USA", "rating_start_date": "2026-01-01", "rating_end_date": "2026-06-30", "type_start_date": "2025-01-01", "type_end_date": "2025-12-31"}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+===== 7. ERROR - missing half of a pair =====
+Request: {"rating_start_date": "2026-01-01"}
+Status: 400
+{
+  "error": "rating_end_date is required when rating_start_date is provided"
+}
+
+===== 8. ERROR - bad date format =====
+Request: {"type_start_date": "2025/01/01", "type_end_date": "2025-12-31"}
+Status: 400
+{
+  "error": "Invalid type_start_date: '2025/01/01' (expected YYYY-MM-DD)"
+}
+
+===== 9. ERROR - start after end =====
+Request: {"rating_start_date": "2026-06-30", "rating_end_date": "2026-01-01"}
+Status: 400
+{
+  "error": "rating_start_date (2026-06-30) cannot be after rating_end_date (2026-01-01)"
+}
+
+===== 10. API Gateway style event (body as JSON string) =====
+Request: {"body": "{\"type_start_date\": \"2026-08-01\", \"type_end_date\": \"2026-08-31\"}"}
+ERROR (data): Missing mock data file: C:\SUDHA\Saayam For All\mock-data\organizations.csv
+Status: 500
+{
+  "error": "Data error",
+  "details": "Missing mock data file: C:\\SUDHA\\Saayam For All\\mock-data\\organizations.csv"
+}
+
+All sanity checks passed.

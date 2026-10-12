@@ -1,0 +1,26 @@
+test_api_gateway_body_string (test_rating_type_analytics.RatingTypeAnalyticsTest.test_api_gateway_body_string) ... ok
+test_bad_inputs_return_400 (test_rating_type_analytics.RatingTypeAnalyticsTest.test_bad_inputs_return_400) ... ok
+test_both_custom_pairs_each_use_own_range (test_rating_type_analytics.RatingTypeAnalyticsTest.test_both_custom_pairs_each_use_own_range) ... ok
+test_country_all_is_no_filter (test_rating_type_analytics.RatingTypeAnalyticsTest.test_country_all_is_no_filter) ... ok
+test_country_filter_by_code_and_name (test_rating_type_analytics.RatingTypeAnalyticsTest.test_country_filter_by_code_and_name) ... ok
+test_country_name_with_space_matches_underscore (test_rating_type_analytics.RatingTypeAnalyticsTest.test_country_name_with_space_matches_underscore) ... ok
+test_custom_range_end_date_is_inclusive (test_rating_type_analytics.RatingTypeAnalyticsTest.test_custom_range_end_date_is_inclusive) ... ok
+test_empty_organizations_csv (test_rating_type_analytics.RatingTypeAnalyticsTest.test_empty_organizations_csv) ... ok
+test_fixed_bucket_values (test_rating_type_analytics.RatingTypeAnalyticsTest.test_fixed_bucket_values) ... ok
+test_missing_csv_returns_500 (test_rating_type_analytics.RatingTypeAnalyticsTest.test_missing_csv_returns_500) ... ok
+test_missing_required_column_returns_500 (test_rating_type_analytics.RatingTypeAnalyticsTest.test_missing_required_column_returns_500) ... ok
+test_mix_trend_non_decreasing_everywhere (test_rating_type_analytics.RatingTypeAnalyticsTest.test_mix_trend_non_decreasing_everywhere) ... ok
+test_no_body_returns_exactly_five_keys (test_rating_type_analytics.RatingTypeAnalyticsTest.test_no_body_returns_exactly_five_keys) ... ok
+test_no_zero_fill_of_missing_ratings (test_rating_type_analytics.RatingTypeAnalyticsTest.test_no_zero_fill_of_missing_ratings) ... ok
+test_one_row_organizations_csv (test_rating_type_analytics.RatingTypeAnalyticsTest.test_one_row_organizations_csv) ... ok
+test_period_formats (test_rating_type_analytics.RatingTypeAnalyticsTest.test_period_formats) ... ok
+test_rating_custom_only (test_rating_type_analytics.RatingTypeAnalyticsTest.test_rating_custom_only) ... ok
+test_type_custom_only_is_daily_and_cumulative (test_rating_type_analytics.RatingTypeAnalyticsTest.test_type_custom_only_is_daily_and_cumulative) ... ok
+test_unknown_country_returns_empty_not_crash (test_rating_type_analytics.RatingTypeAnalyticsTest.test_unknown_country_returns_empty_not_crash) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.634s
+
+OK
+ERROR (data): Missing mock data file: C:\Users\SUDHAN~1\AppData\Local\Temp\tmp803qigrb\countries.csv
+ERROR (data): organizations.csv is missing required columns: org_rating
