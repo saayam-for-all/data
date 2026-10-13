@@ -65,17 +65,26 @@ def get_ai_orgs(subject, description, location):
         raise Exception(f'Error fetching AI orgs: {str(e)}')
 
 
+BASE_MERGE_COLUMNS = ['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]
+DISTANCE_FIELDS = ["distance", "distance_unit", "distance_method", "distance_status"]
+
+
+def _merge_columns(df):
+    """Base columns plus the distance fields when they were added (#433)."""
+    return BASE_MERGE_COLUMNS + [c for c in DISTANCE_FIELDS if c in df.columns]
+
+
 def merge_organizations(db_organizations, genAI_organizations):
     try:
         db_organizations = db_organizations.rename(columns={
             'org_name': 'name',
             'city_name': 'location',
             'phone': 'contact'
-        })[['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]]
+        })[_merge_columns(db_organizations)]
 
         genAI_organizations = genAI_organizations.rename(columns={
             'organization_name': 'name'
-        })[['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]]
+        })[_merge_columns(genAI_organizations)]
 
         return pd.concat([db_organizations, genAI_organizations], ignore_index=True)
     except KeyError as e:
