@@ -1,0 +1,7 @@
+country_id,country_name,phone_code,country_code,last_updated_at,is_eu_member
+1,UNITED_STATES,1,USA,2024-04-24 09:47:17,False
+2,CANADA,1,CAN,2024-09-07 16:08:47,False
+3,UNITED_KINGDOM,44,GBR,2024-04-15 06:47:57,False
+4,INDIA,91,IND,2025-07-12 11:37:27,False
+5,AUSTRALIA,61,AUS,2024-02-02 09:05:13,False
+6,GERMANY,49,DEU,2024-08-27 01:38:01,True
