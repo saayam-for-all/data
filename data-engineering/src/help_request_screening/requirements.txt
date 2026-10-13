@@ -1,0 +1,3 @@
+# Only lightweight packages here. The Profanity API is called with the
+# standard library (urllib), so the database driver is the only dependency.
+psycopg2-binary==2.9.9
