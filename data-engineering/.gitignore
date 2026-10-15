@@ -19,3 +19,6 @@ htmlcov/
 datasets/raw/
 datasets/cleaned/
 dist/
+
+# Local-only test artifacts (issue #433 scenario runner, seeds, mocks)
+.local_testing/
