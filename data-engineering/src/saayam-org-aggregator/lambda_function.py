@@ -1,5 +1,11 @@
 import json
-from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
+from helpers import (
+    get_ai_orgs,
+    get_orgs_from_db,
+    merge_organizations,
+    resolve_beneficiary_coordinates,
+)
+from distance import add_organization_distances, geocode_address
 from concurrent.futures import ThreadPoolExecutor
 
 # handle the lambda function call
@@ -12,6 +18,7 @@ def lambda_handler(event, context):
         description = body.get("description")
         location = body.get("location")
         category = body.get("category")
+        request_id = body.get("request_id")
 
         if not location or not category:
             return {
@@ -24,6 +31,7 @@ def lambda_handler(event, context):
 
         #Implemented parallelization to speed up the reponse
 
+
         with ThreadPoolExecutor() as executor:
             db_future = executor.submit(get_orgs_from_db, location, category)
             ai_future = executor.submit(get_ai_orgs, subject, description, location)
@@ -31,7 +39,38 @@ def lambda_handler(event, context):
             db_organizations = db_future.result()
             genAI_organizations = ai_future.result()
 
-        combined_list = merge_organizations(db_organizations, genAI_organizations)
+        combined_list = merge_organizations(
+            db_organizations,
+            genAI_organizations,
+        )
+
+        # Add distance information using the beneficiary's location.
+        origin = None
+
+        if request_id:
+            try:
+                beneficiary_location = resolve_beneficiary_coordinates(
+                    request_id
+                )
+
+                if beneficiary_location:
+                    origin = beneficiary_location.get("coordinates")
+
+                    # Try the beneficiary's address if coordinates are unavailable.
+                    if origin is None:
+                        address = beneficiary_location.get("address")
+                        if address:
+                            origin = geocode_address(address)
+
+            except Exception:
+                # Location lookup must not prevent organization results.
+                origin = None
+
+
+        combined_list = add_organization_distances(
+            combined_list,
+            origin,
+        )
 
         return {
             'statusCode': 200,
