@@ -1,0 +1,25 @@
+{
+  "description": "SYNTHETIC LOCAL TEST FIXTURES ONLY: generator has no requests table; IDs and coordinates below are invented test inputs, never runtime fallbacks.",
+  "requests": [
+    {
+      "request_id": "synthetic-request-coordinate",
+      "beneficiary_id": "synthetic-beneficiary",
+      "req_loc": "SRID=4326;POINT(-120.5 35.25)"
+    },
+    {
+      "request_id": "synthetic-request-current",
+      "beneficiary_id": "synthetic-beneficiary",
+      "req_loc": null
+    },
+    {
+      "request_id": "synthetic-request-profile",
+      "beneficiary_id": "synthetic-beneficiary",
+      "req_loc": "malformed synthetic point"
+    },
+    {
+      "request_id": "synthetic-request-zero",
+      "beneficiary_id": "synthetic-beneficiary",
+      "req_loc": "SRID=4326;POINT(0 0)"
+    }
+  ]
+}

@@ -1,10 +1,17 @@
 import json
-from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
 from concurrent.futures import ThreadPoolExecutor
 
 # handle the lambda function call
-def lambda_handler(event, context):
+def lambda_handler(event, context, *, dependencies=None):
+    """Use explicit offline dependencies when supplied; live wiring remains a later task."""
+    if dependencies is not None:
+        from offline_aggregator import offline_response
+
+        return offline_response(event, dependencies)
+
     try:
+        from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
+
         raw_body = event.get("body")
         body = json.loads(raw_body) if isinstance(raw_body, str) else event
 
