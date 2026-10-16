@@ -129,6 +129,10 @@ jobs:
           [ -d data-engineering/src/utils ] && cp -r data-engineering/src/utils package/
           [ -d data-engineering/src/models ] && cp -r data-engineering/src/models package/
 
+      - name: Build profanity dictionary
+        if: inputs.source_folder == 'inappropriate_content_filter'
+        run: python package/create_profane_words_db.py
+
       - name: Create zip
         run: |
           cd package && zip -r ../deployment.zip . --quiet && cd ..
