@@ -1,0 +1,5 @@
+# Same pandas version as data-engineering/requirements.txt.
+pandas==2.2.2
+# Only needed for USE_MOCK_DATA=false (install separately):
+# psycopg2-binary==2.9.9
+
