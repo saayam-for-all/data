@@ -1,0 +1,70 @@
+# Profanity list for Saayam help requests
+# One word or phrase per line. Lines starting with # are ignored by build_db.py.
+#
+# Curated for the use case: people asking volunteers for help (groceries,
+# rides, repairs, pets, gardening, medical errands). Words with common innocent
+# meanings in those requests are left out on purpose, see the bottom section.
+# Slurs and hate terms are not included here; take those from the team's
+# bad-words.txt or a maintained public list.
+
+# ---- Strong profanity ----
+fuck
+fucks
+fucking
+fucked
+fucker
+fuckers
+fuckin
+motherfucker
+motherfuckers
+motherfucking
+shit
+shits
+shitty
+shithead
+bullshit
+horseshit
+asshole
+assholes
+ass
+jackass
+dumbass
+bastard
+bastards
+bitch
+bitches
+cunt
+twat
+wanker
+dickhead
+douchebag
+goddamn
+goddammit
+
+# ---- Phrases (whole phrase must appear) ----
+piss off
+pissed off
+shut the fuck up
+screw you
+go to hell
+
+# ---- Mild words: OFF by default, team to decide ----
+# Stressed people often write these in genuine requests ("my damn car broke down").
+# Remove the # to turn one on.
+# damn
+# crap
+# hell
+# sucks
+# heck
+
+# ---- Left out on purpose (innocent meanings in help requests) ----
+# screw    -> "need a screw for the shelf"
+# hoe      -> garden tool
+# cock     -> rooster, "stopcock" for plumbing
+# pussy    -> cat
+# balls    -> "tennis balls", "cotton balls"
+# prick    -> "prick my finger" (blood sugar tests)
+# dick     -> a person's name
+# bloody   -> "bloody nose"
+# douche   -> medical / hygiene item
+# pissed   -> also means "drunk" or "upset"; only the phrase "pissed off" is listed
