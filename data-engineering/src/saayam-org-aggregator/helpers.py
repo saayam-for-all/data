@@ -4,6 +4,18 @@ from aws_lambda_powertools.utilities import parameters
 import pandas as pd
 import pg8000
 
+from org_distance import (
+    DISTANCE_COLUMNS,
+    DISTANCE_METHOD,
+    DISTANCE_UNIT,
+    STATUS_ERROR,
+    CoordinateCache,
+    beneficiary_from_body,
+    configure,
+    distance_fields_for_ai_orgs,
+    distance_fields_for_db_orgs,
+)
+
 
 GEN_AI_LAMBDA = "More_Org_GenAI_Py_v3126"
 
@@ -24,6 +36,10 @@ _db_conn = pg8000.connect(
     port=_creds['PORT'],
     ssl_context=True
 )
+
+# Distance (#433): same schema as the org queries; geocode cache reused on warm starts
+configure(schema=_db_name)
+_geo_cache = CoordinateCache()
 # -----------------------------------------------------------------
 
 def get_orgs_from_db(location, category):
@@ -65,17 +81,52 @@ def get_ai_orgs(subject, description, location):
         raise Exception(f'Error fetching AI orgs: {str(e)}')
 
 
+def get_beneficiary_location(body):
+    """Beneficiary/request location (#433) – never the viewer's location. Never raises."""
+    return beneficiary_from_body(body, _db_conn, cache=_geo_cache)
+
+
+def add_distance_columns(orgs_df, beneficiary, db_or_ai):
+    """
+    Add distance, distance_unit, distance_method, distance_status to each org (#433).
+    Distance problems never drop an organization or fail the request.
+    """
+    records = orgs_df.to_dict(orient='records')
+    try:
+        if db_or_ai == "db":
+            fields = distance_fields_for_db_orgs(records, beneficiary, _db_conn, cache=_geo_cache)
+        else:
+            fields = distance_fields_for_ai_orgs(records, beneficiary, cache=_geo_cache)
+    except Exception:
+        fields = [{
+            "distance": None,
+            "distance_unit": DISTANCE_UNIT,
+            "distance_method": DISTANCE_METHOD,
+            "distance_status": STATUS_ERROR,
+        } for _ in records]
+
+    orgs_df = orgs_df.copy()
+    for col in DISTANCE_COLUMNS:
+        # dtype=object keeps None as JSON null (a float column would turn it into NaN)
+        orgs_df[col] = pd.Series([f[col] for f in fields], index=orgs_df.index, dtype=object)
+    return orgs_df
+
+
 def merge_organizations(db_organizations, genAI_organizations):
     try:
+        output_columns = ['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]
+        output_columns += [c for c in DISTANCE_COLUMNS
+                           if c in db_organizations.columns and c in genAI_organizations.columns]
+
         db_organizations = db_organizations.rename(columns={
             'org_name': 'name',
             'city_name': 'location',
             'phone': 'contact'
-        })[['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]]
+        })[output_columns]
 
         genAI_organizations = genAI_organizations.rename(columns={
             'organization_name': 'name'
-        })[['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]]
+        })[output_columns]
 
         return pd.concat([db_organizations, genAI_organizations], ignore_index=True)
     except KeyError as e:
