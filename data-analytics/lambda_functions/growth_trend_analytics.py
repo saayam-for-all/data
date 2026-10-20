@@ -1,16 +1,15 @@
 import json
 import logging
 import os
+import re
 from datetime import datetime
 
 import pandas as pd
 
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "mock_data")
-
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "mock-data-generation")
 
 def load_data():
     org_df = pd.read_csv(os.path.join(DATA_DIR, "organizations.csv"))
@@ -34,10 +33,8 @@ def load_data():
 
     return org_df, states_df, countries_df
 
-
 def _is_blank(value):
     return value is None or (isinstance(value, str) and value.strip() == "")
-
 
 def _parse_date(value):
     # Strict YYYY-MM-DD only: rejects ints, other formats and timezone strings.
@@ -47,7 +44,6 @@ def _parse_date(value):
         return pd.Timestamp(datetime.strptime(value.strip(), "%Y-%m-%d"))
     except ValueError:
         return None
-
 
 def validate_date_pair(start, end):
     # null / "" means "not supplied"; a half pair or a bad value is invalid.
@@ -62,6 +58,33 @@ def validate_date_pair(start, end):
         return False, None, None
     return True, s, e
 
+def _normalize_name(value):
+    # "United States", "united_states" and "UNITED-STATES" all match.
+    return re.sub(r"[_\-\s]+", " ", str(value).strip()).upper()
+
+def resolve_country(country, countries_df):
+    # Returns (status, country_id); status is "none", "ok", "invalid_type"
+    # or "unknown". Blank, null and "ALL" mean no filter.
+    if _is_blank(country):
+        return "none", None
+    if not isinstance(country, str):
+        return "invalid_type", None
+    if country.strip().upper() == "ALL":
+        return "none", None
+
+    key = _normalize_name(country)
+    codes = countries_df["country_code"].astype(str).str.strip().str.upper()
+    match = countries_df[codes == key]
+    if match.empty:
+        names = countries_df["country_name"].map(_normalize_name)
+        match = countries_df[names == key]
+    if match.empty:
+        return "unknown", None
+    return "ok", match.iloc[0]["country_id"]
+
+def filter_by_country(org_df, states_df, country_id):
+    state_ids = states_df.loc[states_df["country_id"] == country_id, "state_id"]
+    return org_df[org_df["state_id"].isin(state_ids)]
 
 def filter_by_range(df, start, end):
     # end is a date at midnight; include that whole day.
@@ -69,7 +92,6 @@ def filter_by_range(df, start, end):
         (df["created_at"] >= start)
         & (df["created_at"] < end + pd.Timedelta(days=1))
     ]
-
 
 def filter_by_window(df, time_key):
     today = pd.Timestamp.now().normalize()
@@ -86,12 +108,10 @@ def filter_by_window(df, time_key):
         return df
     return df
 
-
 def get_grouping_format(time_key):
     if time_key in ("7D", "30D", "Custom"):
         return "day"
     return "month"
-
 
 def apply_period(df, grouping):
     df = df.copy()
@@ -100,7 +120,6 @@ def apply_period(df, grouping):
     else:
         df["period"] = df["created_at"].dt.strftime("%Y-%m")
     return df
-
 
 def build_growth_trend(full_df, window_df, grouping):
     if len(window_df) == 0:
@@ -142,31 +161,50 @@ def build_growth_trend(full_df, window_df, grouping):
 
     return {"total_organizations": total_orgs, "collaborators": collab_list}
 
+def _state_name_column(states_df):
+    for col in ("state_name", "name", "state"):
+        if col in states_df.columns:
+            return col
+    raise KeyError("states.csv has no state name column")
 
-def build_orgs_by_location(window_df, states_df, countries_df):
+def build_orgs_by_location(window_df, states_df, countries_df, by_state=False):
     if len(window_df) == 0:
         return []
 
-    merged = window_df.merge(
-        states_df[["state_id", "country_id"]], on="state_id", how="left"
-    )
-    merged = merged.merge(
-        countries_df[["country_id", "country_code"]],
-        on="country_id",
-        how="left",
-    )
-    merged["country_code"] = merged["country_code"].fillna("Unknown")
+    if by_state:
+        # a country is selected: list its states
+        state_col = _state_name_column(states_df)
+        merged = window_df.merge(
+            states_df[["state_id", state_col]].drop_duplicates("state_id"),
+            on="state_id",
+            how="left",
+        )
+        merged[state_col] = merged[state_col].fillna("Unknown")
+        key_col, out_key = state_col, "state"
+    else:
+        merged = window_df.merge(
+            states_df[["state_id", "country_id"]].drop_duplicates("state_id"),
+            on="state_id",
+            how="left",
+        )
+        merged = merged.merge(
+            countries_df[["country_id", "country_code"]],
+            on="country_id",
+            how="left",
+        )
+        merged["country_code"] = merged["country_code"].fillna("Unknown")
+        key_col, out_key = "country_code", "country"
 
-    by_country = (
-        merged.groupby("country_code").size().reset_index(name="count")
+    grouped = merged.groupby(key_col).size().reset_index(name="count")
+    # highest count first, then alphabetical; no limit, no "Other"
+    grouped = grouped.sort_values(
+        ["count", key_col], ascending=[False, True], kind="mergesort"
     )
-    by_country = by_country.sort_values("count", ascending=False).head(4)
 
     return [
-        {"country": r["country_code"], "count": int(r["count"])}
-        for _, r in by_country.iterrows()
+        {out_key: r[key_col], "count": int(r["count"])}
+        for _, r in grouped.iterrows()
     ]
-
 
 def _response(status_code, payload):
     return {
@@ -177,7 +215,6 @@ def _response(status_code, payload):
         },
         "body": json.dumps(payload),
     }
-
 
 def lambda_handler(event, context):
     try:
@@ -198,17 +235,10 @@ def lambda_handler(event, context):
 
         start_date = body.get("start_date")
         end_date = body.get("end_date")
-        location_start_date = body.get("location_start_date")
-        location_end_date = body.get("location_end_date")
 
-        valid_trend, trend_start, trend_end = validate_date_pair(
-            start_date, end_date
-        )
-        valid_loc, loc_start, loc_end = validate_date_pair(
-            location_start_date, location_end_date
-        )
+        valid, start, end = validate_date_pair(start_date, end_date)
 
-        if not valid_trend or not valid_loc:
+        if not valid:
             return {
                 "statusCode": 400,
                 "headers": {
@@ -225,33 +255,31 @@ def lambda_handler(event, context):
                 ),
             }
 
-        has_trend_custom = trend_start is not None and trend_end is not None
-        has_loc_custom = loc_start is not None and loc_end is not None
-        is_custom = has_trend_custom or has_loc_custom
+        country_status, country_id = resolve_country(
+            body.get("country"), countries_df
+        )
+        if country_status == "invalid_type":
+            return _response(400, {"error": "country must be a string"})
+        if country_status == "unknown":
+            return _response(400, {"error": "Unknown country"})
+
+        by_state = country_status == "ok"
+        if by_state:
+            # filter first so both charts (and the cumulative totals) use it
+            org_df = filter_by_country(org_df, states_df, country_id)
+
+        is_custom = start is not None and end is not None
 
         if is_custom:
-            custom_growth = {
-                "total_organizations": [],
-                "collaborators": [],
-            }
-            custom_location = []
-
-            if has_trend_custom:
-                trend_window = filter_by_range(org_df, trend_start, trend_end)
-                custom_growth = build_growth_trend(
-                    org_df, trend_window, "day"
-                )
-
-            if has_loc_custom:
-                loc_window = filter_by_range(org_df, loc_start, loc_end)
-                custom_location = build_orgs_by_location(
-                    loc_window, states_df, countries_df
-                )
-
+            window_df = filter_by_range(org_df, start, end)
             response = {
                 "Custom": {
-                    "growth_trend": custom_growth,
-                    "organizations_by_location": custom_location,
+                    "growth_trend": build_growth_trend(
+                        org_df, window_df, "day"
+                    ),
+                    "organizations_by_location": build_orgs_by_location(
+                        window_df, states_df, countries_df, by_state
+                    ),
                 }
             }
         else:
@@ -262,7 +290,7 @@ def lambda_handler(event, context):
 
                 growth = build_growth_trend(org_df, window_df, grouping)
                 location = build_orgs_by_location(
-                    window_df, states_df, countries_df
+                    window_df, states_df, countries_df, by_state
                 )
 
                 response[time_key] = {
