@@ -1,3 +1,7 @@
 # Heavy dependencies (pandas, aws-lambda-powertools, pg8000) should be
 # added as Lambda Layers on AWS - not bundled in the deployment package.
 # Only add lightweight packages here that aren't in your layers.
+#
+# geopy was removed: distance is calculated with the haversine formula
+# (stdlib math only) so no geocoding library is needed.
+# The geocoding provider is pluggable via GEOCODER_REGISTRY in helpers.py.
