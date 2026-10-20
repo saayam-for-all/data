@@ -19,3 +19,6 @@ htmlcov/
 datasets/raw/
 datasets/cleaned/
 dist/
+
+# Built at packaging time by src/inappropriate_content_filter/create_profane_words_db.py
+profane_words.db
