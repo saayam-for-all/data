@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from datetime import datetime
 
 import pandas as pd
@@ -38,13 +39,35 @@ def load_data():
 def _is_blank(value):
     return value is None or (isinstance(value, str) and value.strip() == "")
 
+def resolve_country(country, countries_df):
+    """Return (country_code, error). (None, None) means no country filter."""
+    if country is None:
+        return None, None
+    if not isinstance(country, str):
+        return None, "country must be a string"
+    key = re.sub(r"\s+", "_", country.strip().upper())
+    if key in ("", "ALL"):
+        return None, None
+    codes = countries_df["country_code"].astype(str).str.upper()
+    names = countries_df["country_name"].astype(str).str.upper()
+    match = countries_df[(codes == key) | (names == key)]
+    if match.empty:
+        return None, "Unknown country"
+    return str(match.iloc[0]["country_code"]), None
+
+
+_DATE_RE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+
 
 def _parse_date(value):
     # Strict YYYY-MM-DD only: rejects ints, other formats and timezone strings.
     if not isinstance(value, str):
         return None
+    value = value.strip()
+    if not _DATE_RE.fullmatch(value):
+        return None
     try:
-        return pd.Timestamp(datetime.strptime(value.strip(), "%Y-%m-%d"))
+        return pd.Timestamp(datetime.strptime(value, "%Y-%m-%d"))
     except ValueError:
         return None
 
@@ -142,13 +165,25 @@ def build_growth_trend(full_df, window_df, grouping):
 
     return {"total_organizations": total_orgs, "collaborators": collab_list}
 
+def filter_by_country(org_df, states_df, countries_df, country_code):
+    if country_code is None:
+        return org_df
+    state_country = states_df.merge(
+        countries_df[["country_id", "country_code"]], on="country_id", how="left"
+    )
+    state_ids = state_country.loc[
+        state_country["country_code"] == country_code, "state_id"
+    ]
+    return org_df[org_df["state_id"].isin(state_ids)]
 
-def build_orgs_by_location(window_df, states_df, countries_df):
+def build_orgs_by_location(window_df, states_df, countries_df, country_code=None):
     if len(window_df) == 0:
         return []
 
     merged = window_df.merge(
-        states_df[["state_id", "country_id"]], on="state_id", how="left"
+        states_df[["state_id", "country_id", "state_name"]],
+        on="state_id",
+        how="left",
     )
     merged = merged.merge(
         countries_df[["country_id", "country_code"]],
@@ -157,14 +192,22 @@ def build_orgs_by_location(window_df, states_df, countries_df):
     )
     merged["country_code"] = merged["country_code"].fillna("Unknown")
 
-    by_country = (
-        merged.groupby("country_code").size().reset_index(name="count")
-    )
-    by_country = by_country.sort_values("count", ascending=False).head(4)
+    if country_code is None:
+        counts = merged.groupby("country_code").size().reset_index(name="count")
+        counts = counts.sort_values(
+            ["count", "country_code"], ascending=[False, True]
+        )
+        return [
+            {"country": r["country_code"], "count": int(r["count"])}
+            for _, r in counts.iterrows()
+        ]
 
+    in_country = merged[merged["country_code"] == country_code]
+    counts = in_country.groupby("state_name").size().reset_index(name="count")
+    counts = counts.sort_values(["count", "state_name"], ascending=[False, True])
     return [
-        {"country": r["country_code"], "count": int(r["count"])}
-        for _, r in by_country.iterrows()
+        {"state": r["state_name"], "count": int(r["count"])}
+        for _, r in counts.iterrows()
     ]
 
 
@@ -181,7 +224,7 @@ def _response(status_code, payload):
 
 def lambda_handler(event, context):
     try:
-        raw_body = event.get("body")
+        raw_body = event.get("body") if isinstance(event, dict) else None
         if raw_body and isinstance(raw_body, str):
             body = json.loads(raw_body)
         elif raw_body and isinstance(raw_body, dict):
@@ -190,116 +233,55 @@ def lambda_handler(event, context):
             body = event if event else {}
 
         if not isinstance(body, dict):
+            return _response(400, {"error": "Request body must be a JSON object"})
+
+        valid, start, end = validate_date_pair(
+            body.get("start_date"), body.get("end_date")
+        )
+        if not valid:
             return _response(
-                400, {"error": "Request body must be a JSON object"}
+                400,
+                {"error": "Invalid date format or start_date after end_date"},
             )
 
         org_df, states_df, countries_df = load_data()
 
-        start_date = body.get("start_date")
-        end_date = body.get("end_date")
-        location_start_date = body.get("location_start_date")
-        location_end_date = body.get("location_end_date")
-
-        valid_trend, trend_start, trend_end = validate_date_pair(
-            start_date, end_date
+        country_code, country_error = resolve_country(
+            body.get("country"), countries_df
         )
-        valid_loc, loc_start, loc_end = validate_date_pair(
-            location_start_date, location_end_date
-        )
+        if country_error:
+            return _response(400, {"error": country_error})
 
-        if not valid_trend or not valid_loc:
-            return {
-                "statusCode": 400,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                },
-                "body": json.dumps(
-                    {
-                        "error": (
-                            "Invalid date format or "
-                            "start_date after end_date"
-                        )
-                    }
-                ),
-            }
+        org_df = filter_by_country(org_df, states_df, countries_df, country_code)
 
-        has_trend_custom = trend_start is not None and trend_end is not None
-        has_loc_custom = loc_start is not None and loc_end is not None
-        is_custom = has_trend_custom or has_loc_custom
-
-        if is_custom:
-            custom_growth = {
-                "total_organizations": [],
-                "collaborators": [],
-            }
-            custom_location = []
-
-            if has_trend_custom:
-                trend_window = filter_by_range(org_df, trend_start, trend_end)
-                custom_growth = build_growth_trend(
-                    org_df, trend_window, "day"
-                )
-
-            if has_loc_custom:
-                loc_window = filter_by_range(org_df, loc_start, loc_end)
-                custom_location = build_orgs_by_location(
-                    loc_window, states_df, countries_df
-                )
-
+        if start is not None:
+            window_df = filter_by_range(org_df, start, end)
             response = {
                 "Custom": {
-                    "growth_trend": custom_growth,
-                    "organizations_by_location": custom_location,
+                    "growth_trend": build_growth_trend(org_df, window_df, "day"),
+                    "organizations_by_location": build_orgs_by_location(
+                        window_df, states_df, countries_df, country_code
+                    ),
                 }
             }
         else:
             response = {}
             for time_key in ["7D", "30D", "1Y", "All"]:
                 window_df = filter_by_window(org_df, time_key)
-                grouping = get_grouping_format(time_key)
-
-                growth = build_growth_trend(org_df, window_df, grouping)
-                location = build_orgs_by_location(
-                    window_df, states_df, countries_df
-                )
-
                 response[time_key] = {
-                    "growth_trend": growth,
-                    "organizations_by_location": location,
+                    "growth_trend": build_growth_trend(
+                        org_df, window_df, get_grouping_format(time_key)
+                    ),
+                    "organizations_by_location": build_orgs_by_location(
+                        window_df, states_df, countries_df, country_code
+                    ),
                 }
 
-        return {
-            "statusCode": 200,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            "body": json.dumps(response),
-        }
+        return _response(200, response)
 
-    except json.JSONDecodeError as e:
-        return {
-            "statusCode": 400,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            "body": json.dumps(
-                {"error": "Invalid JSON in request body"}
-            ),
-        }
+    except json.JSONDecodeError:
+        return _response(400, {"error": "Invalid JSON in request body"})
 
-    except Exception as e:
-        logger.exception("org-growth-location-analytics error")
-        return {
-            "statusCode": 500,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            "body": json.dumps(
-                {"error": "Internal server error"}
-            ),
-        }
+    except Exception:
+        logger.exception("growth-trend-analytics error")
+        return _response(500, {"error": "Internal server error"})
