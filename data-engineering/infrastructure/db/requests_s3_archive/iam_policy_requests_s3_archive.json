@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "WriteRequestsArchiveObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:AbortMultipartUpload",
+        "s3:PutObject",
+        "s3:PutObjectTagging"
+      ],
+      "Resource": "arn:aws:s3:::<replace-with-request-archive-bucket>/requests/*"
+    },
+    {
+      "Sid": "ListRequestsArchivePrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<replace-with-request-archive-bucket>",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": "requests/*"
+        }
+      }
+    },
+    {
+      "Sid": "UseArchiveKmsKeyWhenConfigured",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "<replace-with-kms-key-arn>"
+    }
+  ]
+}
