@@ -1,0 +1,4 @@
+user_status_id,user_status,user_status_desc,last_update_date
+1,ACTIVE,,2025-08-03 16:31:59
+2,INACTIVE,Mock-only row added for issue #295 status handling,2026-01-01 00:00:00
+3,SUSPENDED,Mock-only row added for issue #295 status handling,2026-01-01 00:00:00
