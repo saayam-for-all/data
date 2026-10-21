@@ -9,7 +9,7 @@ import pandas as pd
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "mock_data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "mock-data-generation")
 
 
 def load_data():
@@ -40,17 +40,18 @@ def _is_blank(value):
 
 
 def _parse_date(value):
-    # Strict YYYY-MM-DD only: rejects ints, other formats and timezone strings.
     if not isinstance(value, str):
         return None
     try:
-        return pd.Timestamp(datetime.strptime(value.strip(), "%Y-%m-%d"))
+        parsed = datetime.strptime(value, "%Y-%m-%d")
+        if parsed.strftime("%Y-%m-%d") != value:
+            return None
+        return pd.Timestamp(parsed)
     except ValueError:
         return None
 
 
 def validate_date_pair(start, end):
-    # null / "" means "not supplied"; a half pair or a bad value is invalid.
     start_blank, end_blank = _is_blank(start), _is_blank(end)
     if start_blank and end_blank:
         return True, None, None
@@ -64,7 +65,6 @@ def validate_date_pair(start, end):
 
 
 def filter_by_range(df, start, end):
-    # end is a date at midnight; include that whole day.
     return df[
         (df["created_at"] >= start)
         & (df["created_at"] < end + pd.Timedelta(days=1))
@@ -78,8 +78,6 @@ def filter_by_window(df, time_key):
     elif time_key == "30D":
         return df[df["created_at"] >= today - pd.Timedelta(days=29)]
     elif time_key == "1Y":
-        # last 12 calendar months incl. current, from the 1st of the month,
-        # so the first monthly bucket is not partial
         start = (today - pd.DateOffset(months=11)).replace(day=1)
         return df[df["created_at"] >= start]
     elif time_key == "All":
@@ -143,28 +141,51 @@ def build_growth_trend(full_df, window_df, grouping):
     return {"total_organizations": total_orgs, "collaborators": collab_list}
 
 
-def build_orgs_by_location(window_df, states_df, countries_df):
-    if len(window_df) == 0:
+def resolve_country(country, countries_df):
+    if country is None:
+        return None
+    if not isinstance(country, str):
+        raise ValueError("country must be a string")
+    normalized = country.strip().replace("_", " ").casefold()
+    if normalized in ("", "all"):
+        return None
+
+    names = countries_df["country_name"].str.replace("_", " ").str.casefold()
+    codes = countries_df["country_code"].str.casefold()
+    matches = countries_df.loc[
+        (names == normalized) | (codes == normalized), "country_id"
+    ]
+    if matches.empty:
+        raise ValueError("Unknown country")
+    return matches.iloc[0]
+
+
+def build_orgs_by_location(window_df, states_df, countries_df, country_id=None):
+    if window_df.empty:
         return []
 
     merged = window_df.merge(
-        states_df[["state_id", "country_id"]], on="state_id", how="left"
-    )
-    merged = merged.merge(
-        countries_df[["country_id", "country_code"]],
-        on="country_id",
+        states_df[["state_id", "state_name", "country_id"]],
+        on="state_id",
         how="left",
     )
-    merged["country_code"] = merged["country_code"].fillna("Unknown")
+    if country_id is None:
+        merged = merged.merge(
+            countries_df[["country_id", "country_code"]],
+            on="country_id",
+            how="left",
+        )
+        column, label = "country_code", "country"
+        merged[column] = merged[column].fillna("Unknown")
+    else:
+        merged = merged[merged["country_id"] == country_id]
+        column, label = "state_name", "state"
 
-    by_country = (
-        merged.groupby("country_code").size().reset_index(name="count")
-    )
-    by_country = by_country.sort_values("count", ascending=False).head(4)
-
+    counts = merged.groupby(column).size().reset_index(name="count")
+    counts = counts.sort_values(["count", column], ascending=[False, True])
     return [
-        {"country": r["country_code"], "count": int(r["count"])}
-        for _, r in by_country.iterrows()
+        {label: row[column], "count": int(row["count"])}
+        for _, row in counts.iterrows()
     ]
 
 
@@ -194,112 +215,47 @@ def lambda_handler(event, context):
                 400, {"error": "Request body must be a JSON object"}
             )
 
+        valid, start, end = validate_date_pair(
+            body.get("start_date"), body.get("end_date")
+        )
+        if not valid:
+            return _response(
+                400, {"error": "Invalid date format or start_date after end_date"}
+            )
+
         org_df, states_df, countries_df = load_data()
+        try:
+            country_id = resolve_country(body.get("country"), countries_df)
+        except ValueError as exc:
+            return _response(400, {"error": str(exc)})
 
-        start_date = body.get("start_date")
-        end_date = body.get("end_date")
-        location_start_date = body.get("location_start_date")
-        location_end_date = body.get("location_end_date")
+        if country_id is not None:
+            state_ids = states_df.loc[
+                states_df["country_id"] == country_id, "state_id"
+            ]
+            org_df = org_df[org_df["state_id"].isin(state_ids)]
 
-        valid_trend, trend_start, trend_end = validate_date_pair(
-            start_date, end_date
-        )
-        valid_loc, loc_start, loc_end = validate_date_pair(
-            location_start_date, location_end_date
-        )
-
-        if not valid_trend or not valid_loc:
-            return {
-                "statusCode": 400,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                },
-                "body": json.dumps(
-                    {
-                        "error": (
-                            "Invalid date format or "
-                            "start_date after end_date"
-                        )
-                    }
+        time_keys = ["Custom"] if start is not None else ["7D", "30D", "1Y", "All"]
+        response = {}
+        for time_key in time_keys:
+            window_df = (
+                filter_by_range(org_df, start, end)
+                if time_key == "Custom"
+                else filter_by_window(org_df, time_key)
+            )
+            response[time_key] = {
+                "growth_trend": build_growth_trend(
+                    org_df, window_df, get_grouping_format(time_key)
+                ),
+                "organizations_by_location": build_orgs_by_location(
+                    window_df, states_df, countries_df, country_id
                 ),
             }
 
-        has_trend_custom = trend_start is not None and trend_end is not None
-        has_loc_custom = loc_start is not None and loc_end is not None
-        is_custom = has_trend_custom or has_loc_custom
+        return _response(200, response)
 
-        if is_custom:
-            custom_growth = {
-                "total_organizations": [],
-                "collaborators": [],
-            }
-            custom_location = []
-
-            if has_trend_custom:
-                trend_window = filter_by_range(org_df, trend_start, trend_end)
-                custom_growth = build_growth_trend(
-                    org_df, trend_window, "day"
-                )
-
-            if has_loc_custom:
-                loc_window = filter_by_range(org_df, loc_start, loc_end)
-                custom_location = build_orgs_by_location(
-                    loc_window, states_df, countries_df
-                )
-
-            response = {
-                "Custom": {
-                    "growth_trend": custom_growth,
-                    "organizations_by_location": custom_location,
-                }
-            }
-        else:
-            response = {}
-            for time_key in ["7D", "30D", "1Y", "All"]:
-                window_df = filter_by_window(org_df, time_key)
-                grouping = get_grouping_format(time_key)
-
-                growth = build_growth_trend(org_df, window_df, grouping)
-                location = build_orgs_by_location(
-                    window_df, states_df, countries_df
-                )
-
-                response[time_key] = {
-                    "growth_trend": growth,
-                    "organizations_by_location": location,
-                }
-
-        return {
-            "statusCode": 200,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            "body": json.dumps(response),
-        }
-
-    except json.JSONDecodeError as e:
-        return {
-            "statusCode": 400,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            "body": json.dumps(
-                {"error": "Invalid JSON in request body"}
-            ),
-        }
-
-    except Exception as e:
+    except json.JSONDecodeError:
+        return _response(400, {"error": "Invalid JSON in request body"})
+    except Exception:
         logger.exception("org-growth-location-analytics error")
-        return {
-            "statusCode": 500,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            "body": json.dumps(
-                {"error": "Internal server error"}
-            ),
-        }
+        return _response(500, {"error": "Internal server error"})
