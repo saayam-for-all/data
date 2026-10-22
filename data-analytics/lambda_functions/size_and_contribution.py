@@ -226,7 +226,10 @@ def mock_counter(country, org_type):
     if missing:
         raise DataSourceError(f"organizations.csv is missing column(s): {', '.join(missing)}")
 
-    orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce", format="ISO8601")
+    # Parse each timestamp independently as UTC, then use the existing naive UTC window bounds.
+    orgs["created_at"] = pd.to_datetime(
+        orgs["created_at"], errors="coerce", format="mixed", utc=True
+    ).dt.tz_localize(None)
     orgs["is_collaborator"] = to_bool(orgs["is_collaborator"])
     # is_contributor isn't in every dataset yet, count it as 0 if missing
     if "is_contributor" in orgs.columns:
