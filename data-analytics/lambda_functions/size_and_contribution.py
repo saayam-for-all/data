@@ -5,8 +5,10 @@ With no custom dates the response has exactly 7D/30D/1Y/All.
 If either complete size_* or contribution_* date pair is sent, only Custom is returned.
 Each chart uses its own date pair; a chart without a pair is an empty list.
 
-Set USE_MOCK_DATA=true and MOCK_DATA_DIR to run against local CSVs,
-otherwise it reads from Postgres using the DB_* env vars.
+By default, reads organizations.csv, states.csv and countries.csv from the adjacent
+mock_data folder. Set MOCK_DATA_DIR to use another CSV folder.
+Only USE_MOCK_DATA=false (ignoring case and surrounding whitespace) selects Postgres
+using the DB_* env vars.
 """
 
 import json
@@ -265,7 +267,7 @@ def mock_counter(country, org_type):
 def get_db_connection():
     """Connect using the DB_* env vars."""
     if psycopg2 is None:
-        raise DataSourceError("psycopg2 is not installed; set USE_MOCK_DATA=true to use local CSVs")
+        raise DataSourceError("psycopg2 is not installed; unset USE_MOCK_DATA to use local CSVs")
     required = ("DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD")
     missing = [name for name in required if not os.getenv(name)]
     if missing:
@@ -352,7 +354,7 @@ def lambda_handler(event, context):
 
     connection = None
     try:
-        if os.getenv("USE_MOCK_DATA", "false").strip().lower() == "true":
+        if os.getenv("USE_MOCK_DATA", "true").strip().lower() != "false":
             count = mock_counter(country, org_type)
             result = build_body(count, size_pair, contribution_pair, utc_today())
         else:
@@ -373,8 +375,8 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    # USE_MOCK_DATA=true MOCK_DATA_DIR=/path/to/csvs python size_contribution_analytics.py
-    os.environ.setdefault("USE_MOCK_DATA", "true")
+    # python size_and_contribution.py  # uses the adjacent mock_data folder
+    # MOCK_DATA_DIR=/path/to/csvs python size_and_contribution.py
 
     size_range = {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30"}
     contribution_range = {
