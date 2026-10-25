@@ -1,0 +1,4 @@
+mock_data/
+__pycache__/
+*.pyc
+local_test_output.txt
