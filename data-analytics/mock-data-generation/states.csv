@@ -1,0 +1,11 @@
+state_id,country_id,state_name,state_code,last_update_date
+VA,1,Virginia,VA,2025-01-07 15:04:53
+MD,1,Maryland,MD,2025-07-27 17:20:08
+NC,1,North Carolina,NC,2025-04-22 22:23:43
+CA,1,California,CA,2024-11-27 11:50:35
+TX,1,Texas,TX,2025-07-30 10:21:31
+NY,1,New York,NY,2025-05-03 13:35:09
+OH,1,Ohio,OH,2024-11-06 05:11:55
+PA,1,Pennsylvania,PA,2025-04-22 06:16:46
+GA,1,Georgia,GA,2025-03-22 14:09:39
+FL,1,Florida,FL,2025-05-23 05:18:40
