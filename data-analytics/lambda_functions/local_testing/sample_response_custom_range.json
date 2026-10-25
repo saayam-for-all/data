@@ -1,0 +1,90 @@
+{
+  "request": {
+    "time_filter": "CUSTOM",
+    "start_date": "2026-01-01",
+    "end_date": "2026-06-30",
+    "group_by": "monthly",
+    "region": "ALL",
+    "organization_type": "ALL"
+  },
+  "response": {
+    "summary": {
+      "total_organizations": 1,
+      "total_collaborators": 0,
+      "total_contributors": 1,
+      "average_org_rating": 1.0
+    },
+    "growth_trend": [
+      {
+        "period": "2026-01",
+        "total_organizations": 1,
+        "total_collaborators": 0
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state_id": "TX",
+        "state_name": "Texas",
+        "city_name": "Hortonberg",
+        "organization_count": 1,
+        "percentage": 100.0
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "org_size": "small",
+        "organization_count": 0
+      },
+      {
+        "org_size": "medium",
+        "organization_count": 1
+      },
+      {
+        "org_size": "large",
+        "organization_count": 0
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "collaborator",
+        "organization_count": 0,
+        "percentage": 0.0
+      },
+      {
+        "type": "contributor",
+        "organization_count": 1,
+        "percentage": 100.0
+      }
+    ],
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "organization_count": 1
+      },
+      {
+        "rating": 2,
+        "organization_count": 0
+      },
+      {
+        "rating": 3,
+        "organization_count": 0
+      },
+      {
+        "rating": 4,
+        "organization_count": 0
+      },
+      {
+        "rating": 5,
+        "organization_count": 0
+      }
+    ],
+    "organization_type_distribution": [
+      {
+        "period": "2026-01",
+        "for_profit": 0,
+        "non_profit": 1,
+        "total": 1
+      }
+    ]
+  }
+}

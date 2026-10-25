@@ -1,0 +1,13 @@
+-- Reproducible local setup using the REAL sample data referenced by the issue:
+--   data-analytics/sql/organizations.csv
+--   data-analytics/sql/state.csv   (note: file is singular "state.csv" even
+--   though the issue text says virginia_dev_saayam_rdbms.states — table is
+--   created as "states" per the issue; see README for this naming note)
+--
+-- Usage:
+--   createdb saayam_local
+--   psql -d saayam_local -f local_setup_schema.sql
+--   psql -d saayam_local -c "\copy virginia_dev_saayam_rdbms.states(state_id,country_id,state_name,state_code,last_update_date) FROM 'state.csv' WITH (FORMAT csv, HEADER true)"
+--   psql -d saayam_local -c "\copy virginia_dev_saayam_rdbms.organizations(org_id,org_name,street,city_name,state_id,zip_code,mission,web_url,phone,email,org_type,org_size,org_rating,is_collaborator,is_contributor,created_at,last_updated_at) FROM 'organizations.csv' WITH (FORMAT csv, HEADER true)"
+--
+-- (See local_setup_schema.sql for the actual CREATE SCHEMA / CREATE TABLE statements.)

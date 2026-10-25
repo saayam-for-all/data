@@ -1,0 +1,97 @@
+{
+  "request": {
+    "time_filter": "30D",
+    "start_date": null,
+    "end_date": null,
+    "group_by": "daily",
+    "region": "ALL",
+    "organization_type": "ALL"
+  },
+  "response": {
+    "summary": {
+      "total_organizations": 2,
+      "total_collaborators": 1,
+      "total_contributors": 1,
+      "average_org_rating": 0
+    },
+    "growth_trend": [
+      {
+        "period": "2026-08-22",
+        "total_organizations": 2,
+        "total_collaborators": 1
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state_id": "CA",
+        "state_name": "California",
+        "city_name": "Testville",
+        "organization_count": 1,
+        "percentage": 50.0
+      },
+      {
+        "state_id": "TX",
+        "state_name": "Texas",
+        "city_name": "Testburg",
+        "organization_count": 1,
+        "percentage": 50.0
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "org_size": "small",
+        "organization_count": 1
+      },
+      {
+        "org_size": "medium",
+        "organization_count": 1
+      },
+      {
+        "org_size": "large",
+        "organization_count": 0
+      }
+    ],
+    "collaborator_vs_contributor": [
+      {
+        "type": "collaborator",
+        "organization_count": 1,
+        "percentage": 50.0
+      },
+      {
+        "type": "contributor",
+        "organization_count": 1,
+        "percentage": 50.0
+      }
+    ],
+    "rating_distribution": [
+      {
+        "rating": 1,
+        "organization_count": 0
+      },
+      {
+        "rating": 2,
+        "organization_count": 0
+      },
+      {
+        "rating": 3,
+        "organization_count": 0
+      },
+      {
+        "rating": 4,
+        "organization_count": 0
+      },
+      {
+        "rating": 5,
+        "organization_count": 0
+      }
+    ],
+    "organization_type_distribution": [
+      {
+        "period": "2026-08-22",
+        "for_profit": 1,
+        "non_profit": 1,
+        "total": 2
+      }
+    ]
+  }
+}
