@@ -39,6 +39,119 @@ def get_orgs_from_db(location, category):
     except Exception as e:
         raise Exception(f'Error fetching from DB: {str(e)}')
 
+def get_req_info(request_id, beneficiary_id):
+    """Fetch request details needed to recommend and locate organizations."""
+    cursor = None
+
+    try:
+        cursor = _db_conn.cursor()
+        cursor.execute(
+            f"""
+            SELECT *
+            FROM {_db_name}.requests
+            WHERE req_id = %s
+              AND beneficiary_id = %s
+            """,
+            (request_id, beneficiary_id),
+        )
+
+        row = cursor.fetchone()
+        if row is None:
+            raise LookupError(
+                f"No request found for request_id={request_id}"
+            )
+
+        columns = [description[0] for description in cursor.description]
+        request_info = dict(zip(columns, row))
+
+        category_id = request_info.get("req_cat_id")
+        if category_id is None:
+            raise LookupError(
+                f"Request {request_id} has no category assigned"
+            )
+
+        cursor.execute(
+            f"""
+            SELECT cat_name
+            FROM {_db_name}.help_categories
+            WHERE cat_id = %s
+            """,
+            (category_id,),
+        )
+
+        category_row = cursor.fetchone()
+        if category_row is None:
+            raise LookupError(
+                f"No help category found for category_id={category_id}"
+            )
+
+        return {
+            "category": category_row[0],
+            "description": request_info.get("req_desc"),
+            "subject": request_info.get("req_subj"),
+            "req_loc": request_info.get("req_loc"),
+        }
+
+    except pg8000.DatabaseError as exc:
+        raise RuntimeError(
+            f"Database error while fetching request {request_id}: {exc}"
+        ) from exc
+
+    finally:
+        if cursor is not None:
+            cursor.close()
+
+def get_beneficiary_location(beneficiary_id, request_location=None):
+    """Return the best available location for distance calculations."""
+    if request_location is not None and str(request_location).strip():
+        return request_location
+
+    cursor = None
+    try:
+        cursor = _db_conn.cursor()
+
+        cursor.execute(
+            f"""
+            SELECT curr_loc
+            FROM {_db_name}.user_locations
+            WHERE user_id = %s
+            LIMIT 1
+            """,
+            (beneficiary_id,),
+        )
+        row = cursor.fetchone()
+
+        if row and row[0] is not None and str(row[0]).strip():
+            return row[0]
+
+        cursor.execute(
+            f"""
+            SELECT addr_ln1, addr_ln2, addr_ln3, city_name, zip_code
+            FROM {_db_name}.users
+            WHERE user_id = %s
+            LIMIT 1
+            """,
+            (beneficiary_id,),
+        )
+        row = cursor.fetchone()
+
+        if not row:
+            return None
+
+        address_parts = [
+            str(value).strip()
+            for value in row
+            if value is not None and str(value).strip()
+        ]
+        return ", ".join(address_parts) or None
+
+    except pg8000.DatabaseError as exc:
+        raise RuntimeError(
+            f"Could not resolve beneficiary location: {exc}"
+        ) from exc
+    finally:
+        if cursor is not None:
+            cursor.close()
 
 def get_ai_orgs(subject, description, location):
     try:
@@ -66,19 +179,75 @@ def get_ai_orgs(subject, description, location):
 
 
 def merge_organizations(db_organizations, genAI_organizations):
-    try:
-        db_organizations = db_organizations.rename(columns={
-            'org_name': 'name',
-            'city_name': 'location',
-            'phone': 'contact'
-        })[['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]]
+    """Merge organization results while retaining fields needed for distance."""
+    output_columns = [
+        "name",
+        "location",
+        "contact",
+        "email",
+        "web_url",
+        "mission",
+        "source",
+        "db_or_ai",
+    ]
 
-        genAI_organizations = genAI_organizations.rename(columns={
-            'organization_name': 'name'
-        })[['name', 'location', 'contact', 'email', 'web_url', 'mission', 'source', "db_or_ai"]]
+    distance_columns = [
+        "latitude",
+        "longitude",
+        "lat",
+        "lng",
+        "lon",
+        "long",
+        "coordinates",
+        "address",
+        "full_address",
+        "street",
+        "street_address",
+        "city",
+        "city_name",
+        "state",
+        "state_name",
+        "state_code",
+        "zip_code",
+        "postal_code",
+        "country",
+        "country_name",
+        "is_online",
+        "online_only",
+    ]
 
-        return pd.concat([db_organizations, genAI_organizations], ignore_index=True)
-    except KeyError as e:
-        raise Exception(f'Missing expected column during merge: {str(e)}')
-    except Exception as e:
-        raise Exception(f'Error merging organizations: {str(e)}')
+    db_organizations = db_organizations.copy().rename(
+        columns={
+            "org_name": "name",
+            "city_name": "location",
+            "phone": "contact",
+        }
+    )
+
+    genAI_organizations = genAI_organizations.copy().rename(
+        columns={"organization_name": "name"}
+    )
+
+    for frame in (db_organizations, genAI_organizations):
+        for column in output_columns:
+            if column not in frame.columns:
+                frame[column] = None
+
+    retained_distance_columns = [
+        column
+        for column in distance_columns
+        if (
+            column in db_organizations.columns
+            or column in genAI_organizations.columns
+        )
+    ]
+
+    columns = output_columns + retained_distance_columns
+
+    return pd.concat(
+        [
+            db_organizations.reindex(columns=columns),
+            genAI_organizations.reindex(columns=columns),
+        ],
+        ignore_index=True,
+    )
