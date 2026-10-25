@@ -1,0 +1,472 @@
+{
+  "countries.csv": {
+    "country_id": {
+      "type": "SERIAL",
+      "length": null,
+      "required": true
+    },
+    "country_name": {
+      "type": "VARCHAR(100)",
+      "length": 100,
+      "required": true
+    },
+    "phone_code": {
+      "type": "VARCHAR(5)",
+      "length": 5,
+      "required": true
+    },
+    "country_code": {
+      "type": "VARCHAR(6)",
+      "length": 6,
+      "required": true
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "is_eu_member": {
+      "type": "BOOLEAN",
+      "length": null,
+      "required": false
+    }
+  },
+  "states.csv": {
+    "state_id": {
+      "type": "VARCHAR(50)",
+      "length": 50,
+      "required": true
+    },
+    "country_id": {
+      "type": "INT",
+      "length": null,
+      "required": true
+    },
+    "state_name": {
+      "type": "VARCHAR(100)",
+      "length": 100,
+      "required": true
+    },
+    "state_code": {
+      "type": "VARCHAR(6)",
+      "length": 6,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "cities.csv": {
+    "city_id": {
+      "type": "SERIAL",
+      "length": null,
+      "required": true
+    },
+    "state_id": {
+      "type": "VARCHAR(50)",
+      "length": 50,
+      "required": true
+    },
+    "city_name": {
+      "type": "VARCHAR(30)",
+      "length": 30,
+      "required": true
+    },
+    "lattitude": {
+      "type": "DECIMAL(9, 6)",
+      "length": null,
+      "required": false
+    },
+    "longitude": {
+      "type": "DECIMAL(9, 6)",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "users.csv": {
+    "user_id": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": true
+    },
+    "state_id": {
+      "type": "VARCHAR(30)",
+      "length": 30,
+      "required": false
+    },
+    "country_id": {
+      "type": "INT",
+      "length": null,
+      "required": false
+    },
+    "user_status_id": {
+      "type": "INT",
+      "length": null,
+      "required": false
+    },
+    "full_name": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "first_name": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "middle_name": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "last_name": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "primary_email_address": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "primary_phone_number": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "addr_ln1": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "addr_ln2": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "addr_ln3": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "city_name": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "zip_code": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "last_location": {
+      "type": "point",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "time_zone": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "profile_picture_path": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "gender": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "language_1": {
+      "type": "BIGINT",
+      "length": null,
+      "required": false
+    },
+    "language_2": {
+      "type": "BIGINT",
+      "length": null,
+      "required": false
+    },
+    "language_3": {
+      "type": "BIGINT",
+      "length": null,
+      "required": false
+    },
+    "promotion_wizard_stage": {
+      "type": "INT",
+      "length": null,
+      "required": false
+    },
+    "promotion_wizard_last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "external_auth_provider": {
+      "type": "VARCHAR(20)",
+      "length": 20,
+      "required": false
+    },
+    "dob": {
+      "type": "date",
+      "length": null,
+      "required": false
+    },
+    "is_eu": {
+      "type": "BOOLEAN",
+      "length": null,
+      "required": false
+    }
+  },
+  "volunteer_details.csv": {
+    "user_id": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": true
+    },
+    "terms_and_conditions": {
+      "type": "BOOLEAN",
+      "length": null,
+      "required": false
+    },
+    "terms_accepted_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "govt_id_path1": {
+      "type": "TEXT",
+      "length": null,
+      "required": false
+    },
+    "govt_id_path2": {
+      "type": "TEXT",
+      "length": null,
+      "required": false
+    },
+    "path1_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "path2_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "availability_days": {
+      "type": "JSONB",
+      "length": null,
+      "required": false
+    },
+    "availability_times": {
+      "type": "JSONB",
+      "length": null,
+      "required": false
+    },
+    "created_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "help_categories.csv": {
+    "cat_id": {
+      "type": "VARCHAR(50)",
+      "length": 50,
+      "required": true
+    },
+    "cat_name": {
+      "type": "VARCHAR(100)",
+      "length": 100,
+      "required": true
+    },
+    "cat_desc": {
+      "type": "VARCHAR(150)",
+      "length": 150,
+      "required": true
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "user_skills.csv": {
+    "user_id": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "cat_id": {
+      "type": "VARCHAR(50)",
+      "length": 50,
+      "required": true
+    },
+    "skill_level": {
+      "type": "virginia_dev_saayam_rdbms.skill_levels",
+      "length": null,
+      "required": false
+    },
+    "created_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "user_locations.csv": {
+    "user_id": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": true
+    },
+    "prev_loc": {
+      "type": "geography(Point, 4326)",
+      "length": null,
+      "required": false
+    },
+    "curr_loc": {
+      "type": "geography(Point, 4326)",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "volunteer_locations.csv": {
+    "user_id": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": true
+    },
+    "prev_loc": {
+      "type": "geography(Point, 4326)",
+      "length": null,
+      "required": false
+    },
+    "curr_loc": {
+      "type": "geography(Point, 4326)",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  },
+  "organizations.csv": {
+    "org_id": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": true
+    },
+    "org_name": {
+      "type": "VARCHAR(125)",
+      "length": 125,
+      "required": true
+    },
+    "street": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "city_name": {
+      "type": "VARCHAR(100)",
+      "length": 100,
+      "required": false
+    },
+    "state_id": {
+      "type": "VARCHAR(50)",
+      "length": 50,
+      "required": false
+    },
+    "zip_code": {
+      "type": "VARCHAR(10)",
+      "length": 10,
+      "required": false
+    },
+    "mission": {
+      "type": "TEXT",
+      "length": null,
+      "required": false
+    },
+    "web_url": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "phone": {
+      "type": "VARCHAR(20)",
+      "length": 20,
+      "required": false
+    },
+    "email": {
+      "type": "VARCHAR(255)",
+      "length": 255,
+      "required": false
+    },
+    "org_type": {
+      "type": "virginia_dev_saayam_rdbms.org_type_enum",
+      "length": null,
+      "required": false
+    },
+    "org_size": {
+      "type": "virginia_dev_saayam_rdbms.org_size_enum",
+      "length": null,
+      "required": false
+    },
+    "org_rating": {
+      "type": "INTEGER",
+      "length": null,
+      "required": false
+    },
+    "is_collaborator": {
+      "type": "BOOLEAN",
+      "length": null,
+      "required": false
+    },
+    "is_contributor": {
+      "type": "BOOLEAN",
+      "length": null,
+      "required": false
+    },
+    "created_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    },
+    "last_updated_at": {
+      "type": "TIMESTAMP WITHOUT TIME ZONE",
+      "length": null,
+      "required": false
+    }
+  }
+}
