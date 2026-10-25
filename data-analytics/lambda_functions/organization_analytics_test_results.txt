@@ -1,0 +1,826 @@
+Executing offline verification of lambda_handler using mock CSV files...
+
+--- Testing: Overview Dashboard (30D) ---
+Status Code: 200
+{
+  "organization_overview": {
+    "summary": {
+      "total_organizations": 72,
+      "non_profit_organizations": 46,
+      "for_profit_organizations": 26,
+      "collaborator_organizations": 17,
+      "non_collaborator_organizations": 55,
+      "contributor_organizations": 30,
+      "non_contributor_organizations": 42
+    },
+    "organization_activity_trend": [
+      {
+        "period": "2026-07-10",
+        "count": 2
+      },
+      {
+        "period": "2026-07-11",
+        "count": 2
+      },
+      {
+        "period": "2026-07-12",
+        "count": 2
+      },
+      {
+        "period": "2026-07-13",
+        "count": 2
+      },
+      {
+        "period": "2026-07-14",
+        "count": 2
+      },
+      {
+        "period": "2026-07-15",
+        "count": 2
+      },
+      {
+        "period": "2026-07-16",
+        "count": 2
+      },
+      {
+        "period": "2026-07-17",
+        "count": 2
+      },
+      {
+        "period": "2026-07-18",
+        "count": 2
+      },
+      {
+        "period": "2026-07-19",
+        "count": 2
+      },
+      {
+        "period": "2026-07-20",
+        "count": 2
+      },
+      {
+        "period": "2026-07-21",
+        "count": 2
+      },
+      {
+        "period": "2026-07-22",
+        "count": 2
+      },
+      {
+        "period": "2026-07-23",
+        "count": 2
+      },
+      {
+        "period": "2026-07-24",
+        "count": 2
+      },
+      {
+        "period": "2026-07-25",
+        "count": 2
+      },
+      {
+        "period": "2026-07-26",
+        "count": 2
+      },
+      {
+        "period": "2026-07-27",
+        "count": 2
+      },
+      {
+        "period": "2026-07-28",
+        "count": 2
+      },
+      {
+        "period": "2026-07-29",
+        "count": 2
+      },
+      {
+        "period": "2026-07-30",
+        "count": 2
+      },
+      {
+        "period": "2026-07-31",
+        "count": 3
+      },
+      {
+        "period": "2026-08-01",
+        "count": 3
+      },
+      {
+        "period": "2026-08-02",
+        "count": 3
+      },
+      {
+        "period": "2026-08-03",
+        "count": 3
+      },
+      {
+        "period": "2026-08-04",
+        "count": 3
+      },
+      {
+        "period": "2026-08-05",
+        "count": 3
+      },
+      {
+        "period": "2026-08-06",
+        "count": 3
+      },
+      {
+        "period": "2026-08-07",
+        "count": 3
+      },
+      {
+        "period": "2026-08-08",
+        "count": 3
+      },
+      {
+        "period": "2026-08-09",
+        "count": 3
+      }
+    ],
+    "organizations_by_type": [
+      {
+        "org_type": "for_profit",
+        "count": 26
+      },
+      {
+        "org_type": "non_profit",
+        "count": 46
+      }
+    ],
+    "organizations_by_size": [
+      {
+        "org_size": "large",
+        "count": 26
+      },
+      {
+        "org_size": "medium",
+        "count": 23
+      },
+      {
+        "org_size": "small",
+        "count": 23
+      }
+    ],
+    "organizations_by_location": [
+      {
+        "state_name": "California",
+        "city_name": "Aaronmouth",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Christopherside",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Davilamouth",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Joneston",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Lake Kristinachester",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "New Diane",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "New Suzanneside",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Ninaside",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Port Andrea",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Port Michaelport",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Port Susanborough",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Shannonborough",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Solomonberg",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Tammyshire",
+        "count": 1
+      },
+      {
+        "state_name": "California",
+        "city_name": "Wellsberg",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "East Anthonyborough",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "East Madisonside",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "East Peggyview",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Lake Amanda",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Lake Jennifer",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Leonardchester",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "North Tonya",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Port Laurietown",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Randolphshire",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Rebeccaburgh",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "Schmidtborough",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "South Lauren",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "West Meganfurt",
+        "count": 1
+      },
+      {
+        "state_name": "Karnataka",
+        "city_name": "West Paulborough",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Dustinburgh",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "East Tiffany",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Francisview",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Lake Angelashire",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Lake Juliaside",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Lake Melissashire",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Masonfurt",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Mckayshire",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "New Luis",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Port Bradley",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Port Robertfort",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Robertsmouth",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Robinsonburgh",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "South Jaredstad",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "South Marcus",
+        "count": 1
+      },
+      {
+        "state_name": "Maharashtra",
+        "city_name": "Stevensberg",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Deannahaven",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Gibbstown",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Hunterside",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Lake Tylerfort",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Masonland",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Meyerborough",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Port Brendaberg",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Port Ianburgh",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Port Stevenbury",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "Smithburgh",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "South Seanberg",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "West Belinda",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "West Michael",
+        "count": 1
+      },
+      {
+        "state_name": "Ontario",
+        "city_name": "West Steve",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Aaronbury",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Amyborough",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Ashleyland",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Douglaschester",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "East Christina",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "East Johnton",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Kennethside",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Lake Gabriel",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "North Brandi",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "Vazquezbury",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "West Heidi",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "West Jessicaville",
+        "count": 1
+      },
+      {
+        "state_name": "Texas",
+        "city_name": "West Kevin",
+        "count": 1
+      }
+    ],
+    "collaborator_distribution": [
+      {
+        "is_collaborator": false,
+        "count": 55
+      },
+      {
+        "is_collaborator": true,
+        "count": 17
+      }
+    ],
+    "contributor_distribution": [
+      {
+        "is_contributor": false,
+        "count": 42
+      },
+      {
+        "is_contributor": true,
+        "count": 30
+      }
+    ]
+  }
+}
+
+--- Testing: Performance Dashboard (30D) ---
+Status Code: 200
+{
+  "organization_performance": {
+    "summary": {
+      "average_rating": 2.99,
+      "rated_organizations": 72,
+      "unrated_organizations": 0,
+      "five_star_organizations": 13
+    },
+    "rating_distribution": [
+      {
+        "org_rating": 1,
+        "count": 17
+      },
+      {
+        "org_rating": 2,
+        "count": 10
+      },
+      {
+        "org_rating": 3,
+        "count": 15
+      },
+      {
+        "org_rating": 4,
+        "count": 17
+      },
+      {
+        "org_rating": 5,
+        "count": 13
+      }
+    ],
+    "top_rated_organizations": [
+      {
+        "org_id": "49",
+        "org_name": "beat",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "68",
+        "org_name": "discuss",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "55",
+        "org_name": "drop",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "21",
+        "org_name": "environment",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "61",
+        "org_name": "five",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "60",
+        "org_name": "follow",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "25",
+        "org_name": "page",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "5",
+        "org_name": "plan",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "26",
+        "org_name": "program",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "46",
+        "org_name": "skill",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      }
+    ],
+    "top_collaborator_organizations": [
+      {
+        "org_id": "49",
+        "org_name": "beat",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "21",
+        "org_name": "environment",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "61",
+        "org_name": "five",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "25",
+        "org_name": "page",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "5",
+        "org_name": "plan",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "65",
+        "org_name": "value",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "53",
+        "org_name": "later",
+        "org_rating": 4,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "57",
+        "org_name": "owner",
+        "org_rating": 4,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "69",
+        "org_name": "sport",
+        "org_rating": 4,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "29",
+        "org_name": "yes",
+        "org_rating": 4,
+        "org_type": "non_profit",
+        "org_size": "small"
+      }
+    ],
+    "top_contributor_organizations": [
+      {
+        "org_id": "49",
+        "org_name": "beat",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "68",
+        "org_name": "discuss",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "55",
+        "org_name": "drop",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "21",
+        "org_name": "environment",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "61",
+        "org_name": "five",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "60",
+        "org_name": "follow",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "medium"
+      },
+      {
+        "org_id": "25",
+        "org_name": "page",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      },
+      {
+        "org_id": "5",
+        "org_name": "plan",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "26",
+        "org_name": "program",
+        "org_rating": 5,
+        "org_type": "non_profit",
+        "org_size": "small"
+      },
+      {
+        "org_id": "46",
+        "org_name": "skill",
+        "org_rating": 5,
+        "org_type": "for_profit",
+        "org_size": "large"
+      }
+    ],
+    "ratings_by_organization_type": [
+      {
+        "org_type": "for_profit",
+        "average_rating": 2.85
+      },
+      {
+        "org_type": "non_profit",
+        "average_rating": 3.07
+      }
+    ],
+    "ratings_by_organization_size": [
+      {
+        "org_size": "large",
+        "average_rating": 2.85
+      },
+      {
+        "org_size": "medium",
+        "average_rating": 3.22
+      },
+      {
+        "org_size": "small",
+        "average_rating": 2.91
+      }
+    ]
+  }
+}
+
+Local verification completed successfully!
