@@ -381,10 +381,6 @@ def lambda_handler(event, context):
         for bucket in FIXED_BUCKETS:
             window_start, window_end = get_bucket_range(bucket, now)
             response_body[bucket] = build_bucket(df, bucket, window_start, window_end)
-        response_body["Custom"] = {
-            "rating_distribution": [],
-            "organization_mix_trend": empty_organization_mix_trend(),
-        }
         return build_response(200, response_body)
 
     except Exception as exc:  # never let a Lambda crash with a raw traceback
