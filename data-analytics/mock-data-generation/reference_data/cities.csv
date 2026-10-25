@@ -1,0 +1,192 @@
+country_code,state_code,city_name,latitude,longitude,zip_prefix,time_zone
+USA,AL,Birmingham,33.5207,-86.8025,352,America/Chicago
+USA,AL,Montgomery,32.3792,-86.3077,361,America/Chicago
+USA,AL,Huntsville,34.7304,-86.5861,358,America/Chicago
+USA,AK,Anchorage,61.2181,-149.9003,995,America/Anchorage
+USA,AK,Fairbanks,64.8378,-147.7164,997,America/Anchorage
+USA,AZ,Phoenix,33.4484,-112.0740,850,America/Phoenix
+USA,AZ,Tucson,32.2226,-110.9747,857,America/Phoenix
+USA,AZ,Mesa,33.4152,-111.8315,852,America/Phoenix
+USA,AR,Little Rock,34.7465,-92.2896,722,America/Chicago
+USA,AR,Fayetteville,36.0626,-94.1574,727,America/Chicago
+USA,CA,Los Angeles,34.0522,-118.2437,900,America/Los_Angeles
+USA,CA,San Jose,37.3382,-121.8863,951,America/Los_Angeles
+USA,CA,San Diego,32.7157,-117.1611,921,America/Los_Angeles
+USA,CA,Sacramento,38.5816,-121.4944,958,America/Los_Angeles
+USA,CA,San Francisco,37.7749,-122.4194,941,America/Los_Angeles
+USA,CO,Denver,39.7392,-104.9903,802,America/Denver
+USA,CO,Colorado Springs,38.8339,-104.8214,809,America/Denver
+USA,CO,Boulder,40.0150,-105.2705,803,America/Denver
+USA,CT,Hartford,41.7658,-72.6734,061,America/New_York
+USA,CT,New Haven,41.3083,-72.9279,065,America/New_York
+USA,DE,Wilmington,39.7391,-75.5398,198,America/New_York
+USA,DE,Dover,39.1582,-75.5244,199,America/New_York
+USA,DC,Washington,38.9072,-77.0369,200,America/New_York
+USA,FL,Miami,25.7617,-80.1918,331,America/New_York
+USA,FL,Orlando,28.5383,-81.3792,328,America/New_York
+USA,FL,Tampa,27.9506,-82.4572,336,America/New_York
+USA,FL,Jacksonville,30.3322,-81.6557,322,America/New_York
+USA,GA,Atlanta,33.7490,-84.3880,303,America/New_York
+USA,GA,Savannah,32.0809,-81.0912,314,America/New_York
+USA,GA,Augusta,33.4735,-82.0105,309,America/New_York
+USA,HI,Honolulu,21.3069,-157.8583,968,Pacific/Honolulu
+USA,HI,Hilo,19.7297,-155.0900,967,Pacific/Honolulu
+USA,ID,Boise,43.6150,-116.2023,837,America/Boise
+USA,ID,Idaho Falls,43.4917,-112.0339,834,America/Boise
+USA,IL,Chicago,41.8781,-87.6298,606,America/Chicago
+USA,IL,Springfield,39.7817,-89.6501,627,America/Chicago
+USA,IL,Naperville,41.7508,-88.1535,605,America/Chicago
+USA,IN,Indianapolis,39.7684,-86.1581,462,America/Indiana/Indianapolis
+USA,IN,Fort Wayne,41.0793,-85.1394,468,America/Indiana/Indianapolis
+USA,IN,Bloomington,39.1653,-86.5264,474,America/Indiana/Indianapolis
+USA,IA,Des Moines,41.5868,-93.6250,503,America/Chicago
+USA,IA,Cedar Rapids,41.9779,-91.6656,524,America/Chicago
+USA,KS,Wichita,37.6872,-97.3301,672,America/Chicago
+USA,KS,Topeka,39.0473,-95.6752,666,America/Chicago
+USA,KS,Overland Park,38.9822,-94.6708,662,America/Chicago
+USA,KY,Louisville,38.2527,-85.7585,402,America/Kentucky/Louisville
+USA,KY,Lexington,38.0406,-84.5037,405,America/New_York
+USA,LA,New Orleans,29.9511,-90.0715,701,America/Chicago
+USA,LA,Baton Rouge,30.4515,-91.1871,708,America/Chicago
+USA,ME,Portland,43.6591,-70.2568,041,America/New_York
+USA,ME,Bangor,44.8016,-68.7712,044,America/New_York
+USA,MD,Baltimore,39.2904,-76.6122,212,America/New_York
+USA,MD,Rockville,39.0840,-77.1528,208,America/New_York
+USA,MD,Annapolis,38.9784,-76.4922,214,America/New_York
+USA,MA,Boston,42.3601,-71.0589,021,America/New_York
+USA,MA,Worcester,42.2626,-71.8023,016,America/New_York
+USA,MA,Cambridge,42.3736,-71.1097,021,America/New_York
+USA,MI,Detroit,42.3314,-83.0458,482,America/Detroit
+USA,MI,Grand Rapids,42.9634,-85.6681,495,America/Detroit
+USA,MI,Ann Arbor,42.2808,-83.7430,481,America/Detroit
+USA,MN,Minneapolis,44.9778,-93.2650,554,America/Chicago
+USA,MN,Saint Paul,44.9537,-93.0900,551,America/Chicago
+USA,MN,Rochester,44.0121,-92.4802,559,America/Chicago
+USA,MS,Jackson,32.2988,-90.1848,392,America/Chicago
+USA,MS,Gulfport,30.3674,-89.0928,395,America/Chicago
+USA,MO,Kansas City,39.0997,-94.5786,641,America/Chicago
+USA,MO,Saint Louis,38.6270,-90.1994,631,America/Chicago
+USA,MO,Springfield,37.2090,-93.2923,658,America/Chicago
+USA,MT,Billings,45.7833,-108.5007,591,America/Denver
+USA,MT,Missoula,46.8721,-113.9940,598,America/Denver
+USA,NE,Omaha,41.2565,-95.9345,681,America/Chicago
+USA,NE,Lincoln,40.8136,-96.7026,685,America/Chicago
+USA,NV,Las Vegas,36.1699,-115.1398,891,America/Los_Angeles
+USA,NV,Reno,39.5296,-119.8138,895,America/Los_Angeles
+USA,NH,Manchester,42.9956,-71.4548,031,America/New_York
+USA,NH,Concord,43.2081,-71.5376,033,America/New_York
+USA,NJ,Newark,40.7357,-74.1724,071,America/New_York
+USA,NJ,Jersey City,40.7178,-74.0431,073,America/New_York
+USA,NJ,Princeton,40.3573,-74.6672,085,America/New_York
+USA,NM,Albuquerque,35.0844,-106.6504,871,America/Denver
+USA,NM,Santa Fe,35.6870,-105.9378,875,America/Denver
+USA,NY,New York,40.7128,-74.0060,100,America/New_York
+USA,NY,Buffalo,42.8864,-78.8784,142,America/New_York
+USA,NY,Rochester,43.1566,-77.6088,146,America/New_York
+USA,NY,Albany,42.6526,-73.7562,122,America/New_York
+USA,NC,Charlotte,35.2271,-80.8431,282,America/New_York
+USA,NC,Raleigh,35.7796,-78.6382,276,America/New_York
+USA,NC,Greensboro,36.0726,-79.7920,274,America/New_York
+USA,ND,Fargo,46.8772,-96.7898,581,America/Chicago
+USA,ND,Bismarck,46.8083,-100.7837,585,America/Chicago
+USA,OH,Columbus,39.9612,-82.9988,432,America/New_York
+USA,OH,Cleveland,41.4993,-81.6944,441,America/New_York
+USA,OH,Cincinnati,39.1031,-84.5120,452,America/New_York
+USA,OK,Oklahoma City,35.4676,-97.5164,731,America/Chicago
+USA,OK,Tulsa,36.1540,-95.9928,741,America/Chicago
+USA,OR,Portland,45.5152,-122.6784,972,America/Los_Angeles
+USA,OR,Eugene,44.0521,-123.0868,974,America/Los_Angeles
+USA,OR,Salem,44.9429,-123.0351,973,America/Los_Angeles
+USA,PA,Philadelphia,39.9526,-75.1652,191,America/New_York
+USA,PA,Pittsburgh,40.4406,-79.9959,152,America/New_York
+USA,PA,Harrisburg,40.2732,-76.8867,171,America/New_York
+USA,RI,Providence,41.8240,-71.4128,029,America/New_York
+USA,RI,Warwick,41.7001,-71.4162,028,America/New_York
+USA,SC,Charleston,32.7765,-79.9311,294,America/New_York
+USA,SC,Columbia,34.0007,-81.0348,292,America/New_York
+USA,SC,Greenville,34.8526,-82.3940,296,America/New_York
+USA,SD,Sioux Falls,43.5446,-96.7311,571,America/Chicago
+USA,SD,Rapid City,44.0805,-103.2310,577,America/Denver
+USA,TN,Nashville,36.1627,-86.7816,372,America/Chicago
+USA,TN,Memphis,35.1495,-90.0490,381,America/Chicago
+USA,TN,Knoxville,35.9606,-83.9207,379,America/New_York
+USA,TX,Houston,29.7604,-95.3698,770,America/Chicago
+USA,TX,Dallas,32.7767,-96.7970,752,America/Chicago
+USA,TX,Austin,30.2672,-97.7431,787,America/Chicago
+USA,TX,San Antonio,29.4241,-98.4936,782,America/Chicago
+USA,TX,El Paso,31.7619,-106.4850,799,America/Denver
+USA,UT,Salt Lake City,40.7608,-111.8910,841,America/Denver
+USA,UT,Provo,40.2338,-111.6585,846,America/Denver
+USA,VT,Burlington,44.4759,-73.2121,054,America/New_York
+USA,VT,Montpelier,44.2601,-72.5754,056,America/New_York
+USA,VA,Richmond,37.5407,-77.4360,232,America/New_York
+USA,VA,Arlington,38.8816,-77.0910,222,America/New_York
+USA,VA,Fairfax,38.8462,-77.3064,220,America/New_York
+USA,VA,Virginia Beach,36.8529,-75.9780,234,America/New_York
+USA,VA,Reston,38.9687,-77.3411,201,America/New_York
+USA,WA,Seattle,47.6062,-122.3321,981,America/Los_Angeles
+USA,WA,Spokane,47.6588,-117.4260,992,America/Los_Angeles
+USA,WA,Tacoma,47.2529,-122.4443,984,America/Los_Angeles
+USA,WV,Charleston,38.3498,-81.6326,253,America/New_York
+USA,WV,Morgantown,39.6295,-79.9559,265,America/New_York
+USA,WI,Milwaukee,43.0389,-87.9065,532,America/Chicago
+USA,WI,Madison,43.0731,-89.4012,537,America/Chicago
+USA,WI,Green Bay,44.5133,-88.0133,543,America/Chicago
+USA,WY,Cheyenne,41.1400,-104.8202,820,America/Denver
+USA,WY,Casper,42.8666,-106.3131,826,America/Denver
+IND,MH,Mumbai,19.0760,72.8777,400,Asia/Kolkata
+IND,MH,Pune,18.5204,73.8567,411,Asia/Kolkata
+IND,MH,Nagpur,21.1458,79.0882,440,Asia/Kolkata
+IND,DL,New Delhi,28.6139,77.2090,110,Asia/Kolkata
+IND,KA,Bengaluru,12.9716,77.5946,560,Asia/Kolkata
+IND,KA,Mysuru,12.2958,76.6394,570,Asia/Kolkata
+IND,TN,Chennai,13.0827,80.2707,600,Asia/Kolkata
+IND,TN,Coimbatore,11.0168,76.9558,641,Asia/Kolkata
+IND,TG,Hyderabad,17.3850,78.4867,500,Asia/Kolkata
+IND,WB,Kolkata,22.5726,88.3639,700,Asia/Kolkata
+IND,GJ,Ahmedabad,23.0225,72.5714,380,Asia/Kolkata
+IND,GJ,Surat,21.1702,72.8311,395,Asia/Kolkata
+IND,RJ,Jaipur,26.9124,75.7873,302,Asia/Kolkata
+IND,UP,Lucknow,26.8467,80.9462,226,Asia/Kolkata
+IND,UP,Noida,28.5355,77.3910,201,Asia/Kolkata
+IND,KL,Kochi,9.9312,76.2673,682,Asia/Kolkata
+IND,KL,Thiruvananthapuram,8.5241,76.9366,695,Asia/Kolkata
+IND,PB,Amritsar,31.6340,74.8723,143,Asia/Kolkata
+CAN,ON,Toronto,43.6532,-79.3832,M5V,America/Toronto
+CAN,ON,Ottawa,45.4215,-75.6972,K1P,America/Toronto
+CAN,ON,Mississauga,43.5890,-79.6441,L5B,America/Toronto
+CAN,BC,Vancouver,49.2827,-123.1207,V6B,America/Vancouver
+CAN,BC,Victoria,48.4284,-123.3656,V8W,America/Vancouver
+CAN,AB,Calgary,51.0447,-114.0719,T2P,America/Edmonton
+CAN,AB,Edmonton,53.5461,-113.4938,T5J,America/Edmonton
+CAN,QC,Montreal,45.5017,-73.5673,H3B,America/Toronto
+CAN,QC,Quebec City,46.8139,-71.2080,G1R,America/Toronto
+CAN,MB,Winnipeg,49.8951,-97.1384,R3C,America/Winnipeg
+CAN,NS,Halifax,44.6488,-63.5752,B3J,America/Halifax
+CAN,SK,Saskatoon,52.1332,-106.6700,S7K,America/Regina
+AUS,NSW,Sydney,-33.8688,151.2093,20,Australia/Sydney
+AUS,NSW,Newcastle,-32.9283,151.7817,23,Australia/Sydney
+AUS,VIC,Melbourne,-37.8136,144.9631,30,Australia/Melbourne
+AUS,VIC,Geelong,-38.1499,144.3617,32,Australia/Melbourne
+AUS,QLD,Brisbane,-27.4698,153.0251,40,Australia/Brisbane
+AUS,QLD,Gold Coast,-28.0167,153.4000,42,Australia/Brisbane
+AUS,WA,Perth,-31.9505,115.8605,60,Australia/Perth
+AUS,SA,Adelaide,-34.9285,138.6007,50,Australia/Adelaide
+AUS,TAS,Hobart,-42.8821,147.3272,70,Australia/Hobart
+AUS,ACT,Canberra,-35.2809,149.1300,26,Australia/Sydney
+AUS,NT,Darwin,-12.4634,130.8456,08,Australia/Darwin
+DEU,BE,Berlin,52.5200,13.4050,101,Europe/Berlin
+DEU,BY,Munich,48.1351,11.5820,803,Europe/Berlin
+DEU,BY,Nuremberg,49.4521,11.0767,904,Europe/Berlin
+DEU,HH,Hamburg,53.5511,9.9937,200,Europe/Berlin
+DEU,NW,Cologne,50.9375,6.9603,505,Europe/Berlin
+DEU,NW,Dusseldorf,51.2277,6.7735,402,Europe/Berlin
+DEU,NW,Dortmund,51.5136,7.4653,442,Europe/Berlin
+DEU,HE,Frankfurt,50.1109,8.6821,603,Europe/Berlin
+DEU,BW,Stuttgart,48.7758,9.1829,701,Europe/Berlin
+DEU,BW,Karlsruhe,49.0069,8.4037,761,Europe/Berlin
+DEU,SN,Leipzig,51.3397,12.3731,041,Europe/Berlin
+DEU,SN,Dresden,51.0504,13.7373,010,Europe/Berlin
+DEU,NI,Hannover,52.3759,9.7320,301,Europe/Berlin
+DEU,HB,Bremen,53.0793,8.8017,282,Europe/Berlin
+DEU,RP,Mainz,49.9929,8.2473,551,Europe/Berlin
