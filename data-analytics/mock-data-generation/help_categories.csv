@@ -1,0 +1,81 @@
+cat_id,cat_name,cat_desc,last_updated_at
+0.0.0.0.0,GENERAL_CATEGORY,General assistance for community requests that do not fit a specialized support category.,2022-01-01 08:00:00
+1,FOOD_AND_ESSENTIALS,Community assistance with food and essentials.,2022-01-02 08:00:00
+1.1,FOOD_ASSISTANCE,Community assistance with food assistance.,2022-01-03 08:00:00
+1.2,GROCERY_DELIVERY,Community assistance with grocery delivery.,2022-01-04 08:00:00
+1.3,MEAL_PREPARATION,Community assistance with meal preparation.,2022-01-05 08:00:00
+1.3.1,MEAL_DELIVERY,Community assistance with meal delivery.,2022-01-06 08:00:00
+2,FOOD_PANTRY_SUPPORT,Community assistance with food pantry support.,2022-01-07 08:00:00
+2.1,INFANT_SUPPLIES,Community assistance with infant supplies.,2022-01-08 08:00:00
+2.2,HYGIENE_SUPPLIES,Community assistance with hygiene supplies.,2022-01-09 08:00:00
+3,COMMUNITY_MEALS,Community assistance with community meals.,2022-01-10 08:00:00
+3.1,HOUSING_AND_SHELTER,Community assistance with housing and shelter.,2022-01-11 08:00:00
+3.2,EMERGENCY_SHELTER,Community assistance with emergency shelter.,2022-01-12 08:00:00
+4,HOUSING_SEARCH,Community assistance with housing search.,2022-01-13 08:00:00
+4.1,RENT_ASSISTANCE,Community assistance with rent assistance.,2022-01-14 08:00:00
+4.2,UTILITY_ASSISTANCE,Community assistance with utility assistance.,2022-01-15 08:00:00
+5,HOMELESS_OUTREACH,Community assistance with homeless outreach.,2022-01-16 08:00:00
+5.1,HOME_REPAIR,Community assistance with home repair.,2022-01-17 08:00:00
+5.2,MOVING_ASSISTANCE,Community assistance with moving assistance.,2022-01-18 08:00:00
+6,HOUSEHOLD_GOODS,Community assistance with household goods.,2022-01-19 08:00:00
+6.1,TRANSPORTATION,Community assistance with transportation.,2022-01-20 08:00:00
+6.2,RIDES_TO_APPOINTMENTS,Community assistance with rides to appointments.,2022-01-21 08:00:00
+7,RIDES_TO_WORK,Community assistance with rides to work.,2022-01-22 08:00:00
+7.1,PUBLIC_TRANSIT_GUIDANCE,Community assistance with public transit guidance.,2022-01-23 08:00:00
+7.2,ERRANDS_AND_PICKUP,Community assistance with errands and pickup.,2022-01-24 08:00:00
+8,DRIVER_SERVICES,Community assistance with driver services.,2022-01-25 08:00:00
+8.1,ACCESSIBLE_TRANSPORTATION,Community assistance with accessible transportation.,2022-01-26 08:00:00
+8.2,TRAVEL_ASSISTANCE,Community assistance with travel assistance.,2022-01-27 08:00:00
+9,TRANSPORTATION_PLANNING,Community assistance with transportation planning.,2022-01-28 08:00:00
+9.0,HEALTH_AND_WELLNESS,Community assistance with health and wellness.,2022-01-01 08:00:00
+9.1,MEDICAL_APPOINTMENT_SUPPORT,Community assistance with medical appointment support.,2022-01-02 08:00:00
+9.2,MEDICATION_PICKUP,Community assistance with medication pickup.,2022-01-03 08:00:00
+9.3,WELLNESS_CHECK_INS,Community assistance with wellness check ins.,2022-01-04 08:00:00
+9.4,MENTAL_HEALTH_RESOURCES,Community assistance with mental health resources.,2022-01-05 08:00:00
+9.5,DISABILITY_SUPPORT,Community assistance with disability support.,2022-01-06 08:00:00
+9.6,SENIOR_SUPPORT,Community assistance with senior support.,2022-01-07 08:00:00
+9.7,CAREGIVER_RESPITE,Community assistance with caregiver respite.,2022-01-08 08:00:00
+9.8,HEALTH_EDUCATION,Community assistance with health education.,2022-01-09 08:00:00
+9.9,EDUCATION_AND_TRAINING,Community assistance with education and training.,2022-01-10 08:00:00
+9.10,TUTORING,Community assistance with tutoring.,2022-01-11 08:00:00
+9.11,HOMEWORK_HELP,Community assistance with homework help.,2022-01-12 08:00:00
+9.12,LITERACY_SUPPORT,Community assistance with literacy support.,2022-01-13 08:00:00
+9.13,LANGUAGE_LEARNING,Community assistance with language learning.,2022-01-14 08:00:00
+9.14,DIGITAL_SKILLS,Community assistance with digital skills.,2022-01-15 08:00:00
+9.15,JOB_TRAINING,Community assistance with job training.,2022-01-16 08:00:00
+9.16,CAREER_MENTORING,Community assistance with career mentoring.,2022-01-17 08:00:00
+9.17,TEST_PREPARATION,Community assistance with test preparation.,2022-01-18 08:00:00
+9.18,EMPLOYMENT_AND_FINANCE,Community assistance with employment and finance.,2022-01-19 08:00:00
+9.19,JOB_SEARCH,Community assistance with job search.,2022-01-20 08:00:00
+9.20,RESUME_SUPPORT,Community assistance with resume support.,2022-01-21 08:00:00
+9.21,INTERVIEW_COACHING,Community assistance with interview coaching.,2022-01-22 08:00:00
+9.22,FINANCIAL_LITERACY,Community assistance with financial literacy.,2022-01-23 08:00:00
+9.23,BUDGETING_ASSISTANCE,Community assistance with budgeting assistance.,2022-01-24 08:00:00
+9.24,BENEFITS_NAVIGATION,Community assistance with benefits navigation.,2022-01-25 08:00:00
+9.25,TAX_SUPPORT,Community assistance with tax support.,2022-01-26 08:00:00
+9.26,SMALL_BUSINESS_SUPPORT,Community assistance with small business support.,2022-01-27 08:00:00
+9.27,COMMUNITY_AND_SOCIAL_SUPPORT,Community assistance with community and social support.,2022-01-28 08:00:00
+9.28,COMPANIONSHIP,Community assistance with companionship.,2022-01-01 08:00:00
+9.29,SOCIAL_ACTIVITY_SUPPORT,Community assistance with social activity support.,2022-01-02 08:00:00
+9.30,COMMUNITY_EVENTS,Community assistance with community events.,2022-01-03 08:00:00
+9.31,YOUTH_MENTORING,Community assistance with youth mentoring.,2022-01-04 08:00:00
+9.32,FAMILY_SUPPORT,Community assistance with family support.,2022-01-05 08:00:00
+9.33,NEWCOMER_SUPPORT,Community assistance with newcomer support.,2022-01-06 08:00:00
+9.34,SENIOR_COMPANIONSHIP,Community assistance with senior companionship.,2022-01-07 08:00:00
+9.35,PEER_SUPPORT,Community assistance with peer support.,2022-01-08 08:00:00
+9.36,TECHNOLOGY_AND_DIGITAL_ACCESS,Community assistance with technology and digital access.,2022-01-09 08:00:00
+9.37,DEVICE_SETUP,Community assistance with device setup.,2022-01-10 08:00:00
+9.38,INTERNET_ACCESS,Community assistance with internet access.,2022-01-11 08:00:00
+9.39,ONLINE_FORM_ASSISTANCE,Community assistance with online form assistance.,2022-01-12 08:00:00
+9.40,EMAIL_ACCOUNT_HELP,Community assistance with email account help.,2022-01-13 08:00:00
+9.41,DIGITAL_SAFETY,Community assistance with digital safety.,2022-01-14 08:00:00
+9.42,ACCESS_TO_DEVICES,Community assistance with access to devices.,2022-01-15 08:00:00
+9.43,REMOTE_TECH_SUPPORT,Community assistance with remote tech support.,2022-01-16 08:00:00
+9.44,ONLINE_SERVICE_NAVIGATION,Community assistance with online service navigation.,2022-01-17 08:00:00
+9.45,COMMUNITY_CLEANUP_AND_SERVICE,Community assistance with community cleanup and service.,2022-01-18 08:00:00
+9.46,NEIGHBORHOOD_CLEANUP,Community assistance with neighborhood cleanup.,2022-01-19 08:00:00
+9.47,PARK_SUPPORT,Community assistance with park support.,2022-01-20 08:00:00
+9.48,DONATION_SORTING,Community assistance with donation sorting.,2022-01-21 08:00:00
+9.49,COMMUNITY_GARDENING,Community assistance with community gardening.,2022-01-22 08:00:00
+9.50,DISASTER_RECOVERY_SUPPORT,Community assistance with disaster recovery support.,2022-01-23 08:00:00
+9.51,ANIMAL_WELFARE_SUPPORT,Community assistance with animal welfare support.,2022-01-24 08:00:00
