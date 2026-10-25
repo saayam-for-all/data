@@ -1,5 +1,6 @@
 import json
-from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
+from helpers import attach_distances, get_ai_orgs, get_orgs_from_db, merge_organizations
+from distance import sort_by_distance
 from concurrent.futures import ThreadPoolExecutor
 
 # handle the lambda function call
@@ -12,6 +13,9 @@ def lambda_handler(event, context):
         description = body.get("description")
         location = body.get("location")
         category = body.get("category")
+        # Distance is measured from this request's beneficiary, not the viewer.
+        request_id = body.get("request_id")
+        sort_by = body.get("sort_by")
 
         if not location or not category:
             return {
@@ -33,13 +37,17 @@ def lambda_handler(event, context):
 
         combined_list = merge_organizations(db_organizations, genAI_organizations)
 
+        orgs = attach_distances(combined_list, request_id)
+        if sort_by == "distance":
+            orgs = sort_by_distance(orgs)
+
         return {
             'statusCode': 200,
             'headers': {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": '*'
             },
-            'body': json.dumps(combined_list.to_dict(orient='records'))
+            'body': json.dumps(orgs)
         }
 
     except json.JSONDecodeError as e:
