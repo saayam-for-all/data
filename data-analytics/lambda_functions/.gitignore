@@ -1,0 +1,7 @@
+# Local-only mock data for issue #336 (Growth & Location analytics).
+# These CSVs are used for local testing only and MUST NOT be committed.
+mock_data/
+
+# Python bytecode
+__pycache__/
+*.pyc
