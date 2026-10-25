@@ -1,0 +1,3 @@
+# boto3 is provided by the Lambda runtime -- not bundled here, per the
+# convention in src/saayam-org-aggregator/requirements.txt.
+groq
