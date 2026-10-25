@@ -1,0 +1,28 @@
+cat_id,cat_name,cat_desc,last_updated_at
+1,FOOD_AND_ESSENTIALS,Assistance with food and essential daily needs,2026-09-09 11:30:00
+1.1,FOOD_ASSISTANCE,Help accessing food resources,2026-09-07 03:48:49
+1.2,GROCERY_SHOPPING_AND_DELIVERY,Help with grocery shopping and delivery,2024-03-13 02:07:30
+1.3,COOKING_HELP,Assistance with meal preparation,2024-07-28 17:51:08
+1.3.1,MEAL_PREP_BASIC,Basic meal preparation help,2024-09-17 22:58:22
+1.3.2,NUTRITIONAL_MEAL_PLANNING,Help planning nutritious meals,2026-07-07 07:51:12
+2,CLOTHING_ASSISTANCE,Assistance with clothing needs,2026-05-16 18:29:17
+2.1,DONATE_CLOTHES,Donating clothing items,2026-05-15 04:50:45
+2.2,EMERGENCY_CLOTHING,Emergency clothing assistance,2024-12-29 14:45:06
+3,HOUSING_ASSISTANCE,Assistance with housing needs,2024-06-04 05:20:57
+3.1,TEMPORARY_SHELTER,Help finding temporary shelter,2026-03-31 09:43:15
+3.2,RENT_SUPPORT,Support with rent payments,2025-11-23 06:47:55
+4,TRANSPORTATION,Transportation assistance,2025-08-24 21:22:55
+4.1,RIDE_TO_APPOINTMENTS,Rides to medical or other appointments,2026-08-29 10:29:45
+4.2,PUBLIC_TRANSIT_ASSISTANCE,Help navigating public transit,2025-10-05 12:18:16
+5,EDUCATION_SUPPORT,Educational support and tutoring,2024-01-08 16:45:01
+5.1,TUTORING,One-on-one or group tutoring,2026-03-15 00:43:52
+5.2,SCHOOL_SUPPLIES,Help obtaining school supplies,2024-10-21 14:07:43
+6,HEALTHCARE_SUPPORT,Healthcare-related assistance,2025-10-14 18:35:16
+6.1,MEDICAL_APPOINTMENT_HELP,Help scheduling or attending medical appointments,2026-07-12 21:46:15
+6.2,MENTAL_HEALTH_SUPPORT,Mental health support resources,2024-05-12 03:25:08
+7,ELDER_CARE,Support for elderly individuals,2024-04-23 13:57:48
+7.1,COMPANIONSHIP,Companionship visits for elderly individuals,2024-04-15 07:45:41
+7.2,ERRANDS_FOR_ELDERLY,Running errands for elderly individuals,2025-06-28 08:55:46
+8,TECHNOLOGY_HELP,Technology assistance,2024-09-24 23:46:31
+8.1,DEVICE_SETUP,Help setting up computers or phones,2025-08-18 03:39:40
+8.2,DIGITAL_LITERACY,Basic digital literacy training,2025-12-07 03:07:45
