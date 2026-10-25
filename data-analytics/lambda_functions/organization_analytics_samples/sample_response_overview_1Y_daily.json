@@ -1,0 +1,192 @@
+{
+  "request": {
+    "dashboard_type": "overview",
+    "time_filter": "1Y",
+    "group_by": "daily"
+  },
+  "statusCode": 200,
+  "response": {
+    "organization_overview": {
+      "summary": {
+        "total_organizations": 11,
+        "non_profit_organizations": 8,
+        "for_profit_organizations": 3,
+        "collaborator_organizations": 5,
+        "non_collaborator_organizations": 6,
+        "contributor_organizations": 6,
+        "non_contributor_organizations": 5
+      },
+      "organization_activity_trend": [
+        {
+          "period": "2025-09-01",
+          "new_organizations": 1,
+          "total_organizations": 1
+        },
+        {
+          "period": "2025-09-03",
+          "new_organizations": 1,
+          "total_organizations": 2
+        },
+        {
+          "period": "2025-09-26",
+          "new_organizations": 1,
+          "total_organizations": 3
+        },
+        {
+          "period": "2025-10-01",
+          "new_organizations": 1,
+          "total_organizations": 4
+        },
+        {
+          "period": "2025-11-03",
+          "new_organizations": 1,
+          "total_organizations": 5
+        },
+        {
+          "period": "2025-11-20",
+          "new_organizations": 1,
+          "total_organizations": 6
+        },
+        {
+          "period": "2025-11-28",
+          "new_organizations": 1,
+          "total_organizations": 7
+        },
+        {
+          "period": "2025-12-16",
+          "new_organizations": 1,
+          "total_organizations": 8
+        },
+        {
+          "period": "2025-12-17",
+          "new_organizations": 1,
+          "total_organizations": 9
+        },
+        {
+          "period": "2025-12-19",
+          "new_organizations": 1,
+          "total_organizations": 10
+        },
+        {
+          "period": "2026-01-10",
+          "new_organizations": 1,
+          "total_organizations": 11
+        }
+      ],
+      "organizations_by_type": [
+        {
+          "type": "non_profit",
+          "count": 8
+        },
+        {
+          "type": "for_profit",
+          "count": 3
+        }
+      ],
+      "organizations_by_size": [
+        {
+          "size": "large",
+          "count": 7
+        },
+        {
+          "size": "medium",
+          "count": 2
+        },
+        {
+          "size": "small",
+          "count": 2
+        }
+      ],
+      "organizations_by_location": [
+        {
+          "state": "Florida",
+          "city": "West Amandastad",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "East Jenniferfort",
+          "count": 1
+        },
+        {
+          "state": "North Carolina",
+          "city": "Robinfort",
+          "count": 1
+        },
+        {
+          "state": "Missouri",
+          "city": "Lake Deniseville",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Victoriaport",
+          "count": 1
+        },
+        {
+          "state": "Ohio",
+          "city": "South Jeffrey",
+          "count": 1
+        },
+        {
+          "state": "Minnesota",
+          "city": "Lake Nancyview",
+          "count": 1
+        },
+        {
+          "state": "Nebraska",
+          "city": "Barkerfurt",
+          "count": 1
+        },
+        {
+          "state": "Texas",
+          "city": "Hortonberg",
+          "count": 1
+        },
+        {
+          "state": "Michigan",
+          "city": "West Williamport",
+          "count": 1
+        },
+        {
+          "state": "Maine",
+          "city": "Martinezbury",
+          "count": 1
+        }
+      ],
+      "collaborator_distribution": [
+        {
+          "category": "collaborator",
+          "count": 5
+        },
+        {
+          "category": "non_collaborator",
+          "count": 6
+        }
+      ],
+      "contributor_distribution": [
+        {
+          "category": "contributor",
+          "count": 6
+        },
+        {
+          "category": "non_contributor",
+          "count": 5
+        }
+      ]
+    },
+    "filters_applied": {
+      "time_filter": "1Y",
+      "start_date": null,
+      "end_date": null,
+      "org_type": null,
+      "org_size": null,
+      "state_id": null,
+      "city_name": null,
+      "org_rating": null,
+      "is_collaborator": null,
+      "is_contributor": null,
+      "group_by": "daily"
+    }
+  }
+}
