@@ -1,0 +1,10 @@
+# Local dev/test deps. psycopg2-binary is the no-build option for local;
+# the deployed Lambda should use psycopg2 via a layer, not psycopg2-binary.
+psycopg2-binary>=2.9
+aws-lambda-powertools>=2.0
+boto3>=1.28  # required by powertools parameters (present in Lambda runtime)
+pytest>=8.0
+# Real PostgreSQL grammar. test_organization_analytics.py parses every generated
+# query with it, so SQL syntax errors are caught without a live server. Tests
+# skip gracefully if it is absent, but then that coverage is lost.
+pglast>=6.0
