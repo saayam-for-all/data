@@ -1,6 +1,7 @@
 import json
 from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
 from concurrent.futures import ThreadPoolExecutor
+from distance_utils import add_organization_distance
 
 # handle the lambda function call
 def lambda_handler(event, context):
@@ -12,6 +13,20 @@ def lambda_handler(event, context):
         description = body.get("description")
         location = body.get("location")
         category = body.get("category")
+        beneficiary_latitude = body.get("beneficiary_latitude")
+        beneficiary_longitude = body.get("beneficiary_longitude")
+
+        beneficiary_coords = None
+
+        if beneficiary_latitude is not None and beneficiary_longitude is not None:
+            try:
+                lat = float(beneficiary_latitude)
+                lon = float(beneficiary_longitude)
+
+                if -90 <= lat <= 90 and -180 <= lon <= 180:
+                    beneficiary_coords = (lat, lon)
+            except (ValueError, TypeError):
+                pass
 
         if not location or not category:
             return {
@@ -32,6 +47,16 @@ def lambda_handler(event, context):
             genAI_organizations = ai_future.result()
 
         combined_list = merge_organizations(db_organizations, genAI_organizations)
+        organizations = combined_list.to_dict(orient='records')
+
+        organizations_with_distance = [
+           add_organization_distance(
+            organization,
+            beneficiary_coords,
+            None
+            )
+            for organization in organizations
+        ]
 
         return {
             'statusCode': 200,
@@ -39,7 +64,7 @@ def lambda_handler(event, context):
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": '*'
             },
-            'body': json.dumps(combined_list.to_dict(orient='records'))
+            'body': json.dumps(organizations_with_distance)
         }
 
     except json.JSONDecodeError as e:
