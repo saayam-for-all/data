@@ -8,7 +8,7 @@ Returns the data for the "Rating & Type" tab:
 
 Response shape (same pattern as Growth & Location / Size & Contribution):
 
-* No Custom date pair supplied  -> keys "7D", "30D", "1Y", "All" and an empty "Custom".
+* No Custom date pair supplied  -> keys "7D", "30D", "1Y", "All" only, no Custom key.
 * Any Custom date pair supplied -> only the "Custom" key. ``rating_distribution`` is
   populated from rating_start_date/rating_end_date and ``organization_mix_trend`` from
   type_start_date/type_end_date, independently of each other.
@@ -381,10 +381,6 @@ def lambda_handler(event, context):
         for bucket in FIXED_BUCKETS:
             window_start, window_end = get_bucket_range(bucket, now)
             response_body[bucket] = build_bucket(df, bucket, window_start, window_end)
-        response_body["Custom"] = {
-            "rating_distribution": [],
-            "organization_mix_trend": empty_organization_mix_trend(),
-        }
         return build_response(200, response_body)
 
     except Exception as exc:  # never let a Lambda crash with a raw traceback
