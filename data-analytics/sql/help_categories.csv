@@ -1,0 +1,15 @@
+cat_id,cat_name,cat_desc,last_updated_at
+1,MOCK_ESSENTIALS,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+1.1,MOCK_MEALS,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+1.2,MOCK_SUPPLIES,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+2,MOCK_MOBILITY,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+2.1,MOCK_LOCAL_TRANSPORT,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+2.2,MOCK_DELIVERY,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+3,MOCK_LEARNING,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+3.1,MOCK_LANGUAGE_PRACTICE,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+3.2,MOCK_DIGITAL_SKILLS,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+4,MOCK_HOME_SUPPORT,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+4.1,MOCK_SMALL_REPAIRS,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+4.2,MOCK_GARDEN_HELP,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+9,MOCK_LENGTH_BOUNDARY,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
+9.111111111111111111111111111111111111111111111111,MOCK_LONG_CATEGORY_KEY,Synthetic category for local pipeline testing.,2026-10-24 12:00:00.123456
