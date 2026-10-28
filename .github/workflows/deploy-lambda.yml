@@ -38,7 +38,7 @@ jobs:
 
   ci:
     name: CI - Lint, SAST, Tests & Dependency Audit
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -83,7 +83,7 @@ jobs:
       # --------------------------------------------------------
       - name: Install CI tools
         run: |
-          pip install flake8 bandit pip-audit
+          pip install flake8 bandit pip-audit pytest-cov
 
       # ========================================================
       # 1. FLAKE8
@@ -104,13 +104,24 @@ jobs:
       #       -ll
 
       # ========================================================
-      # 3. PYTEST
+      # 3. PYTEST + CODE COVERAGE
       # ========================================================
-      - name: Run pytest
+      - name: Run tests and measure code coverage
         env:
           SECRET_KEY: test-secret
         run: |
-          pytest -v tests/
+          pytest -v tests/ --cov=src --cov-report=term-missing --cov-report=xml:coverage.xml --cov-report=html:htmlcov --cov-fail-under=80
+
+      - name: Upload code coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-code-coverage
+          path: |
+            data-engineering/htmlcov/
+            data-engineering/coverage.xml
+          if-no-files-found: ignore
+          retention-days: 14
 
       # ========================================================
       # 4. PIP-AUDIT
@@ -129,7 +140,7 @@ jobs:
   # ============================================================
   detect-changes:
     name: Detect Changed Lambdas
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     outputs:
