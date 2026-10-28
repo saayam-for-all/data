@@ -1,11 +1,16 @@
 """Size & Contribution analytics for the Organization dashboard (#376).
 
 Returns two charts: organizations_by_size and collaborator_vs_contributor.
-With no custom dates the response has 7D/30D/1Y/All plus an empty Custom.
-If size_* or contribution_* dates are sent, only Custom is returned.
+With no custom dates the response has exactly 7D, 30D, 1Y and All (no Custom key).
+If size_* or contribution_* dates are sent, only Custom is returned, and each
+chart uses its own date range.
 
-Set USE_MOCK_DATA=true and MOCK_DATA_DIR to run against local CSVs,
-otherwise it reads from Postgres using the DB_* env vars.
+By default it reads organizations.csv, states.csv and countries.csv from the
+mock_data folder next to this file; MOCK_DATA_DIR points it at another folder.
+Postgres (via the DB_* env vars) is used only when USE_MOCK_DATA=false.
+
+An unknown country returns 400 {"error": "Unknown country"}; blank, null or
+ALL means no country filter.
 """
 
 import json
@@ -76,14 +81,20 @@ def normalize_org_type(value):
     return str(value).strip().lower().replace("-", "_").replace(" ", "_")
 
 
+def text_filter(body, key):
+    """A missing, null or blank value means ALL; anything that isn't text is a 400."""
+    value = body.get(key)
+    if value is None:
+        return "ALL"
+    if not isinstance(value, str):
+        raise BadRequestError(f"{key} must be text")
+    return value if value.strip() else "ALL"
+
+
 def parse_filters(body):
     """Returns (country, org_type). None means ALL."""
-    country = body.get("country") or "ALL"
-    org_type = body.get("organization_type") or "ALL"
-    if not isinstance(country, str) or not isinstance(org_type, str):
-        raise BadRequestError("country and organization_type must be text")
-    country = normalize_country(country)
-    org_type = normalize_org_type(org_type)
+    country = normalize_country(text_filter(body, "country"))
+    org_type = normalize_org_type(text_filter(body, "organization_type"))
     if org_type not in ORGANIZATION_TYPES + ("all",):
         raise BadRequestError("organization_type must be non_profit, for_profit or ALL")
     return (
@@ -188,7 +199,6 @@ def build_body(count, size_pair, contribution_pair, today):
                 SIZE_CHART: size_chart(sizes),
                 CONTRIBUTION_CHART: contribution_chart(total, collaborators, contributors),
             }
-        body["Custom"] = empty_charts()
         return body
 
     # custom dates sent: only return Custom, each chart uses its own range
@@ -209,7 +219,7 @@ def read_mock_csv(*filenames):
         path = os.path.join(folder, filename)
         if os.path.exists(path):
             return pd.read_csv(path, dtype=str)
-    raise DataSourceError(f"{filenames[0]} not found in MOCK_DATA_DIR")
+    raise DataSourceError(f"{filenames[0]} not found in {folder}")
 
 
 def to_bool(series):
@@ -224,7 +234,12 @@ def mock_counter(country, org_type):
     if missing:
         raise DataSourceError(f"organizations.csv is missing column(s): {', '.join(missing)}")
 
-    orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce", format="ISO8601")
+    # Values may be naive or carry an offset (+00:00 / Z), even mixed in one file.
+    # Parse all as UTC, then drop the tz so they compare with the naive UTC windows.
+    # Unreadable values become NaT and are left out below.
+    orgs["created_at"] = pd.to_datetime(
+        orgs["created_at"], errors="coerce", format="ISO8601", utc=True
+    ).dt.tz_convert(None)
     orgs["is_collaborator"] = to_bool(orgs["is_collaborator"])
     # is_contributor isn't in every dataset yet, count it as 0 if missing
     if "is_contributor" in orgs.columns:
@@ -242,6 +257,8 @@ def mock_counter(country, org_type):
         match = countries["country_code"].fillna("").map(normalize_country) == country
         if "country_name" in countries.columns:
             match |= countries["country_name"].fillna("").map(normalize_country) == country
+        if not match.any():
+            raise BadRequestError("Unknown country")
         country_ids = countries.loc[match, "country_id"]
         state_ids = states.loc[states["country_id"].isin(country_ids), "state_id"]
         orgs = orgs[orgs["state_id"].isin(state_ids)]
@@ -295,13 +312,19 @@ def db_counter(cursor, country, org_type):
     from_sql = f"FROM {schema}.organizations o"
     conditions, params = ["o.created_at IS NOT NULL"], []
     if country:
+        # same normalization as normalize_country()
+        code = "UPPER(BTRIM(REGEXP_REPLACE(c.country_code, '[_[:space:]]+', ' ', 'g')))"
+        name = "UPPER(BTRIM(REGEXP_REPLACE(c.country_name, '[_[:space:]]+', ' ', 'g')))"
+        cursor.execute(
+            f"SELECT 1 FROM {schema}.country c WHERE {code} = %s OR {name} = %s LIMIT 1",
+            (country, country),
+        )
+        if cursor.fetchone() is None:
+            raise BadRequestError("Unknown country")
         from_sql += (
             f" JOIN {schema}.state s ON s.state_id = o.state_id"
             f" JOIN {schema}.country c ON c.country_id = s.country_id"
         )
-        # same normalization as normalize_country()
-        code = "UPPER(BTRIM(REGEXP_REPLACE(c.country_code, '[_[:space:]]+', ' ', 'g')))"
-        name = "UPPER(BTRIM(REGEXP_REPLACE(c.country_name, '[_[:space:]]+', ' ', 'g')))"
         conditions.append(f"({code} = %s OR {name} = %s)")
         params += [country, country]
     if org_type:
@@ -352,7 +375,8 @@ def lambda_handler(event, context):
 
     connection = None
     try:
-        if os.getenv("USE_MOCK_DATA", "false").strip().lower() == "true":
+        # mock data unless USE_MOCK_DATA=false is set explicitly
+        if os.getenv("USE_MOCK_DATA", "true").strip().lower() != "false":
             count = mock_counter(country, org_type)
             result = build_body(count, size_pair, contribution_pair, utc_today())
         else:
@@ -361,6 +385,9 @@ def lambda_handler(event, context):
                 count = db_counter(cursor, country, org_type)
                 result = build_body(count, size_pair, contribution_pair, utc_today())
         return build_response(200, result)
+    except BadRequestError as exc:
+        # e.g. "Unknown country", which can only be checked against the data
+        return build_response(400, {"error": str(exc)})
     except DataSourceError as exc:
         logger.error("Size & Contribution analytics: %s", exc)
         return build_response(500, {"error": str(exc)})
@@ -373,9 +400,7 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    # USE_MOCK_DATA=true MOCK_DATA_DIR=/path/to/csvs python size_contribution_analytics.py
-    os.environ.setdefault("USE_MOCK_DATA", "true")
-
+    # python size_and_contribution.py  (reads ./mock_data; set MOCK_DATA_DIR to use another folder)
     size_range = {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30"}
     contribution_range = {
         "contribution_start_date": "2025-01-01",
@@ -389,6 +414,7 @@ if __name__ == "__main__":
         ("Contribution Custom range only", contribution_range),
         ("Both Custom ranges together", {**size_range, **contribution_range}),
         ("Invalid: only half of a pair", {"size_start_date": "2026-01-01"}),
+        ("Invalid: unknown country", {"country": "XXX"}),
     ]
 
     print(f"Run date (UTC): {utc_today()}")
