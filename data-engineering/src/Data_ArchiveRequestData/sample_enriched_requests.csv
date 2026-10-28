@@ -1,0 +1,4 @@
+req_id,creator_id,beneficiary_id,lead_volunteer_id,category_name,request_for_name,is_lead_volunteer,request_type_name,priority_name,status_name,req_subj,req_desc,req_doc_link,audio_req_desc,deletion_reason,req_loc,created_loc,iscalamity,to_public,submission_date,serviced_date,last_updated_at
+101,USER001,USER002,USER003,Food Assistance,Self,Yes,Help Request,High,Open,Food assistance needed,Request for food supplies,,,,,,,,,,2026-10-25 10:00:00
+102,USER002,,,Medical Assistance,Someone Else,No,Help Request,Low,Open,Medical assistance needed,Request for medical support,,,,,,,,,,2026-10-25 11:00:00
+103,USER999,,,,,,,,,Unmatched reference test,Testing missing lookup records,,,,,,,,,,2026-10-25 12:00:00
