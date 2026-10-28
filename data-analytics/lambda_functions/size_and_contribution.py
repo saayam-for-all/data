@@ -1,25 +1,21 @@
-"""Size & Contribution analytics for the Organization dashboard (#376).
 
-Returns two charts: organizations_by_size and collaborator_vs_contributor.
-With no custom dates the response has 7D/30D/1Y/All plus an empty Custom.
-If size_* or contribution_* dates are sent, only Custom is returned.
+"""Size and contribution analytics for the Organization dashboard.
 
-Set USE_MOCK_DATA=true and MOCK_DATA_DIR to run against local CSVs,
-otherwise it reads from Postgres using the DB_* env vars.
+Returns organization-size and collaborator/contributor charts.
+Without custom dates, returns 7D, 30D, 1Y, and All.
+With start_date and end_date, returns only Custom.
+Data is loaded from CSV files in the adjacent mock_data directory.
 """
+
 
 import json
 import logging
-import os
 import re
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 
 import pandas as pd
 
-try:
-    import psycopg2
-except ImportError:  # not needed for mock data
-    psycopg2 = None
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +27,9 @@ SIZE_ORDER = {"small": 0, "medium": 1, "large": 2}  # display order only
 TRUE_VALUES = ("true", "t", "1", "yes")
 REQUIRED_COLUMNS = ("org_id", "org_size", "is_collaborator", "org_type", "state_id")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-DEFAULT_MOCK_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_data")
+
+
+MOCK_DATA_DIR = Path(__file__).resolve().parent / "mock_data"
 
 HEADERS = {
     "Content-Type": "application/json",
@@ -178,38 +176,41 @@ def empty_charts():
     return {SIZE_CHART: [], CONTRIBUTION_CHART: []}
 
 
-def build_body(count, size_pair, contribution_pair, today):
-    """count(start, end) returns (sizes, total, collaborators, contributors)."""
-    if size_pair is None and contribution_pair is None:
+def build_body(count, date_pair, today):
+    """Build fixed-window charts or charts for one shared custom date range."""
+    if date_pair is None:
         body = {}
         for bucket in FIXED_BUCKETS:
-            sizes, total, collaborators, contributors = count(*fixed_window(bucket, today))
+            sizes, total, collaborators, contributors = count(
+                *fixed_window(bucket, today)
+            )
             body[bucket] = {
                 SIZE_CHART: size_chart(sizes),
-                CONTRIBUTION_CHART: contribution_chart(total, collaborators, contributors),
+                CONTRIBUTION_CHART: contribution_chart(
+                    total, collaborators, contributors
+                ),
             }
-        body["Custom"] = empty_charts()
         return body
 
-    # custom dates sent: only return Custom, each chart uses its own range
-    custom = empty_charts()
-    if size_pair is not None:
-        sizes, _, _, _ = count(*custom_window(size_pair))
-        custom[SIZE_CHART] = size_chart(sizes)
-    if contribution_pair is not None:
-        _, total, collaborators, contributors = count(*custom_window(contribution_pair))
-        custom[CONTRIBUTION_CHART] = contribution_chart(total, collaborators, contributors)
-    return {"Custom": custom}
+    start, end = custom_window(date_pair)
+    sizes, total, collaborators, contributors = count(start, end)
+    return {
+        "Custom": {
+            SIZE_CHART: size_chart(sizes),
+            CONTRIBUTION_CHART: contribution_chart(
+                total, collaborators, contributors
+            ),
+        }
+    }
 
 
-def read_mock_csv(*filenames):
-    """Read the first of these CSVs found in MOCK_DATA_DIR, as plain text."""
-    folder = os.getenv("MOCK_DATA_DIR") or DEFAULT_MOCK_DATA_DIR
-    for filename in filenames:
-        path = os.path.join(folder, filename)
-        if os.path.exists(path):
-            return pd.read_csv(path, dtype=str)
-    raise DataSourceError(f"{filenames[0]} not found in MOCK_DATA_DIR")
+def read_mock_csv(filename):
+    """Read a CSV from the mock_data folder adjacent to this file."""
+    path = MOCK_DATA_DIR / filename
+    if not path.is_file():
+        raise DataSourceError(f"{filename} not found in mock_data")
+    return pd.read_csv(path, dtype=str)
+
 
 
 def to_bool(series):
@@ -237,8 +238,8 @@ def mock_counter(country, org_type):
     if country:
         # org -> state -> country
         # the repo's sample data uses state.csv / country.csv
-        states = read_mock_csv("states.csv", "state.csv")
-        countries = read_mock_csv("countries.csv", "country.csv")
+        states = read_mock_csv("states.csv")
+        countries = read_mock_csv("countries.csv")
         match = countries["country_code"].fillna("").map(normalize_country) == country
         if "country_name" in countries.columns:
             match |= countries["country_name"].fillna("").map(normalize_country) == country
@@ -262,75 +263,6 @@ def mock_counter(country, org_type):
     return count
 
 
-def get_db_connection():
-    """Connect using the DB_* env vars."""
-    if psycopg2 is None:
-        raise DataSourceError("psycopg2 is not installed; set USE_MOCK_DATA=true to use local CSVs")
-    required = ("DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD")
-    missing = [name for name in required if not os.getenv(name)]
-    if missing:
-        raise DataSourceError(f"Missing environment variable(s): {', '.join(missing)}")
-    return psycopg2.connect(
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT", "5432"),
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-    )
-
-
-def db_counter(cursor, country, org_type):
-    """Same idea as mock_counter, but the counting happens in SQL."""
-    schema = os.getenv("ORG_ANALYTICS_SCHEMA", "virginia_dev_saayam_rdbms")
-
-    # Virginia's organizations table doesn't have is_contributor yet
-    cursor.execute(
-        "SELECT 1 FROM information_schema.columns WHERE table_schema = %s"
-        " AND table_name = 'organizations' AND column_name = 'is_contributor'",
-        (schema,),
-    )
-    has_contributor = cursor.fetchone() is not None
-    contributor_sql = "COUNT(*) FILTER (WHERE o.is_contributor)" if has_contributor else "0"
-
-    from_sql = f"FROM {schema}.organizations o"
-    conditions, params = ["o.created_at IS NOT NULL"], []
-    if country:
-        from_sql += (
-            f" JOIN {schema}.state s ON s.state_id = o.state_id"
-            f" JOIN {schema}.country c ON c.country_id = s.country_id"
-        )
-        # same normalization as normalize_country()
-        code = "UPPER(BTRIM(REGEXP_REPLACE(c.country_code, '[_[:space:]]+', ' ', 'g')))"
-        name = "UPPER(BTRIM(REGEXP_REPLACE(c.country_name, '[_[:space:]]+', ' ', 'g')))"
-        conditions.append(f"({code} = %s OR {name} = %s)")
-        params += [country, country]
-    if org_type:
-        conditions.append(
-            "REPLACE(REPLACE(LOWER(BTRIM(o.org_type::text)), '-', '_'), ' ', '_') = %s"
-        )
-        params.append(org_type)
-
-    def count(start, end):
-        where, values = list(conditions), list(params)
-        if start is not None:
-            where.append("o.created_at >= %s AND o.created_at < %s")
-            values += [start, end]
-        where_sql = " AND ".join(where)
-        cursor.execute(
-            f"SELECT o.org_size::text, COUNT(*) {from_sql} WHERE {where_sql}"
-            " AND o.org_size IS NOT NULL GROUP BY o.org_size",
-            values,
-        )
-        sizes = dict(cursor.fetchall())
-        cursor.execute(
-            f"SELECT COUNT(*), COUNT(*) FILTER (WHERE o.is_collaborator), {contributor_sql}"
-            f" {from_sql} WHERE {where_sql}",
-            values,
-        )
-        total, collaborators, contributors = cursor.fetchone()
-        return sizes, total, collaborators, contributors
-
-    return count
 
 
 def build_response(status_code, body):
@@ -339,27 +271,17 @@ def build_response(status_code, body):
 
 
 def lambda_handler(event, context):
-    """Lambda entry point."""
+    """Lambda entry point for size and contribution analytics."""
     try:
         body = parse_event_body(event)
         country, org_type = parse_filters(body)
-        size_pair = parse_date_pair(body, "size_start_date", "size_end_date")
-        contribution_pair = parse_date_pair(
-            body, "contribution_start_date", "contribution_end_date"
-        )
+        date_pair = parse_date_pair(body, "start_date", "end_date")
     except BadRequestError as exc:
         return build_response(400, {"error": str(exc)})
 
-    connection = None
     try:
-        if os.getenv("USE_MOCK_DATA", "false").strip().lower() == "true":
-            count = mock_counter(country, org_type)
-            result = build_body(count, size_pair, contribution_pair, utc_today())
-        else:
-            connection = get_db_connection()
-            with connection.cursor() as cursor:
-                count = db_counter(cursor, country, org_type)
-                result = build_body(count, size_pair, contribution_pair, utc_today())
+        count = mock_counter(country, org_type)
+        result = build_body(count, date_pair, utc_today())
         return build_response(200, result)
     except DataSourceError as exc:
         logger.error("Size & Contribution analytics: %s", exc)
@@ -367,35 +289,3 @@ def lambda_handler(event, context):
     except Exception:
         logger.exception("Size & Contribution analytics failed")
         return build_response(500, {"error": "Internal server error"})
-    finally:
-        if connection is not None:
-            connection.close()
-
-
-if __name__ == "__main__":
-    # USE_MOCK_DATA=true MOCK_DATA_DIR=/path/to/csvs python size_contribution_analytics.py
-    os.environ.setdefault("USE_MOCK_DATA", "true")
-
-    size_range = {"size_start_date": "2026-01-01", "size_end_date": "2026-06-30"}
-    contribution_range = {
-        "contribution_start_date": "2025-01-01",
-        "contribution_end_date": "2025-12-31",
-    }
-    samples = [
-        ("No body", None),
-        ("Country filter", {"country": "USA"}),
-        ("Organization type filter", {"organization_type": "non_profit"}),
-        ("Size Custom range only", size_range),
-        ("Contribution Custom range only", contribution_range),
-        ("Both Custom ranges together", {**size_range, **contribution_range}),
-        ("Invalid: only half of a pair", {"size_start_date": "2026-01-01"}),
-    ]
-
-    print(f"Run date (UTC): {utc_today()}")
-    for name, sample in samples:
-        event = {} if sample is None else {"body": json.dumps(sample)}
-        response = lambda_handler(event, None)
-        print(f"\n=== {name} ===")
-        print(f"Event: {json.dumps(event)}")
-        print(f"statusCode: {response['statusCode']}")
-        print(json.dumps(json.loads(response["body"]), indent=2))
