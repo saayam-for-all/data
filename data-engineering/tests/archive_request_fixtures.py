@@ -6,7 +6,6 @@ SCHEMA = 'virginia_dev_saayam_rdbms'
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 REQUESTS_CSV = os.path.join(REPO_ROOT, 'data-analytics', 'sql', 'requests.csv')
-USERS_CSV = os.path.join(REPO_ROOT, 'data-analytics', 'sql', 'users.csv')
 LOOKUP_DIR = os.path.join(REPO_ROOT, 'database', 'lookup_tables')
 
 REQUEST_COLUMNS = [
@@ -44,7 +43,6 @@ def new_db():
     conn.execute(f'CREATE TABLE {SCHEMA}.requests ({cols})')
     for table, (key, kind, readable, _) in LOOKUP_TABLES.items():
         conn.execute(f'CREATE TABLE {SCHEMA}.{table} ({key} {kind}, {readable} TEXT)')
-    conn.execute(f'CREATE TABLE {SCHEMA}.users (user_id TEXT)')
     return conn
 
 
@@ -62,10 +60,6 @@ def insert_lookup(conn, table, pairs):
     conn.executemany(f'INSERT INTO {SCHEMA}.{table} ({key}, {readable}) VALUES (?, ?)', pairs)
 
 
-def insert_users(conn, user_ids):
-    conn.executemany(f'INSERT INTO {SCHEMA}.users (user_id) VALUES (?)', [(u,) for u in user_ids])
-
-
 def read_csv(path):
     with open(path, newline='', encoding='utf-8') as f:
         return list(csv.DictReader(f))
@@ -80,6 +74,5 @@ def load_repo_mock_data(conn):
         rows = read_csv(os.path.join(LOOKUP_DIR, filename))
         insert_lookup(conn, table, [(clean(r[key]), clean(r[readable])) for r in rows])
 
-    insert_users(conn, [clean(r['user_id']) for r in read_csv(USERS_CSV) if clean(r.get('user_id'))])
     conn.commit()
     return len(requests)
