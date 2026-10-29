@@ -1,12 +1,12 @@
 import csv
 import io
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 CREDS_PARAM = '/dev/saayam/db/Virginia/Analytics/user'
 
 # requests column -> (lookup table, key column, readable column)
-# taken from the schema attached to #573, update here if that mapping changes
+# from the schema attached to #573. users is deliberately not joined.
 LOOKUPS = [
     ('req_cat_id', 'help_categories', 'cat_id', 'cat_name'),
     ('req_for_id', 'request_for', 'req_for_id', 'req_for'),
@@ -16,26 +16,23 @@ LOOKUPS = [
     ('req_status_id', 'request_statuses', 'req_status_id', 'req_status'),
 ]
 
-# these point at users, which has nothing readable to bring in,
-# so the join is only there to count references to users that no longer exist
-USER_REFS = ['creator_id', 'beneficiary_id', 'lead_volunteer_id']
-
 OTHER_COLUMNS = [
+    'creator_id', 'beneficiary_id', 'lead_volunteer_id',
     'req_subj', 'req_desc', 'req_doc_link', 'audio_req_desc', 'deletion_reason',
     'req_loc', 'created_loc', 'iscalamity', 'to_public',
-    'submission_date', 'serviced_date', 'last_updated_at',
+    'submission_date', 'serviced_date',
 ]
 
-BACKUP_COLUMNS = ['req_id'] + USER_REFS
+EXPORT_COLUMNS = ['req_id']
 for _col, _table, _key, _readable in LOOKUPS:
-    BACKUP_COLUMNS += [_col, _readable]
-BACKUP_COLUMNS += OTHER_COLUMNS
+    EXPORT_COLUMNS += [_col, _readable]
+EXPORT_COLUMNS += OTHER_COLUMNS + ['last_updated_at']
 
-# what stakeholders get: no ids, no free text, no locations, no exact dates
-SHARED_COLUMNS = [
-    'request_month', 'category', 'request_for', 'lead_volunteer_flag', 'request_type',
-    'priority', 'status', 'is_calamity', 'days_to_service', 'has_beneficiary', 'has_lead_volunteer',
-]
+TIMESTAMP_COLUMN = 'last_updated_at'
+INITIAL_WATERMARK = '2000-01-01 00:00:00'
+# last_updated_at is stamped when the statement runs but only visible once the
+# transaction commits, so the window stops a few minutes short of now
+LAG_MINUTES = 5
 
 # one consistent, read-only view of the table for the count and the export
 SNAPSHOT_SQL = 'SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY'
@@ -72,32 +69,46 @@ def get_s3_client():
     return _s3_client
 
 
-def status_filter(statuses):
-    if not statuses:
-        return ''
-    # statuses are checked to be ints in the handler, so inlining them is safe
-    return 'WHERE r.req_status_id IN (' + ', '.join(str(int(s)) for s in statuses) + ')'
+def utc_now():
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
-def build_count_query(schema, statuses=None):
-    return f'SELECT COUNT(*) FROM {schema}.requests r {status_filter(statuses)}'
+def parse_timestamp(value):
+    # every timestamp in this schema is timestamp without time zone, stored as UTC
+    if isinstance(value, datetime):
+        return value.replace(tzinfo=None)
+    try:
+        parsed = datetime.fromisoformat(str(value).strip().replace('Z', '+00:00'))
+    except ValueError:
+        raise ValueError(f'not a timestamp: {value!r}')
+    if parsed.tzinfo:
+        parsed = parsed.astimezone(timezone.utc).replace(tzinfo=None)
+    return parsed
 
 
-def build_export_query(schema, statuses=None):
+def ts_literal(value):
+    # bounds are parsed datetimes, never raw input, so inlining them is safe
+    return "'" + parse_timestamp(value).strftime('%Y-%m-%d %H:%M:%S.%f') + "'"
+
+
+def window_filter(lo, hi):
+    # half open (lo, hi]: a row stamped exactly on a bound lands in one run only
+    return (f'WHERE r.{TIMESTAMP_COLUMN} > {ts_literal(lo)} '
+            f'AND r.{TIMESTAMP_COLUMN} <= {ts_literal(hi)}')
+
+
+def build_count_query(schema, lo, hi):
+    return f'SELECT COUNT(*) FROM {schema}.requests r {window_filter(lo, hi)}'
+
+
+def build_export_query(schema, lo, hi):
     select = ['r.req_id']
     joins = []
-
-    for col in USER_REFS:
-        select.append(f'r.{col}')
-        select.append(f'u_{col}.user_id AS {col}_found')
-        joins.append(f'LEFT JOIN {schema}.users u_{col} ON u_{col}.user_id = r.{col}')
-
     for i, (col, table, key, readable) in enumerate(LOOKUPS):
         select.append(f'CAST(r.{col} AS TEXT) AS {col}')
         select.append(f'l{i}.{readable} AS {readable}')
         joins.append(f'LEFT JOIN {schema}.{table} l{i} ON l{i}.{key} = r.{col}')
-
-    for col in OTHER_COLUMNS:
+    for col in OTHER_COLUMNS + [TIMESTAMP_COLUMN]:
         # geometry and timestamps come out as text so the csv is the same on any driver
         select.append(f'CAST(r.{col} AS TEXT) AS {col}')
 
@@ -105,8 +116,8 @@ def build_export_query(schema, statuses=None):
         'SELECT ' + ',\n       '.join(select) + '\n'
         f'FROM {schema}.requests r\n'
         + '\n'.join(joins) + '\n'
-        f'{status_filter(statuses)}\n'
-        'ORDER BY r.req_id'
+        f'{window_filter(lo, hi)}\n'
+        f'ORDER BY r.{TIMESTAMP_COLUMN}, r.req_id'
     )
 
 
@@ -119,27 +130,33 @@ def find_duplicate_lookup_keys(cursor, schema):
         )
         for value, count in cursor.fetchall():
             problems.append(f'{table}.{key} = {value} appears {count} times')
-    cursor.execute(f'SELECT user_id, COUNT(*) FROM {schema}.users GROUP BY user_id HAVING COUNT(*) > 1')
-    for value, count in cursor.fetchall():
-        problems.append(f'users.user_id = {value} appears {count} times')
     return problems
 
 
-def fetch_requests(conn, schema, statuses=None):
+def count_missing_timestamps(cursor, schema):
+    # these can never fall inside a window, so report them rather than lose them quietly
+    cursor.execute(f'SELECT COUNT(*) FROM {schema}.requests WHERE {TIMESTAMP_COLUMN} IS NULL')
+    return cursor.fetchone()[0]
+
+
+def fetch_window(conn, schema, lo, hi):
     cursor = conn.cursor()
     try:
         if SNAPSHOT_SQL:
             cursor.execute(SNAPSHOT_SQL)
-        cursor.execute(build_count_query(schema, statuses))
+        cursor.execute(build_count_query(schema, lo, hi))
         source_count = cursor.fetchone()[0]
         lookup_problems = find_duplicate_lookup_keys(cursor, schema)
-        cursor.execute(build_export_query(schema, statuses))
-        names = [d[0] for d in cursor.description]
-        rows = [dict(zip(names, r)) for r in cursor.fetchall()]
+        missing_timestamps = count_missing_timestamps(cursor, schema)
+        rows = []
+        if source_count:
+            cursor.execute(build_export_query(schema, lo, hi))
+            names = [d[0] for d in cursor.description]
+            rows = [dict(zip(names, r)) for r in cursor.fetchall()]
     finally:
         # nothing is written to the db, this just ends the read transaction
         conn.rollback()
-    return source_count, rows, lookup_problems
+    return source_count, rows, lookup_problems, missing_timestamps
 
 
 def is_blank(value):
@@ -152,17 +169,13 @@ def reference_stats(rows):
         nulls = sum(1 for r in rows if is_blank(r[col]))
         unmatched = sum(1 for r in rows if not is_blank(r[col]) and r[readable] is None)
         stats[col] = {'references': f'{table}.{key}', 'null': nulls, 'unmatched': unmatched}
-    for col in USER_REFS:
-        nulls = sum(1 for r in rows if is_blank(r[col]))
-        unmatched = sum(1 for r in rows if not is_blank(r[col]) and r[f'{col}_found'] is None)
-        stats[col] = {'references': 'users.user_id', 'null': nulls, 'unmatched': unmatched}
     return stats
 
 
 def validate(source_count, rows, lookup_problems):
     errors = list(lookup_problems)
     if len(rows) != source_count:
-        errors.append(f'source has {source_count} requests but the export has {len(rows)}')
+        errors.append(f'source has {source_count} requests in the window but the export has {len(rows)}')
     ids = [r['req_id'] for r in rows]
     duplicates = len(ids) - len(set(ids))
     if duplicates:
@@ -170,89 +183,85 @@ def validate(source_count, rows, lookup_problems):
     return errors
 
 
-def to_datetime(value):
-    if value is None or isinstance(value, datetime):
-        return value
-    text = str(value).strip()
-    if not text:
-        return None
-    try:
-        return datetime.fromisoformat(text.replace('Z', '+00:00'))
-    except ValueError:
-        return None
-
-
-def to_flag(value):
-    if is_blank(value):
-        return ''
-    return 'true' if str(value).strip().lower() in ('true', 't', '1') else 'false'
-
-
-def readable(row, col, readable_col):
-    # keep the raw id as text when there's no lookup match, so the value isn't lost
-    if row[readable_col] is not None:
-        return row[readable_col]
-    return '' if is_blank(row[col]) else str(row[col])
-
-
-def to_shared_row(row):
-    submitted = to_datetime(row['submission_date'])
-    serviced = to_datetime(row['serviced_date'])
-    days = ''
-    if submitted and serviced and serviced >= submitted:
-        days = (serviced - submitted).days
-    return {
-        'request_month': submitted.strftime('%Y-%m') if submitted else '',
-        'category': readable(row, 'req_cat_id', 'cat_name'),
-        'request_for': readable(row, 'req_for_id', 'req_for'),
-        'lead_volunteer_flag': readable(row, 'req_islead_id', 'req_islead'),
-        'request_type': readable(row, 'req_type_id', 'req_type'),
-        'priority': readable(row, 'req_priority_id', 'req_priority'),
-        'status': readable(row, 'req_status_id', 'req_status'),
-        'is_calamity': to_flag(row['iscalamity']),
-        'days_to_service': days,
-        'has_beneficiary': 'false' if is_blank(row['beneficiary_id']) else 'true',
-        'has_lead_volunteer': 'false' if is_blank(row['lead_volunteer_id']) else 'true',
-    }
-
-
-def to_csv(rows, columns):
+def to_csv(rows):
     out = io.StringIO()
-    writer = csv.DictWriter(out, fieldnames=columns, extrasaction='ignore', lineterminator='\n')
+    writer = csv.DictWriter(out, fieldnames=EXPORT_COLUMNS, extrasaction='ignore', lineterminator='\n')
     writer.writeheader()
     for row in rows:
-        writer.writerow({c: '' if row.get(c) is None else row.get(c) for c in columns})
+        writer.writerow({c: '' if row.get(c) is None else row.get(c) for c in EXPORT_COLUMNS})
     return out.getvalue()
 
 
-def build_exports(rows):
-    return to_csv(rows, BACKUP_COLUMNS), to_csv([to_shared_row(r) for r in rows], SHARED_COLUMNS)
+def stamp(value):
+    return parse_timestamp(value).strftime('%Y%m%dT%H%M%S')
 
 
-def run_archive(bucket, shared_bucket=None, prefix='request_archive', statuses=None, run_date=None):
+def export_key(prefix, lo, hi, day):
+    # the key comes from the window, so re-running the same window overwrites
+    return f'{prefix}/requests/ingest_date={day}/requests_{stamp(lo)}_{stamp(hi)}.csv'
+
+
+def state_key(prefix):
+    return f'{prefix}/_state/watermark.json'
+
+
+def read_watermark(s3, bucket, prefix):
+    try:
+        res = s3.get_object(Bucket=bucket, Key=state_key(prefix))
+    except Exception as e:
+        code = getattr(e, 'response', {}).get('Error', {}).get('Code', '')
+        if code in ('NoSuchKey', '404') or type(e).__name__ == 'NoSuchKey':
+            return None
+        raise
+    return json.loads(res['Body'].read())['last_updated_at']
+
+
+def write_watermark(s3, bucket, prefix, value):
+    body = {'last_updated_at': parse_timestamp(value).strftime('%Y-%m-%d %H:%M:%S.%f'),
+            'written_at': utc_now().isoformat(sep=' ')}
+    s3.put_object(Bucket=bucket, Key=state_key(prefix), Body=json.dumps(body).encode('utf-8'),
+                  ContentType='application/json')
+
+
+def run_archive(bucket, prefix='request_archive', range_from=None, range_to=None):
     conn, schema = get_connection()
-    source_count, rows, lookup_problems = fetch_requests(conn, schema, statuses)
+    s3 = get_s3_client()
 
+    # an explicit range is for backfills and never moves the watermark
+    explicit = range_from is not None
+    if explicit:
+        lo, hi = parse_timestamp(range_from), parse_timestamp(range_to)
+    else:
+        lo = parse_timestamp(read_watermark(s3, bucket, prefix) or INITIAL_WATERMARK)
+        hi = utc_now() - timedelta(minutes=LAG_MINUTES)
+        if lo > hi:
+            raise RuntimeError(f'watermark {lo} is ahead of {hi}, check for future dated rows')
+
+    source_count, rows, lookup_problems, missing_timestamps = fetch_window(conn, schema, lo, hi)
     result = {
+        'range_from': str(lo),
+        'range_to': str(hi),
+        'explicit_range': explicit,
         'source_count': source_count,
         'exported_count': len(rows),
-        'statuses': statuses or 'all',
+        'rows_without_last_updated_at': missing_timestamps,
         'references': reference_stats(rows),
         'errors': validate(source_count, rows, lookup_problems),
     }
     if result['errors']:
+        result['status'] = 'failed'
+        return result
+    if source_count == 0:
+        result['status'] = 'nothing_to_do'
         return result
 
-    run_date = run_date or datetime.now(timezone.utc).strftime('%Y-%m-%d')
-    backup_csv, shared_csv = build_exports(rows)
-    backup_key = f'{prefix}/backup/run_date={run_date}/requests_full.csv'
-    shared_key = f'{prefix}/shared/run_date={run_date}/requests_shared.csv'
+    key = export_key(prefix, lo, hi, utc_now().strftime('%Y-%m-%d'))
+    s3.put_object(Bucket=bucket, Key=key, Body=to_csv(rows).encode('utf-8'), ContentType='text/csv')
 
-    s3 = get_s3_client()
-    s3.put_object(Bucket=bucket, Key=backup_key, Body=backup_csv.encode('utf-8'), ContentType='text/csv')
-    s3.put_object(Bucket=shared_bucket or bucket, Key=shared_key,
-                  Body=shared_csv.encode('utf-8'), ContentType='text/csv')
+    # only after S3 has the file, so a failed upload leaves the next run on the same window
+    if not explicit:
+        write_watermark(s3, bucket, prefix, hi)
 
-    result['backup'] = {'bucket': bucket, 'key': backup_key}
-    result['shared'] = {'bucket': shared_bucket or bucket, 'key': shared_key}
+    result['status'] = 'success'
+    result['s3_key'] = key
     return result

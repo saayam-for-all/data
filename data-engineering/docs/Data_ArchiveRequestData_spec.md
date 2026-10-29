@@ -1,32 +1,25 @@
-# Data_ArchiveRequestData: functional spec (#574)
+# Data_ArchiveRequestData (#574)
 
-## Why we are moving this data
+Replaces the six-table export in `saayam-archive-fn` (#416) with one export of `requests`, with the
+six lookup tables joined in so the file can be read without separate lookup files.
 
-From Rao (Oct 28):
+## Scope
 
-1. Share request data with stakeholders as a data product, without leaking any PII or sensitive data.
-2. Cut Aurora storage cost by moving cold request data to low cost S3.
+Agreed on #574 (Oct 29):
 
-These two goals need different things, so the Lambda writes **two copies** of the same export on every run.
+- **Copy, not move.** The only statement run against application tables is `SELECT`. Nothing is
+  deleted from the database. Status based clean up of old data is a separate, future task.
+- **All rows.** No status filter. A row is exported again whenever `last_updated_at` changes, which
+  is intended and gives us the history. Filtering to closed requests would mean an open request
+  never reaches the archive.
+- **Keep ids and readable values.** `req_status` sits next to `req_status_id` rather than replacing
+  it. The id is the join key for reconciling the archive against the source later.
+- **Raw values, no masking.** This is the backup copy only. User ids, free text and location are
+  exported as they are. A second, PII masked copy for stakeholders comes after #585 and #586, in a
+  separate bucket.
+- **Only the six lookup tables are joined.** `users` is not joined.
 
-| Copy | Who it is for | What is in it | Where |
-|---|---|---|---|
-| Backup | Us only (restore, audit, freeing up Aurora) | Every column of `requests`, plus the readable value for each reference | `{prefix}/backup/run_date=YYYY-MM-DD/requests_full.csv` in `bucket` |
-| Shared | Stakeholders | De-identified columns only (see below) | `{prefix}/shared/run_date=YYYY-MM-DD/requests_shared.csv` in `shared_bucket` |
-
-`prefix` defaults to `request_archive`. If `shared_bucket` is not given, both copies go to `bucket` under different prefixes. A separate bucket for the shared copy is recommended so access can be granted to it without exposing the backup.
-
-## What the Lambda does
-
-1. Reads `requests` once inside a read-only, repeatable-read transaction, so the count and the export see the same data.
-2. LEFT JOINs every referenced table, so a request with a null or broken reference is never dropped.
-3. Checks every lookup table for repeated keys. A repeated key would turn one request into two rows.
-4. Validates before writing anything: exported count must equal the source count, and `req_id` must be unique. If either fails, nothing is written and it returns a 500 with the reason.
-5. Writes the backup copy, then the shared copy, and returns the S3 keys, both counts and the null / unmatched counts per reference column.
-
-It never writes to, updates or deletes from the database.
-
-### References (from the schema attached to #573)
+## Joins
 
 | Column in requests | Joins to | Readable value |
 |---|---|---|
@@ -36,74 +29,76 @@ It never writes to, updates or deletes from the database.
 | req_type_id | request_types.req_type_id | req_type |
 | req_priority_id | request_priorities.req_priority_id | req_priority |
 | req_status_id | request_statuses.req_status_id | req_status |
-| creator_id | users.user_id | none (users has no readable column, the join only counts missing users) |
-| beneficiary_id | users.user_id | none |
-| lead_volunteer_id | users.user_id | none |
 
-The list lives in `LOOKUPS` and `USER_REFS` at the top of `helpers.py`, so a change from #573 is a one line edit.
+All six are `LEFT JOIN`. A request with a null or unmatched reference stays in the file, with its id
+kept and the readable column empty. The list is `LOOKUPS` at the top of `helpers.py`.
 
-In the backup the original id is kept next to the readable value. When there is no match, the readable column is empty and the id is still there. In the shared copy the readable value is used, and the raw id is used as a fallback so the row is not blank.
+## One run
 
-## Column decisions
-
-| Column | Backup | Shared | Reason |
-|---|---|---|---|
-| req_id | keep | drop | Internal key. Anyone with database access could link it back to a person. |
-| creator_id, beneficiary_id, lead_volunteer_id | keep | drop, replaced by `has_beneficiary` and `has_lead_volunteer` | Direct links to people. Hashing still counts as personal data, so they are removed. |
-| req_subj, req_desc | keep | drop | Free text. People write names, phone numbers and addresses here. |
-| req_doc_link, audio_req_desc | keep | drop | Point at documents and recordings. |
-| deletion_reason | keep | drop | Free text. |
-| req_loc, created_loc | keep (as text) | drop | Exact points can identify a home. |
-| submission_date | keep | `request_month` (YYYY-MM) | Exact timestamps plus other fields can single out a request. |
-| serviced_date | keep | `days_to_service` (whole days) | Keeps the useful part, the turnaround time. |
-| last_updated_at | keep | drop | Not useful to stakeholders. |
-| category, request_for, islead, type, priority, status | keep id and readable | readable only | No personal data. |
-| iscalamity | keep | `is_calamity` | No personal data. |
-| to_public | keep | drop | Internal flag. |
-
-## Which requests get archived
-
-Not decided yet. The Lambda exports **all requests** by default. It also takes an optional `statuses` list (for example `[3, 4, 5, 6, 7]` for resolved, cancelled, deleted and rated) so we can switch to closed requests only without a code change.
-
-## Storage guidelines
-
-Backup bucket:
-- Block all public access, default encryption with SSE-KMS, versioning on.
-- Access limited to the data engineering leads.
-- Lifecycle: S3 Standard for 30 days, then Glacier Instant Retrieval, then Glacier Deep Archive after 180 days. Retention period to be decided by leadership.
-
-Shared bucket:
-- Same encryption and public access block.
-- Access granted per stakeholder, read only.
-- Keep in Standard or Standard-IA, since it will be read.
-
-Deleting rows from Aurora is **not** part of this Lambda. That should only happen after a backup file has been checked (row count matches and the file opens) and a restore has been tried once.
-
-## Before selling any data
-
-The shared copy is row level. Even without names, a rare combination (for example one request in a small category in a given month) can point at a person. Before it goes to a paying stakeholder I'd suggest one of these:
-- share aggregated counts instead of rows, or
-- drop rows from groups smaller than 10 before sharing.
-
-## Event
-
-```json
-{"bucket": "backup-bucket", "shared_bucket": "shared-bucket", "prefix": "request_archive", "statuses": [3, 4, 5, 6, 7]}
+```
+read watermark -> select (watermark, now - 5 min] -> validate -> upload CSV -> advance watermark
 ```
 
-Only `bucket` is required. Bad input returns 400, a failed check or database error returns 500 with the reason.
+- The window is half open, `(lo, hi]`, on `last_updated_at`, so a row stamped exactly on a bound
+  belongs to one run only.
+- The upper bound is 5 minutes in the past. `last_updated_at` is set when the statement runs but the
+  row is only visible once the transaction commits, so reading up to `now()` could skip a row for good.
+- The count and the export run in the same read only, repeatable read transaction.
+- Before anything is written: the exported count must equal the count in the window, `req_id` must be
+  unique, and no lookup table may have a repeated key (that would turn one request into two rows).
+  If any check fails it returns a 500, writes nothing and leaves the watermark alone.
+- The watermark moves only after S3 has the file. A run that dies partway leaves it unmoved, and
+  the S3 key comes from the window, so the retry overwrites the same file instead of duplicating it.
+- Requests with a null `last_updated_at` can never fall in a window. They are counted and reported
+  in every run rather than skipped quietly.
 
-## Open questions
+## S3 layout
 
-1. Which requests should be archived: all, or closed only?
-2. Is the shared copy row level or aggregates only?
-3. How long do we keep the backup?
-4. Name of the old Lambda that exports six tables, so it can be retired once this one is deployed and confirmed working. It is not in this repo.
-5. Do stakeholders need any location at all, for example state or country? That would need a separate decision since it is not in `requests` directly.
+```
+{prefix}/requests/ingest_date=YYYY-MM-DD/requests_{from}_{to}.csv
+{prefix}/_state/watermark.json
+```
+
+`prefix` defaults to `request_archive`. The watermark lives in the bucket, so the Lambda never writes
+to the database. This is the same idea as `STATE_STORE=s3` in `saayam-archive-fn`.
+
+## Invocation
+
+```json
+{"bucket": "archive-bucket", "prefix": "request_archive"}
+```
+
+`bucket` can also come from the `BUCKET` environment variable, so the schedule can send an empty
+payload. For a backfill, pass `"from"` and `"to"` (UTC). That runs exactly that range and does not
+read or move the watermark.
+
+Bad input returns 400. A failed check, database error or S3 error returns 500 with the reason.
+
+## Storage guidelines for the backup bucket
+
+- Block all public access, default encryption with SSE-KMS, versioning on.
+- Access limited to the data engineering leads. The file holds raw user ids and free text.
+- Lifecycle: S3 Standard for 30 days, then Glacier Instant Retrieval, then Glacier Deep Archive after
+  180 days. Retention period to be decided by leadership.
+- Reserved concurrency of 1 on the Lambda, so two runs can't read the same watermark at once.
+
+## Not in this task
+
+- PII masking and the stakeholder copy (#585, #586).
+- Decoding `req_loc` from EWKB hex to readable coordinates (subtask 3 in the #416 approach doc).
+  It is exported as text for now.
+- Removing `saayam-archive-fn` and its lookup table files in S3. Only after this Lambda is
+  deployed and confirmed working.
+- Deleting old rows from Aurora.
 
 ## Testing
 
-- `pytest tests/test_data_archive_request_data.py`: join behaviour (null and unmatched references stay in, duplicate lookup keys are caught), status filter, the shared copy has no personal fields, handler input checks.
-- `python tests/run_local_archive.py`: runs the handler on the mock CSVs in the repo with SQLite in place of Postgres and a local folder in place of S3, and writes a validation summary. Output goes outside the repo.
+- `pytest tests/test_data_archive_request_data.py`: joins, null and unmatched references, duplicate
+  lookup keys, the watermark (first run, no changes, an updated row, a row inside the 5 minute lag,
+  a failed upload, a backfill range, a row on a window boundary) and handler input checks.
+- `python tests/run_local_archive.py`: three runs of the handler on the mock CSVs in the repo, with
+  SQLite in place of Postgres and a local folder in place of S3. Writes a validation summary outside
+  the repo.
 
-Not tested yet: the real Aurora database and real S3. That needs someone with access.
+Not tested yet: the real database and real S3. Reconciliation against the source is planned once
+it is deployed.
