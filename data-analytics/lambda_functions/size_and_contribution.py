@@ -179,7 +179,18 @@ def empty_charts():
 
 
 def build_body(count, size_pair, contribution_pair, today):
-    """count(start, end) returns (sizes, total, collaborators, contributors)."""
+    """
+    Build the Size & Contribution API response.
+
+    Without custom date ranges, return exactly four buckets:
+    7D, 30D, 1Y, and All. Do not include Custom.
+
+    When custom date ranges are provided, return only the Custom
+    bucket containing the chart or charts explicitly requested.
+
+    count(start, end) returns:
+    (sizes, total, collaborators, contributors).
+    """
     if size_pair is None and contribution_pair is None:
         body = {}
         for bucket in FIXED_BUCKETS:
@@ -188,11 +199,10 @@ def build_body(count, size_pair, contribution_pair, today):
                 SIZE_CHART: size_chart(sizes),
                 CONTRIBUTION_CHART: contribution_chart(total, collaborators, contributors),
             }
-        body["Custom"] = empty_charts()
         return body
 
     # custom dates sent: only return Custom, each chart uses its own range
-    custom = empty_charts()
+    custom = {}
     if size_pair is not None:
         sizes, _, _, _ = count(*custom_window(size_pair))
         custom[SIZE_CHART] = size_chart(sizes)
@@ -224,7 +234,12 @@ def mock_counter(country, org_type):
     if missing:
         raise DataSourceError(f"organizations.csv is missing column(s): {', '.join(missing)}")
 
-    orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce", format="ISO8601")
+    orgs["created_at"] = pd.to_datetime(
+        orgs["created_at"],
+        errors="coerce",
+        format="ISO8601",
+        utc=True,
+    ).dt.tz_localize(None)
     orgs["is_collaborator"] = to_bool(orgs["is_collaborator"])
     # is_contributor isn't in every dataset yet, count it as 0 if missing
     if "is_contributor" in orgs.columns:
@@ -243,6 +258,8 @@ def mock_counter(country, org_type):
         if "country_name" in countries.columns:
             match |= countries["country_name"].fillna("").map(normalize_country) == country
         country_ids = countries.loc[match, "country_id"]
+        if not match.any():
+            raise BadRequestError("Unknown country")
         state_ids = states.loc[states["country_id"].isin(country_ids), "state_id"]
         orgs = orgs[orgs["state_id"].isin(state_ids)]
     orgs = orgs[orgs["created_at"].notna()]
@@ -295,6 +312,19 @@ def db_counter(cursor, country, org_type):
     from_sql = f"FROM {schema}.organizations o"
     conditions, params = ["o.created_at IS NOT NULL"], []
     if country:
+        cursor.execute(
+            f"""
+            SELECT EXISTS (
+                SELECT 1
+                FROM {schema}.country c
+                WHERE UPPER(BTRIM(REGEXP_REPLACE(c.country_code, '[_[:space:]]+', ' ', 'g'))) = %s
+                    OR UPPER(BTRIM(REGEXP_REPLACE(c.country_name, '[_[:space:]]+', ' ', 'g'))) = %s
+            )
+            """,
+            (country, country),
+        )
+        if not cursor.fetchone()[0]:
+            raise BadRequestError("Unknown country")
         from_sql += (
             f" JOIN {schema}.state s ON s.state_id = o.state_id"
             f" JOIN {schema}.country c ON c.country_id = s.country_id"
@@ -352,7 +382,7 @@ def lambda_handler(event, context):
 
     connection = None
     try:
-        if os.getenv("USE_MOCK_DATA", "false").strip().lower() == "true":
+        if os.getenv("USE_MOCK_DATA", "true").strip().lower() != "false":
             count = mock_counter(country, org_type)
             result = build_body(count, size_pair, contribution_pair, utc_today())
         else:
@@ -361,6 +391,8 @@ def lambda_handler(event, context):
                 count = db_counter(cursor, country, org_type)
                 result = build_body(count, size_pair, contribution_pair, utc_today())
         return build_response(200, result)
+    except BadRequestError as exc:
+        return build_response(400, {"error": str(exc)})
     except DataSourceError as exc:
         logger.error("Size & Contribution analytics: %s", exc)
         return build_response(500, {"error": str(exc)})
