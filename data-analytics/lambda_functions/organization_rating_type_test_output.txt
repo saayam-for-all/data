@@ -1,0 +1,42 @@
+Local verification for Rating & Type Analytics (issue #380)
+===========================================================
+
+Mock CSV fixtures were created in a temporary directory for local runs; no CSV fixtures are included in this change.
+
+Command:
+pytest data-analytics/lambda_functions -q
+
+Output:
+........................................ss....                           [100%]
+44 passed, 2 skipped in 0.88s
+
+Standalone sample invocation output (temporary CSV fixtures):
+--- no body ---
+status: 200
+keys: 7D, 30D, 1Y, All, Custom
+Custom: {"rating_distribution": [], "organization_mix_trend": {"non_profit": [], "for_profit": []}}
+
+--- country filter USA ---
+status: 200
+keys: 7D, 30D, 1Y, All, Custom
+All rating_distribution: [{"rating": 3, "count": 1}, {"rating": 5, "count": 2}]
+
+--- rating custom range ---
+status: 200
+keys: Custom
+Custom rating_distribution: [{"rating": 5, "count": 1}]
+Custom organization_mix_trend: {"non_profit": [], "for_profit": []}
+
+--- type custom range ---
+status: 200
+keys: Custom
+Custom rating_distribution: []
+Custom organization_mix_trend: {"non_profit": [{"period": "2025-09-15", "count": 1}], "for_profit": [{"period": "2025-03-10", "count": 1}]}
+
+--- both custom ranges ---
+status: 200
+keys: Custom
+Custom rating_distribution: [{"rating": 5, "count": 1}]
+Custom organization_mix_trend: {"non_profit": [{"period": "2025-09-15", "count": 1}], "for_profit": [{"period": "2025-03-10", "count": 1}]}
+
+The custom date responses use the independent rating and type ranges. Fixed bucket type-trend counts are cumulative across all earlier country-filtered organizations and only emit periods with new organizations.
