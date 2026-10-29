@@ -1,0 +1,8 @@
+Data_ArchiveRequestData: successful local handler execution
+Database: real PostgreSQL; input: synthetic fixture; S3: mocked
+Selected source requests: 6 | Exported requests: 6 | Duplicate requests: 0
+All 9 reference mappings use LEFT JOIN; null and unmatched references retained
+Exactly one CSV captured from the handler's S3 upload
+SHA-256: 30ada6bf4002d6322754d4e801e2d0753737f02a1295296a1ecacb8e42324fe3
+Sample: evidence/sample_requests.csv | Validation: evidence/validation.json
+Task #573 production mapping/count approval: pending

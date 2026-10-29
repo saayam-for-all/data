@@ -1,0 +1,17 @@
+{
+  "schema": "virginia_dev_saayam_rdbms",
+  "table": "requests",
+  "key": "req_id",
+  "archive_date": "serviced_date",
+  "references": [
+    {"column":"creator_id","table":"users","key":"user_id","label":"full_name","output":"creator_name"},
+    {"column":"beneficiary_id","table":"users","key":"user_id","label":"full_name","output":"beneficiary_name"},
+    {"column":"lead_volunteer_id","table":"users","key":"user_id","label":"full_name","output":"lead_volunteer_name"},
+    {"column":"req_for_id","table":"request_for","key":"req_for_id","label":"req_for","output":"request_for"},
+    {"column":"req_islead_id","table":"request_isleadvol","key":"req_islead_id","label":"req_islead","output":"request_is_lead_volunteer"},
+    {"column":"req_cat_id","table":"help_category","key":"cat_id","label":"cat_name","output":"help_category"},
+    {"column":"req_type_id","table":"request_type","key":"req_type_id","label":"req_type","output":"request_type"},
+    {"column":"req_priority_id","table":"request_priority","key":"req_priority_id","label":"req_priority","output":"request_priority"},
+    {"column":"req_status_id","table":"request_statuses","key":"req_status_id","label":"req_status","output":"request_status"}
+  ]
+}

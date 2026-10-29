@@ -1,0 +1,8 @@
+req_id,creator_name,request_for,request_is_lead_volunteer,help_category,request_type,request_priority,request_status,req_loc,iscalamity,req_subj,req_desc,req_doc_link,audio_req_desc,submission_date,serviced_date,last_updated_at,to_public,beneficiary_name,lead_volunteer_name,deletion_reason
+REQ-001,Alex Example,Self,No,Food assistance,One-time,High,Completed,Example City,False,Food support,Synthetic example,\N,\N,2025-01-01 00:00:00,2025-06-01 00:00:00,2025-06-02 00:00:00,False,Alex Example,Alex Example,\N
+REQ-002,\N,\N,\N,\N,\N,\N,\N,Example City,False,Food support,Synthetic example,\N,\N,2025-01-01 00:00:00,2025-06-01 00:00:00,2025-06-02 00:00:00,False,\N,\N,\N
+REQ-003,[UNMATCHED: MISSING],[UNMATCHED: 999],[UNMATCHED: 999],[UNMATCHED: MISSING],[UNMATCHED: 999],[UNMATCHED: 999],[UNMATCHED: 999],Example City,False,Food support,Synthetic example,\N,\N,2025-01-01 00:00:00,2025-06-01 00:00:00,2025-06-02 00:00:00,False,[UNMATCHED: MISSING],[UNMATCHED: MISSING],\N
+REQ-004,[MISSING LABEL: UBLANK],Self,No,Food assistance,One-time,High,Completed,Example City,False,Food support,Synthetic example,\N,\N,2025-01-01 00:00:00,2025-06-01 00:00:00,2025-06-02 00:00:00,False,[MISSING LABEL: UBLANK],[MISSING LABEL: UBLANK],\N
+REQ-005,Alex Example,Self,No,Food assistance,One-time,High,Cancelled,Example City,False,Food support,,\N,\N,2025-01-01 00:00:00,2025-06-01 00:00:00,2025-06-02 00:00:00,False,Alex Example,Alex Example,\N
+REQ-006,Alex Example,Self,No,Food assistance,One-time,High,Completed,Example City,False,"Food, ""care"" and shelter","Line 1
+Line 2 — café",\\N,\N,2025-01-01 00:00:00,2025-06-01 00:00:00,2025-06-02 00:00:00,False,Alex Example,Alex Example,
