@@ -1,0 +1,117 @@
+{
+  "_comment": [
+    "What gets archived and what gets scrubbed. Lives in git so a change is a",
+    "reviewed commit rather than an UPDATE nobody sees.",
+    "",
+    "mode: 'incremental' requires timestamp_column. 'full' re-copies the whole",
+    "table every run; only for small reference tables.",
+    "",
+    "columns: exceptions only. Anything not listed is kept unchanged.",
+    "  drop   absent from the output file",
+    "  hash   sha256(value || salt), hex. Deterministic, so rows still join,",
+    "         but this is pseudonymisation, not anonymisation: a small value",
+    "         space can be brute forced.",
+    "  mask   first character then asterisks",
+    "  redact replaced with [REDACTED]",
+    "",
+    "enabled: false means configured but not running. Tables holding PII stay",
+    "false until the classification is signed off."
+  ],
+  "schema": "virginia_dev_saayam_rdbms",
+  "tables": [
+    {
+      "name": "requests",
+      "mode": "incremental",
+      "timestamp_column": "last_updated_at",
+      "lag_minutes": 5,
+      "initial_value": "2000-01-01T00:00:00",
+      "enabled": true,
+      "columns": {
+        "creator_id": "hash",
+        "beneficiary_id": "hash",
+        "lead_volunteer_id": "hash",
+        "req_subj": "scrub",
+        "req_desc": "scrub"
+      },
+      "_note": "req_desc and audio_req_desc are free text typed by the public and can contain anything. Kept for now. Needs a decision from Rao."
+    },
+    {
+      "name": "req_comments",
+      "mode": "incremental",
+      "timestamp_column": "last_updated_at",
+      "lag_minutes": 5,
+      "initial_value": "2000-01-01T00:00:00",
+      "enabled": false,
+      "columns": {
+        "commenter_id": "hash"
+      },
+      "_note": "comment_desc is free text. Same open question as requests."
+    },
+    {
+      "name": "request_other_details",
+      "mode": "incremental",
+      "timestamp_column": "last_updated_at",
+      "lag_minutes": 5,
+      "initial_value": "2000-01-01T00:00:00",
+      "enabled": false,
+      "columns": {
+        "req_fname": "mask",
+        "req_lname": "mask",
+        "req_email": "hash",
+        "req_phone": "drop"
+      }
+    },
+    {
+      "name": "fraud_requests",
+      "mode": "incremental",
+      "timestamp_column": "last_updated_at",
+      "lag_minutes": 5,
+      "initial_value": "2000-01-01T00:00:00",
+      "enabled": false,
+      "columns": {
+        "creator_id": "hash",
+        "beneficiary_id": "hash"
+      }
+    },
+    {
+      "name": "users",
+      "mode": "incremental",
+      "timestamp_column": "last_updated_at",
+      "lag_minutes": 5,
+      "initial_value": "2000-01-01T00:00:00",
+      "enabled": false,
+      "columns": {
+        "full_name": "mask",
+        "first_name": "mask",
+        "last_name": "mask",
+        "primary_email_address": "hash",
+        "primary_phone_number": "drop",
+        "addr_ln1": "drop",
+        "addr_ln2": "drop",
+        "addr_ln3": "drop",
+        "dob": "drop"
+      },
+      "_note": "zip_code deliberately kept, useful for analysis and low risk alone."
+    },
+    {
+      "name": "request_statuses",
+      "mode": "full",
+      "enabled": true
+    },
+    {
+      "name": "request_types",
+      "mode": "full",
+      "enabled": true
+    },
+    {
+      "name": "request_priorities",
+      "mode": "full",
+      "enabled": true
+    },
+    {
+      "name": "help_categories",
+      "mode": "full",
+      "enabled": true
+    }
+  ]
+}
