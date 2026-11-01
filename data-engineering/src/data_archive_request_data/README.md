@@ -22,24 +22,24 @@ that used to be exported alongside `requests`.
 | `req_for_id` | `request_for` | `req_for_id` | `req_for` | `req_for` |
 | `req_islead_id` | `request_isleadvol` | `req_islead_id` | `req_islead` | `req_islead` |
 | `req_cat_id` | `help_categories` | `cat_id` | `cat_name` | `req_category` |
-| `req_type_id` | `request_type` | `req_type_id` | `req_type` | `req_type` |
-| `req_priority_id` | `request_priority` | `req_priority_id` | `req_priority` | `req_priority` |
-| `req_status_id` | `request_status` | `req_status_id` | `req_status` | `req_status` |
+| `req_type_id` | `request_types` | `req_type_id` | `req_type` | `req_type` |
+| `req_priority_id` | `request_priorities` | `req_priority_id` | `req_priority` | `req_priority` |
+| `req_status_id` | `request_statuses` | `req_status_id` | `req_status` | `req_status` |
 
 `creator_id`, `beneficiary_id` and `lead_volunteer_id` also reference another
-table (`users.user_id`). They are **not** enriched: the ids are already the
-readable identifiers used across Saayam, and copying names, emails or phone
-numbers into an S3 archive would move personal data out of the database. The
-mapping for them is in `USER_REFERENCE_COLUMNS`, ready to enable if the team
-decides the archive should carry those values.
+table (`users.user_id`), and they are deliberately **not** joined. The team's
+answer on #574 is that this export is a raw backup copy: the ids stay as they
+are, with no hashing, and only the six lookup tables above are joined. An
+optimised masking approach (#585) and the PII-free copy for stakeholders, which
+goes to a separate bucket (#586), are separate tasks.
 
 ## Export layout
 
-Request columns keep their source order and each reference id is replaced in
-place by its readable value. By default the raw id is kept immediately after the
-readable value (`req_status`, `req_status_id`, …) so an unmatched reference stays
-auditable in the file itself; set `ARCHIVE_INCLUDE_REFERENCE_IDS=false`, or pass
-`"include_reference_ids": false` in the event, to export readable values only.
+Request columns keep their source order and their ids, and each readable value
+is added immediately after the id it resolves (`req_status_id`, `req_status`, …).
+Both are kept because the id is the join key for reconciling the archive against
+the source, and because keeping it leaves an unmatched reference auditable in
+the file itself.
 
 One CSV per run, written to:
 
@@ -92,10 +92,9 @@ Read from the event first, then the environment (`.env` locally):
 | Key prefix | `prefix` | `ARCHIVE_S3_PREFIX` | `requests_enriched` |
 | KMS key | `kms_key_id` | `ARCHIVE_S3_KMS_KEY_ID` | none |
 | Bucket region | `region` | `AWS_REGION` | none |
-| Schema holding `requests` | `schema` | `REQUEST_ARCHIVE_SCHEMA` | `public` |
+| Schema holding `requests` | `schema` | `REQUEST_ARCHIVE_SCHEMA` | `virginia_dev_saayam_rdbms` |
 | Window lower bound (exclusive) | `watermark_start` | `ARCHIVE_WATERMARK_START` | `1970-01-01 00:00:00` |
 | Window upper bound (inclusive) | `watermark_end` | — | now, UTC |
-| Keep raw reference ids | `include_reference_ids` | `ARCHIVE_INCLUDE_REFERENCE_IDS` | `true` |
 | Row ceiling for one run | `max_rows` | `ARCHIVE_MAX_ROWS` | `250000` |
 | Stop on unexported columns | `fail_on_schema_drift` | `ARCHIVE_FAIL_ON_SCHEMA_DRIFT` | `true` |
 | Validate without uploading | `dry_run` | — | `false` |
@@ -126,8 +125,7 @@ data is committed):
 - `validation_summary.md` — the summary to attach to the issue,
 - `validation_summary.json` — the same summary as data.
 
-Useful flags: `--watermark-start`, `--watermark-end`, `--output-dir`,
-`--no-reference-ids`.
+Useful flags: `--watermark-start`, `--watermark-end`, `--output-dir`.
 
 The mock `requests.csv` carries ids the seeded lookup tables do not define
 (`req_cat_id` values such as `CAT-TRANSPORT`, `req_for_id` values above 1), so a
@@ -150,9 +148,20 @@ client into the handler.
 
 ## Replacing the previous export
 
-The existing Lambda that exports the six separate tables stays in place until
-`Data_ArchiveRequestData` is deployed and a run is confirmed in S3 and in the
-validation summary. Only then should it be removed, as the issue requires.
+The export this replaces is `saayam-archive-fn`, on the schedule
+`saayam-archive-schedule`, kept at `data-engineering/src/requests_archive/` on
+the branch `hpant5_416_archive_datapipeline_rdbms_s3`. It is a reference, not a
+specification: its scope has changed since it was written, and it hashes the
+user ids this export keeps raw.
+
+Two things were taken from it, because it is the implementation that has run
+against the database: the table is `requests` with `last_updated_at` in the
+`virginia_dev_saayam_rdbms` schema, and the lookup tables are named
+`request_types`, `request_priorities` and `request_statuses`.
+
+It stays in place until `Data_ArchiveRequestData` is deployed and a run is
+confirmed in S3 and in the validation summary. Only then should it be removed,
+as the issue requires.
 
 ## Modules
 

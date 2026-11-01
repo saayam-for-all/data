@@ -20,9 +20,9 @@ Configuration comes from the event first, then the environment:
     ARCHIVE_S3_PREFIX        key prefix, default "requests_enriched"
     ARCHIVE_S3_KMS_KEY_ID    optional KMS key for server-side encryption
     AWS_REGION               bucket region
-    REQUEST_ARCHIVE_SCHEMA   schema holding requests, default "public"
+    REQUEST_ARCHIVE_SCHEMA   schema holding requests,
+                             default "virginia_dev_saayam_rdbms"
     ARCHIVE_WATERMARK_START  exclusive lower bound, default "1970-01-01 00:00:00"
-    ARCHIVE_INCLUDE_REFERENCE_IDS  keep raw ids beside readable values, default true
     ARCHIVE_MAX_ROWS         row ceiling for one run, default 250000
     ARCHIVE_FAIL_ON_SCHEMA_DRIFT  stop on unexported columns, default true
     DATABASE_URL             libpq connection string
@@ -45,7 +45,7 @@ except ImportError:  # The deploy workflow copies these modules to the zip root.
     from validation import format_validation_summary
 
 LAMBDA_NAME = "Data_ArchiveRequestData"
-DEFAULT_SCHEMA = "public"
+DEFAULT_SCHEMA = "virginia_dev_saayam_rdbms"
 DEFAULT_WATERMARK_START = "1970-01-01 00:00:00"
 
 
@@ -115,14 +115,6 @@ def lambda_handler(
         watermark_end = event.get("watermark_end") or datetime.now(
             timezone.utc
         ).replace(tzinfo=None).isoformat(sep=" ", timespec="seconds")
-        include_reference_ids = _as_bool(
-            _setting(
-                event,
-                "include_reference_ids",
-                "ARCHIVE_INCLUDE_REFERENCE_IDS",
-                True,
-            )
-        )
         max_rows = int(
             _setting(event, "max_rows", "ARCHIVE_MAX_ROWS", DEFAULT_MAX_ROWS)
         )
@@ -144,7 +136,6 @@ def lambda_handler(
             watermark_end=watermark_end,
             schema=schema,
             paramstyle=paramstyle,
-            include_reference_ids=include_reference_ids,
             max_rows=max_rows,
             fail_on_schema_drift=fail_on_schema_drift,
         )

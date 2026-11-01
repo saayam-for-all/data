@@ -57,17 +57,15 @@ def qualified_table(table: str, schema: Optional[str] = None) -> str:
     return table
 
 
-def export_columns(include_reference_ids: bool = True) -> List[Tuple[str, str]]:
+def export_columns() -> List[Tuple[str, str]]:
     """Return the export projection as ``(sql_expression, output_column)`` pairs.
 
-    Request columns keep their source order. Each reference id is replaced in
-    place by the readable value from its referenced table; the raw id follows it
-    when ``include_reference_ids`` is set, which keeps unmatched references
-    auditable in the archived file itself.
-
-    Args:
-        include_reference_ids: Keep the raw reference ids next to the readable
-            values.
+    Request columns keep their source order and their ids. The readable value
+    from the referenced table is added immediately after each id, so
+    ``req_status`` sits next to ``req_status_id``: the team's decision on #574
+    is to keep both, because the id is the join key for reconciling the archive
+    against the source, and keeping it leaves an unmatched reference auditable
+    in the archived file itself.
 
     Returns:
         The projection in export order.
@@ -76,26 +74,23 @@ def export_columns(include_reference_ids: bool = True) -> List[Tuple[str, str]]:
     projection: List[Tuple[str, str]] = []
 
     for column in REQUEST_COLUMNS:
-        reference = by_source.get(column)
-        if reference is None:
-            projection.append((f"{REQUESTS_ALIAS}.{column}", column))
-            continue
+        projection.append((f"{REQUESTS_ALIAS}.{column}", column))
 
-        projection.append(
-            (
-                f"{reference.alias}.{reference.readable_column}",
-                reference.output_column,
+        reference = by_source.get(column)
+        if reference is not None:
+            projection.append(
+                (
+                    f"{reference.alias}.{reference.readable_column}",
+                    reference.output_column,
+                )
             )
-        )
-        if include_reference_ids:
-            projection.append((f"{REQUESTS_ALIAS}.{column}", column))
 
     return projection
 
 
-def export_column_names(include_reference_ids: bool = True) -> List[str]:
+def export_column_names() -> List[str]:
     """Return the export column names in order."""
-    return [name for _, name in export_columns(include_reference_ids)]
+    return [name for _, name in export_columns()]
 
 
 def _left_join(reference: ReferenceColumn, schema: Optional[str] = None) -> str:
@@ -120,7 +115,6 @@ def _watermark_clause(paramstyle: str) -> str:
 def build_export_query(
     schema: Optional[str] = None,
     paramstyle: str = "pyformat",
-    include_reference_ids: bool = True,
     references: Sequence[ReferenceColumn] = REFERENCE_COLUMNS,
 ) -> str:
     """Build the single enriched requests export query.
@@ -132,7 +126,6 @@ def build_export_query(
     Args:
         schema: Schema qualifying the tables, or ``None`` for the search path.
         paramstyle: ``pyformat`` for psycopg2 or ``qmark`` for sqlite3.
-        include_reference_ids: Keep the raw reference ids in the export.
         references: Reference columns to resolve; defaults to all six lookups.
 
     Returns:
@@ -141,7 +134,7 @@ def build_export_query(
     """
     projection = ",\n".join(
         f"       {expression} AS {name}"
-        for expression, name in export_columns(include_reference_ids)
+        for expression, name in export_columns()
     )
     joins = "\n".join(_left_join(reference, schema) for reference in references)
 

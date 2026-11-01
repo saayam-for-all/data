@@ -43,9 +43,9 @@ MOCK_SOURCES: Dict[str, Path] = {
     "request_for": LOOKUP_DIR / "request_for.csv",
     "request_isleadvol": LOOKUP_DIR / "request_isleadvol.csv",
     "help_categories": LOOKUP_DIR / "help_categories.csv",
-    "request_type": LOOKUP_DIR / "request_type.csv",
-    "request_priority": LOOKUP_DIR / "request_priority.csv",
-    "request_status": LOOKUP_DIR / "request_status.csv",
+    "request_types": LOOKUP_DIR / "request_type.csv",
+    "request_priorities": LOOKUP_DIR / "request_priority.csv",
+    "request_statuses": LOOKUP_DIR / "request_status.csv",
 }
 
 MOCK_BUCKET = "saayam-request-archive-local"
@@ -149,11 +149,6 @@ def main(argv: Optional[List[str]] = None) -> int:
         default=DEFAULT_OUTPUT_DIR,
         help="Folder for the sample export and the validation summary.",
     )
-    parser.add_argument(
-        "--no-reference-ids",
-        action="store_true",
-        help="Export only the readable values, without the raw reference ids.",
-    )
     args = parser.parse_args(argv)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -166,7 +161,6 @@ def main(argv: Optional[List[str]] = None) -> int:
             "schema": None,
             "watermark_start": args.watermark_start,
             "watermark_end": args.watermark_end,
-            "include_reference_ids": not args.no_reference_ids,
         },
         connection=connection,
         s3_client=s3_client,

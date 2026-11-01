@@ -65,14 +65,14 @@ LOOKUP_FIXTURES: Dict[str, Dict[str, Any]] = {
             ["2", "HOUSING", "HOUSING_DESC"],
         ],
     },
-    "request_type": {
+    "request_types": {
         "header": ["req_type_id", "req_type", "req_type_desc", "last_updated_date"],
         "rows": [
             ["0", "IN_PERSON", "On site", "NULL"],
             ["1", "REMOTE", "Remote", "NULL"],
         ],
     },
-    "request_priority": {
+    "request_priorities": {
         "header": [
             "req_priority_id",
             "req_priority",
@@ -84,7 +84,7 @@ LOOKUP_FIXTURES: Dict[str, Dict[str, Any]] = {
             ["1", "MEDIUM", "Soon", "NULL"],
         ],
     },
-    "request_status": {
+    "request_statuses": {
         "header": [
             "req_status_id",
             "req_status",
@@ -176,7 +176,7 @@ def _build_sources(
     for table, fixture in LOOKUP_FIXTURES.items():
         path = tmp_path / f"{table}.csv"
         lookup_rows = [list(row) for row in fixture["rows"]]
-        if table == "request_status" and duplicate_status_rows:
+        if table == "request_statuses" and duplicate_status_rows:
             lookup_rows.append(["1", "RESOLVED_DUPLICATE", "Duplicate key", "NULL"])
         _write_csv(path, fixture["header"], lookup_rows)
         sources[table] = path
@@ -252,26 +252,16 @@ def test_export_query_is_incremental_on_the_watermark_column():
     assert "ORDER BY r.last_updated_at, r.req_id" in query
 
 
-def test_export_replaces_reference_ids_with_readable_values():
-    columns = export_column_names(include_reference_ids=False)
-
-    for reference in REFERENCE_COLUMNS:
-        assert reference.output_column in columns
-        assert reference.source_column not in columns
-
-    assert "req_id" in columns
-    assert len(columns) == len(REQUEST_COLUMNS)
-
-
-def test_reference_ids_are_kept_next_to_the_readable_values_by_default():
+def test_each_readable_value_sits_next_to_the_id_it_resolves():
     columns = export_column_names()
 
     for reference in REFERENCE_COLUMNS:
-        assert reference.output_column in columns
         assert reference.source_column in columns
-        assert columns.index(reference.output_column) + 1 == columns.index(
-            reference.source_column
+        assert columns.index(reference.source_column) + 1 == columns.index(
+            reference.output_column
         )
+
+    assert len(columns) == len(REQUEST_COLUMNS) + len(REFERENCE_COLUMNS)
 
 
 def test_reference_audit_query_counts_nulls_and_unmatched_separately():

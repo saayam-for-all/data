@@ -64,7 +64,7 @@ REFERENCE_COLUMNS: Tuple[ReferenceColumn, ...] = (
     ),
     ReferenceColumn(
         source_column="req_type_id",
-        referenced_table="request_type",
+        referenced_table="request_types",
         referenced_column="req_type_id",
         readable_column="req_type",
         output_column="req_type",
@@ -72,7 +72,7 @@ REFERENCE_COLUMNS: Tuple[ReferenceColumn, ...] = (
     ),
     ReferenceColumn(
         source_column="req_priority_id",
-        referenced_table="request_priority",
+        referenced_table="request_priorities",
         referenced_column="req_priority_id",
         readable_column="req_priority",
         output_column="req_priority",
@@ -80,7 +80,7 @@ REFERENCE_COLUMNS: Tuple[ReferenceColumn, ...] = (
     ),
     ReferenceColumn(
         source_column="req_status_id",
-        referenced_table="request_status",
+        referenced_table="request_statuses",
         referenced_column="req_status_id",
         readable_column="req_status",
         output_column="req_status",
@@ -88,37 +88,11 @@ REFERENCE_COLUMNS: Tuple[ReferenceColumn, ...] = (
     ),
 )
 
-# Reference columns that point at ``users``. They are deliberately NOT enriched:
-# the ids are already the readable identifiers used across Saayam, and copying
-# names, emails or phone numbers into an S3 archive would move personal data
-# out of the database. Enriching them is a product decision, not a technical
-# one, so it is left out until the team asks for it.
-USER_REFERENCE_COLUMNS: Tuple[ReferenceColumn, ...] = (
-    ReferenceColumn(
-        source_column="creator_id",
-        referenced_table="users",
-        referenced_column="user_id",
-        readable_column="full_name",
-        output_column="creator_name",
-        alias="uc",
-    ),
-    ReferenceColumn(
-        source_column="beneficiary_id",
-        referenced_table="users",
-        referenced_column="user_id",
-        readable_column="full_name",
-        output_column="beneficiary_name",
-        alias="ub",
-    ),
-    ReferenceColumn(
-        source_column="lead_volunteer_id",
-        referenced_table="users",
-        referenced_column="user_id",
-        readable_column="full_name",
-        output_column="lead_volunteer_name",
-        alias="uv",
-    ),
-)
+# creator_id, beneficiary_id and lead_volunteer_id also reference another
+# table (users.user_id). They are deliberately NOT joined: the team's
+# decision on #574 is that this archive is a raw backup copy, the ids stay
+# as they are with no hashing, and only the six lookup tables above are
+# joined. Masking and a separate PII-free copy are issues #585 and #586.
 
 # Columns of ``requests``, in source order. The export keeps this order and
 # replaces each reference id with its readable value in place.

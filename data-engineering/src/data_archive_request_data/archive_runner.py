@@ -117,7 +117,6 @@ def run_export(
     watermark_end: Any,
     schema: Optional[str] = None,
     paramstyle: str = "pyformat",
-    include_reference_ids: bool = True,
     max_rows: int = DEFAULT_MAX_ROWS,
     fail_on_schema_drift: bool = True,
 ) -> ExportResult:
@@ -129,7 +128,6 @@ def run_export(
         watermark_end: Inclusive upper bound on the watermark column.
         schema: Schema qualifying the tables, or None for the search path.
         paramstyle: "pyformat" for psycopg2 or "qmark" for sqlite3.
-        include_reference_ids: Keep the raw reference ids in the export.
         max_rows: Refuse a window holding more rows than this.
         fail_on_schema_drift: Stop when requests has columns the export does
             not cover.
@@ -160,7 +158,7 @@ def run_export(
             "raise ARCHIVE_MAX_ROWS if the Lambda has the memory for it."
         )
 
-    column_names = export_column_names(include_reference_ids)
+    column_names = export_column_names()
     request_id_index = column_names.index(REQUEST_PRIMARY_KEY)
 
     spool = CsvSpool(column_names)
@@ -175,7 +173,6 @@ def run_export(
             build_export_query(
                 schema=schema,
                 paramstyle=paramstyle,
-                include_reference_ids=include_reference_ids,
             ),
             params,
         )
