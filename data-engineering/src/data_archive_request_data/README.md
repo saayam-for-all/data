@@ -47,6 +47,23 @@ One CSV per run, written to:
 s3://<bucket>/<prefix>/archive_year=YYYY/archive_month=MM/archive_day=DD/run_ts=<ts>/requests_enriched.csv
 ```
 
+## Memory and schema safety
+
+Rows are streamed from a server-side cursor and written to the CSV as they
+arrive, spilling from an 8 MiB memory buffer to the Lambda's `/tmp` when the
+export outgrows it, so a run never holds the whole result set in memory. A
+window holding more than `ARCHIVE_MAX_ROWS` rows (250,000 by default) is refused
+with a message telling the caller to narrow the watermark window — that ceiling
+matters because `ARCHIVE_WATERMARK_START` defaults to the epoch, so a run
+invoked with no window would otherwise try to archive the whole table at once.
+
+Before querying, the run reads the live columns of `requests` with a zero-row
+`SELECT` and compares them against `REQUEST_COLUMNS`. A column added to the
+table after this Lambda was written would otherwise be dropped from the archive
+silently; instead the run stops and names it. Set
+`ARCHIVE_FAIL_ON_SCHEMA_DRIFT=false` to archive anyway — the drift is still
+reported in the validation summary.
+
 ## Validation
 
 Every run is validated **before** anything is uploaded, and a failed validation
@@ -54,7 +71,10 @@ returns 500 and writes nothing to S3:
 
 - the exported row count matches the source records selected for archival,
 - the exported distinct request count matches the source request count,
-- no `req_id` appears twice (joins did not duplicate requests),
+- no `req_id` appears twice (joins did not duplicate requests) — checked as the
+  rows stream past, which works because the export is ordered by
+  `(last_updated_at, req_id)`, so the rows a join fans out for one request are
+  adjacent,
 - null and unmatched reference values are counted per reference column and
   reported, which confirms those requests are still in the export.
 
@@ -76,6 +96,8 @@ Read from the event first, then the environment (`.env` locally):
 | Window lower bound (exclusive) | `watermark_start` | `ARCHIVE_WATERMARK_START` | `1970-01-01 00:00:00` |
 | Window upper bound (inclusive) | `watermark_end` | — | now, UTC |
 | Keep raw reference ids | `include_reference_ids` | `ARCHIVE_INCLUDE_REFERENCE_IDS` | `true` |
+| Row ceiling for one run | `max_rows` | `ARCHIVE_MAX_ROWS` | `250000` |
+| Stop on unexported columns | `fail_on_schema_drift` | `ARCHIVE_FAIL_ON_SCHEMA_DRIFT` | `true` |
 | Validate without uploading | `dry_run` | — | `false` |
 | Database connection | — | `DATABASE_URL` | required |
 
@@ -122,8 +144,9 @@ python -m pytest tests/test_data_archive_request_data.py -v
 
 The tests run the real queries against SQLite fixtures that include a request
 with resolvable references, one whose references match nothing, one with all
-references null, and a lookup table seeded with a duplicated key, and they pass
-a mock S3 client into the handler.
+references null, a lookup table seeded with a duplicated key, and a requests
+table carrying a column the export does not know about, and they pass a mock S3
+client into the handler.
 
 ## Replacing the previous export
 
@@ -139,7 +162,7 @@ validation summary. Only then should it be removed, as the issue requires.
 | `archive_runner.py` | Runs the queries and builds the validation summary |
 | `query_builder.py` | Export, count and reference-audit SQL |
 | `reference_mappings.py` | Reference columns and the tables they join to |
-| `exporter.py` | CSV rendering, S3 key layout, S3 upload |
+| `exporter.py` | CSV spool that spills to disk, S3 key layout, S3 upload |
 | `validation.py` | Validation checks and the Markdown summary |
-| `db.py` | Connection and plain DB-API fetch helpers |
+| `db.py` | Connection, streaming cursor, live-column probe |
 | `local_run.py` | Local run against the repository's mock CSVs |

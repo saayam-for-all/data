@@ -170,6 +170,11 @@ def build_source_count_query(
     )
 
 
+def build_table_probe_query(schema: Optional[str] = None) -> str:
+    """Build a zero-row SELECT used to read the live columns of requests."""
+    return f"SELECT * FROM {qualified_table(REQUESTS_TABLE, schema)} WHERE 1 = 0"
+
+
 def build_reference_audit_query(
     reference: ReferenceColumn,
     schema: Optional[str] = None,

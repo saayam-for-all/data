@@ -69,9 +69,10 @@ class LocalS3Client:
         """Write the object body to ``<output_dir>/<key basename>``."""
         key = kwargs["Key"]
         body = kwargs["Body"]
+        data = body.read() if hasattr(body, "read") else body
         destination = self.output_dir / Path(key).name
-        destination.write_bytes(body)
-        self.uploads.append({"key": key, "path": destination, "bytes": len(body)})
+        destination.write_bytes(data)
+        self.uploads.append({"key": key, "path": destination, "bytes": len(data)})
         return {"ETag": "local-mock"}
 
 

@@ -5,7 +5,6 @@ matches the source records selected for archival, requests with null or
 unmatched references are still exported, and no request is duplicated by a join.
 """
 
-from collections import Counter
 from typing import Any, Dict, List, Sequence
 
 try:
@@ -14,32 +13,12 @@ except ImportError:  # The deploy workflow copies these modules to the zip root.
     from reference_mappings import REFERENCE_COLUMNS
 
 
-def summarize_exported_requests(request_ids: Sequence[Any]) -> Dict[str, Any]:
-    """Summarize the exported rows by request id.
-
-    Args:
-        request_ids: req_id of every exported row, in export order.
-
-    Returns:
-        A dict with the exported row count, the distinct request count and any
-        duplicated request ids.
-    """
-    counts = Counter(request_ids)
-    duplicates = sorted(
-        str(request_id) for request_id, count in counts.items() if count > 1
-    )
-
-    return {
-        "exported_row_count": len(request_ids),
-        "exported_request_count": len(counts),
-        "duplicate_request_ids": duplicates,
-    }
-
-
 def build_validation_summary(
     source_row_count: int,
     source_request_count: int,
-    request_ids: Sequence[Any],
+    exported_row_count: int,
+    exported_request_count: int,
+    duplicate_request_ids: Sequence[str],
     reference_audit: Dict[str, Dict[str, int]],
 ) -> Dict[str, Any]:
     """Build the validation summary for one run.
@@ -47,7 +26,10 @@ def build_validation_summary(
     Args:
         source_row_count: Rows in requests inside the archival window.
         source_request_count: Distinct req_id inside the archival window.
-        request_ids: req_id of every exported row.
+        exported_row_count: Rows written to the export.
+        exported_request_count: Distinct req_id written to the export.
+        duplicate_request_ids: Request ids a join emitted more than once, up to
+            the reporting limit.
         reference_audit: Per reference column, its null_count and
             unmatched_count inside the window.
 
@@ -55,31 +37,28 @@ def build_validation_summary(
         The summary, with status set to "passed" only when every check holds
         and a failures list naming the checks that did not.
     """
-    exported = summarize_exported_requests(request_ids)
+    duplicates = [str(request_id) for request_id in duplicate_request_ids]
     failures: List[str] = []
 
-    if exported["exported_row_count"] != source_row_count:
+    if exported_row_count != source_row_count:
         failures.append(
             "Exported row count ({exported}) does not match the source records "
             "selected for archival ({source}).".format(
-                exported=exported["exported_row_count"], source=source_row_count
+                exported=exported_row_count, source=source_row_count
             )
         )
 
-    if exported["exported_request_count"] != source_request_count:
+    if exported_request_count != source_request_count:
         failures.append(
             "Exported request count ({exported}) does not match the source "
             "request count ({source}).".format(
-                exported=exported["exported_request_count"],
-                source=source_request_count,
+                exported=exported_request_count, source=source_request_count
             )
         )
 
-    if exported["duplicate_request_ids"]:
+    if duplicates:
         failures.append(
-            "Joins duplicated requests: {ids}.".format(
-                ids=", ".join(exported["duplicate_request_ids"][:10])
-            )
+            "Joins duplicated requests: {ids}.".format(ids=", ".join(duplicates))
         )
 
     references = []
@@ -93,8 +72,8 @@ def build_validation_summary(
                 "readable_column": reference.readable_column,
                 "export_column": reference.output_column,
                 "join_type": "LEFT JOIN",
-                "null_count": int(audit.get("null_count", 0)),
-                "unmatched_count": int(audit.get("unmatched_count", 0)),
+                "null_count": int(audit.get("null_count") or 0),
+                "unmatched_count": int(audit.get("unmatched_count") or 0),
             }
         )
 
@@ -106,11 +85,11 @@ def build_validation_summary(
     return {
         "source_row_count": source_row_count,
         "source_request_count": source_request_count,
-        "exported_row_count": exported["exported_row_count"],
-        "exported_request_count": exported["exported_request_count"],
-        "duplicate_request_ids": exported["duplicate_request_ids"],
-        "counts_match": exported["exported_row_count"] == source_row_count,
-        "requests_duplicated": bool(exported["duplicate_request_ids"]),
+        "exported_row_count": exported_row_count,
+        "exported_request_count": exported_request_count,
+        "duplicate_request_ids": duplicates,
+        "counts_match": exported_row_count == source_row_count,
+        "requests_duplicated": bool(duplicates),
         "unresolved_reference_values": unresolved,
         "references": references,
         "failures": failures,
@@ -136,6 +115,14 @@ def format_validation_summary(summary: Dict[str, Any]) -> str:
         "- Null or unmatched reference values kept in the export: {count}".format(
             count=summary["unresolved_reference_values"]
         ),
+    ]
+
+    if "export_bytes" in summary:
+        lines.append(
+            "- Export size: {count} bytes".format(count=summary["export_bytes"])
+        )
+
+    lines += [
         "",
         "## Reference columns",
         "",

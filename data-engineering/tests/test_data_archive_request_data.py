@@ -10,21 +10,23 @@ exercised.
 """
 
 import csv
+import io
 import json
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import pytest
 
-from src.data_archive_request_data.archive_runner import run_export
-from src.data_archive_request_data.exporter import build_s3_key, rows_to_csv
+from src.data_archive_request_data.archive_runner import check_schema, run_export
+from src.data_archive_request_data.exporter import CsvSpool, build_s3_key
 from src.data_archive_request_data.lambda_function import lambda_handler
 from src.data_archive_request_data.local_run import build_mock_database
 from src.data_archive_request_data.query_builder import (
     build_export_query,
     build_reference_audit_query,
+    build_table_probe_query,
     export_column_names,
 )
 from src.data_archive_request_data.reference_mappings import (
@@ -143,6 +145,8 @@ def _write_csv(path: Path, header: List[str], rows: List[List[str]]) -> None:
 def _build_sources(
     tmp_path: Path,
     duplicate_status_rows: bool = False,
+    extra_request_column: str = None,
+    drop_request_column: str = None,
 ) -> Dict[str, Path]:
     """Write the fixture CSVs and return the table-to-path mapping.
 
@@ -151,14 +155,22 @@ def _build_sources(
         duplicate_status_rows: Seed request_status with the same id twice, which
             a primary key would prevent in the real database but which must be
             caught by the duplicate check if it ever happens.
+        extra_request_column: Add a column the export does not know about, as a
+            column added to requests after this Lambda was written would be.
+        drop_request_column: Leave a column the export expects out of the table.
     """
     sources: Dict[str, Path] = {}
 
+    header = [column for column in REQUEST_COLUMNS if column != drop_request_column]
+    if extra_request_column:
+        header = header + [extra_request_column]
+
+    rows = [
+        [fixture.get(column, "") for column in header]
+        for fixture in REQUEST_FIXTURES
+    ]
     requests_path = tmp_path / "requests.csv"
-    rows = []
-    for fixture in REQUEST_FIXTURES:
-        rows.append([fixture.get(column, "") for column in REQUEST_COLUMNS])
-    _write_csv(requests_path, list(REQUEST_COLUMNS), rows)
+    _write_csv(requests_path, header, rows)
     sources["requests"] = requests_path
 
     for table, fixture in LOOKUP_FIXTURES.items():
@@ -185,15 +197,23 @@ class FakeS3Client:
 
     def __init__(self):
         self.calls: List[Dict[str, Any]] = []
+        self.bodies: List[bytes] = []
 
     def put_object(self, **kwargs):
+        body = kwargs["Body"]
+        self.bodies.append(body.read() if hasattr(body, "read") else body)
         self.calls.append(kwargs)
         return {"ETag": "fake"}
 
 
-def _run(connection, **kwargs):
-    """Run the export over the mock connection."""
-    return run_export(
+def _run(connection, **kwargs) -> Tuple[Dict[str, Any], List[Dict[str, str]]]:
+    """Run the export over the mock connection.
+
+    Returns:
+        The validation summary and the exported rows as dicts, with the spool
+        released. CSV values are text, so a null reference reads as "".
+    """
+    result = run_export(
         connection,
         watermark_start=kwargs.pop("watermark_start", WATERMARK_START),
         watermark_end=kwargs.pop("watermark_end", WATERMARK_END),
@@ -201,6 +221,11 @@ def _run(connection, **kwargs):
         paramstyle="qmark",
         **kwargs,
     )
+    try:
+        rows = list(csv.DictReader(io.StringIO(result.spool.read_text())))
+        return result.summary, rows
+    finally:
+        result.close()
 
 
 def test_every_referenced_table_is_left_joined_on_its_primary_key():
@@ -258,26 +283,32 @@ def test_reference_audit_query_counts_nulls_and_unmatched_separately():
     assert f"LEFT JOIN public.{reference.referenced_table} ref" in query
 
 
-def test_export_keeps_requests_with_null_and_unmatched_references(mock_connection):
-    result = _run(mock_connection)
-    exported = {row[result.columns.index("req_id")] for row in result.rows}
+def test_table_probe_query_returns_no_rows():
+    assert build_table_probe_query("public") == (
+        "SELECT * FROM public.requests WHERE 1 = 0"
+    )
 
-    assert exported == {"REQ-000001", "REQ-000002", "REQ-000003"}
-    assert result.summary["source_row_count"] == 3
-    assert result.summary["exported_row_count"] == 3
-    assert result.summary["counts_match"] is True
-    assert result.summary["requests_duplicated"] is False
-    assert result.summary["status"] == "passed"
+
+def test_export_keeps_requests_with_null_and_unmatched_references(mock_connection):
+    summary, rows = _run(mock_connection)
+
+    assert {row["req_id"] for row in rows} == {
+        "REQ-000001",
+        "REQ-000002",
+        "REQ-000003",
+    }
+    assert summary["source_row_count"] == 3
+    assert summary["exported_row_count"] == 3
+    assert summary["counts_match"] is True
+    assert summary["requests_duplicated"] is False
+    assert summary["status"] == "passed"
 
 
 def test_readable_values_replace_ids_and_unmatched_references_stay_empty(
     mock_connection,
 ):
-    result = _run(mock_connection)
-    by_request = {
-        row[result.columns.index("req_id")]: dict(zip(result.columns, row))
-        for row in result.rows
-    }
+    _, rows = _run(mock_connection)
+    by_request = {row["req_id"]: row for row in rows}
 
     resolved = by_request["REQ-000001"]
     assert resolved["req_status"] == "RESOLVED"
@@ -287,39 +318,37 @@ def test_readable_values_replace_ids_and_unmatched_references_stay_empty(
 
     unmatched = by_request["REQ-000002"]
     assert unmatched["req_status_id"] == "9"
-    assert unmatched["req_status"] is None
-    assert unmatched["req_category"] is None
+    assert unmatched["req_status"] == ""
+    assert unmatched["req_category"] == ""
 
     missing = by_request["REQ-000003"]
-    assert missing["req_status_id"] is None
-    assert missing["req_status"] is None
+    assert missing["req_status_id"] == ""
+    assert missing["req_status"] == ""
 
 
 def test_validation_summary_reports_null_and_unmatched_counts(mock_connection):
-    result = _run(mock_connection)
+    summary, _ = _run(mock_connection)
     by_column = {
         reference["column_in_requests"]: reference
-        for reference in result.summary["references"]
+        for reference in summary["references"]
     }
 
     assert by_column["req_status_id"]["null_count"] == 1
     assert by_column["req_status_id"]["unmatched_count"] == 1
     assert by_column["req_status_id"]["join_type"] == "LEFT JOIN"
-    assert result.summary["unresolved_reference_values"] == 2 * len(REFERENCE_COLUMNS)
+    assert summary["unresolved_reference_values"] == 2 * len(REFERENCE_COLUMNS)
 
 
 def test_watermark_window_limits_the_export(mock_connection):
-    result = _run(
+    summary, rows = _run(
         mock_connection,
         watermark_start="2026-02-01 10:00:00",
         watermark_end="2026-02-02 10:00:00",
     )
 
-    assert result.summary["source_row_count"] == 1
-    assert [row[result.columns.index("req_id")] for row in result.rows] == [
-        "REQ-000002"
-    ]
-    assert result.summary["status"] == "passed"
+    assert summary["source_row_count"] == 1
+    assert [row["req_id"] for row in rows] == ["REQ-000002"]
+    assert summary["status"] == "passed"
 
 
 def test_duplicated_lookup_rows_are_caught_as_duplicated_requests(tmp_path):
@@ -327,22 +356,61 @@ def test_duplicated_lookup_rows_are_caught_as_duplicated_requests(tmp_path):
         _build_sources(tmp_path, duplicate_status_rows=True)
     )
     try:
-        result = _run(connection)
+        summary, rows = _run(connection)
     finally:
         connection.close()
 
-    assert result.summary["status"] == "failed"
-    assert result.summary["requests_duplicated"] is True
-    assert "REQ-000001" in result.summary["duplicate_request_ids"]
-    assert result.summary["exported_row_count"] == 4
-    assert result.summary["source_row_count"] == 3
+    assert summary["status"] == "failed"
+    assert summary["requests_duplicated"] is True
+    assert "REQ-000001" in summary["duplicate_request_ids"]
+    assert summary["exported_row_count"] == 4
+    assert summary["exported_request_count"] == 3
+    assert summary["source_row_count"] == 3
+    assert len(rows) == 4
+
+
+def test_row_ceiling_refuses_a_window_that_is_too_large(mock_connection):
+    with pytest.raises(ValueError, match="above the 2 row ceiling"):
+        _run(mock_connection, max_rows=2)
+
+
+def test_schema_drift_stops_the_run_when_a_column_is_unexported(tmp_path):
+    connection = build_mock_database(
+        _build_sources(tmp_path, extra_request_column="req_sentiment")
+    )
+    try:
+        with pytest.raises(ValueError, match="req_sentiment"):
+            _run(connection)
+
+        drift = check_schema(connection, schema=None, fail_on_drift=False)
+        assert drift["unexported"] == ["req_sentiment"]
+        assert drift["missing"] == []
+
+        summary, rows = _run(connection, fail_on_schema_drift=False)
+        assert summary["status"] == "passed"
+        assert "req_sentiment" not in rows[0]
+    finally:
+        connection.close()
+
+
+def test_schema_drift_stops_the_run_when_an_expected_column_is_absent(tmp_path):
+    connection = build_mock_database(
+        _build_sources(tmp_path, drop_request_column="deletion_reason")
+    )
+    try:
+        with pytest.raises(ValueError, match="deletion_reason"):
+            _run(connection)
+    finally:
+        connection.close()
 
 
 def test_validation_summary_flags_a_count_mismatch():
     summary = build_validation_summary(
         source_row_count=3,
         source_request_count=3,
-        request_ids=["REQ-000001", "REQ-000002"],
+        exported_row_count=2,
+        exported_request_count=2,
+        duplicate_request_ids=[],
         reference_audit={},
     )
 
@@ -351,10 +419,23 @@ def test_validation_summary_flags_a_count_mismatch():
     assert any("does not match" in failure for failure in summary["failures"])
 
 
-def test_rows_to_csv_writes_a_header_and_blanks_for_nulls():
-    csv_text = rows_to_csv(["req_id", "req_status"], [["REQ-000001", None]])
+def test_csv_spool_writes_a_header_and_blanks_for_nulls():
+    with CsvSpool(["req_id", "req_status"]) as spool:
+        spool.write_row(["REQ-000001", None])
+        byte_count = spool.finish()
 
-    assert csv_text.splitlines() == ["req_id,req_status", "REQ-000001,"]
+        assert spool.read_text().splitlines() == ["req_id,req_status", "REQ-000001,"]
+        assert byte_count == len(spool.read_text().encode("utf-8"))
+        assert spool.spilled_to_disk is False
+
+
+def test_csv_spool_spills_to_disk_once_it_outgrows_the_buffer():
+    with CsvSpool(["req_id", "req_subj"], max_memory_bytes=64) as spool:
+        spool.write_rows([[f"REQ-{index:06d}", "x" * 40] for index in range(20)])
+        spool.finish()
+
+        assert spool.spilled_to_disk is True
+        assert len(spool.read_text().splitlines()) == 21
 
 
 def test_s3_key_is_partitioned_by_run_date():
@@ -390,10 +471,11 @@ def test_handler_uploads_one_enriched_file_when_validation_passes(mock_connectio
     assert call["Bucket"] == "saayam-request-archive-test"
     assert call["ContentType"] == "text/csv"
 
-    lines = call["Body"].decode("utf-8").splitlines()
+    lines = s3_client.bodies[0].decode("utf-8").splitlines()
     assert lines[0] == ",".join(export_column_names())
     assert len(lines) == 4
     assert body["validation_summary"]["status"] == "passed"
+    assert body["export"]["bytes"] == len(s3_client.bodies[0])
 
 
 def test_handler_uploads_nothing_when_validation_fails(tmp_path):
@@ -424,6 +506,29 @@ def test_handler_uploads_nothing_when_validation_fails(tmp_path):
     assert body["validation_summary"]["requests_duplicated"] is True
 
 
+def test_handler_reports_a_refused_window_without_uploading(mock_connection):
+    s3_client = FakeS3Client()
+
+    response = lambda_handler(
+        {
+            "bucket": "saayam-request-archive-test",
+            "schema": None,
+            "max_rows": 1,
+            "watermark_start": WATERMARK_START,
+            "watermark_end": WATERMARK_END,
+        },
+        connection=mock_connection,
+        s3_client=s3_client,
+        paramstyle="qmark",
+    )
+    body = json.loads(response["body"])
+
+    assert response["statusCode"] == 500
+    assert body["uploaded"] is False
+    assert "row ceiling" in body["error"]
+    assert s3_client.calls == []
+
+
 def test_handler_dry_run_validates_without_uploading(mock_connection):
     s3_client = FakeS3Client()
 
@@ -443,6 +548,7 @@ def test_handler_dry_run_validates_without_uploading(mock_connection):
     assert response["statusCode"] == 200
     assert body["uploaded"] is False
     assert body["dry_run"] is True
+    assert body["csv_bytes"] > 0
     assert s3_client.calls == []
 
 
@@ -450,11 +556,12 @@ def test_repository_mock_data_exports_without_duplicates_or_losses():
     """The repo's own requests CSV and lookup tables export one row per request."""
     connection = build_mock_database()
     try:
-        result = _run(connection)
+        summary, rows = _run(connection)
     finally:
         connection.close()
 
-    assert result.summary["source_row_count"] > 0
-    assert result.summary["counts_match"] is True
-    assert result.summary["requests_duplicated"] is False
-    assert result.summary["status"] == "passed"
+    assert summary["source_row_count"] > 0
+    assert summary["counts_match"] is True
+    assert summary["requests_duplicated"] is False
+    assert summary["status"] == "passed"
+    assert len(rows) == summary["exported_row_count"]

@@ -7,9 +7,12 @@ every reference id is resolved to its readable value with a LEFT JOIN on the
 referenced table's primary key, so requests whose references are null or
 unmatched stay in the export and no join can duplicate a request.
 
-The run is validated before anything is written to S3: the exported request
-count has to match the source records selected for archival and no req_id may
-appear twice. A failed validation returns 500 and uploads nothing.
+Rows are streamed from the database into a CSV that spills to /tmp once it
+outgrows a small memory buffer, and a window above ARCHIVE_MAX_ROWS is refused
+rather than risking the Lambda's memory. The run is validated before anything
+is written to S3: the exported request count has to match the source records
+selected for archival and no req_id may appear twice. A failed validation
+returns 500 and uploads nothing.
 
 Configuration comes from the event first, then the environment:
 
@@ -20,6 +23,8 @@ Configuration comes from the event first, then the environment:
     REQUEST_ARCHIVE_SCHEMA   schema holding requests, default "public"
     ARCHIVE_WATERMARK_START  exclusive lower bound, default "1970-01-01 00:00:00"
     ARCHIVE_INCLUDE_REFERENCE_IDS  keep raw ids beside readable values, default true
+    ARCHIVE_MAX_ROWS         row ceiling for one run, default 250000
+    ARCHIVE_FAIL_ON_SCHEMA_DRIFT  stop on unexported columns, default true
     DATABASE_URL             libpq connection string
 """
 
@@ -30,13 +35,13 @@ from typing import Any, Dict, Optional
 
 try:
     from . import db
-    from .archive_runner import run_export
-    from .exporter import DEFAULT_S3_PREFIX, build_s3_key, rows_to_csv, upload_csv_to_s3
+    from .archive_runner import DEFAULT_MAX_ROWS, run_export
+    from .exporter import DEFAULT_S3_PREFIX, build_s3_key, upload_csv_to_s3
     from .validation import format_validation_summary
 except ImportError:  # The deploy workflow copies these modules to the zip root.
     import db
-    from archive_runner import run_export
-    from exporter import DEFAULT_S3_PREFIX, build_s3_key, rows_to_csv, upload_csv_to_s3
+    from archive_runner import DEFAULT_MAX_ROWS, run_export
+    from exporter import DEFAULT_S3_PREFIX, build_s3_key, upload_csv_to_s3
     from validation import format_validation_summary
 
 LAMBDA_NAME = "Data_ArchiveRequestData"
@@ -89,6 +94,7 @@ def lambda_handler(
     """
     event = event or {}
     owns_connection = connection is None
+    result = None
 
     try:
         bucket = _setting(event, "bucket", "ARCHIVE_S3_BUCKET")
@@ -117,6 +123,17 @@ def lambda_handler(
                 True,
             )
         )
+        max_rows = int(
+            _setting(event, "max_rows", "ARCHIVE_MAX_ROWS", DEFAULT_MAX_ROWS)
+        )
+        fail_on_schema_drift = _as_bool(
+            _setting(
+                event,
+                "fail_on_schema_drift",
+                "ARCHIVE_FAIL_ON_SCHEMA_DRIFT",
+                True,
+            )
+        )
 
         if connection is None:
             connection = db.connect()
@@ -128,6 +145,8 @@ def lambda_handler(
             schema=schema,
             paramstyle=paramstyle,
             include_reference_ids=include_reference_ids,
+            max_rows=max_rows,
+            fail_on_schema_drift=fail_on_schema_drift,
         )
 
         summary = result.summary
@@ -147,8 +166,6 @@ def lambda_handler(
                 ),
             }
 
-        csv_text = rows_to_csv(result.columns, result.rows)
-
         if dry_run:
             return {
                 "statusCode": 200,
@@ -157,7 +174,7 @@ def lambda_handler(
                         "lambda": LAMBDA_NAME,
                         "uploaded": False,
                         "dry_run": True,
-                        "csv_bytes": len(csv_text.encode("utf-8")),
+                        "csv_bytes": summary["export_bytes"],
                         "validation_summary": summary,
                     },
                     default=str,
@@ -166,7 +183,7 @@ def lambda_handler(
 
         key = build_s3_key(datetime.now(timezone.utc), prefix=prefix)
         upload = upload_csv_to_s3(
-            csv_text,
+            result.spool,
             bucket=bucket,
             key=key,
             s3_client=s3_client,
@@ -196,5 +213,7 @@ def lambda_handler(
         }
 
     finally:
+        if result is not None:
+            result.close()
         if owns_connection and connection is not None:
             connection.close()

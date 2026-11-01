@@ -1,7 +1,13 @@
-"""CSV rendering and S3 upload for the enriched requests archive."""
+"""CSV spooling and S3 upload for the enriched requests archive.
+
+Rows are written to the CSV as they arrive from the database and spill to the
+Lambda's /tmp once they outgrow a small memory buffer, so a run holds a bounded
+amount of the export in memory no matter how wide the archival window is.
+"""
 
 import csv
 import io
+import tempfile
 from datetime import datetime
 from typing import Any, Iterable, Optional, Sequence
 
@@ -9,25 +15,102 @@ CSV_LINE_TERMINATOR = "\n"
 DEFAULT_S3_PREFIX = "requests_enriched"
 EXPORT_FILE_NAME = "requests_enriched.csv"
 
+# Below this the CSV stays in memory; above it SpooledTemporaryFile moves it to
+# disk. 8 MiB keeps a typical incremental window entirely in memory.
+SPOOL_MAX_MEMORY_BYTES = 8 * 1024 * 1024
 
-def rows_to_csv(column_names: Sequence[str], rows: Iterable[Sequence[Any]]) -> str:
-    """Render query rows as CSV text with a header row.
 
-    Args:
-        column_names: Export column names, in order.
-        rows: Query rows in the same column order.
+class CsvSpool:
+    """A CSV document written incrementally, buffered in memory then on disk.
 
-    Returns:
-        The CSV document as text. None values are written as empty fields.
+    The caller writes rows as they are streamed from the database, calls
+    finish() once, and then hands fileobj straight to the S3 upload.
     """
-    buffer = io.StringIO()
-    writer = csv.writer(buffer, lineterminator=CSV_LINE_TERMINATOR)
-    writer.writerow(column_names)
 
-    for row in rows:
-        writer.writerow(["" if value is None else value for value in row])
+    def __init__(
+        self,
+        column_names: Sequence[str],
+        max_memory_bytes: int = SPOOL_MAX_MEMORY_BYTES,
+    ):
+        """Open the spool and write the header row.
 
-    return buffer.getvalue()
+        Args:
+            column_names: Export column names, in order.
+            max_memory_bytes: Bytes buffered before spilling to disk.
+        """
+        self._spool = tempfile.SpooledTemporaryFile(
+            max_size=max_memory_bytes, mode="w+b"
+        )
+        # The wrapper is kept as an attribute so it is not garbage collected,
+        # which would close the spool underneath us.
+        self._text = io.TextIOWrapper(self._spool, encoding="utf-8", newline="")
+        self._writer = csv.writer(self._text, lineterminator=CSV_LINE_TERMINATOR)
+        self._writer.writerow(column_names)
+        self._byte_count = 0
+
+    def write_row(self, row: Sequence[Any]) -> None:
+        """Append one row, writing None as an empty field."""
+        self._writer.writerow(["" if value is None else value for value in row])
+
+    def write_rows(self, rows: Iterable[Sequence[Any]]) -> int:
+        """Append many rows and return how many were written."""
+        written = 0
+        for row in rows:
+            self.write_row(row)
+            written += 1
+
+        return written
+
+    def finish(self) -> int:
+        """Flush the writer and rewind for reading.
+
+        Returns:
+            The size of the CSV document in bytes.
+        """
+        self._text.flush()
+        self._byte_count = self._spool.tell()
+        self._spool.seek(0)
+
+        return self._byte_count
+
+    @property
+    def fileobj(self) -> Any:
+        """The rewound binary file object holding the CSV."""
+        return self._spool
+
+    @property
+    def byte_count(self) -> int:
+        """Size of the CSV document in bytes, after finish()."""
+        return self._byte_count
+
+    @property
+    def spilled_to_disk(self) -> bool:
+        """Whether the document outgrew the memory buffer."""
+        return getattr(self._spool, "_rolled", False)
+
+    def read_text(self) -> str:
+        """Return the whole CSV as text and rewind. For local runs and tests."""
+        self._spool.seek(0)
+        text = self._spool.read().decode("utf-8")
+        self._spool.seek(0)
+
+        return text
+
+    def close(self) -> None:
+        """Release the buffer and any temporary file behind it."""
+        try:
+            self._text.detach()
+        except ValueError:
+            pass
+        self._spool.close()
+
+    def __enter__(self) -> "CsvSpool":
+        """Allow use as a context manager."""
+        return self
+
+    def __exit__(self, *exc_info: Any) -> None:
+        """Close the spool on the way out."""
+        self.close()
 
 
 def build_s3_key(
@@ -60,17 +143,20 @@ def build_s3_key(
 
 
 def upload_csv_to_s3(
-    csv_text: str,
+    spool: CsvSpool,
     bucket: str,
     key: str,
     s3_client: Optional[Any] = None,
     region: Optional[str] = None,
     kms_key_id: Optional[str] = None,
 ) -> dict:
-    """Upload the rendered CSV to S3.
+    """Upload a finished CSV spool to S3.
+
+    The file object is passed to put_object rather than a string, so the body
+    is streamed from the buffer instead of being copied into memory again.
 
     Args:
-        csv_text: The CSV document.
+        spool: A CsvSpool on which finish() has been called.
         bucket: Destination bucket.
         key: Destination key.
         s3_client: Pre-built client; a boto3 client is created when omitted,
@@ -87,11 +173,10 @@ def upload_csv_to_s3(
 
         s3_client = boto3.client("s3", region_name=region)
 
-    body = csv_text.encode("utf-8")
     put_kwargs = {
         "Bucket": bucket,
         "Key": key,
-        "Body": body,
+        "Body": spool.fileobj,
         "ContentType": "text/csv",
     }
     if kms_key_id:
@@ -103,6 +188,7 @@ def upload_csv_to_s3(
     return {
         "bucket": bucket,
         "key": key,
-        "bytes": len(body),
+        "bytes": spool.byte_count,
+        "spilled_to_disk": spool.spilled_to_disk,
         "s3_uri": f"s3://{bucket}/{key}",
     }
