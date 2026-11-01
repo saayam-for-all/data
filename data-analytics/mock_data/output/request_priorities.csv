@@ -1,0 +1,5 @@
+req_priority_id,req_priority,req_priority_desc,last_updated_at
+0,"LOW","Can wait a week or more","2025-10-01 00:00:00.000000"
+1,"MEDIUM","","2025-10-01 00:00:00.000000"
+2,"HIGH",,"2025-10-01 00:00:00.000000"
+3,"CRITICAL","Needs attention the same day, escalate if no volunteer responds. Needs attention the same day, escalate if no volunteer respo","2025-10-01 00:00:00.000000"
