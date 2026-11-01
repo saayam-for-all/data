@@ -1,11 +1,13 @@
 """Size & Contribution analytics for the Organization dashboard (#376).
 
 Returns two charts: organizations_by_size and collaborator_vs_contributor.
-With no custom dates the response has 7D/30D/1Y/All plus an empty Custom.
+
+With no custom dates the response contains 7D, 30D, 1Y and All.
 If size_* or contribution_* dates are sent, only Custom is returned.
 
-Set USE_MOCK_DATA=true and MOCK_DATA_DIR to run against local CSVs,
-otherwise it reads from Postgres using the DB_* env vars.
+Local mock CSV data is used by default. Set USE_MOCK_DATA=false explicitly
+to read from Postgres using the DB_* environment variables.
+MOCK_DATA_DIR can be used to point to a different CSV folder.
 """
 
 import json
@@ -31,7 +33,9 @@ SIZE_ORDER = {"small": 0, "medium": 1, "large": 2}  # display order only
 TRUE_VALUES = ("true", "t", "1", "yes")
 REQUIRED_COLUMNS = ("org_id", "org_size", "is_collaborator", "org_type", "state_id")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-DEFAULT_MOCK_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_data")
+DEFAULT_MOCK_DATA_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "mock_data"
+)
 
 HEADERS = {
     "Content-Type": "application/json",
@@ -121,8 +125,8 @@ def utc_today():
 
 
 def midnight(day):
-    """date -> datetime at 00:00."""
-    return datetime(day.year, day.month, day.day)
+    """date -> UTC datetime at 00:00."""
+    return datetime(day.year, day.month, day.day, tzinfo=timezone.utc)
 
 
 def fixed_window(bucket, today):
@@ -150,7 +154,8 @@ def custom_window(date_pair):
 def size_chart(size_counts):
     """Only sizes that show up in the data, sorted small/medium/large."""
     rows = sorted(
-        size_counts.items(), key=lambda row: (SIZE_ORDER.get(str(row[0]).lower(), 99), row[0])
+        size_counts.items(),
+        key=lambda row: (SIZE_ORDER.get(str(row[0]).lower(), 99), row[0]),
     )
     return [{"size": size, "count": int(count)} for size, count in rows]
 
@@ -183,12 +188,15 @@ def build_body(count, size_pair, contribution_pair, today):
     if size_pair is None and contribution_pair is None:
         body = {}
         for bucket in FIXED_BUCKETS:
-            sizes, total, collaborators, contributors = count(*fixed_window(bucket, today))
+            sizes, total, collaborators, contributors = count(
+                *fixed_window(bucket, today)
+            )
             body[bucket] = {
                 SIZE_CHART: size_chart(sizes),
-                CONTRIBUTION_CHART: contribution_chart(total, collaborators, contributors),
+                CONTRIBUTION_CHART: contribution_chart(
+                    total, collaborators, contributors
+                ),
             }
-        body["Custom"] = empty_charts()
         return body
 
     # custom dates sent: only return Custom, each chart uses its own range
@@ -198,7 +206,9 @@ def build_body(count, size_pair, contribution_pair, today):
         custom[SIZE_CHART] = size_chart(sizes)
     if contribution_pair is not None:
         _, total, collaborators, contributors = count(*custom_window(contribution_pair))
-        custom[CONTRIBUTION_CHART] = contribution_chart(total, collaborators, contributors)
+        custom[CONTRIBUTION_CHART] = contribution_chart(
+            total, collaborators, contributors
+        )
     return {"Custom": custom}
 
 
@@ -220,11 +230,20 @@ def to_bool(series):
 def mock_counter(country, org_type):
     """Load the CSVs once and return a count(start, end) function."""
     orgs = read_mock_csv("organizations.csv")
-    missing = [col for col in REQUIRED_COLUMNS + ("created_at",) if col not in orgs.columns]
+    missing = [
+        col for col in REQUIRED_COLUMNS + ("created_at",) if col not in orgs.columns
+    ]
     if missing:
-        raise DataSourceError(f"organizations.csv is missing column(s): {', '.join(missing)}")
+        raise DataSourceError(
+            f"organizations.csv is missing column(s): {', '.join(missing)}"
+        )
 
-    orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce", format="ISO8601")
+    orgs["created_at"] = pd.to_datetime(
+        orgs["created_at"],
+        errors="coerce",
+        format="ISO8601",
+        utc=True,
+    )
     orgs["is_collaborator"] = to_bool(orgs["is_collaborator"])
     # is_contributor isn't in every dataset yet, count it as 0 if missing
     if "is_contributor" in orgs.columns:
@@ -235,13 +254,19 @@ def mock_counter(country, org_type):
     if org_type:
         orgs = orgs[orgs["org_type"].fillna("").map(normalize_org_type) == org_type]
     if country:
-        # org -> state -> country
-        # the repo's sample data uses state.csv / country.csv
         states = read_mock_csv("states.csv", "state.csv")
         countries = read_mock_csv("countries.csv", "country.csv")
+
         match = countries["country_code"].fillna("").map(normalize_country) == country
+
         if "country_name" in countries.columns:
-            match |= countries["country_name"].fillna("").map(normalize_country) == country
+            match |= (
+                countries["country_name"].fillna("").map(normalize_country) == country
+            )
+
+        if not match.any():
+            raise BadRequestError("Unknown country")
+
         country_ids = countries.loc[match, "country_id"]
         state_ids = states.loc[states["country_id"].isin(country_ids), "state_id"]
         orgs = orgs[orgs["state_id"].isin(state_ids)]
@@ -265,7 +290,9 @@ def mock_counter(country, org_type):
 def get_db_connection():
     """Connect using the DB_* env vars."""
     if psycopg2 is None:
-        raise DataSourceError("psycopg2 is not installed; set USE_MOCK_DATA=true to use local CSVs")
+        raise DataSourceError(
+            "psycopg2 is not installed; set USE_MOCK_DATA=true to use local CSVs"
+        )
     required = ("DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD")
     missing = [name for name in required if not os.getenv(name)]
     if missing:
@@ -282,7 +309,22 @@ def get_db_connection():
 def db_counter(cursor, country, org_type):
     """Same idea as mock_counter, but the counting happens in SQL."""
     schema = os.getenv("ORG_ANALYTICS_SCHEMA", "virginia_dev_saayam_rdbms")
+    if country:
+        cursor.execute(
+            f"""
+            SELECT 1
+            FROM {schema}.country c
+            WHERE
+                UPPER(BTRIM(REGEXP_REPLACE(c.country_code, '[_[:space:]]+', ' ', 'g'))) = %s
+                OR
+                UPPER(BTRIM(REGEXP_REPLACE(c.country_name, '[_[:space:]]+', ' ', 'g'))) = %s
+            LIMIT 1
+            """,
+            (country, country),
+        )
 
+        if cursor.fetchone() is None:
+            raise BadRequestError("Unknown country")
     # Virginia's organizations table doesn't have is_contributor yet
     cursor.execute(
         "SELECT 1 FROM information_schema.columns WHERE table_schema = %s"
@@ -290,7 +332,9 @@ def db_counter(cursor, country, org_type):
         (schema,),
     )
     has_contributor = cursor.fetchone() is not None
-    contributor_sql = "COUNT(*) FILTER (WHERE o.is_contributor)" if has_contributor else "0"
+    contributor_sql = (
+        "COUNT(*) FILTER (WHERE o.is_contributor)" if has_contributor else "0"
+    )
 
     from_sql = f"FROM {schema}.organizations o"
     conditions, params = ["o.created_at IS NOT NULL"], []
@@ -352,7 +396,9 @@ def lambda_handler(event, context):
 
     connection = None
     try:
-        if os.getenv("USE_MOCK_DATA", "false").strip().lower() == "true":
+        use_mock_data = os.getenv("USE_MOCK_DATA", "").strip().lower() != "false"
+
+        if use_mock_data:
             count = mock_counter(country, org_type)
             result = build_body(count, size_pair, contribution_pair, utc_today())
         else:
@@ -361,6 +407,8 @@ def lambda_handler(event, context):
                 count = db_counter(cursor, country, org_type)
                 result = build_body(count, size_pair, contribution_pair, utc_today())
         return build_response(200, result)
+    except BadRequestError as exc:
+        return build_response(400, {"error": str(exc)})
     except DataSourceError as exc:
         logger.error("Size & Contribution analytics: %s", exc)
         return build_response(500, {"error": str(exc)})
