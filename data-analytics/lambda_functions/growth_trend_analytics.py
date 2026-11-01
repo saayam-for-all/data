@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from datetime import datetime
 
 import pandas as pd
@@ -9,13 +10,30 @@ import pandas as pd
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "mock_data")
+
+def get_data_dir():
+    env_dir = os.environ.get("MOCK_DATA_DIR") or os.environ.get("DATA_DIR")
+    if env_dir and os.path.exists(os.path.join(env_dir, "organizations.csv")):
+        return env_dir
+    local_mock = os.path.join(os.path.dirname(__file__), "mock_data")
+    if os.path.exists(os.path.join(local_mock, "organizations.csv")):
+        return local_mock
+    repo_mock = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "mock-data-generation"
+    )
+    if os.path.exists(os.path.join(repo_mock, "organizations.csv")):
+        return repo_mock
+    return local_mock
+
+
+DATA_DIR = get_data_dir()
 
 
 def load_data():
-    org_df = pd.read_csv(os.path.join(DATA_DIR, "organizations.csv"))
-    states_df = pd.read_csv(os.path.join(DATA_DIR, "states.csv"))
-    countries_df = pd.read_csv(os.path.join(DATA_DIR, "countries.csv"))
+    data_dir = get_data_dir()
+    org_df = pd.read_csv(os.path.join(data_dir, "organizations.csv"))
+    states_df = pd.read_csv(os.path.join(data_dir, "states.csv"))
+    countries_df = pd.read_csv(os.path.join(data_dir, "countries.csv"))
 
     org_df["created_at"] = pd.to_datetime(
         org_df["created_at"], utc=True, errors="coerce"
@@ -39,12 +57,18 @@ def _is_blank(value):
     return value is None or (isinstance(value, str) and value.strip() == "")
 
 
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
 def _parse_date(value):
     # Strict YYYY-MM-DD only: rejects ints, other formats and timezone strings.
     if not isinstance(value, str):
         return None
+    val = value.strip()
+    if not _DATE_RE.match(val):
+        return None
     try:
-        return pd.Timestamp(datetime.strptime(value.strip(), "%Y-%m-%d"))
+        return pd.Timestamp(datetime.strptime(val, "%Y-%m-%d"))
     except ValueError:
         return None
 
@@ -79,10 +103,14 @@ def resolve_country(countries_df, value):
     if needle == "" or needle.upper() == "ALL":
         return None, None
 
-    needle = needle.upper().replace(" ", "_")
-    codes = countries_df["country_code"].astype(str).str.upper()
-    names = countries_df["country_name"].astype(str).str.upper().str.replace(
-        " ", "_", regex=False
+    needle = re.sub(r"\s+", "_", needle.upper())
+    codes = countries_df["country_code"].astype(str).str.strip().str.upper()
+    names = (
+        countries_df["country_name"]
+        .astype(str)
+        .str.strip()
+        .str.upper()
+        .str.replace(" ", "_", regex=False)
     )
     match = countries_df[(codes == needle) | (names == needle)]
     if match.empty:
@@ -246,14 +274,6 @@ def lambda_handler(event, context):
                 400, {"error": "Request body must be a JSON object"}
             )
 
-        org_df, states_df, countries_df = load_data()
-
-        country_id, country_error = resolve_country(
-            countries_df, body.get("country")
-        )
-        if country_error:
-            return _response(400, {"error": country_error})
-
         start_date = body.get("start_date")
         end_date = body.get("end_date")
 
@@ -270,6 +290,18 @@ def lambda_handler(event, context):
                     )
                 },
             )
+
+        country_val = body.get("country")
+        if country_val is not None and not isinstance(country_val, str):
+            return _response(400, {"error": "country must be a string"})
+
+        org_df, states_df, countries_df = load_data()
+
+        country_id, country_error = resolve_country(
+            countries_df, country_val
+        )
+        if country_error:
+            return _response(400, {"error": country_error})
 
         org_df = filter_orgs_by_country(org_df, states_df, country_id)
         is_custom = range_start is not None and range_end is not None
