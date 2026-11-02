@@ -1,0 +1,305 @@
+case_no,case_name,file,req_id,column,detail
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0004,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0022,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0033,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0061,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0110,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0111,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0119,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0129,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0135,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0176,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0211,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0219,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0254,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0258,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0280,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0316,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0331,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0332,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0380,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0398,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0436,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0456,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0460,beneficiary_id,NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0461,lead_volunteer_id,not NULL
+1,skewed null references,csv/requests.csv,REQ-000-000-000-0477,beneficiary_id,NULL
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0092,last_updated_at,2026-10-01 00:00:00.000000
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0149,last_updated_at,2026-08-15 12:34:56.123456
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0176,last_updated_at,2026-10-01 00:00:00.000000
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0181,last_updated_at,2026-08-15 12:34:56.123456
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0242,last_updated_at,2026-10-01 00:00:00.000000
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0249,last_updated_at,2026-10-01 00:00:00.000000
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0274,last_updated_at,2026-10-01 00:00:00.000000
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0348,last_updated_at,2026-09-30 23:59:59.999999
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0355,last_updated_at,2026-08-15 12:34:56.123456
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0384,last_updated_at,2026-08-15 12:34:56.123456
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0397,last_updated_at,2026-09-30 23:59:59.999999
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0413,last_updated_at,2026-09-30 23:59:59.999999
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0426,last_updated_at,2026-08-15 12:34:56.123456
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0430,last_updated_at,2026-09-30 23:59:59.999999
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0449,last_updated_at,2026-09-30 23:59:59.999999
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0471,last_updated_at,2026-10-01 00:00:00.000000
+2,identical last_updated_at,csv/requests.csv,REQ-000-000-000-0496,last_updated_at,2026-09-30 23:59:59.999999
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0084,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0100,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0123,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0229,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0273,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0330,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0438,last_updated_at,earlier than submission_date
+3,updated before submitted,csv/requests.csv,REQ-000-000-000-0456,last_updated_at,earlier than submission_date
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0006,req_subj,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0033,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0040,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0045,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0101,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0138,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0159,req_subj,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0164,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0165,req_subj,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0222,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0238,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0339,req_desc,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0352,req_subj,"newline, comma or quote"
+4,csv special characters,csv/requests.csv,REQ-000-000-000-0370,req_desc,"newline, comma or quote"
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0011,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0015,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0019,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0031,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0042,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0054,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0060,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0078,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0080,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0083,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0092,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0093,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0095,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0103,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0105,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0107,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0108,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0120,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0122,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0123,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0136,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0137,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0141,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0147,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0148,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0155,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0156,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0166,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0176,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0178,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0187,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0191,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0194,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0198,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0201,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0204,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0205,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0218,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0228,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0234,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0237,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0244,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0249,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0254,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0255,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0257,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0258,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0264,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0282,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0285,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0286,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0289,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0292,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0299,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0301,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0303,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0315,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0322,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0330,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0335,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0349,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0353,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0359,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0365,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0388,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0394,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0413,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0423,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0424,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0425,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0433,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0435,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0463,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0464,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0469,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0470,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0478,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0485,req_desc,spanish
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0487,req_subj,unicode
+5,unicode and spanish,csv/requests.csv,REQ-000-000-000-0500,req_desc,spanish
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0012,req_desc,"address/street_address: 100 Placeholder Street, Exampleville, VA 00000"
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0012,req_desc,name/full_name: Alex Testperson
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0017,req_desc,phone/words_en_compact: two oh two five five five oh one five one
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0028,req_desc,phone/leading_one: 1 (202) 555-0149
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0046,req_desc,email/plain: lucia.ejemplo@example.test
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0046,req_desc,name/full_name: Lucía Ejemplo
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0046,req_desc,phone/parenthesized: (512) 555-0151
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0066,req_desc,"address/street_address: 7 Fixture Road, Apt 3B, Sampleton, CO 00000"
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0066,req_desc,name/full_name: Sam Q. Syntheticson
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0118,req_desc,email/plain: j.doe.synthetic@mail.example.test
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0133,req_desc,phone/dotted: 202.555.0145
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0186,req_desc,email/plain: alex_testperson+help@example.test
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0203,req_desc,phone/parenthesized: (202) 555-0143
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0247,req_desc,phone/dashed: 202-555-0144
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0263,req_desc,email/plain: chris.mockson@example.test
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0263,req_desc,name/full_name: Chris Mockson
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0263,req_desc,phone/dotted: 303.555.0152
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0284,req_desc,email/plain: maria.testpersona@example.test
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0294,req_desc,phone/digits_only: 2025550147
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0300,req_desc,email/plain: jordan.placeholder@example.test
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0300,req_desc,name/full_name: Jordan Placeholder
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0300,req_desc,phone/dashed: 206-555-0150
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0342,req_desc,phone/words_en_hyphen: two zero two - five five five - zero one five three
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0354,req_desc,"address/street_address: 15 Dummy Lane, Mockville, WA 00000"
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0354,req_desc,name/full_name: Priya Testkumar
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0409,req_desc,phone/e164_spaced: +1 202 555 0146
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0446,req_desc,phone/e164_dashed: +1-202-555-0148
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0453,req_desc,"address/street_address: 22 Muestra Avenida, Ejemplo City, TX 00000"
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0453,req_desc,name/full_name: María Testpersona
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0466,req_desc,"phone/words_en: two zero two, five five five, zero one five zero"
+6,synthetic personal details,csv/requests.csv,REQ-000-000-000-0488,req_desc,"phone/words_es: dos cero dos, cinco cinco cinco, cero uno cinco dos"
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0005,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0027,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0028,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0038,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0054,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0057,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0057,deletion_reason,empty string on a DELETED request
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0069,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0087,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0094,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0107,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0162,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0201,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0217,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0223,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0231,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0235,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0241,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0275,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0281,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0285,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0291,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0306,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0310,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0311,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0317,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0345,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0370,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0372,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0403,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0408,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0418,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0422,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0432,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0432,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0432,req_doc_link,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0437,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0439,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0443,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0447,deletion_reason,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0464,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0472,audio_req_desc,empty string (other rows are NULL)
+7,empty string vs null,csv/requests.csv,REQ-000-000-000-0485,deletion_reason,empty string (other rows are NULL)
+8,exact max length,csv/requests.csv,REQ-000-000-000-0002,req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0037,req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0051,audio_req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0071,req_subj,length=125
+8,exact max length,csv/requests.csv,REQ-000-000-000-0075,req_subj,length=125
+8,exact max length,csv/requests.csv,REQ-000-000-000-0120,audio_req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0134,req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0179,req_subj,length=125
+8,exact max length,csv/requests.csv,REQ-000-000-000-0215,req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0256,audio_req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0268,req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0299,audio_req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0326,req_subj,length=125
+8,exact max length,csv/requests.csv,REQ-000-000-000-0377,req_desc,length=255
+8,exact max length,csv/requests.csv,REQ-000-000-000-0416,req_subj,length=125
+8,exact max length,csv/requests.csv,REQ-000-000-000-0498,req_subj,length=125
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0024,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0050,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0054,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0057,req_status_id,5
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0063,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0070,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0076,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0104,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0118,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0119,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0134,req_status_id,5
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0136,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0146,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0150,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0152,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0165,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0170,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0172,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0179,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0185,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0187,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0190,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0200,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0211,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0216,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0223,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0239,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0269,req_status_id,5
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0270,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0273,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0283,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0289,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0318,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0345,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0352,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0354,req_status_id,5
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0355,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0357,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0365,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0370,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0376,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0377,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0384,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0391,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0402,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0421,req_status_id,8
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0438,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0456,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0479,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0480,req_priority_id,3 (CRITICAL)
+9,rare lookup values,csv/requests.csv,REQ-000-000-000-0499,req_priority_id,3 (CRITICAL)
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0108,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0140,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0178,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0189,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0255,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0381,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0404,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0410,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0421,req_islead_id,1 with NULL lead_volunteer_id
+10,islead yes with null lead,csv/requests.csv,REQ-000-000-000-0427,req_islead_id,1 with NULL lead_volunteer_id
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9001,creator_id,SID-00-000-000-000-999-999 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9002,beneficiary_id,SID-00-000-000-000-999-998 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9003,lead_volunteer_id,SID-00-000-000-000-999-997 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9004,req_cat_id,99.99.99 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9005,req_for_id,99 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9006,req_islead_id,99 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9007,req_type_id,99 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9008,req_priority_id,99 matches no row
+11,broken foreign key,fixtures/broken_fk/requests_broken_fk.csv,REQ-000-000-000-9009,req_status_id,99 matches no row
