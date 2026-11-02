@@ -1,0 +1,29 @@
+test_corrupt_binary_never_interrupts_conversion (test_request_location.RequestLocationTests.test_corrupt_binary_never_interrupts_conversion)
+Reject missing/extra bytes, invalid headers and arbitrary data safely. ... ok
+test_csv_command_preserves_all_records_and_other_fields (test_request_location.RequestLocationTests.test_csv_command_preserves_all_records_and_other_fields)
+Exercise the executable exporter and re-read its CSV, including escaping. ... ok
+test_csv_rejects_in_place_and_missing_column_before_writing (test_request_location.RequestLocationTests.test_csv_rejects_in_place_and_missing_column_before_writing)
+Bad invocation cannot truncate the input or an existing destination. ... ok
+test_database_binary_buffers (test_request_location.RequestLocationTests.test_database_binary_buffers)
+Driver-returned binary values retain their coordinates in both orders. ... ok
+test_existing_wkt_is_safe_to_reprocess (test_request_location.RequestLocationTests.test_existing_wkt_is_safe_to_reprocess)
+Reprocessing valid exported values is idempotent, including signed zero. ... ok
+test_invalid_types_and_text (test_request_location.RequestLocationTests.test_invalid_types_and_text)
+Unexpected cells and malformed text become null without throwing. ... ok
+test_mock_expected_outputs (test_request_location.RequestLocationTests.test_mock_expected_outputs)
+All checked-in complete synthetic examples match literal expectations. ... ok
+test_non_finite_and_geographic_boundaries (test_request_location.RequestLocationTests.test_non_finite_and_geographic_boundaries)
+Coordinates are geographic, finite, and inclusive at the limits. ... ok
+test_random_coordinates_round_trip_without_axis_swap_or_precision_loss (test_request_location.RequestLocationTests.test_random_coordinates_round_trip_without_axis_swap_or_precision_loss)
+Round-trip 1,000 arbitrary geographic points across both encodings. ... ok
+test_rejects_non_point_and_extra_dimensions (test_request_location.RequestLocationTests.test_rejects_non_point_and_extra_dimensions)
+Do not treat a line, Z/M point, or unsupported SRID as an XY point. ... ok
+test_row_conversion_is_streaming (test_request_location.RequestLocationTests.test_row_conversion_is_streaming)
+Do not consume the entire result set before yielding the first request. ... ok
+test_row_conversion_preserves_rows_columns_and_inputs (test_request_location.RequestLocationTests.test_row_conversion_preserves_rows_columns_and_inputs)
+Invalid locations do not lose requests or change unrelated values. ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.061s
+
+OK

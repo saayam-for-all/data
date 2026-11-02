@@ -1,0 +1,26 @@
+req_id,req_loc,req_desc
+1,POINT(-74.006 40.7128),"Synthetic request: café, ""food""
+and shelter"
+2,POINT(73.8567 18.5204),pune_ewkb
+3,POINT(151.2093 -33.8688),sydney_big_endian
+4,POINT(-0.1276 51.5072),london_wkb
+5,POINT(-58.3816 -34.6037),wkb_big_endian
+6,POINT(0 0),origin
+7,POINT(180 -90),boundaries
+8,POINT(12.123456789012344 -45.98765432109876),precision
+9,POINT(0.000000001 -0.000000000001),small_coordinates
+10,POINT(-74.006 40.7128),postgres_prefix
+11,POINT(10 20),hex_prefix_whitespace
+12,POINT(-74.006 40.7128),already_readable
+13,,null
+14,,empty
+15,,abbreviated_issue_example
+16,,non_hex
+17,,truncated
+18,,trailing_bytes
+19,,wrong_geometry
+20,,wrong_srid
+21,,nan_empty_point
+22,,infinity
+23,,longitude_out_of_range
+24,,latitude_out_of_range
