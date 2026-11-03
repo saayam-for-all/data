@@ -1,0 +1,67 @@
+test_adjacent_incremental_windows_do_not_overlap (test_archive.ArchiveTests.test_adjacent_incremental_windows_do_not_overlap)
+The shared boundary is not emitted twice. ... ok
+test_byte_limit_stops_before_upload (test_archive.ArchiveTests.test_byte_limit_stops_before_upload)
+Large text cannot silently exhaust the configured spool budget. ... ok
+test_concurrent_change_does_not_change_snapshot (test_archive.ArchiveTests.test_concurrent_change_does_not_change_snapshot)
+Counts and output see one snapshot even if a writer commits between them. ... ok
+test_configuration_rejects_invalid_identifiers_and_limits (test_archive.ArchiveTests.test_configuration_rejects_invalid_identifiers_and_limits)
+SQL identifiers and resource limits are validated, not interpolated blindly. ... ok
+test_count_mismatch_blocks_upload (test_archive.ArchiveTests.test_count_mismatch_blocks_upload)
+An inconsistent count is treated as data loss, never as success. ... ok
+test_csv_round_trip_preserves_quotes_newlines_unicode_and_raw_location (test_archive.ArchiveTests.test_csv_round_trip_preserves_quotes_newlines_unicode_and_raw_location)
+CSV escaping must preserve the full description and source geometry text. ... ok
+test_database_snapshot_refuses_writes (test_archive.ArchiveTests.test_database_snapshot_refuses_writes)
+The local read-only protection is exercised against a real database. ... ok
+test_dry_run_never_constructs_an_s3_client (test_archive.ArchiveTests.test_dry_run_never_constructs_an_s3_client)
+Validation-only execution performs no upload and needs no bucket. ... ok
+test_duplicate_lookup_keys_rejected_for_each_table (test_archive.ArchiveTests.test_duplicate_lookup_keys_rejected_for_each_table)
+Never arbitrarily deduplicate conflicting lookup values. ... ok
+test_duplicate_request_ids_rejected (test_archive.ArchiveTests.test_duplicate_request_ids_rejected)
+Source identity errors stop the archive. ... ok
+test_empty_source_still_has_csv_headers (test_archive.ArchiveTests.test_empty_source_still_has_csv_headers)
+A zero-row run is valid and produces a readable empty export. ... ok
+test_full_snapshot_preserves_all_request_ids_and_columns (test_archive.ArchiveTests.test_full_snapshot_preserves_all_request_ids_and_columns)
+The CSV represents every source row exactly once, including every status. ... ok
+test_handler_propagates_failure_for_lambda_retries (test_archive.ArchiveTests.test_handler_propagates_failure_for_lambda_retries)
+Returning a success-shaped error would suppress scheduled retries. ... ok
+test_incremental_window_is_lower_exclusive_upper_inclusive (test_archive.ArchiveTests.test_incremental_window_is_lower_exclusive_upper_inclusive)
+Exact endpoints belong to one and only one adjacent window. ... ok
+test_invalid_event_never_opens_a_connection (test_archive.ArchiveTests.test_invalid_event_never_opens_a_connection)
+Ambiguous windows and unexpected options fail before any I/O. ... ok
+test_missing_lookup_label_rejected (test_archive.ArchiveTests.test_missing_lookup_label_rejected)
+A malformed lookup schema fails before upload. ... ok
+test_missing_reference_column_rejected (test_archive.ArchiveTests.test_missing_reference_column_rejected)
+A renamed foreign key cannot silently disable enrichment. ... ok
+test_new_source_column_is_exported_without_data_loss (test_archive.ArchiveTests.test_new_source_column_is_exported_without_data_loss)
+Discovery includes newly added fields and safely quotes unusual names. ... ok
+test_null_and_unmatched_references_are_retained_for_every_lookup (test_archive.ArchiveTests.test_null_and_unmatched_references_are_retained_for_every_lookup)
+Unresolvable lookups never remove a request or erase its reference ID. ... ok
+test_null_label_is_not_an_unmatched_key (test_archive.ArchiveTests.test_null_label_is_not_an_unmatched_key)
+An existing request_type with NULL label is tracked separately. ... ok
+test_null_request_id_rejected (test_archive.ArchiveTests.test_null_request_id_rejected)
+An unidentifiable source request cannot pass validation. ... ok
+test_postgres_adapter_snapshot_and_cursor_contract (test_archive.ArchiveTests.test_postgres_adapter_snapshot_and_cursor_contract)
+Check adapter wiring; this is not a live PostgreSQL integration test. ... ok
+test_readable_column_collision_rejected (test_archive.ArchiveTests.test_readable_column_collision_rejected)
+Never produce ambiguous duplicate CSV headers after schema changes. ... ok
+test_readable_values_next_to_ids_and_user_ids_untouched (test_archive.ArchiveTests.test_readable_values_next_to_ids_and_user_ids_untouched)
+Labels enrich raw IDs, with no user data lookup or hashing. ... ok
+test_retry_is_content_addressed_and_changed_data_gets_new_key (test_archive.ArchiveTests.test_retry_is_content_addressed_and_changed_data_gets_new_key)
+Unchanged retries reuse a key; changed snapshots preserve prior objects. ... ok
+test_row_limit_stops_before_upload (test_archive.ArchiveTests.test_row_limit_stops_before_upload)
+Oversized windows must be narrowed explicitly. ... ok
+test_s3_encryption_metadata_and_kms_options (test_archive.ArchiveTests.test_s3_encryption_metadata_and_kms_options)
+The upload includes an integrity digest and the selected encryption mode. ... ok
+test_snapshot_retains_null_last_updated_at (test_archive.ArchiveTests.test_snapshot_retains_null_last_updated_at)
+A full backup includes rows that an incremental window cannot select. ... ok
+test_stream_uses_fetchmany_without_fetchall (test_archive.ArchiveTests.test_stream_uses_fetchmany_without_fetchall)
+The export consumes bounded batches and executes six LEFT JOINs. ... ok
+test_timezone_offsets_are_normalized_to_utc (test_archive.ArchiveTests.test_timezone_offsets_are_normalized_to_utc)
+UTC convention is preserved for PostgreSQL's naive timestamp column. ... ok
+test_upload_failure_propagates_and_connection_closes (test_archive.ArchiveTests.test_upload_failure_propagates_and_connection_closes)
+Schedulers receive a failure and the source remains unchanged. ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 1.095s
+
+OK
