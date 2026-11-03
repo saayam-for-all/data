@@ -247,13 +247,13 @@ This should be confirmed with the Data Analytics/Data Engineering leads before f
 
 The intended user flow is:
 
-Super Admin Dashboard  
-→ Application Analytics  
-→ KPI tab  
-→ Select or load a time period  
-→ Dashboard requests KPI analytics  
-→ Lambda queries PostgreSQL  
-→ Aggregated metrics are returned  
+Super Admin Dashboard
+→ Application Analytics
+→ KPI tab
+→ Select or load a time period
+→ Dashboard requests KPI analytics
+→ Lambda queries PostgreSQL
+→ Aggregated metrics are returned
 → KPI charts are rendered
 
 The default backend call can return multiple predefined periods together.
@@ -268,13 +268,13 @@ The exact frontend component and API invocation logic are outside the `data` rep
 
 The backend flow is:
 
-Dashboard / API consumer  
-→ AWS Lambda  
-→ `kpi_api_analytics.py`  
-→ AWS Systems Manager Parameter Store  
-→ Virginia PostgreSQL RDS  
-→ SQL aggregation queries  
-→ JSON response  
+Dashboard / API consumer
+→ AWS Lambda
+→ `kpi_api_analytics.py`
+→ AWS Systems Manager Parameter Store
+→ Virginia PostgreSQL RDS
+→ SQL aggregation queries
+→ JSON response
 → Dashboard charts
 
 The current analytics Lambda reads database credentials from:
