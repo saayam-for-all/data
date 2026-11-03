@@ -1,6 +1,6 @@
 # Repository-first Lambda audit snapshot - issue #593
 
-This document records the initial pre-AWS repository audit. Later PRs #613 and #615 added two Data Engineering workloads. For the current **6 Engineering and 12 Analytics task-defined workloads**, deployed names, and verified console links, see [AWS_RECONCILIATION.md](AWS_RECONCILIATION.md). The [issue #593 Excel inventory](https://github.com/user-attachments/files/34333586/Saayam_issue_593_Lambda_inventory.xlsx) includes the requested tracking columns and the remaining candidate mappings.
+This document records the initial pre-AWS repository audit. Later PRs #613 and #615 added two Data Engineering workloads. For the current **6 Engineering and 12 Analytics task-defined workloads**, deployed names, and verified console links, see [AWS_RECONCILIATION.md](AWS_RECONCILIATION.md). The [issue #593 Excel inventory](Saayam_issue_593_Lambda_inventory.xlsx) includes the requested tracking columns and the remaining candidate mappings.
 
 Repository-first audit on 2026-10-27. Sources: the `main`, `dev`, and `test` branches of `saayam-for-all/data`; all 18 issues labeled `data engineering`; all 17 labeled `Data Analysis`; and 45 Lambda-related issue search results (53 distinct issues in the union). Open PRs are separated from merged branch references.
 
