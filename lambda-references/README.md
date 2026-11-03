@@ -1,10 +1,10 @@
 # Repository-first Lambda audit snapshot - issue #593
 
-This document records the initial pre-AWS repository audit. Later PRs #613 and #615 added two Data Engineering workloads. For the current counts, deployed names, and verified console links, see [AWS_RECONCILIATION.md](AWS_RECONCILIATION.md).
+This document records the initial pre-AWS repository audit. Later PRs #613 and #615 added two Data Engineering workloads. For the current **6 Engineering and 12 Analytics task-defined workloads**, deployed names, and verified console links, see [AWS_RECONCILIATION.md](AWS_RECONCILIATION.md). The [issue #593 Excel inventory](https://github.com/user-attachments/files/34333586/Saayam_issue_593_Lambda_inventory.xlsx) includes the requested tracking columns and the remaining candidate mappings.
 
 Repository-first audit on 2026-10-27. Sources: the `main`, `dev`, and `test` branches of `saayam-for-all/data`; all 18 issues labeled `data engineering`; all 17 labeled `Data Analysis`; and 45 Lambda-related issue search results (53 distinct issues in the union). Open PRs are separated from merged branch references.
 
-**Provisional GitHub workload count: 4 Data Engineering; 12 Data Analytics.** This is not a confirmed count of deployed AWS Lambda functions. A workload can have multiple proposed filenames or PRs, while a repository file alone does not prove deployment. Exact AWS names, account/region, active status, and console links require read-only Lambda access. No console URL is guessed.
+**Historical pre-AWS workload count: 4 Data Engineering; 12 Data Analytics.** This snapshot predates PRs #613 and #615 and the AWS reconciliation. A workload can have multiple proposed filenames or PRs, while a repository file alone does not prove deployment. The `Pending` cells below describe the original audit state; use [AWS_RECONCILIATION.md](AWS_RECONCILIATION.md) for current AWS findings.
 
 | Team | Workload / proposed name | Task evidence | Repository reference | AWS console link |
 | --- | --- | --- | --- | --- |
@@ -35,4 +35,4 @@ Repository-first audit on 2026-10-27. Sources: the `main`, `dev`, and `test` bra
 
 ## AWS reconciliation
 
-Once read-only access is granted, list Lambda functions in the relevant Saayam accounts and regions. Verify exact name, owning team, deployment state, handler/repository path, and direct console link for every row. Merge aliases only after AWS confirms they are the same function. Add AWS-only functions missed by the issue search and correct the team totals. Do not commit credentials, environment values, or private configuration to this public repository.
+The read-only console review covered the accessible `revanth-saayam` account. [AWS_RECONCILIATION.md](AWS_RECONCILIATION.md) records the current matches, candidate aliases, and direct console links. Team ownership, deployment aliases, functions in other accounts, and runtime use still require owner confirmation. Do not commit credentials, environment values, signed download URLs, or private configuration to this public repository.
