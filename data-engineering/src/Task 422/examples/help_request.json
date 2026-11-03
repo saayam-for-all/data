@@ -1,0 +1,8 @@
+{
+  "request_id": "local-request-001",
+  "user_id": "local-user-001",
+  "subject": "Normal fixture",
+  "description": "I need assistance with groceries.",
+  "category_id": "food",
+  "location": "Chicago"
+}
