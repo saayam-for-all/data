@@ -1,0 +1,25 @@
+req_id,creator_id,beneficiary_id,lead_volunteer_id,req_cat_id,req_category,req_for_id,req_for,req_islead_id,req_islead,req_type_id,req_type,req_priority_id,req_priority,req_status_id,req_status,req_subj,req_desc,req_doc_link,audio_req_desc,deletion_reason,req_loc,created_loc,iscalamity,to_public,submission_date,serviced_date,last_updated_at
+SYN-REQ-001,SYN-USER-001,SYN-USER-002,SYN-USER-003,1.3,Food assistance,1,OTHER,0,NO,1,REMOTE,1,MEDIUM,0,CREATED,Synthetic request 1,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-24 12:00:00.000000
+SYN-REQ-002,SYN-USER-001,,,2.1,Education,0,SELF,0,NO,0,IN_PERSON,2,HIGH,1,MATCHING_VOLUNTEER,Synthetic request 2,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-25 12:00:00.000000
+SYN-REQ-003,SYN-USER-001,SYN-USER-002,,1.3,Food assistance,1,OTHER,0,NO,1,REMOTE,3,CRITICAL,2,IN_PROGRESS,Synthetic request 3,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,
+SYN-REQ-004,SYN-USER-001,,,2.1,Education,0,SELF,0,NO,0,IN_PERSON,0,LOW,3,RESOLVED,Synthetic request 4,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-27 12:00:00.000000
+SYN-REQ-005,SYN-USER-001,SYN-USER-002,,1.3,Food assistance,1,OTHER,0,NO,1,REMOTE,1,MEDIUM,4,CANCELLED,Synthetic request 5,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-28 12:00:00.000000
+SYN-REQ-006,SYN-USER-001,,,2.1,Education,0,SELF,0,NO,0,IN_PERSON,2,HIGH,5,DELETED,Synthetic request 6,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-29 12:00:00.000000
+SYN-REQ-007,SYN-USER-001,SYN-USER-002,,1.3,Food assistance,1,OTHER,0,NO,1,REMOTE,3,CRITICAL,6,RATED_BY_REQUESTER,Synthetic request 7,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-30 12:00:00.000000
+SYN-REQ-008,SYN-USER-001,,,2.1,Education,0,SELF,0,NO,0,IN_PERSON,0,LOW,7,RATED_BY_VOLUNTEER,Synthetic request 8,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-10-31 12:00:00.000000
+SYN-REQ-009,SYN-USER-001,SYN-USER-002,,1.3,Food assistance,1,OTHER,0,NO,1,REMOTE,1,MEDIUM,8,VOLUNTEER_NOT_FOUND,Synthetic request 9,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-11-01 12:00:00.000000
+SYN-REQ-010,SYN-USER-001,,,,,,,,,,,,,,,Synthetic request 10,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-11-02 12:00:00.000000
+SYN-REQ-011,SYN-USER-001,SYN-USER-002,,missing-category,,999,,999,,999,,999,,999,,Synthetic request 11,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-11-03 12:00:00.000000
+SYN-REQ-012,SYN-USER-001,,,2.1,Education,0,SELF,0,NO,2,,0,LOW,2,IN_PROGRESS,Synthetic request 12,"Please bring rice, ""beans"" and tea.
+Thank you — नमस्ते.",,,,0101000020E610000000000000008052C00000000000404440,,0,0,2026-10-23 08:00:00.000000,,2026-11-04 12:00:00.000000
