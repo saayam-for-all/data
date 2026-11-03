@@ -48,6 +48,15 @@ Account alias: `revanth-saayam`. The console listed **213 Event Functions in us-
 - [`emergency_number_api`](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions/emergency_number_api) and [`emergencyContactInfo`](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions/emergencyContactInfo) resemble [#334](https://github.com/saayam-for-all/data/issues/334) and [#482](https://github.com/saayam-for-all/data/issues/482); team ownership is unclear.
 - [#422](https://github.com/saayam-for-all/data/issues/422) is now counted as a Data Engineering workload because [PR #613](https://github.com/saayam-for-all/data/pull/613) places its Lambda entry point under `data-engineering/src/profanity/`. The AWS functions named `checkProfanity` and `testCheckProfanity` still need alias/owner confirmation and are excluded from deployed team totals.
 
+## Cross-branch review on 2026-11-03
+
+No other pull request mentioning #593 was open in the organization repository. Related implementation branches clarify several proposed names but do not establish AWS aliases:
+
+- The [#273 branch in PR #374](https://github.com/saayam-for-all/data/pull/374) explicitly reports no AWS deployment; [PR #319](https://github.com/saayam-for-all/data/pull/319) and [PR #348](https://github.com/saayam-for-all/data/pull/348) say the same. The Steward volunteer review workload therefore remains without a verified deployed match.
+- [PR #584](https://github.com/saayam-for-all/data/pull/584) develops `Data_ArchiveRequestData` locally and says deployed validation is outstanding. Other [#574 PR #638](https://github.com/saayam-for-all/data/pull/638) and [PR #647](https://github.com/saayam-for-all/data/pull/647) describe removing the older archive function only after the replacement is deployed and confirmed. These support treating #416 and #574 as distinct workloads.
+- The [#203](https://github.com/saayam-for-all/data/pull/214), [#289](https://github.com/saayam-for-all/data/pull/358), and [#295](https://github.com/saayam-for-all/data/pull/342) branches define repository handlers, but none provides evidence that `getAdditionalInfo`, `fetchVolunteersBasedOnSkills`, or `getVolunteers` is its deployed AWS name. Those AWS functions remain candidates.
+- The organization has many branches and PRs for #228, #376, and #422. They are alternative implementations of those tasks, not additional unique task-defined workloads. Open PR code alone does not verify a deployed AWS function.
+
 ## Follow-up needed to certify totals
 
 A team lead should confirm ownership and aliases for the candidate rows, identify any team-owned functions outside the 53 reviewed issues, and confirm whether the deployed functions are in use. Keep the task-defined workload count separate from deployed function count. Do not commit credentials, environment values, signed download URLs, or private configuration to this public repository.
