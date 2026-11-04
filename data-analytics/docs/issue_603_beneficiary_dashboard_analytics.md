@@ -48,7 +48,7 @@ The intended high-level flow, based on Issues #82, #84, and #138:
 6. Results are aggregated into date-bucketed and country-level counts.
 7. The frontend displays beneficiary trend and geographic distribution visualizations.
 
-**Open question:** This repository contains no frontend code, API Gateway configuration, or endpoint definition for this tab. The frontend component names, the HTTP route, and how the frontend passes the date range cannot be confirmed from this repository.
+**Open question:** This repository contains no frontend code, API Gateway configuration, or endpoint definition for this tab. Confirmed by directory listing: `data-analytics/dashboards/` and `data-analytics/notebooks/` each contain only a `.gitkeep` placeholder, with no dashboard or notebook files checked in. The frontend component names, the HTTP route, and how the frontend passes the date range cannot be confirmed from this repository.
 
 ---
 
@@ -386,6 +386,14 @@ The issue attaches a table/column-name spreadsheet for the `virginia_dev_saayam_
 
 **Repository evidence:** No beneficiary-specific CSV from this effort exists on the current branch.
 
+### Other Super Admin Dashboard Analytics issues reviewed (not tab-specific)
+
+`data-engineering/TASK_TRACKER.md` groups three more closed issues alongside #82 and #84 under the same Super Admin Dashboard Analytics effort. Each was checked individually for Beneficiary-tab content; none contains any:
+
+- **[Issue #81 — Creation of Super Admin Dashboard Analytics](https://github.com/saayam-for-all/data/issues/81).** The umbrella issue for the whole effort ("There are 3 sub categories under Super Admin Analytics tab"), which spawned #82 as a sub-issue. No mention of beneficiaries.
+- **[Issue #89 — Application Analytics Dashboard implementation in Python using plotly library](https://github.com/saayam-for-all/data/issues/89).** Empty issue body; its only comment describes converting mock CSVs into JSON for the frontend team in general, not any specific tab. No mention of beneficiaries.
+- **[Issue #96 — Design of Consolidated metrics of application analytics on the Saayam Home Page](https://github.com/saayam-for-all/data/issues/96).** A different feature (a metrics ticker on the public Home Page, replacing a static tagline). "Total Beneficiaries" appears once, as one of five summary numbers (alongside Total Requests, Requests Resolved, Avg Resolution Time, Total Volunteers) — not a description of the Beneficiary tab itself. Its closing comment references a follow-on issue, #104, for backend implementation; #104 was not reviewed for this document.
+
 ### Issue #138 — Implement real API for beneficiary_trend_analysis.py
 
 - **Link:** https://github.com/saayam-for-all/data/issues/138
@@ -507,9 +515,9 @@ This PR was opened after commit `11b5f7b` was merged. Because it is unmerged, it
 
 | # | Area | Status | Details |
 |---|---|---|---|
-| 17 | `request` vs `requests` | Open question | The Lambda queries `request` (singular). The repository's mock data uses `requests.csv` (plural), and other recent work in this repository refers to a `requests` table. Which name exists in the deployed databases needs confirmation. |
-| 18 | `req_user_id` vs `beneficiary_id` | Open question | The Lambda identifies the beneficiary through `req_user_id`. More recent schema material for the `requests` table uses `beneficiary_id` (and `creator_id`). Which column applies to the table this Lambda queries needs confirmation. |
-| 19 | `last_update_date` vs `last_updated_at` | Open question | The Lambda filters on `last_update_date`. More recent schema material uses `last_updated_at`. Needs confirmation against the live schema. |
+| 17 | `request` vs `requests` | Open question — now with concrete conflicting sources | The Lambda queries the singular `virginia_dev_saayam_rdbms.request` table. This exact name and its primary key `req_id` are recorded in [`data-analytics/sql/Saayam_Table.column.names_data.xlsx`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/Saayam_Table.column.names_data.xlsx) (sheet `Table & column names_data-17649`) — the schema reference Issue #146 tells contributors to use. However, [`data-analytics/sql/requests.csv`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/requests.csv), a separate, newer-looking mock dataset in the same repository, uses the plural name `requests` with a different column set (see #18–#19). **Open question:** which of these two in-repo sources reflects the live database — the Lambda and the xlsx agree with each other, but `requests.csv` matches neither. |
+| 18 | `req_user_id` vs `beneficiary_id` | Open question — now with concrete conflicting sources | The Lambda identifies the beneficiary through `req_user_id`, which the xlsx confirms as a column of `virginia_dev_saayam_rdbms.request`. `data-analytics/sql/requests.csv` has no `req_user_id` column at all — it splits the concept into separate `creator_id` and `beneficiary_id` columns instead. **Open question:** whether the live table has since been migrated to this newer creator/beneficiary split. |
+| 19 | `last_update_date` vs `last_updated_at` | Open question — now with concrete conflicting sources | The Lambda filters on `last_update_date`, matching the xlsx's `request.last_update_date` column exactly. `data-analytics/sql/requests.csv` instead has `last_updated_at`. All three mismatches (#17–#19) point the same direction: `requests.csv` looks like a newer schema revision than both the xlsx and the Lambda, but nothing in this repository confirms which one the live Virginia/Ireland databases actually match. |
 | 20 | Legacy `request` table | Open question | Whether a singular `request` table still exists in the deployed Virginia and Ireland databases. |
 | 21 | Deployed vs committed code | Open question | Whether the deployed `beneficiariesTrendAnalysis` Lambda matches the code in this repository. The Issue #70 comment links to a console-edited Lambda, which cannot be compared from here. |
 | 22 | Region-level analytics elsewhere | Open question | Whether region-level beneficiary analytics are implemented outside this repository (for example in the frontend, the `ml` repository, or the JSON delivered under Issue #84). |
@@ -544,8 +552,11 @@ This PR was opened after commit `11b5f7b` was merged. Because it is unmerged, it
 ### Issues
 
 - [Issue #70 — Trend Analysis for Beneficiaries](https://github.com/saayam-for-all/data/issues/70)
+- [Issue #81 — Creation of Super Admin Dashboard Analytics](https://github.com/saayam-for-all/data/issues/81) (umbrella issue; not tab-specific)
 - [Issue #82 — Design of Application Analytics tab under Super Admin Dashboard](https://github.com/saayam-for-all/data/issues/82)
 - [Issue #84 — Super Admin Dashboard Application Analytics design: creation of Test data](https://github.com/saayam-for-all/data/issues/84)
+- [Issue #89 — Application Analytics Dashboard implementation in Python using plotly library](https://github.com/saayam-for-all/data/issues/89) (general; not tab-specific)
+- [Issue #96 — Design of Consolidated metrics of application analytics on the Saayam Home Page](https://github.com/saayam-for-all/data/issues/96) (Home Page ticker, not the dashboard tab)
 - [Issue #138 — Implement real API for beneficiary_trend_analysis.py](https://github.com/saayam-for-all/data/issues/138)
 - [Issue #603 — Document Application Analytics Flow and Implementation - Beneficiary Dashboard](https://github.com/saayam-for-all/data/issues/603)
 
@@ -559,6 +570,8 @@ This PR was opened after commit `11b5f7b` was merged. Because it is unmerged, it
 
 - Current code: [`data-analytics/lambda_functions/beneficiariesTrendAnalysis.py`](https://github.com/saayam-for-all/data/blob/test/data-analytics/lambda_functions/beneficiariesTrendAnalysis.py)
 - Task tracker: [`data-engineering/TASK_TRACKER.md`](https://github.com/saayam-for-all/data/blob/test/data-engineering/TASK_TRACKER.md)
+- Schema reference (matches the Lambda — see Section 9, items 17–19): [`data-analytics/sql/Saayam_Table.column.names_data.xlsx`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/Saayam_Table.column.names_data.xlsx)
+- Conflicting mock dataset (does not match the Lambda or the xlsx — see Section 9, items 17–19): [`data-analytics/sql/requests.csv`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/requests.csv)
 - Commits: `04b5fb4` (file created), `11b5f7b` (current implementation)
 - Unmerged branches: `origin/issue#70` (Issue #70 CSVs and notebook), `origin/vighneshsridhar-beneficiaries_trend_analysis` (commit `1bc97dc`)
 
