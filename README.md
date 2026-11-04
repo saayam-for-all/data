@@ -128,8 +128,8 @@ Most tasks are assigned to 2+ people. Coordinate with your pair. If you need to 
 
 | Role | Who | Reach Via |
 |------|-----|-----------|
-| **Data Engineering Leads** | **Sana Desai** | Team WhatsApp group |
-| **Data Analytics Leads** | **Sahil Mane** · **Vighnesh Sridhar** | Team WhatsApp group |
+| **Data Engineering Leads** | **Sana Desai** . **Himanshu Pant** |Team WhatsApp group |
+| **Data Analytics Leads** | **Sahil Mane** · **Vighnesh Sridhar** .**Hamsa Ram**| Team WhatsApp group |
 | **Project Managers** | **Janhavi Chavan** · **Ruthwik Dhaipulle** | Team WhatsApp group |
 | **Org Lead / Scrum** | **Rao Bhethanabotla** |
 | **Offer Letters** |  **HR** | WhatsApp |
