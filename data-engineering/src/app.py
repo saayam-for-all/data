@@ -4,11 +4,13 @@ from datetime import datetime, timedelta
 from src.models.fraud_requests import FraudRequests
 from src import config
 from src.translation.lang_detection import translate_to_english
+from src.profanity_severity.routes import profanity_bp
 
 app = Flask(__name__)
 
 app.config.from_object(config)
 db.init_app(app)
+app.register_blueprint(profanity_bp)
 
 with app.app_context():
         db.create_all()
