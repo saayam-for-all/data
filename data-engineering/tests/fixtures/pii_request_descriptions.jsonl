@@ -1,0 +1,60 @@
+{"id":"C01","text":"I need groceries for the weekend. The community pantry is closed.","contains_pii":false}
+{"id":"C02","text":"Could someone help me carry a donated table upstairs?","contains_pii":false}
+{"id":"C03","text":"My winter coat is worn out and I need a warm one for work.","contains_pii":false}
+{"id":"C04","text":"I am looking for a ride to the public library tomorrow.","contains_pii":false}
+{"id":"C05","text":"The school supply event starts at 10:30 on 2026-02-14.","contains_pii":false}
+{"id":"C06","text":"I need information about the free dental clinic in my area.","contains_pii":false}
+{"id":"C07","text":"Can anyone help repair a broken window before the rain?","contains_pii":false}
+{"id":"C08","text":"I would appreciate help understanding my electricity bill.","contains_pii":false}
+{"id":"C09","text":"Looking for a volunteer to practice conversational English.","contains_pii":false}
+{"id":"C10","text":"We need a few chairs for a neighborhood meeting next week.","contains_pii":false}
+{"id":"C11","text":"My garden tools were stolen; does anyone have a spare shovel?","contains_pii":false}
+{"id":"C12","text":"Please help me find a free after-school program for my child.","contains_pii":false}
+{"id":"C13","text":"The bus fare is about $2.75 each way and I need two rides.","contains_pii":false}
+{"id":"C14","text":"I need help filling out a general benefits application form.","contains_pii":false}
+{"id":"C15","text":"Can someone deliver a meal? I have dietary restrictions.","contains_pii":false}
+{"id":"C16","text":"The package contains 3 books and weighs roughly 4.5 pounds.","contains_pii":false}
+{"id":"C17","text":"I am searching for a quiet place to study for my exam.","contains_pii":false}
+{"id":"C18","text":"Please explain how to sign up for the local food cooperative.","contains_pii":false}
+{"id":"C19","text":"I need a blanket and a pillow for tonight.","contains_pii":false}
+{"id":"C20","text":"My appointment is on March 15, and I need help finding the bus route.","contains_pii":false}
+{"id":"P01","text":"Please call me at 202-555-0147 about the food delivery.","contains_pii":true}
+{"id":"P02","text":"You can reach me on +1 (202) 555-0188 after work.","contains_pii":true}
+{"id":"P03","text":"My number is 202.555.0192; I need a ride to the clinic.","contains_pii":true}
+{"id":"P04","text":"Text 2025550176 when the groceries are ready.","contains_pii":true}
+{"id":"P05","text":"Call +44 20 7946 0958 to arrange the pickup.","contains_pii":true}
+{"id":"P06","text":"My mobile is ٠٢٠ ٥٥٥ ٠١٤٧; please send the schedule.","contains_pii":true}
+{"id":"P07","text":"Email me at requestor01@example.invalid with the details.","contains_pii":true}
+{"id":"P08","text":"My address is 18 Maple Street, Springfield, for the furniture drop.","contains_pii":true}
+{"id":"P09","text":"Please send the supplies to 42 Cedar Avenue, Apt 5B.","contains_pii":true}
+{"id":"P10","text":"I live at 7 Rue des Fleurs, Lyon; I need winter clothes.","contains_pii":true}
+{"id":"P11","text":"My Social Security number is 999-88-7777 for the form.","contains_pii":true}
+{"id":"P12","text":"The ID number on my application is 999 77 6666.","contains_pii":true}
+{"id":"P13","text":"Please charge the approved fee to 4111 1111 1111 1111.","contains_pii":true}
+{"id":"P14","text":"My name is Alex Rivera and I need help moving a couch.","contains_pii":true}
+{"id":"P15","text":"Priya Nair needs a ride to her appointment on Friday.","contains_pii":true}
+{"id":"P16","text":"Can you contact José Alvarez about the meal request?","contains_pii":true}
+{"id":"P17","text":"Wei Chen is requesting school supplies for two children.","contains_pii":true}
+{"id":"P18","text":"Amina Hassan needs help translating a clinic letter.","contains_pii":true}
+{"id":"P19","text":"Please ask Nguyen Thi Mai which groceries are suitable.","contains_pii":true}
+{"id":"P20","text":"Omar Haddad requested a winter coat and gloves.","contains_pii":true}
+{"id":"P21","text":"Chloé Martin needs help getting to the community center.","contains_pii":true}
+{"id":"P22","text":"Fatima Zahra is looking for a tutor for her daughter.","contains_pii":true}
+{"id":"P23","text":"Luca Rossi needs a volunteer to pick up a prescription.","contains_pii":true}
+{"id":"P24","text":"Please deliver a food box to 15 Oak Road, Unit 2, tomorrow.","contains_pii":true}
+{"id":"P25","text":"My email address is help.seeker@example.invalid; I need a blanket.","contains_pii":true}
+{"id":"P26","text":"Contact me at +33 (0) 6 12 34 56 78 about the paperwork.","contains_pii":true}
+{"id":"P27","text":"Call 020 7946 0958; I need assistance with rent.","contains_pii":true}
+{"id":"P28","text":"The card for reimbursement is 4012-8888-8888-1881.","contains_pii":true}
+{"id":"P29","text":"My passport ID is AB1234567 and I need travel assistance.","contains_pii":true}
+{"id":"P30","text":"Our home is 9 Avenida Central, Porto Alegre; we need a heater.","contains_pii":true}
+{"id":"P31","text":"My phone number, written out, is five five five zero one zero zero one six three.","contains_pii":true}
+{"id":"P32","text":"The contact number is five five five, zero one zero, zero one two three.","contains_pii":true}
+{"id":"P33","text":"Please bring the package to 88 King Street near the station.","contains_pii":true}
+{"id":"P34","text":"Email maria.garcia@example.invalid about the donated wheelchair.","contains_pii":true}
+{"id":"P35","text":"I am called Samira El-Amin and need help with groceries.","contains_pii":true}
+{"id":"P36","text":"Please contact Thabo Mokoena about the volunteer schedule.","contains_pii":true}
+{"id":"P37","text":"My bank card number is 5555 5555 5555 4444.","contains_pii":true}
+{"id":"P38","text":"The national ID listed on my form is 999-66-5555.","contains_pii":true}
+{"id":"P39","text":"I stay at 1200 Pine Boulevard, Building C, and need a food box.","contains_pii":true}
+{"id":"P40","text":"Call me at (415) 555-0199; I can meet after 6 pm.","contains_pii":true}
