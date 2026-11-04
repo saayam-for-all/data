@@ -87,6 +87,7 @@ DEFAULT_GEOCODE_BUDGET = 25          # external geocode calls per invocation
 DEFAULT_GEOCODE_TIME_BUDGET_S = 5.0  # wall-clock seconds spent geocoding
 DEFAULT_CITY_TABLE_RETRY_MAX_S = 60.0  # longest wait between retries of a failing cities load
 DEFAULT_CITY_TABLE_REFRESH_S = 6 * 3600.0  # reload a good cities table this often
+DEFAULT_CITY_TABLE_EMPTY_RECHECK_S = 60.0  # re-check an EMPTY cities table this often
 
 
 class LookupUnavailable(Exception):
@@ -112,6 +113,7 @@ class GeoPoint:
 class GeocodeResult:
     status: str                      # ok | not_found | deferred | error
     point: Optional[GeoPoint] = None
+    cacheable: bool = True           # False: don't remember this answer (see CityTableGeocoder)
 
 
 def _is_valid(lat: Any, lon: Any) -> bool:
@@ -303,6 +305,8 @@ class CityTableGeocoder(Geocoder):
         self.retry_max_s = float(os.environ.get("CITY_TABLE_RETRY_MAX_S",
                                                 DEFAULT_CITY_TABLE_RETRY_MAX_S)
                                  if retry_max_s is None else retry_max_s)
+        self.empty_recheck_s = float(os.environ.get("CITY_TABLE_EMPTY_RECHECK_S",
+                                                    DEFAULT_CITY_TABLE_EMPTY_RECHECK_S))
         self.refresh_s = float(os.environ.get("CITY_TABLE_REFRESH_S",
                                               DEFAULT_CITY_TABLE_REFRESH_S)
                                if refresh_s is None else refresh_s)
@@ -329,8 +333,12 @@ class CityTableGeocoder(Geocoder):
     def _load(self) -> None:
         """Make sure lookup data is available, or raise LookupUnavailable."""
         now = time.time()   # wall clock: these timers span Lambda freezes (see class doc)
+        # A loaded-but-EMPTY table (e.g. dev before cities is populated) is
+        # re-checked every minute, so distances appear soon after it's filled.
+        max_age = (self.refresh_s if self._by_city_state
+                   else min(self.refresh_s, self.empty_recheck_s))
         fresh = (self._by_city_state is not None
-                 and now - self._loaded_at < self.refresh_s)
+                 and now - self._loaded_at < max_age)
         if fresh:
             return
         if self._attempted_this_request or now < self._next_attempt:
@@ -349,9 +357,11 @@ class CityTableGeocoder(Geocoder):
                 logger.warning("cities refresh failed, keeping previous data: %s", exc)
                 return
             raise LookupUnavailable(f"cities table unavailable: {exc}") from exc
-        if not rows and self._by_city_state is not None:
-            # An empty refresh after a good load isn't a real answer (the table is
-            # probably being reloaded). Treat it like a failure: keep the old data.
+        if not rows and self._by_city_state:
+            # An empty refresh after a good, NON-empty load isn't a real answer (the
+            # table is probably being reloaded). Treat it like a failure: keep the old
+            # data. If the table was already empty on the first load there's nothing
+            # to keep, so 0 rows is simply the current answer (no warning, no retries).
             self._failures += 1
             self._next_attempt = now + self._retry_delay()
             logger.warning("cities refresh returned 0 rows (%d in a row); keeping previous "
@@ -419,7 +429,9 @@ class CityTableGeocoder(Geocoder):
                 point = self._lookup(parts[i], state_part)
                 if point:
                     return GeocodeResult(STATUS_OK, point)
-        return GeocodeResult(STATUS_NOT_FOUND)
+        # With an empty cities table every address is "not found", but that answer
+        # will change as soon as the table is filled, so don't let it be cached.
+        return GeocodeResult(STATUS_NOT_FOUND, cacheable=bool(self._by_city_state))
 
 
 class ChainGeocoder(Geocoder):
@@ -436,15 +448,17 @@ class ChainGeocoder(Geocoder):
 
     def geocode(self, address, city=None, state=None):
         statuses = []
+        cacheable = True
         for provider in self.providers:
             result = provider.geocode(address, city, state)
             if result.status == STATUS_OK:
                 return result
             statuses.append(result.status)
+            cacheable = cacheable and result.cacheable
         for status in (STATUS_ERROR, STATUS_DEFERRED):
             if status in statuses:
                 return GeocodeResult(status)
-        return GeocodeResult(STATUS_NOT_FOUND)
+        return GeocodeResult(STATUS_NOT_FOUND, cacheable=cacheable)
 
 
 # name -> factory(context) -> Geocoder. context carries e.g. the cities loader.
@@ -532,6 +546,8 @@ class CoordinateCache:
         return None
 
     def set(self, key: str, result: GeocodeResult) -> None:
+        if not result.cacheable:
+            return
         if result.status == STATUS_OK:
             self._put(key, result, self.ttl_s)
             if self.backend is not None:
