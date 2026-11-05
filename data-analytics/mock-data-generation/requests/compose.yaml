@@ -1,0 +1,25 @@
+name: saayam-requests-mock
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.5
+    environment:
+      POSTGRES_USER: mock_user
+      POSTGRES_PASSWORD: mock_local_only
+      POSTGRES_DB: saayam_mock
+      TZ: UTC
+    ports:
+      - "127.0.0.1:${MOCK_POSTGRES_PORT:-55487}:5432"
+    volumes:
+      - requests_mock_pgdata:/var/lib/postgresql/data
+      - ../../sql:/fixtures:ro
+      - .:/schema:ro
+      - ./init_local_postgres.sql:/docker-entrypoint-initdb.d/010_requests_mock.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mock_user -d saayam_mock && psql -U mock_user -d saayam_mock -Atc 'SELECT count(*) FROM virginia_dev_saayam_rdbms.requests' >/dev/null"]
+      interval: 2s
+      timeout: 5s
+      retries: 60
+
+volumes:
+  requests_mock_pgdata:
