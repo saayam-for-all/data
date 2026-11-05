@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from datetime import datetime
 
 import pandas as pd
@@ -10,6 +11,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "mock_data")
+DATE_FORMAT = re.compile(r"\d{4}-\d{2}-\d{2}", re.ASCII)
 
 
 def load_data():
@@ -41,7 +43,8 @@ def _is_blank(value):
 
 def _parse_date(value):
     # Strict YYYY-MM-DD only: rejects ints, other formats and timezone strings.
-    if not isinstance(value, str):
+    # strptime alone accepts unpadded values such as 2026-1-1, so check the shape first.
+    if not isinstance(value, str) or not DATE_FORMAT.fullmatch(value.strip()):
         return None
     try:
         return pd.Timestamp(datetime.strptime(value.strip(), "%Y-%m-%d"))
