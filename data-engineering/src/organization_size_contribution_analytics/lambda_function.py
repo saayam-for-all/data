@@ -1,4 +1,14 @@
-"""Build the Organization Analytics Size and Contribution dashboard data."""
+"""Build the Organization Analytics Size and Contribution dashboard data (#583).
+
+Returns two charts: organizations_by_size and collaborator_vs_contributor.
+With no dates the response has 7D/30D/1Y/All and no Custom key.
+If start_date and end_date are sent (YYYY-MM-DD, both inclusive), only Custom
+is returned, and that one range is used for both charts.
+The country and organization_type filters apply to both charts in every case.
+
+Data comes from organizations.csv, states.csv and countries.csv in the
+mock_data folder next to this file. No environment variables are needed.
+"""
 
 import json
 import os
@@ -8,14 +18,9 @@ from typing import Any, Optional
 
 import pandas as pd
 
-try:
-    import psycopg2
-except ImportError:  # pragma: no cover - optional in local mock mode
-    psycopg2 = None
-
+MOCK_DATA_DIR = Path(__file__).resolve().parent / "mock_data"
 
 FIXED_BUCKETS = ("7D", "30D", "1Y", "All")
-CHART_KEYS = ("organizations_by_size", "collaborator_vs_contributor")
 ORG_TYPE_ALIASES = {
     "non_profit": "non_profit",
     "nonprofit": "non_profit",
@@ -24,11 +29,6 @@ ORG_TYPE_ALIASES = {
     "forprofit": "for_profit",
     "for-profit": "for_profit",
 }
-
-
-def _empty_charts() -> dict[str, list[dict[str, Any]]]:
-    """Return the two empty chart payloads."""
-    return {key: [] for key in CHART_KEYS}
 
 
 def _response(status_code: int, body: dict[str, Any]) -> dict[str, Any]:
@@ -59,17 +59,22 @@ def _parse_body(event: Any) -> dict[str, Any]:
     return parsed
 
 
+def _is_blank(value: Any) -> bool:
+    """A null or empty/whitespace string counts as not supplied."""
+    return value is None or (isinstance(value, str) and not value.strip())
+
+
 def _parse_date_pair(body: dict[str, Any], start_key: str, end_key: str) -> Optional[tuple[date, date]]:
-    """Validate and parse one optional inclusive date range."""
-    has_start = start_key in body
-    has_end = end_key in body
-    if not has_start and not has_end:
+    """Validate and parse the one optional inclusive Custom date range."""
+    start_value, end_value = body.get(start_key), body.get(end_key)
+    start_blank, end_blank = _is_blank(start_value), _is_blank(end_value)
+    if start_blank and end_blank:
         return None
-    if not has_start or not has_end or body[start_key] is None or body[end_key] is None:
+    if start_blank or end_blank:
         raise ValueError(f"{start_key} and {end_key} must be supplied together")
     try:
-        start = date.fromisoformat(str(body[start_key]))
-        end = date.fromisoformat(str(body[end_key]))
+        start = date.fromisoformat(str(start_value))
+        end = date.fromisoformat(str(end_value))
     except ValueError as error:
         raise ValueError(f"{start_key} and {end_key} must use YYYY-MM-DD") from error
     if start > end:
@@ -101,7 +106,7 @@ def _read_csv(data_dir: Path, names: tuple[str, ...]) -> pd.DataFrame:
     raise FileNotFoundError(f"None of {names} exists in {data_dir}")
 
 
-def load_organizations_from_csv(data_dir: str | os.PathLike[str]) -> pd.DataFrame:
+def load_organizations_from_csv(data_dir: str | os.PathLike[str] = MOCK_DATA_DIR) -> pd.DataFrame:
     """Load organizations with country values joined through state records."""
     root = Path(data_dir)
     organizations = _read_csv(root, ("organizations.csv",))
@@ -175,18 +180,21 @@ def _contribution_chart(data: pd.DataFrame) -> list[dict[str, Any]]:
     return [row("Collaborator", collaborator), row("Contributor", contributor)]
 
 
+def _charts(data: pd.DataFrame) -> dict[str, list[dict[str, Any]]]:
+    """Build both charts from one window, so they share the same organizations."""
+    return {
+        "organizations_by_size": _size_chart(data),
+        "collaborator_vs_contributor": _contribution_chart(data),
+    }
+
+
 def build_response(data: pd.DataFrame, body: dict[str, Any], today: Optional[date] = None) -> dict[str, Any]:
     """Build the fixed-bucket or Custom-only analytics response."""
     filtered = _filtered_frame(data, body)
-    size_range = _parse_date_pair(body, "size_start_date", "size_end_date")
-    contribution_range = _parse_date_pair(body, "contribution_start_date", "contribution_end_date")
-    if size_range or contribution_range:
-        charts = _empty_charts()
-        if size_range:
-            charts["organizations_by_size"] = _size_chart(_window(filtered, *size_range))
-        if contribution_range:
-            charts["collaborator_vs_contributor"] = _contribution_chart(_window(filtered, *contribution_range))
-        return {"Custom": charts}
+    custom_range = _parse_date_pair(body, "start_date", "end_date")
+    if custom_range is not None:
+        # dates sent: one range drives both charts, and only Custom comes back
+        return {"Custom": _charts(_window(filtered, *custom_range))}
 
     current = today or datetime.now().date()
     ranges: dict[str, tuple[Optional[date], Optional[date]]] = {
@@ -195,62 +203,19 @@ def build_response(data: pd.DataFrame, body: dict[str, Any], today: Optional[dat
         "1Y": (current - timedelta(days=364), current),
         "All": (None, None),
     }
-    response = {}
-    for bucket in FIXED_BUCKETS:
-        bucket_data = _window(filtered, *ranges[bucket])
-        response[bucket] = {
-            "organizations_by_size": _size_chart(bucket_data),
-            "collaborator_vs_contributor": _contribution_chart(bucket_data),
-        }
-    response["Custom"] = _empty_charts()
-    return response
-
-
-def _db_connection():
-    """Create a PostgreSQL connection from environment variables."""
-    if psycopg2 is None:
-        raise RuntimeError("psycopg2 is required for database mode")
-    return psycopg2.connect(
-        host=os.environ["DB_HOST"],
-        port=os.environ.get("DB_PORT", "5432"),
-        database=os.environ["DB_NAME"],
-        user=os.environ["DB_USER"],
-        password=os.environ["DB_PASSWORD"],
-    )
-
-
-def load_organizations_from_db() -> pd.DataFrame:
-    """Load organizations and country fields from PostgreSQL."""
-    connection = _db_connection()
-    try:
-        query = """
-            SELECT o.*, c.country_code, c.country_name
-            FROM organizations o
-            LEFT JOIN states s ON o.state_id = s.state_id
-            LEFT JOIN countries c ON s.country_id = c.country_id
-        """
-        return pd.read_sql_query(query, connection)
-    finally:
-        connection.close()
+    return {bucket: _charts(_window(filtered, *ranges[bucket])) for bucket in FIXED_BUCKETS}
 
 
 def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
     """Handle an Organization Analytics Size and Contribution request."""
     try:
         body = _parse_body(event)
+        # validated first so bad input is a 400 and never touches the filesystem
         _normalize_org_type(body.get("organization_type"))
-        _parse_date_pair(body, "size_start_date", "size_end_date")
-        _parse_date_pair(body, "contribution_start_date", "contribution_end_date")
-        if os.getenv("USE_MOCK_DATA", "true").lower() == "true":
-            data = load_organizations_from_csv(os.getenv("MOCK_DATA_DIR", "."))
-        else:
-            data = load_organizations_from_db()
+        _parse_date_pair(body, "start_date", "end_date")
+        data = load_organizations_from_csv()
         return _response(200, build_response(data, body))
     except (ValueError, json.JSONDecodeError) as error:
         return _response(400, {"error": str(error)})
     except Exception as error:
         return _response(500, {"error": str(error)})
-
-
-if __name__ == "__main__":
-    print(json.dumps(json.loads(lambda_handler({}, None)["body"]), indent=2))
