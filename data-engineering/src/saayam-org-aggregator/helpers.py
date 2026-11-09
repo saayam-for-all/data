@@ -71,19 +71,61 @@ _creds = json.loads(
     )
 )
 _db_name = _creds["DATABASE NAME"]
-_db_conn = psycopg2.connect(
-    host=_creds["HOST"],
-    user=_creds["USERNAME"],
-    password=_creds["PASSWORD"],
-    database=_db_name,
-    port=_creds["PORT"],
-    sslmode="require",
-)
-# This Lambda only reads. With autocommit each query finishes on its own, so the
-# connection never sits "idle in transaction" holding locks between requests
-# (which blocks ALTER TABLE etc.), and a failed query can't leave the connection
-# "aborted". The _rollback() calls below stay as an extra safety net.
-_db_conn.autocommit = True
+
+
+def _connect():
+    """Open a new DB connection (re-reading the credentials, cached for 1 h)."""
+    creds = json.loads(
+        parameters.get_parameter(
+            "/dev/saayam/db/Virginia/Analytics/user",
+            decrypt=True,
+            max_age=3600,
+        )
+    )
+    conn = psycopg2.connect(
+        host=creds["HOST"],
+        user=creds["USERNAME"],
+        password=creds["PASSWORD"],
+        database=_db_name,
+        port=creds["PORT"],
+        sslmode="require",
+        connect_timeout=5,
+    )
+    # This Lambda only reads. With autocommit each query finishes on its own, so the
+    # connection never sits "idle in transaction" holding locks between requests
+    # (which blocks ALTER TABLE etc.), and a failed query can't leave the connection
+    # "aborted". The _rollback() calls below stay as an extra safety net.
+    conn.autocommit = True
+    return conn
+
+
+_db_conn = _connect()
+
+
+def ensure_db_connection():
+    """Make sure the shared connection works before a request uses it (issue #620).
+
+    The connection lives as long as the warm container. If the database restarted,
+    failed over, or closed it for being idle, every query would fail until a cold
+    start. A cheap "SELECT 1" finds that out; then we open a new connection.
+    If reconnecting fails too, the error is raised and the request returns 500;
+    the next request tries again.
+    """
+    global _db_conn
+    if not _db_conn.closed:
+        try:
+            with _db_conn.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+            return
+        except Exception as e:  # noqa: BLE001
+            logger.warning("database connection lost, reconnecting: %s", e)
+    try:
+        _db_conn.close()
+    except Exception:  # noqa: BLE001
+        pass
+    _db_conn = _connect()
+    logger.warning("database reconnected")
 # -------------------------------------------------------------
 
 
