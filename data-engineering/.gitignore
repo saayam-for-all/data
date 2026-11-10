@@ -19,3 +19,5 @@ htmlcov/
 datasets/raw/
 datasets/cleaned/
 dist/
+
+__pycache__/
