@@ -1,109 +1,46 @@
 # Mock Data Generation
 
-The scripts generate CSV files for the following tables:
+This directory contains scripts for generating synthetic CSV data for the Saayam database.
 
-- `volunteer_applications`
-- `user_skills`
+## Scripts
 
-# Scripts Overview
+### generate_mock_data.py
+Generates synthetic volunteer application and user skill data.
 
-## generate_mock_data.py
+### volunteer_applications.py
+Generates volunteer application records, including skill codes, availability, application status, and timestamps.
 
-Main script responsible for generating mock data.
+### user_skills.py
+Generates user skill records derived from volunteer applications.
 
-Responsibilities:
+### generate_requests_mock_data.py
+Generates synthetic data for the `users` and `requests` tables.
 
-- Calls table-specific data generation scripts
-- Maintains relationships between tables
-- Writes generated data to CSV files 
+The script reads lookup values from `database/lookup_tables/` and generates:
+- `users.csv` — 150 synthetic user records.
+- `requests.csv` — 100 synthetic request records.
 
-Run this script to generate all mock data.
+It creates unique IDs, maintains user references, uses existing lookup IDs, and generates request details, timestamps, and synthetic location coordinates.
 
----
+A fixed random seed (`42`) makes the generated data reproducible.
 
-## volunteer_applications.py
+### utils.py
+Contains shared helper functions.
 
-Generates synthetic data for the **volunteer_applications** table.
+## How to Run
 
-Fields include:
+Run these commands from this directory:
 
-- `user_id`
-- `terms_and_conditions`
-- `terms_accepted_at`
-- `govt_id_path`
-- `skill_codes` (JSON array)
-- `availability` (JSON object)
-- `current_page`
-- `application_status`
-- `is_completed`
-- `created_at`
-- `last_updated_at`
+Generate volunteer application and user skill data:
 
-Each row represents a volunteer application.
+    python generate_mock_data.py
 
----
+Generate request and user data:
 
-## user_skills.py
+    python generate_requests_mock_data.py
 
-Generates data for the **user_skills** table.
+## Output
 
-This table is derived from the `skill_codes` field in `volunteer_applications`.
+Generated CSV files are written to `output_csv_files/`.
 
-For each skill associated with a volunteer, a row is created.
-
-Because volunteers may have multiple skills, this table can contain **more than 100 rows**.
-
----
-
-## utils.py
-
-Contains shared helper functions used across scripts.
-
-Includes:
-
-- Category ID constants
-- Availability options
-- Random data generators
-- JSON formatting helpers
-- Timestamp formatting
-- CSV writing utility functions
-- Random seed setup
-
-This keeps the code modular and reusable.
-
----
-
-# Output Files
-
-After running the generator script, CSV files will be created 
-
-Generated files:
-
-### volunteer_applications.csv
-
-Contains **100 volunteer application records**.
-
-### user_skills.csv
-
-Contains skill mappings for volunteers based on `skill_codes`.
-
-Each skill produces a separate row.
-
----
-
-# How to Run the Scripts
-
-Open terminal in VS Code and run: python generate_mock_data.py
-
----
-
-# What Happens When the Script Runs
-
-The script will:
-
-1. Generate **100 volunteer applications**
-2. Assign **multiple skills per volunteer**
-3. Create matching rows in `user_skills`
-4. Maintain table relationships
-5. Creates CSV files`
-
+This directory is excluded from Git because the data can be regenerated using the scripts.
