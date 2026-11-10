@@ -1,0 +1,154 @@
+GitHub Issue #586 - PostgreSQL Integration Verification
+======================================================
+
+Environment:
+Isolated PostgreSQL 16 test container
+Database: archive_verification
+Schema: archive_586_test
+Session timezone: America/New_York
+
+Implementation:
+origin/Mango-gh_574_archive_request_data_lambda
+Function: run_export()
+
+Extraction window:
+Start (exclusive): 2026-11-09 10:00:00
+End (inclusive):   2026-11-09 11:00:00
+
+1. SOURCE VS ARCHIVE COUNTS
+Expected: 3 requests
+Actual source count: 3
+Actual exported count: 3
+Result: PASS
+
+2. DUPLICATE REQUEST IDS
+Expected: 0 duplicates
+Actual: 0 duplicates
+Result: PASS
+
+3. FOREIGN KEY RESOLUTION
+Valid category:
+REQ-586-001 -> FOOD_AND_ESSENTIALS
+Result: PASS
+
+4. BROKEN CATEGORY PRESERVATION
+REQ-586-002:
+Category ID: CAT-MISSING
+Readable category: empty
+Request preserved: yes
+Result: PASS
+
+5. NULL CATEGORY PRESERVATION
+REQ-586-003:
+Category ID: NULL
+Readable category: empty
+Request preserved: yes
+Result: PASS
+
+6. WATERMARK BOUNDARY
+REQ-586-004 at 10:00:00 excluded
+REQ-586-003 at 11:00:00 included
+Result: PASS
+
+7. BYTE-IDENTICAL RERUN
+First export: 796 bytes
+Second export: 796 bytes
+
+SHA-256 for both:
+05609959aed5d32a9ea828de5130dca631a241e261d0fc4cb4bf1f68af44c461
+
+Result: PASS
+
+LIMITATIONS
+-----------
+Tests used an isolated PostgreSQL fixture, not production data.
+The source schema was a minimal integration-test schema.
+Live AWS/S3 object-count verification was not performed.
+S3 idempotency risk is documented separately.
+Consecutive extraction windows were also tested using the actual
+run_export() function against the isolated PostgreSQL database.
+
+CONSECUTIVE-WINDOW INTEGRATION TEST
+-----------------------------------
+Window 1: 2026-11-09 10:00:00 to 11:00:00
+Expected: 3 requests
+Actual: 3 requests
+Request IDs: REQ-586-001, REQ-586-002, REQ-586-003
+Result: PASS
+
+Window 2: 2026-11-09 11:00:00 to 12:00:00
+Expected: 0 requests
+Actual: 0 requests
+Result: PASS
+
+Cross-window duplicate request IDs: 0
+Missing request IDs: 0
+Result: PASS
+
+TIMEZONE CONSISTENCY TEST
+-------------------------
+PostgreSQL column type: timestamp without time zone
+UTC session: 3 matching rows
+America/New_York session: 3 matching rows
+Result: PASS
+
+These results apply to the isolated test dataset.
+Production UTC timestamp interpretation remains unverified.
+
+Overall:
+Local PostgreSQL integration checks passed.
+Full Issue #586 acceptance remains pending.
+
+--------------------------------------------------
+LOCAL ARCHIVE EXPORTER RUNTIME BASELINE
+--------------------------------------------------
+
+Environment:
+- PostgreSQL 16 in isolated Docker container
+- Python 3.12
+- Session timezone: America/New_York
+- Extraction window: 2026-11-09 10:00:00 to 11:00:00
+- Exported records: 3
+- CSV output size: 796 bytes
+- Measurements exclude Docker startup, dependency installation,
+  and S3 upload time.
+
+Measured execution times:
+Run 1: 37.07 ms
+Run 2: 8.28 ms
+Run 3: 6.64 ms
+Run 4: 6.19 ms
+Run 5: 5.90 ms
+
+Average: 12.82 ms
+Minimum: 5.90 ms
+Maximum: 37.07 ms
+
+Result: PASS - Local runtime baseline recorded.
+
+Limitations:
+- Small synthetic dataset, not production-scale data.
+- Runtime measurements may vary across environments.
+- No live AWS S3 upload performance measured.
+
+--------------------------------------------------
+NEGATIVE TEST - ROW COUNT MISMATCH
+--------------------------------------------------
+Test type: Local synthetic CSV validator test
+Source count (expected): 3
+Archive CSV count (actual): 2
+
+Expected validator status: FAIL
+Actual validator status: FAIL
+
+Result: PASS - Row-count mismatch correctly detected.
+
+Method:
+Imported ArchiveVerification from verify_request_archive.py.
+Created a temporary CSV containing two request records.
+Called verify_row_counts(source_count=3).
+Confirmed the recorded verification status was FAIL.
+
+Limitations:
+This was a local synthetic CSV test, not a PostgreSQL
+integration test or production archive validation.

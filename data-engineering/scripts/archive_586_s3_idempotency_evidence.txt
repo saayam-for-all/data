@@ -1,0 +1,47 @@
+﻿GitHub Issue #586 - S3 Idempotency Verification
+==============================================
+
+Test: Same extraction window must not create an additional S3 object.
+
+Extraction window:
+Start (exclusive): 2026-11-09 10:00:00
+End (inclusive):   2026-11-09 11:00:00
+
+Expected:
+Rerunning the same extraction window must not create an additional
+S3 object.
+
+Actual:
+The Lambda constructs the S3 key using the current execution timestamp:
+
+    build_s3_key(datetime.now(timezone.utc), prefix=prefix)
+
+The generated key includes a run_ts partition.
+
+First execution:
+requests_enriched/archive_year=2026/archive_month=11/archive_day=09/run_ts=20261109T120000Z/requests_enriched.csv
+
+Second execution:
+requests_enriched/archive_year=2026/archive_month=11/archive_day=09/run_ts=20261109T120500Z/requests_enriched.csv
+
+Verification:
+PASS - Different keys reproduced for the same extraction window.
+FAIL - Current implementation does not guarantee S3 idempotency.
+
+Additional observation:
+upload_csv_to_s3() directly invokes s3_client.put_object().
+No existing-object check is performed by this function.
+
+Evidence type:
+Local deterministic reproduction and source-code inspection.
+No live AWS/S3 upload was performed.
+
+Recommended follow-up:
+Use a deterministic archive identity based on the extraction window
+and implement an appropriate idempotency safeguard.
+
+Source branch:
+origin/Mango-gh_574_archive_request_data_lambda
+
+Issue:
+#586
