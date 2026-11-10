@@ -1,0 +1,1968 @@
+{
+  "issue": 585,
+  "generated_at_utc": "2026-11-10T16:29:38+00:00",
+  "environment": {
+    "python": "3.12.7",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "arm"
+  },
+  "settings": {
+    "repeat": 50,
+    "warmup": 2,
+    "seed": 585
+  },
+  "dataset": {
+    "path": "tests/fixtures/pii_evaluation/request_texts.jsonl",
+    "texts": 74,
+    "pii_texts": 47,
+    "clean_texts": 27,
+    "entities": 60
+  },
+  "approaches": {
+    "A": {
+      "name": "A. Existing patterns only",
+      "status": "MEASURED",
+      "init_seconds": 0.00018195807933807373,
+      "init_scope": "regex compilation",
+      "latency": {
+        "samples": 3700,
+        "mean_us": 9.537922702702703,
+        "median_us": 9.292,
+        "p95_us": 13.041,
+        "min_us": 2.291,
+        "max_us": 28.667,
+        "timed_passes": 50,
+        "wall_seconds": 0.036247167037799954
+      },
+      "document": {
+        "true_positive": 16,
+        "false_negative": 31,
+        "false_positive": 1,
+        "true_negative": 26,
+        "pii_texts_caught": 16,
+        "pii_texts_missed": 31,
+        "clean_texts_wrongly_redacted": 1,
+        "precision": 0.9411764705882353,
+        "recall": 0.3404255319148936,
+        "f1": 0.5,
+        "specificity": 0.9629629629629629
+      },
+      "entity": {
+        "gold_entities": 60,
+        "detected": 18,
+        "fully_redacted": 17,
+        "recall": 0.3,
+        "full_redaction_rate": 0.2833333333333333,
+        "predicted_spans": 19,
+        "spurious_spans": 1,
+        "span_precision": 0.9473684210526315,
+        "per_type": {
+          "ADDRESS": {
+            "total": 9,
+            "detected": 0,
+            "fully_redacted": 0,
+            "recall": 0.0,
+            "full_redaction_rate": 0.0
+          },
+          "CARD": {
+            "total": 2,
+            "detected": 2,
+            "fully_redacted": 2,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "EMAIL": {
+            "total": 5,
+            "detected": 4,
+            "fully_redacted": 4,
+            "recall": 0.8,
+            "full_redaction_rate": 0.8
+          },
+          "NATIONAL_ID": {
+            "total": 3,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 0.3333333333333333,
+            "full_redaction_rate": 0.3333333333333333
+          },
+          "PERSON": {
+            "total": 22,
+            "detected": 0,
+            "fully_redacted": 0,
+            "recall": 0.0,
+            "full_redaction_rate": 0.0
+          },
+          "PHONE": {
+            "total": 18,
+            "detected": 10,
+            "fully_redacted": 9,
+            "recall": 0.5555555555555556,
+            "full_redaction_rate": 0.5
+          },
+          "URL": {
+            "total": 1,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          }
+        },
+        "person_by_users_table_membership": {
+          "in_users_table": {
+            "total": 13,
+            "detected": 0,
+            "recall": 0.0
+          },
+          "not_in_users_table": {
+            "total": 9,
+            "detected": 0,
+            "recall": 0.0
+          }
+        }
+      },
+      "by_tag": {
+        "accented_name": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 1
+        },
+        "country_code": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "fp_trap_address": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_date": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_name_word": {
+          "texts": 5,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_number": {
+          "texts": 6,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_pii_words": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_url": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 0
+        },
+        "international_phone": {
+          "texts": 7,
+          "flagged": 1,
+          "contains_pii": 7
+        },
+        "mixed_language": {
+          "texts": 4,
+          "flagged": 2,
+          "contains_pii": 3
+        },
+        "multi_entity": {
+          "texts": 8,
+          "flagged": 5,
+          "contains_pii": 8
+        },
+        "non_english": {
+          "texts": 9,
+          "flagged": 0,
+          "contains_pii": 6
+        },
+        "non_english_address": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 2
+        },
+        "non_latin_script": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 2
+        },
+        "spelled_out": {
+          "texts": 3,
+          "flagged": 0,
+          "contains_pii": 3
+        },
+        "third_party_name": {
+          "texts": 9,
+          "flagged": 3,
+          "contains_pii": 9
+        }
+      },
+      "missed_texts": [
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "P19",
+        "P20",
+        "P21",
+        "P22",
+        "P23",
+        "P24",
+        "P25",
+        "P26",
+        "P27",
+        "P28",
+        "P29",
+        "P30",
+        "P31",
+        "P32",
+        "P33",
+        "P35",
+        "P38",
+        "P40",
+        "P45",
+        "P47"
+      ],
+      "wrongly_redacted_clean_texts": [
+        "C20"
+      ],
+      "missed_entities": [
+        {
+          "id": "P06",
+          "type": "PHONE",
+          "text": "+44 20 7946 0958"
+        },
+        {
+          "id": "P07",
+          "type": "PHONE",
+          "text": "+91 98765 43210"
+        },
+        {
+          "id": "P08",
+          "type": "PHONE",
+          "text": "+52 55 1234 5678"
+        },
+        {
+          "id": "P09",
+          "type": "PHONE",
+          "text": "020 7946 0321"
+        },
+        {
+          "id": "P10",
+          "type": "PHONE",
+          "text": "five five five, two one four, eight eight nine zero"
+        },
+        {
+          "id": "P11",
+          "type": "PHONE",
+          "text": "nine one seven five five five zero one nine eight"
+        },
+        {
+          "id": "P14",
+          "type": "EMAIL",
+          "text": "rosa dot delgado at example dot com"
+        },
+        {
+          "id": "P15",
+          "type": "PERSON",
+          "text": "Priya Raghunathan"
+        },
+        {
+          "id": "P16",
+          "type": "PERSON",
+          "text": "Wei Zhang"
+        },
+        {
+          "id": "P17",
+          "type": "PERSON",
+          "text": "Nguyen Thi Lan"
+        },
+        {
+          "id": "P18",
+          "type": "PERSON",
+          "text": "Esperanza Morales"
+        },
+        {
+          "id": "P19",
+          "type": "PERSON",
+          "text": "Oluwaseun Adeyemi"
+        },
+        {
+          "id": "P20",
+          "type": "PERSON",
+          "text": "Fatima Al-Sayed"
+        },
+        {
+          "id": "P21",
+          "type": "PERSON",
+          "text": "Dmitri Volkov"
+        },
+        {
+          "id": "P22",
+          "type": "PERSON",
+          "text": "Chloé Lefèvre"
+        },
+        {
+          "id": "P23",
+          "type": "PERSON",
+          "text": "अनीता शर्मा"
+        },
+        {
+          "id": "P24",
+          "type": "PERSON",
+          "text": "王伟"
+        },
+        {
+          "id": "P25",
+          "type": "PERSON",
+          "text": "Javier Ortega"
+        },
+        {
+          "id": "P26",
+          "type": "PERSON",
+          "text": "Kwame Mensah"
+        },
+        {
+          "id": "P27",
+          "type": "PERSON",
+          "text": "Hiroshi Tanaka"
+        },
+        {
+          "id": "P28",
+          "type": "ADDRESS",
+          "text": "18 Maple Street, Springfield"
+        },
+        {
+          "id": "P29",
+          "type": "ADDRESS",
+          "text": "42 Cedar Ave, Apt 5B"
+        },
+        {
+          "id": "P30",
+          "type": "ADDRESS",
+          "text": "7 Rue des Fleurs, Lyon"
+        },
+        {
+          "id": "P31",
+          "type": "ADDRESS",
+          "text": "Calle Mayor 23, 2º izquierda, Madrid"
+        },
+        {
+          "id": "P32",
+          "type": "ADDRESS",
+          "text": "1200 Pine Boulevard, Building C, unit 14"
+        },
+        {
+          "id": "P33",
+          "type": "ADDRESS",
+          "text": "House 14, Lane 3, Sector 9, Dwarka, New Delhi 110075"
+        },
+        {
+          "id": "P35",
+          "type": "NATIONAL_ID",
+          "text": "2345 6789 0123"
+        },
+        {
+          "id": "P38",
+          "type": "NATIONAL_ID",
+          "text": "X1234567"
+        },
+        {
+          "id": "P39",
+          "type": "PERSON",
+          "text": "Leila Nouri"
+        },
+        {
+          "id": "P39",
+          "type": "ADDRESS",
+          "text": "55 Elm Road, Apt 3"
+        },
+        {
+          "id": "P40",
+          "type": "PERSON",
+          "text": "Carmen Ruiz"
+        },
+        {
+          "id": "P40",
+          "type": "ADDRESS",
+          "text": "Avenida Central 45, San José"
+        },
+        {
+          "id": "P40",
+          "type": "PHONE",
+          "text": "8888-1234"
+        },
+        {
+          "id": "P41",
+          "type": "PERSON",
+          "text": "Ahmed Khan"
+        },
+        {
+          "id": "P41",
+          "type": "PERSON",
+          "text": "Sana Khan"
+        },
+        {
+          "id": "P42",
+          "type": "PERSON",
+          "text": "Lucía Fernández"
+        },
+        {
+          "id": "P43",
+          "type": "PERSON",
+          "text": "Tomás"
+        },
+        {
+          "id": "P45",
+          "type": "PERSON",
+          "text": "Grace Okonkwo"
+        },
+        {
+          "id": "P45",
+          "type": "ADDRESS",
+          "text": "9 Hope Street"
+        },
+        {
+          "id": "P46",
+          "type": "PERSON",
+          "text": "Mateo Herrera"
+        },
+        {
+          "id": "P47",
+          "type": "PERSON",
+          "text": "Ravi Verma"
+        },
+        {
+          "id": "P47",
+          "type": "PHONE",
+          "text": "98100 12345"
+        }
+      ],
+      "redacted": {
+        "C01": "Our family lost everything in the flood and we need drinking water and blankets for three children.",
+        "C02": "I need help applying for food assistance; the form asks for documents I do not understand.",
+        "C03": "The shelter on the north side closes at 9 pm. Is there another place open overnight?",
+        "C04": "Looking for a volunteer who can translate a hospital discharge letter from Arabic to English.",
+        "C05": "My rent went up by $350 this month and I cannot pay it. Are there emergency rent programs?",
+        "C06": "The clinic appointment is on 2026-03-14 at 10:30. I need a ride there and back.",
+        "C07": "We need 25 food kits and 40 hygiene kits for the camp before 15/03/2026.",
+        "C08": "Order number 4521-7789-3310 for the wheelchair still has not arrived.",
+        "C09": "I am 72 years old and need help carrying groceries up to the 4th floor.",
+        "C10": "Please share the hotline number for the local food bank.",
+        "C11": "I hope May brings better weather; right now we need a space heater.",
+        "C12": "Grace period for the electricity bill ends Friday. Can someone help us pay the bill?",
+        "C13": "Victoria Park community kitchen serves lunch on weekdays. Is it open during the holidays?",
+        "C14": "We moved from Jordan last year and need help enrolling the kids in school.",
+        "C15": "Need diapers in size 4 and baby formula, around 3 cans, for a 9 month old.",
+        "C16": "The bus route 1205 stopped running and I can no longer reach the pharmacy.",
+        "C17": "Necesito ayuda con comida y medicinas para mi madre, que está enferma.",
+        "C18": "मुझे बच्चों के लिए गर्म कपड़े चाहिए, सर्दी बहुत ज़्यादा है।",
+        "C19": "The donation receipt total was 1,250,000 rupees for the whole village water project.",
+        "C20": "Information is available at [URL] but the page will not load on my phone.",
+        "C21": "Can someone explain how to fill in the ZIP code and state fields on the benefits website?",
+        "C22": "We need help repairing the roof at the community center after the storm.",
+        "C23": "Our group of 12 volunteers can deliver meals between 18:00 and 20:00 on Saturdays.",
+        "C24": "Mark the boxes as fragile because they contain glass jars of baby food.",
+        "C25": "The temperature dropped to -15 and the heating in Building 7 is broken.",
+        "C26": "Bonjour, nous avons besoin de couvertures et de nourriture pour deux familles.",
+        "C27": "Necesito ayuda with my English homework, por favor.",
+        "P01": "Please call me at [PHONE] about the food delivery.",
+        "P02": "You can reach me at [PHONE] after 6 pm.",
+        "P03": "My number is [PHONE] and I need a ride to dialysis on Tuesday.",
+        "P04": "Text [PHONE] when the volunteer is outside.",
+        "P05": "Call [PHONE] for the pickup, it is a wheelchair.",
+        "P06": "Contact me on +44 20 7946 0958 about the winter coats.",
+        "P07": "My WhatsApp is +91 98765 43210 because my English is not good.",
+        "P08": "Llámame al +52 55 1234 5678, necesito ayuda con la renta.",
+        "P09": "Call 020 7946 0321 between 9 and 5 on weekdays.",
+        "P10": "My phone is five five five, two one four, eight eight nine zero.",
+        "P11": "The number is nine one seven five five five zero one nine eight, please call after lunch.",
+        "P12": "Email me at [EMAIL] with the shelter details.",
+        "P13": "My email is [EMAIL] and I check it daily.",
+        "P14": "Send the form to rosa dot delgado at example dot com please.",
+        "P15": "My name is Priya Raghunathan and I need help moving a bed.",
+        "P16": "Wei Zhang needs a ride to the pharmacy on Friday.",
+        "P17": "Please ask Nguyen Thi Lan which groceries are suitable for her diet.",
+        "P18": "My grandmother, Esperanza Morales, needs someone to check on her daily.",
+        "P19": "Oluwaseun Adeyemi is requesting school supplies for two children.",
+        "P20": "I am Fatima Al-Sayed and my children need winter clothes.",
+        "P21": "Contact my neighbor Dmitri Volkov because he has the spare key.",
+        "P22": "Chloé Lefèvre needs help getting to the community center.",
+        "P23": "मेरा नाम अनीता शर्मा है और मुझे राशन चाहिए।",
+        "P24": "我叫王伟，需要帮助搬家。",
+        "P25": "Hola, soy Javier Ortega y necesito ayuda con medicinas para mi hijo.",
+        "P26": "Kwame Mensah said I should post here because we need food for the weekend.",
+        "P27": "Ask for Hiroshi Tanaka at the front desk when you arrive.",
+        "P28": "My address is 18 Maple Street, Springfield, for the furniture drop.",
+        "P29": "Please deliver the food box to 42 Cedar Ave, Apt 5B.",
+        "P30": "I live at 7 Rue des Fleurs, Lyon, and need winter clothes.",
+        "P31": "Vivo en Calle Mayor 23, 2º izquierda, Madrid; necesito una estufa.",
+        "P32": "We are at 1200 Pine Boulevard, Building C, unit 14, please bring blankets.",
+        "P33": "House 14, Lane 3, Sector 9, Dwarka, New Delhi 110075 needs medicines urgently.",
+        "P34": "My SSN is [NATIONAL_ID] and the form says it is required.",
+        "P35": "Aadhaar number 2345 6789 0123 is on the ration card application.",
+        "P36": "The card for reimbursement is [CARD].",
+        "P37": "Charge the delivery fee to [CARD]please.",
+        "P38": "My passport number is X1234567 and I need help with the visa form.",
+        "P39": "I'm Leila Nouri, call me at [PHONE] or email [EMAIL], address 55 Elm Road, Apt 3.",
+        "P40": "Para mi abuela Carmen Ruiz: Avenida Central 45, San José. Tel. 8888-1234.",
+        "P41": "Contact Ahmed Khan (+92 [PHONE]) or his wife Sana Khan at [EMAIL]",
+        "P42": "Mi nombre es Lucía Fernández, my number is [PHONE], necesito comida.",
+        "P43": "Please help my friend Tomás, his number is [PHONE].",
+        "P44": "Visit my profile [URL] to see photos of the damage.",
+        "P45": "I am staying with Grace Okonkwo at 9 Hope Street.",
+        "P46": "Hi, necesito ayuda, my son Mateo Herrera is sick, llámame al [PHONE].",
+        "P47": "Mera naam Ravi Verma hai, please call 98100 12345 for ration delivery."
+      }
+    },
+    "B_full": {
+      "name": "B. Existing patterns + users lookup (full names)",
+      "status": "MEASURED",
+      "init_seconds": 0.0007291671354323626,
+      "init_scope": "regex compilation + users name index build from CSV",
+      "latency": {
+        "samples": 3700,
+        "mean_us": 28.286786216216214,
+        "median_us": 27.625,
+        "p95_us": 37.958,
+        "min_us": 6.167,
+        "max_us": 56.542,
+        "timed_passes": 50,
+        "wall_seconds": 0.1056377919157967
+      },
+      "document": {
+        "true_positive": 25,
+        "false_negative": 22,
+        "false_positive": 1,
+        "true_negative": 26,
+        "pii_texts_caught": 25,
+        "pii_texts_missed": 22,
+        "clean_texts_wrongly_redacted": 1,
+        "precision": 0.9615384615384616,
+        "recall": 0.5319148936170213,
+        "f1": 0.684931506849315,
+        "specificity": 0.9629629629629629
+      },
+      "entity": {
+        "gold_entities": 60,
+        "detected": 30,
+        "fully_redacted": 29,
+        "recall": 0.5,
+        "full_redaction_rate": 0.48333333333333334,
+        "predicted_spans": 31,
+        "spurious_spans": 1,
+        "span_precision": 0.967741935483871,
+        "per_type": {
+          "ADDRESS": {
+            "total": 9,
+            "detected": 0,
+            "fully_redacted": 0,
+            "recall": 0.0,
+            "full_redaction_rate": 0.0
+          },
+          "CARD": {
+            "total": 2,
+            "detected": 2,
+            "fully_redacted": 2,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "EMAIL": {
+            "total": 5,
+            "detected": 4,
+            "fully_redacted": 4,
+            "recall": 0.8,
+            "full_redaction_rate": 0.8
+          },
+          "NATIONAL_ID": {
+            "total": 3,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 0.3333333333333333,
+            "full_redaction_rate": 0.3333333333333333
+          },
+          "PERSON": {
+            "total": 22,
+            "detected": 12,
+            "fully_redacted": 12,
+            "recall": 0.5454545454545454,
+            "full_redaction_rate": 0.5454545454545454
+          },
+          "PHONE": {
+            "total": 18,
+            "detected": 10,
+            "fully_redacted": 9,
+            "recall": 0.5555555555555556,
+            "full_redaction_rate": 0.5
+          },
+          "URL": {
+            "total": 1,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          }
+        },
+        "person_by_users_table_membership": {
+          "in_users_table": {
+            "total": 13,
+            "detected": 12,
+            "recall": 0.9230769230769231
+          },
+          "not_in_users_table": {
+            "total": 9,
+            "detected": 0,
+            "recall": 0.0
+          }
+        }
+      },
+      "by_tag": {
+        "accented_name": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "country_code": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "fp_trap_address": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_date": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_name_word": {
+          "texts": 5,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_number": {
+          "texts": 6,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_pii_words": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_url": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 0
+        },
+        "international_phone": {
+          "texts": 7,
+          "flagged": 1,
+          "contains_pii": 7
+        },
+        "mixed_language": {
+          "texts": 4,
+          "flagged": 2,
+          "contains_pii": 3
+        },
+        "multi_entity": {
+          "texts": 8,
+          "flagged": 5,
+          "contains_pii": 8
+        },
+        "non_english": {
+          "texts": 9,
+          "flagged": 2,
+          "contains_pii": 6
+        },
+        "non_english_address": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 2
+        },
+        "non_latin_script": {
+          "texts": 2,
+          "flagged": 1,
+          "contains_pii": 2
+        },
+        "spelled_out": {
+          "texts": 3,
+          "flagged": 0,
+          "contains_pii": 3
+        },
+        "third_party_name": {
+          "texts": 9,
+          "flagged": 3,
+          "contains_pii": 9
+        }
+      },
+      "missed_texts": [
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P14",
+        "P18",
+        "P21",
+        "P24",
+        "P26",
+        "P28",
+        "P29",
+        "P30",
+        "P31",
+        "P32",
+        "P33",
+        "P35",
+        "P38",
+        "P40",
+        "P45",
+        "P47"
+      ],
+      "wrongly_redacted_clean_texts": [
+        "C20"
+      ],
+      "missed_entities": [
+        {
+          "id": "P06",
+          "type": "PHONE",
+          "text": "+44 20 7946 0958"
+        },
+        {
+          "id": "P07",
+          "type": "PHONE",
+          "text": "+91 98765 43210"
+        },
+        {
+          "id": "P08",
+          "type": "PHONE",
+          "text": "+52 55 1234 5678"
+        },
+        {
+          "id": "P09",
+          "type": "PHONE",
+          "text": "020 7946 0321"
+        },
+        {
+          "id": "P10",
+          "type": "PHONE",
+          "text": "five five five, two one four, eight eight nine zero"
+        },
+        {
+          "id": "P11",
+          "type": "PHONE",
+          "text": "nine one seven five five five zero one nine eight"
+        },
+        {
+          "id": "P14",
+          "type": "EMAIL",
+          "text": "rosa dot delgado at example dot com"
+        },
+        {
+          "id": "P18",
+          "type": "PERSON",
+          "text": "Esperanza Morales"
+        },
+        {
+          "id": "P21",
+          "type": "PERSON",
+          "text": "Dmitri Volkov"
+        },
+        {
+          "id": "P24",
+          "type": "PERSON",
+          "text": "王伟"
+        },
+        {
+          "id": "P26",
+          "type": "PERSON",
+          "text": "Kwame Mensah"
+        },
+        {
+          "id": "P28",
+          "type": "ADDRESS",
+          "text": "18 Maple Street, Springfield"
+        },
+        {
+          "id": "P29",
+          "type": "ADDRESS",
+          "text": "42 Cedar Ave, Apt 5B"
+        },
+        {
+          "id": "P30",
+          "type": "ADDRESS",
+          "text": "7 Rue des Fleurs, Lyon"
+        },
+        {
+          "id": "P31",
+          "type": "ADDRESS",
+          "text": "Calle Mayor 23, 2º izquierda, Madrid"
+        },
+        {
+          "id": "P32",
+          "type": "ADDRESS",
+          "text": "1200 Pine Boulevard, Building C, unit 14"
+        },
+        {
+          "id": "P33",
+          "type": "ADDRESS",
+          "text": "House 14, Lane 3, Sector 9, Dwarka, New Delhi 110075"
+        },
+        {
+          "id": "P35",
+          "type": "NATIONAL_ID",
+          "text": "2345 6789 0123"
+        },
+        {
+          "id": "P38",
+          "type": "NATIONAL_ID",
+          "text": "X1234567"
+        },
+        {
+          "id": "P39",
+          "type": "ADDRESS",
+          "text": "55 Elm Road, Apt 3"
+        },
+        {
+          "id": "P40",
+          "type": "PERSON",
+          "text": "Carmen Ruiz"
+        },
+        {
+          "id": "P40",
+          "type": "ADDRESS",
+          "text": "Avenida Central 45, San José"
+        },
+        {
+          "id": "P40",
+          "type": "PHONE",
+          "text": "8888-1234"
+        },
+        {
+          "id": "P41",
+          "type": "PERSON",
+          "text": "Sana Khan"
+        },
+        {
+          "id": "P43",
+          "type": "PERSON",
+          "text": "Tomás"
+        },
+        {
+          "id": "P45",
+          "type": "PERSON",
+          "text": "Grace Okonkwo"
+        },
+        {
+          "id": "P45",
+          "type": "ADDRESS",
+          "text": "9 Hope Street"
+        },
+        {
+          "id": "P46",
+          "type": "PERSON",
+          "text": "Mateo Herrera"
+        },
+        {
+          "id": "P47",
+          "type": "PERSON",
+          "text": "Ravi Verma"
+        },
+        {
+          "id": "P47",
+          "type": "PHONE",
+          "text": "98100 12345"
+        }
+      ],
+      "redacted": {
+        "C01": "Our family lost everything in the flood and we need drinking water and blankets for three children.",
+        "C02": "I need help applying for food assistance; the form asks for documents I do not understand.",
+        "C03": "The shelter on the north side closes at 9 pm. Is there another place open overnight?",
+        "C04": "Looking for a volunteer who can translate a hospital discharge letter from Arabic to English.",
+        "C05": "My rent went up by $350 this month and I cannot pay it. Are there emergency rent programs?",
+        "C06": "The clinic appointment is on 2026-03-14 at 10:30. I need a ride there and back.",
+        "C07": "We need 25 food kits and 40 hygiene kits for the camp before 15/03/2026.",
+        "C08": "Order number 4521-7789-3310 for the wheelchair still has not arrived.",
+        "C09": "I am 72 years old and need help carrying groceries up to the 4th floor.",
+        "C10": "Please share the hotline number for the local food bank.",
+        "C11": "I hope May brings better weather; right now we need a space heater.",
+        "C12": "Grace period for the electricity bill ends Friday. Can someone help us pay the bill?",
+        "C13": "Victoria Park community kitchen serves lunch on weekdays. Is it open during the holidays?",
+        "C14": "We moved from Jordan last year and need help enrolling the kids in school.",
+        "C15": "Need diapers in size 4 and baby formula, around 3 cans, for a 9 month old.",
+        "C16": "The bus route 1205 stopped running and I can no longer reach the pharmacy.",
+        "C17": "Necesito ayuda con comida y medicinas para mi madre, que está enferma.",
+        "C18": "मुझे बच्चों के लिए गर्म कपड़े चाहिए, सर्दी बहुत ज़्यादा है।",
+        "C19": "The donation receipt total was 1,250,000 rupees for the whole village water project.",
+        "C20": "Information is available at [URL] but the page will not load on my phone.",
+        "C21": "Can someone explain how to fill in the ZIP code and state fields on the benefits website?",
+        "C22": "We need help repairing the roof at the community center after the storm.",
+        "C23": "Our group of 12 volunteers can deliver meals between 18:00 and 20:00 on Saturdays.",
+        "C24": "Mark the boxes as fragile because they contain glass jars of baby food.",
+        "C25": "The temperature dropped to -15 and the heating in Building 7 is broken.",
+        "C26": "Bonjour, nous avons besoin de couvertures et de nourriture pour deux familles.",
+        "C27": "Necesito ayuda with my English homework, por favor.",
+        "P01": "Please call me at [PHONE] about the food delivery.",
+        "P02": "You can reach me at [PHONE] after 6 pm.",
+        "P03": "My number is [PHONE] and I need a ride to dialysis on Tuesday.",
+        "P04": "Text [PHONE] when the volunteer is outside.",
+        "P05": "Call [PHONE] for the pickup, it is a wheelchair.",
+        "P06": "Contact me on +44 20 7946 0958 about the winter coats.",
+        "P07": "My WhatsApp is +91 98765 43210 because my English is not good.",
+        "P08": "Llámame al +52 55 1234 5678, necesito ayuda con la renta.",
+        "P09": "Call 020 7946 0321 between 9 and 5 on weekdays.",
+        "P10": "My phone is five five five, two one four, eight eight nine zero.",
+        "P11": "The number is nine one seven five five five zero one nine eight, please call after lunch.",
+        "P12": "Email me at [EMAIL] with the shelter details.",
+        "P13": "My email is [EMAIL] and I check it daily.",
+        "P14": "Send the form to rosa dot delgado at example dot com please.",
+        "P15": "My name is [PERSON] and I need help moving a bed.",
+        "P16": "[PERSON] needs a ride to the pharmacy on Friday.",
+        "P17": "Please ask [PERSON] which groceries are suitable for her diet.",
+        "P18": "My grandmother, Esperanza Morales, needs someone to check on her daily.",
+        "P19": "[PERSON] is requesting school supplies for two children.",
+        "P20": "I am [PERSON] and my children need winter clothes.",
+        "P21": "Contact my neighbor Dmitri Volkov because he has the spare key.",
+        "P22": "[PERSON] needs help getting to the community center.",
+        "P23": "मेरा नाम [PERSON] है और मुझे राशन चाहिए।",
+        "P24": "我叫王伟，需要帮助搬家。",
+        "P25": "Hola, soy [PERSON] y necesito ayuda con medicinas para mi hijo.",
+        "P26": "Kwame Mensah said I should post here because we need food for the weekend.",
+        "P27": "Ask for [PERSON] at the front desk when you arrive.",
+        "P28": "My address is 18 Maple Street, Springfield, for the furniture drop.",
+        "P29": "Please deliver the food box to 42 Cedar Ave, Apt 5B.",
+        "P30": "I live at 7 Rue des Fleurs, Lyon, and need winter clothes.",
+        "P31": "Vivo en Calle Mayor 23, 2º izquierda, Madrid; necesito una estufa.",
+        "P32": "We are at 1200 Pine Boulevard, Building C, unit 14, please bring blankets.",
+        "P33": "House 14, Lane 3, Sector 9, Dwarka, New Delhi 110075 needs medicines urgently.",
+        "P34": "My SSN is [NATIONAL_ID] and the form says it is required.",
+        "P35": "Aadhaar number 2345 6789 0123 is on the ration card application.",
+        "P36": "The card for reimbursement is [CARD].",
+        "P37": "Charge the delivery fee to [CARD]please.",
+        "P38": "My passport number is X1234567 and I need help with the visa form.",
+        "P39": "I'm [PERSON], call me at [PHONE] or email [EMAIL], address 55 Elm Road, Apt 3.",
+        "P40": "Para mi abuela Carmen Ruiz: Avenida Central 45, San José. Tel. 8888-1234.",
+        "P41": "Contact [PERSON] (+92 [PHONE]) or his wife Sana Khan at [EMAIL]",
+        "P42": "Mi nombre es [PERSON], my number is [PHONE], necesito comida.",
+        "P43": "Please help my friend Tomás, his number is [PHONE].",
+        "P44": "Visit my profile [URL] to see photos of the damage.",
+        "P45": "I am staying with Grace Okonkwo at 9 Hope Street.",
+        "P46": "Hi, necesito ayuda, my son Mateo Herrera is sick, llámame al [PHONE].",
+        "P47": "Mera naam Ravi Verma hai, please call 98100 12345 for ration delivery."
+      }
+    },
+    "B_token": {
+      "name": "B. Existing patterns + users lookup (full names + single name tokens)",
+      "status": "MEASURED",
+      "init_seconds": 0.0007291671354323626,
+      "init_scope": "regex compilation + users name index build from CSV",
+      "latency": {
+        "samples": 3700,
+        "mean_us": 28.935153513513512,
+        "median_us": 28.167,
+        "p95_us": 39.041,
+        "min_us": 6.333,
+        "max_us": 68.583,
+        "timed_passes": 50,
+        "wall_seconds": 0.10803420899901539
+      },
+      "document": {
+        "true_positive": 26,
+        "false_negative": 21,
+        "false_positive": 6,
+        "true_negative": 21,
+        "pii_texts_caught": 26,
+        "pii_texts_missed": 21,
+        "clean_texts_wrongly_redacted": 6,
+        "precision": 0.8125,
+        "recall": 0.5531914893617021,
+        "f1": 0.6582278481012658,
+        "specificity": 0.7777777777777778
+      },
+      "entity": {
+        "gold_entities": 60,
+        "detected": 33,
+        "fully_redacted": 29,
+        "recall": 0.55,
+        "full_redaction_rate": 0.48333333333333334,
+        "predicted_spans": 39,
+        "spurious_spans": 6,
+        "span_precision": 0.8461538461538461,
+        "per_type": {
+          "ADDRESS": {
+            "total": 9,
+            "detected": 1,
+            "fully_redacted": 0,
+            "recall": 0.1111111111111111,
+            "full_redaction_rate": 0.0
+          },
+          "CARD": {
+            "total": 2,
+            "detected": 2,
+            "fully_redacted": 2,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "EMAIL": {
+            "total": 5,
+            "detected": 4,
+            "fully_redacted": 4,
+            "recall": 0.8,
+            "full_redaction_rate": 0.8
+          },
+          "NATIONAL_ID": {
+            "total": 3,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 0.3333333333333333,
+            "full_redaction_rate": 0.3333333333333333
+          },
+          "PERSON": {
+            "total": 22,
+            "detected": 14,
+            "fully_redacted": 12,
+            "recall": 0.6363636363636364,
+            "full_redaction_rate": 0.5454545454545454
+          },
+          "PHONE": {
+            "total": 18,
+            "detected": 10,
+            "fully_redacted": 9,
+            "recall": 0.5555555555555556,
+            "full_redaction_rate": 0.5
+          },
+          "URL": {
+            "total": 1,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          }
+        },
+        "person_by_users_table_membership": {
+          "in_users_table": {
+            "total": 13,
+            "detected": 12,
+            "recall": 0.9230769230769231
+          },
+          "not_in_users_table": {
+            "total": 9,
+            "detected": 2,
+            "recall": 0.2222222222222222
+          }
+        }
+      },
+      "by_tag": {
+        "accented_name": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "country_code": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "fp_trap_address": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_date": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_name_word": {
+          "texts": 5,
+          "flagged": 5,
+          "contains_pii": 0
+        },
+        "fp_trap_number": {
+          "texts": 6,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_pii_words": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_url": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 0
+        },
+        "international_phone": {
+          "texts": 7,
+          "flagged": 1,
+          "contains_pii": 7
+        },
+        "mixed_language": {
+          "texts": 4,
+          "flagged": 2,
+          "contains_pii": 3
+        },
+        "multi_entity": {
+          "texts": 8,
+          "flagged": 6,
+          "contains_pii": 8
+        },
+        "non_english": {
+          "texts": 9,
+          "flagged": 2,
+          "contains_pii": 6
+        },
+        "non_english_address": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 2
+        },
+        "non_latin_script": {
+          "texts": 2,
+          "flagged": 1,
+          "contains_pii": 2
+        },
+        "spelled_out": {
+          "texts": 3,
+          "flagged": 0,
+          "contains_pii": 3
+        },
+        "third_party_name": {
+          "texts": 9,
+          "flagged": 4,
+          "contains_pii": 9
+        }
+      },
+      "missed_texts": [
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P14",
+        "P18",
+        "P21",
+        "P24",
+        "P26",
+        "P28",
+        "P29",
+        "P30",
+        "P31",
+        "P32",
+        "P33",
+        "P35",
+        "P38",
+        "P40",
+        "P47"
+      ],
+      "wrongly_redacted_clean_texts": [
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C20",
+        "C24"
+      ],
+      "missed_entities": [
+        {
+          "id": "P06",
+          "type": "PHONE",
+          "text": "+44 20 7946 0958"
+        },
+        {
+          "id": "P07",
+          "type": "PHONE",
+          "text": "+91 98765 43210"
+        },
+        {
+          "id": "P08",
+          "type": "PHONE",
+          "text": "+52 55 1234 5678"
+        },
+        {
+          "id": "P09",
+          "type": "PHONE",
+          "text": "020 7946 0321"
+        },
+        {
+          "id": "P10",
+          "type": "PHONE",
+          "text": "five five five, two one four, eight eight nine zero"
+        },
+        {
+          "id": "P11",
+          "type": "PHONE",
+          "text": "nine one seven five five five zero one nine eight"
+        },
+        {
+          "id": "P14",
+          "type": "EMAIL",
+          "text": "rosa dot delgado at example dot com"
+        },
+        {
+          "id": "P18",
+          "type": "PERSON",
+          "text": "Esperanza Morales"
+        },
+        {
+          "id": "P21",
+          "type": "PERSON",
+          "text": "Dmitri Volkov"
+        },
+        {
+          "id": "P24",
+          "type": "PERSON",
+          "text": "王伟"
+        },
+        {
+          "id": "P26",
+          "type": "PERSON",
+          "text": "Kwame Mensah"
+        },
+        {
+          "id": "P28",
+          "type": "ADDRESS",
+          "text": "18 Maple Street, Springfield"
+        },
+        {
+          "id": "P29",
+          "type": "ADDRESS",
+          "text": "42 Cedar Ave, Apt 5B"
+        },
+        {
+          "id": "P30",
+          "type": "ADDRESS",
+          "text": "7 Rue des Fleurs, Lyon"
+        },
+        {
+          "id": "P31",
+          "type": "ADDRESS",
+          "text": "Calle Mayor 23, 2º izquierda, Madrid"
+        },
+        {
+          "id": "P32",
+          "type": "ADDRESS",
+          "text": "1200 Pine Boulevard, Building C, unit 14"
+        },
+        {
+          "id": "P33",
+          "type": "ADDRESS",
+          "text": "House 14, Lane 3, Sector 9, Dwarka, New Delhi 110075"
+        },
+        {
+          "id": "P35",
+          "type": "NATIONAL_ID",
+          "text": "2345 6789 0123"
+        },
+        {
+          "id": "P38",
+          "type": "NATIONAL_ID",
+          "text": "X1234567"
+        },
+        {
+          "id": "P39",
+          "type": "ADDRESS",
+          "text": "55 Elm Road, Apt 3"
+        },
+        {
+          "id": "P40",
+          "type": "PERSON",
+          "text": "Carmen Ruiz"
+        },
+        {
+          "id": "P40",
+          "type": "ADDRESS",
+          "text": "Avenida Central 45, San José"
+        },
+        {
+          "id": "P40",
+          "type": "PHONE",
+          "text": "8888-1234"
+        },
+        {
+          "id": "P43",
+          "type": "PERSON",
+          "text": "Tomás"
+        },
+        {
+          "id": "P46",
+          "type": "PERSON",
+          "text": "Mateo Herrera"
+        },
+        {
+          "id": "P47",
+          "type": "PERSON",
+          "text": "Ravi Verma"
+        },
+        {
+          "id": "P47",
+          "type": "PHONE",
+          "text": "98100 12345"
+        }
+      ],
+      "redacted": {
+        "C01": "Our family lost everything in the flood and we need drinking water and blankets for three children.",
+        "C02": "I need help applying for food assistance; the form asks for documents I do not understand.",
+        "C03": "The shelter on the north side closes at 9 pm. Is there another place open overnight?",
+        "C04": "Looking for a volunteer who can translate a hospital discharge letter from Arabic to English.",
+        "C05": "My rent went up by $350 this month and I cannot pay it. Are there emergency rent programs?",
+        "C06": "The clinic appointment is on 2026-03-14 at 10:30. I need a ride there and back.",
+        "C07": "We need 25 food kits and 40 hygiene kits for the camp before 15/03/2026.",
+        "C08": "Order number 4521-7789-3310 for the wheelchair still has not arrived.",
+        "C09": "I am 72 years old and need help carrying groceries up to the 4th floor.",
+        "C10": "Please share the hotline number for the local food bank.",
+        "C11": "I hope [PERSON] brings better weather; right now we need a space heater.",
+        "C12": "[PERSON] period for the electricity bill ends Friday. Can someone help us pay the bill?",
+        "C13": "[PERSON] Park community kitchen serves lunch on weekdays. Is it open during the holidays?",
+        "C14": "We moved from [PERSON] last year and need help enrolling the kids in school.",
+        "C15": "Need diapers in size 4 and baby formula, around 3 cans, for a 9 month old.",
+        "C16": "The bus route 1205 stopped running and I can no longer reach the pharmacy.",
+        "C17": "Necesito ayuda con comida y medicinas para mi madre, que está enferma.",
+        "C18": "मुझे बच्चों के लिए गर्म कपड़े चाहिए, सर्दी बहुत ज़्यादा है।",
+        "C19": "The donation receipt total was 1,250,000 rupees for the whole village water project.",
+        "C20": "Information is available at [URL] but the page will not load on my phone.",
+        "C21": "Can someone explain how to fill in the ZIP code and state fields on the benefits website?",
+        "C22": "We need help repairing the roof at the community center after the storm.",
+        "C23": "Our group of 12 volunteers can deliver meals between 18:00 and 20:00 on Saturdays.",
+        "C24": "[PERSON] the boxes as fragile because they contain glass jars of baby food.",
+        "C25": "The temperature dropped to -15 and the heating in Building 7 is broken.",
+        "C26": "Bonjour, nous avons besoin de couvertures et de nourriture pour deux familles.",
+        "C27": "Necesito ayuda with my English homework, por favor.",
+        "P01": "Please call me at [PHONE] about the food delivery.",
+        "P02": "You can reach me at [PHONE] after 6 pm.",
+        "P03": "My number is [PHONE] and I need a ride to dialysis on Tuesday.",
+        "P04": "Text [PHONE] when the volunteer is outside.",
+        "P05": "Call [PHONE] for the pickup, it is a wheelchair.",
+        "P06": "Contact me on +44 20 7946 0958 about the winter coats.",
+        "P07": "My WhatsApp is +91 98765 43210 because my English is not good.",
+        "P08": "Llámame al +52 55 1234 5678, necesito ayuda con la renta.",
+        "P09": "Call 020 7946 0321 between 9 and 5 on weekdays.",
+        "P10": "My phone is five five five, two one four, eight eight nine zero.",
+        "P11": "The number is nine one seven five five five zero one nine eight, please call after lunch.",
+        "P12": "Email me at [EMAIL] with the shelter details.",
+        "P13": "My email is [EMAIL] and I check it daily.",
+        "P14": "Send the form to rosa dot delgado at example dot com please.",
+        "P15": "My name is [PERSON] and I need help moving a bed.",
+        "P16": "[PERSON] needs a ride to the pharmacy on Friday.",
+        "P17": "Please ask [PERSON] which groceries are suitable for her diet.",
+        "P18": "My grandmother, Esperanza Morales, needs someone to check on her daily.",
+        "P19": "[PERSON] is requesting school supplies for two children.",
+        "P20": "I am [PERSON] and my children need winter clothes.",
+        "P21": "Contact my neighbor Dmitri Volkov because he has the spare key.",
+        "P22": "[PERSON] needs help getting to the community center.",
+        "P23": "मेरा नाम [PERSON] है और मुझे राशन चाहिए।",
+        "P24": "我叫王伟，需要帮助搬家。",
+        "P25": "Hola, soy [PERSON] y necesito ayuda con medicinas para mi hijo.",
+        "P26": "Kwame Mensah said I should post here because we need food for the weekend.",
+        "P27": "Ask for [PERSON] at the front desk when you arrive.",
+        "P28": "My address is 18 Maple Street, Springfield, for the furniture drop.",
+        "P29": "Please deliver the food box to 42 Cedar Ave, Apt 5B.",
+        "P30": "I live at 7 Rue des Fleurs, Lyon, and need winter clothes.",
+        "P31": "Vivo en Calle Mayor 23, 2º izquierda, Madrid; necesito una estufa.",
+        "P32": "We are at 1200 Pine Boulevard, Building C, unit 14, please bring blankets.",
+        "P33": "House 14, Lane 3, Sector 9, Dwarka, New Delhi 110075 needs medicines urgently.",
+        "P34": "My SSN is [NATIONAL_ID] and the form says it is required.",
+        "P35": "Aadhaar number 2345 6789 0123 is on the ration card application.",
+        "P36": "The card for reimbursement is [CARD].",
+        "P37": "Charge the delivery fee to [CARD]please.",
+        "P38": "My passport number is X1234567 and I need help with the visa form.",
+        "P39": "I'm [PERSON], call me at [PHONE] or email [EMAIL], address 55 Elm Road, Apt 3.",
+        "P40": "Para mi abuela Carmen Ruiz: Avenida Central 45, San José. Tel. 8888-1234.",
+        "P41": "Contact [PERSON] (+92 [PHONE]) or his wife Sana [PERSON] at [EMAIL]",
+        "P42": "Mi nombre es [PERSON], my number is [PHONE], necesito comida.",
+        "P43": "Please help my friend Tomás, his number is [PHONE].",
+        "P44": "Visit my profile [URL] to see photos of the damage.",
+        "P45": "I am staying with [PERSON] Okonkwo at 9 [PERSON] Street.",
+        "P46": "Hi, necesito ayuda, my son Mateo Herrera is sick, llámame al [PHONE].",
+        "P47": "Mera naam Ravi Verma hai, please call 98100 12345 for ration delivery."
+      }
+    },
+    "D": {
+      "name": "D. Enhanced patterns + users full-name lookup + name cues (supplementary)",
+      "status": "MEASURED",
+      "init_seconds": 0.0026888750726357102,
+      "init_scope": "regex compilation + users name index build from CSV",
+      "latency": {
+        "samples": 3700,
+        "mean_us": 65.40739648648649,
+        "median_us": 60.458,
+        "p95_us": 83.292,
+        "min_us": 12.167,
+        "max_us": 3880.167,
+        "timed_passes": 50,
+        "wall_seconds": 0.2430801670998335
+      },
+      "document": {
+        "true_positive": 45,
+        "false_negative": 2,
+        "false_positive": 0,
+        "true_negative": 27,
+        "pii_texts_caught": 45,
+        "pii_texts_missed": 2,
+        "clean_texts_wrongly_redacted": 0,
+        "precision": 1.0,
+        "recall": 0.9574468085106383,
+        "f1": 0.9782608695652174,
+        "specificity": 1.0
+      },
+      "entity": {
+        "gold_entities": 60,
+        "detected": 57,
+        "fully_redacted": 56,
+        "recall": 0.95,
+        "full_redaction_rate": 0.9333333333333333,
+        "predicted_spans": 57,
+        "spurious_spans": 0,
+        "span_precision": 1.0,
+        "per_type": {
+          "ADDRESS": {
+            "total": 9,
+            "detected": 9,
+            "fully_redacted": 8,
+            "recall": 1.0,
+            "full_redaction_rate": 0.8888888888888888
+          },
+          "CARD": {
+            "total": 2,
+            "detected": 2,
+            "fully_redacted": 2,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "EMAIL": {
+            "total": 5,
+            "detected": 5,
+            "fully_redacted": 5,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "NATIONAL_ID": {
+            "total": 3,
+            "detected": 3,
+            "fully_redacted": 3,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "PERSON": {
+            "total": 22,
+            "detected": 19,
+            "fully_redacted": 19,
+            "recall": 0.8636363636363636,
+            "full_redaction_rate": 0.8636363636363636
+          },
+          "PHONE": {
+            "total": 18,
+            "detected": 18,
+            "fully_redacted": 18,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          },
+          "URL": {
+            "total": 1,
+            "detected": 1,
+            "fully_redacted": 1,
+            "recall": 1.0,
+            "full_redaction_rate": 1.0
+          }
+        },
+        "person_by_users_table_membership": {
+          "in_users_table": {
+            "total": 13,
+            "detected": 12,
+            "recall": 0.9230769230769231
+          },
+          "not_in_users_table": {
+            "total": 9,
+            "detected": 7,
+            "recall": 0.7777777777777778
+          }
+        }
+      },
+      "by_tag": {
+        "accented_name": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "country_code": {
+          "texts": 1,
+          "flagged": 1,
+          "contains_pii": 1
+        },
+        "fp_trap_address": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_date": {
+          "texts": 2,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_name_word": {
+          "texts": 5,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_number": {
+          "texts": 6,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_pii_words": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "fp_trap_url": {
+          "texts": 1,
+          "flagged": 0,
+          "contains_pii": 0
+        },
+        "international_phone": {
+          "texts": 7,
+          "flagged": 7,
+          "contains_pii": 7
+        },
+        "mixed_language": {
+          "texts": 4,
+          "flagged": 3,
+          "contains_pii": 3
+        },
+        "multi_entity": {
+          "texts": 8,
+          "flagged": 8,
+          "contains_pii": 8
+        },
+        "non_english": {
+          "texts": 9,
+          "flagged": 5,
+          "contains_pii": 6
+        },
+        "non_english_address": {
+          "texts": 2,
+          "flagged": 2,
+          "contains_pii": 2
+        },
+        "non_latin_script": {
+          "texts": 2,
+          "flagged": 1,
+          "contains_pii": 2
+        },
+        "spelled_out": {
+          "texts": 3,
+          "flagged": 3,
+          "contains_pii": 3
+        },
+        "third_party_name": {
+          "texts": 9,
+          "flagged": 8,
+          "contains_pii": 9
+        }
+      },
+      "missed_texts": [
+        "P24",
+        "P26"
+      ],
+      "wrongly_redacted_clean_texts": [],
+      "missed_entities": [
+        {
+          "id": "P24",
+          "type": "PERSON",
+          "text": "王伟"
+        },
+        {
+          "id": "P26",
+          "type": "PERSON",
+          "text": "Kwame Mensah"
+        },
+        {
+          "id": "P47",
+          "type": "PERSON",
+          "text": "Ravi Verma"
+        }
+      ],
+      "redacted": {
+        "C01": "Our family lost everything in the flood and we need drinking water and blankets for three children.",
+        "C02": "I need help applying for food assistance; the form asks for documents I do not understand.",
+        "C03": "The shelter on the north side closes at 9 pm. Is there another place open overnight?",
+        "C04": "Looking for a volunteer who can translate a hospital discharge letter from Arabic to English.",
+        "C05": "My rent went up by $350 this month and I cannot pay it. Are there emergency rent programs?",
+        "C06": "The clinic appointment is on 2026-03-14 at 10:30. I need a ride there and back.",
+        "C07": "We need 25 food kits and 40 hygiene kits for the camp before 15/03/2026.",
+        "C08": "Order number 4521-7789-3310 for the wheelchair still has not arrived.",
+        "C09": "I am 72 years old and need help carrying groceries up to the 4th floor.",
+        "C10": "Please share the hotline number for the local food bank.",
+        "C11": "I hope May brings better weather; right now we need a space heater.",
+        "C12": "Grace period for the electricity bill ends Friday. Can someone help us pay the bill?",
+        "C13": "Victoria Park community kitchen serves lunch on weekdays. Is it open during the holidays?",
+        "C14": "We moved from Jordan last year and need help enrolling the kids in school.",
+        "C15": "Need diapers in size 4 and baby formula, around 3 cans, for a 9 month old.",
+        "C16": "The bus route 1205 stopped running and I can no longer reach the pharmacy.",
+        "C17": "Necesito ayuda con comida y medicinas para mi madre, que está enferma.",
+        "C18": "मुझे बच्चों के लिए गर्म कपड़े चाहिए, सर्दी बहुत ज़्यादा है।",
+        "C19": "The donation receipt total was 1,250,000 rupees for the whole village water project.",
+        "C20": "Information is available at https://www.example.org/relief but the page will not load on my phone.",
+        "C21": "Can someone explain how to fill in the ZIP code and state fields on the benefits website?",
+        "C22": "We need help repairing the roof at the community center after the storm.",
+        "C23": "Our group of 12 volunteers can deliver meals between 18:00 and 20:00 on Saturdays.",
+        "C24": "Mark the boxes as fragile because they contain glass jars of baby food.",
+        "C25": "The temperature dropped to -15 and the heating in Building 7 is broken.",
+        "C26": "Bonjour, nous avons besoin de couvertures et de nourriture pour deux familles.",
+        "C27": "Necesito ayuda with my English homework, por favor.",
+        "P01": "Please call me at [PHONE] about the food delivery.",
+        "P02": "You can reach me at [PHONE] after 6 pm.",
+        "P03": "My number is [PHONE] and I need a ride to dialysis on Tuesday.",
+        "P04": "Text [PHONE] when the volunteer is outside.",
+        "P05": "Call [PHONE] for the pickup, it is a wheelchair.",
+        "P06": "Contact me on [PHONE] about the winter coats.",
+        "P07": "My WhatsApp is [PHONE] because my English is not good.",
+        "P08": "Llámame al [PHONE], necesito ayuda con la renta.",
+        "P09": "Call [PHONE] between 9 and 5 on weekdays.",
+        "P10": "My phone is [PHONE].",
+        "P11": "The number is [PHONE], please call after lunch.",
+        "P12": "Email me at [EMAIL] with the shelter details.",
+        "P13": "My email is [EMAIL] and I check it daily.",
+        "P14": "Send the form to [EMAIL] please.",
+        "P15": "My name is [PERSON] and I need help moving a bed.",
+        "P16": "[PERSON] needs a ride to the pharmacy on Friday.",
+        "P17": "Please ask [PERSON] which groceries are suitable for her diet.",
+        "P18": "My grandmother, [PERSON], needs someone to check on her daily.",
+        "P19": "[PERSON] is requesting school supplies for two children.",
+        "P20": "I am [PERSON] and my children need winter clothes.",
+        "P21": "Contact my neighbor [PERSON] because he has the spare key.",
+        "P22": "[PERSON] needs help getting to the community center.",
+        "P23": "मेरा नाम [PERSON] है और मुझे राशन चाहिए।",
+        "P24": "我叫王伟，需要帮助搬家。",
+        "P25": "Hola, soy [PERSON] y necesito ayuda con medicinas para mi hijo.",
+        "P26": "Kwame Mensah said I should post here because we need food for the weekend.",
+        "P27": "Ask for [PERSON] at the front desk when you arrive.",
+        "P28": "My address is [ADDRESS], for the furniture drop.",
+        "P29": "Please deliver the food box to [ADDRESS].",
+        "P30": "I live at [ADDRESS], and need winter clothes.",
+        "P31": "Vivo en [ADDRESS], 2º izquierda, Madrid; necesito una estufa.",
+        "P32": "We are at [ADDRESS], please bring blankets.",
+        "P33": "[ADDRESS] needs medicines urgently.",
+        "P34": "My SSN is [NATIONAL_ID] and the form says it is required.",
+        "P35": "Aadhaar number [NATIONAL_ID] is on the ration card application.",
+        "P36": "The card for reimbursement is [CARD].",
+        "P37": "Charge the delivery fee to [CARD] please.",
+        "P38": "My passport number is [NATIONAL_ID] and I need help with the visa form.",
+        "P39": "I'm [PERSON], call me at [PHONE] or email [EMAIL], address [ADDRESS].",
+        "P40": "Para mi abuela [PERSON]: [ADDRESS]. Tel. [PHONE].",
+        "P41": "Contact [PERSON] ([PHONE]) or his wife [PERSON] at [EMAIL].",
+        "P42": "Mi nombre es [PERSON], my number is [PHONE], necesito comida.",
+        "P43": "Please help my friend [PERSON], his number is [PHONE].",
+        "P44": "Visit my profile [URL] to see photos of the damage.",
+        "P45": "I am staying with [PERSON] at [ADDRESS].",
+        "P46": "Hi, necesito ayuda, my son [PERSON] is sick, llámame al [PHONE].",
+        "P47": "Mera naam Ravi Verma hai, please call [PHONE] for ration delivery."
+      }
+    },
+    "C": {
+      "name": "C. Existing patterns + Amazon Comprehend",
+      "status": "NOT MEASURED",
+      "availability": {
+        "boto3_installed": false,
+        "credentials_found": false,
+        "reason": "boto3 is not installed in this environment"
+      }
+    }
+  },
+  "external_binary_evaluation": {
+    "path": "/tmp/pr659_heldout/pii_request_descriptions.jsonl",
+    "texts": 60,
+    "pii_texts": 40,
+    "clean_texts": 20,
+    "approaches": {
+      "A": {
+        "name": "A. Existing patterns only",
+        "document": {
+          "true_positive": 14,
+          "false_negative": 26,
+          "false_positive": 0,
+          "true_negative": 20,
+          "pii_texts_caught": 14,
+          "pii_texts_missed": 26,
+          "clean_texts_wrongly_redacted": 0,
+          "precision": 1.0,
+          "recall": 0.35,
+          "f1": 0.5185185185185185,
+          "specificity": 1.0
+        },
+        "missed_texts": [
+          "P05",
+          "P08",
+          "P09",
+          "P10",
+          "P12",
+          "P14",
+          "P15",
+          "P16",
+          "P17",
+          "P18",
+          "P19",
+          "P20",
+          "P21",
+          "P22",
+          "P23",
+          "P24",
+          "P26",
+          "P27",
+          "P29",
+          "P30",
+          "P31",
+          "P32",
+          "P33",
+          "P35",
+          "P36",
+          "P39"
+        ],
+        "wrongly_redacted_clean_texts": []
+      },
+      "B_full": {
+        "name": "B. Existing patterns + users lookup (full names)",
+        "document": {
+          "true_positive": 14,
+          "false_negative": 26,
+          "false_positive": 0,
+          "true_negative": 20,
+          "pii_texts_caught": 14,
+          "pii_texts_missed": 26,
+          "clean_texts_wrongly_redacted": 0,
+          "precision": 1.0,
+          "recall": 0.35,
+          "f1": 0.5185185185185185,
+          "specificity": 1.0
+        },
+        "missed_texts": [
+          "P05",
+          "P08",
+          "P09",
+          "P10",
+          "P12",
+          "P14",
+          "P15",
+          "P16",
+          "P17",
+          "P18",
+          "P19",
+          "P20",
+          "P21",
+          "P22",
+          "P23",
+          "P24",
+          "P26",
+          "P27",
+          "P29",
+          "P30",
+          "P31",
+          "P32",
+          "P33",
+          "P35",
+          "P36",
+          "P39"
+        ],
+        "wrongly_redacted_clean_texts": []
+      },
+      "B_token": {
+        "name": "B. Existing patterns + users lookup (full names + single name tokens)",
+        "document": {
+          "true_positive": 19,
+          "false_negative": 21,
+          "false_positive": 0,
+          "true_negative": 20,
+          "pii_texts_caught": 19,
+          "pii_texts_missed": 21,
+          "clean_texts_wrongly_redacted": 0,
+          "precision": 1.0,
+          "recall": 0.475,
+          "f1": 0.6440677966101694,
+          "specificity": 1.0
+        },
+        "missed_texts": [
+          "P05",
+          "P08",
+          "P09",
+          "P10",
+          "P12",
+          "P14",
+          "P16",
+          "P18",
+          "P20",
+          "P23",
+          "P24",
+          "P26",
+          "P27",
+          "P29",
+          "P30",
+          "P31",
+          "P32",
+          "P33",
+          "P35",
+          "P36",
+          "P39"
+        ],
+        "wrongly_redacted_clean_texts": []
+      },
+      "D": {
+        "name": "D. Enhanced patterns + users full-name lookup + name cues (supplementary)",
+        "document": {
+          "true_positive": 31,
+          "false_negative": 9,
+          "false_positive": 0,
+          "true_negative": 20,
+          "pii_texts_caught": 31,
+          "pii_texts_missed": 9,
+          "clean_texts_wrongly_redacted": 0,
+          "precision": 1.0,
+          "recall": 0.775,
+          "f1": 0.8732394366197184,
+          "specificity": 1.0
+        },
+        "missed_texts": [
+          "P15",
+          "P17",
+          "P18",
+          "P20",
+          "P21",
+          "P22",
+          "P23",
+          "P29",
+          "P35"
+        ],
+        "wrongly_redacted_clean_texts": []
+      }
+    }
+  },
+  "baseline_equivalence": {
+    "texts_compared": 74,
+    "mismatched_ids": []
+  },
+  "name_index_scaling": [
+    {
+      "users": 1000,
+      "distinct_full_names": 1000,
+      "index_build_seconds": 0.05159604095388204,
+      "index_build_peak_memory_mb": 0.7195949554443359,
+      "lookup_latency": {
+        "samples": 370,
+        "mean_us": 17.87047837837838,
+        "median_us": 17.479,
+        "p95_us": 24.416,
+        "min_us": 3.75,
+        "max_us": 31.667
+      }
+    },
+    {
+      "users": 10000,
+      "distinct_full_names": 9997,
+      "index_build_seconds": 0.494155416963622,
+      "index_build_peak_memory_mb": 4.005230903625488,
+      "lookup_latency": {
+        "samples": 370,
+        "mean_us": 17.379002702702703,
+        "median_us": 17.021,
+        "p95_us": 23.709,
+        "min_us": 3.667,
+        "max_us": 34.833
+      }
+    },
+    {
+      "users": 100000,
+      "distinct_full_names": 99575,
+      "index_build_seconds": 5.183880291995592,
+      "index_build_peak_memory_mb": 28.963193893432617,
+      "lookup_latency": {
+        "samples": 370,
+        "mean_us": 18.182751351351353,
+        "median_us": 17.5625,
+        "p95_us": 25.375,
+        "min_us": 3.75,
+        "max_us": 49.333
+      }
+    }
+  ],
+  "cost_estimates": {
+    "text_length_characters": {
+      "min": 12,
+      "max": 102,
+      "mean": 67.63513513513513
+    },
+    "comprehend_units_per_call": [
+      3
+    ],
+    "comprehend_price_per_unit_usd": 0.0001,
+    "lambda_memory_mb": 512,
+    "comprehend_by_monthly_volume": {
+      "1000": {
+        "one_call_per_request_usd": 0.3,
+        "two_calls_per_request_usd": 0.6,
+        "lambda_wait_usd_by_assumed_latency_ms": {
+          "50": 0.0004166675,
+          "100": 0.000833335,
+          "200": 0.00166667
+        }
+      },
+      "10000": {
+        "one_call_per_request_usd": 3.0,
+        "two_calls_per_request_usd": 6.0,
+        "lambda_wait_usd_by_assumed_latency_ms": {
+          "50": 0.004166675,
+          "100": 0.00833335,
+          "200": 0.0166667
+        }
+      },
+      "100000": {
+        "one_call_per_request_usd": 30.0,
+        "two_calls_per_request_usd": 60.0,
+        "lambda_wait_usd_by_assumed_latency_ms": {
+          "50": 0.04166675,
+          "100": 0.0833335,
+          "200": 0.166667
+        }
+      }
+    },
+    "local_approaches_lambda_compute_usd_by_monthly_volume": {
+      "A": {
+        "1000": 7.948284815456757e-08,
+        "10000": 7.948284815456758e-07,
+        "100000": 7.948284815456758e-06
+      },
+      "B_full": {
+        "1000": 2.3572368991490542e-07,
+        "10000": 2.357236899149054e-06,
+        "100000": 2.3572368991490538e-05
+      },
+      "B_token": {
+        "1000": 2.4112676153183785e-07,
+        "10000": 2.4112676153183786e-06,
+        "100000": 2.4112676153183786e-05
+      },
+      "D": {
+        "1000": 5.450627275106622e-07,
+        "10000": 5.450627275106621e-06,
+        "100000": 5.4506272751066215e-05
+      }
+    }
+  },
+  "total_benchmark_seconds": 6.557646417059004
+}
