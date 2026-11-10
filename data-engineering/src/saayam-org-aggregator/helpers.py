@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -45,6 +46,7 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -56,6 +58,7 @@ AI_RENAME = {
     "organization_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "contact": "contact",
     "web_url": "web_url",
 }
@@ -676,6 +679,7 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        orgs["is_contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -686,6 +690,20 @@ def get_ai_orgs(subject, description, location, category):
         raise Exception(
             f"Unexpected response structure from GenAI Lambda: {e}"
         ) from e
+
+
+def _nullable_flag(value):
+    """Return a JSON-safe boolean or None for an organization flag."""
+    if value is None or pd.isna(value):
+        return None
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in ("true", "t", "1", "yes"):
+            return True
+        if normalized in ("false", "f", "0", "no"):
+            return False
+        return None
+    return bool(value)
 
 
 def merge_organizations(db_organizations, genAI_organizations):
@@ -704,10 +722,20 @@ def merge_organizations(db_organizations, genAI_organizations):
         db_orgs = _normalize(db_organizations, DB_RENAME)
         ai_orgs = _normalize(genAI_organizations, AI_RENAME)
 
-        return pd.concat(
+        combined = pd.concat(
             [db_orgs, ai_orgs],
             ignore_index=True,
         )
+
+        # Reindex supplies a missing DB column as NaN. Normalize after the
+        # merge so pandas cannot turn AI's False into 0.0 in the response.
+        for column in ("collaborator", "contributor"):
+            combined[column] = pd.Series(
+                (_nullable_flag(value) for value in combined[column]),
+                index=combined.index,
+                dtype=object,
+            )
+        return combined
 
     except Exception as e:
         raise Exception(
