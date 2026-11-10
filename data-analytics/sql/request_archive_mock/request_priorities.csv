@@ -1,0 +1,5 @@
+"req_priority_id","req_priority","req_priority_desc","last_updated_at"
+"0","LOW","Low urgency.","2026-01-01 00:00:00.000000"
+"1","MEDIUM","Moderate urgency.","2026-01-01 00:00:00.000000"
+"2","HIGH","High urgency.","2026-01-01 00:00:00.000000"
+"3","CRITICAL","Immediate attention is required.","2026-01-01 00:00:00.000000"

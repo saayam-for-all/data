@@ -1,0 +1,6 @@
+"req_id","details_present","note"
+"REQ-000-000-000-0010","phone","Entirely fictional test content; do not contact."
+"REQ-000-000-000-0011","phone;email","Entirely fictional test content; do not contact."
+"REQ-000-000-000-0012","address;name","Entirely fictional test content; do not contact."
+"REQ-000-000-000-0013","phone_words;name","Entirely fictional test content; do not contact."
+"REQ-000-000-000-0014","phone;email;address","Entirely fictional test content; do not contact."
