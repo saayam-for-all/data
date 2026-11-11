@@ -1,0 +1,979 @@
+{
+ "n_items": 24,
+ "n_pii_items": 16,
+ "n_clean_items": 8,
+ "n_details": 19,
+ "name_index_parts": 386,
+ "name_index_ms": 20.64,
+ "comprehend_cost": {
+  "avg_chars": 74.4,
+  "avg_units": 3.0,
+  "usd_per_request": 0.00030000000000000003,
+  "monthly": {
+   "1000": 0.3,
+   "10000": 3.0,
+   "100000": 30.0
+  }
+ },
+ "approaches": {
+  "1": {
+   "per_type": {
+    "NAME": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 9
+    },
+    "PHONE": {
+     "caught": 4,
+     "partial": 0,
+     "missed": 2
+    },
+    "EMAIL": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 1
+    },
+    "ADDRESS": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 2
+    },
+    "ID": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    },
+    "CARD": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    },
+    "URL": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    }
+   },
+   "totals": {
+    "caught": 5,
+    "partial": 0,
+    "missed": 14
+   },
+   "false_positive_redactions": 0,
+   "clean_texts_wrongly_redacted": [],
+   "pii_texts_fully_cleaned": 2,
+   "names_registered": {
+    "caught": 0,
+    "total": 2
+   },
+   "names_unregistered": {
+    "caught": 0,
+    "total": 7
+   },
+   "rows": [
+    {
+     "id": "H01",
+     "subject": "Need diapers",
+     "description": "Spoke with Aleksandra Nowak at the shelter, she said to ask here. Size 4 diapers please.",
+     "details": [
+      [
+       "Aleksandra Nowak",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H02",
+     "subject": "Signed up for meals",
+     "description": "We need meals for two weeks after the baby arrives. Signed: Tomás Ortega",
+     "details": [
+      [
+       "Tomás Ortega",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H03",
+     "subject": "Contact person",
+     "description": "Contact person - Nadia Haddad, best reached in the evening.",
+     "details": [
+      [
+       "Nadia Haddad",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H04",
+     "subject": "PLEASE HELP",
+     "description": "PLEASE CALL SUNIL AT [PHONE] (CELL). NEED FOOD URGENTLY.",
+     "details": [
+      [
+       "SUNIL",
+       "NAME",
+       "missed"
+      ],
+      [
+       "408 555 0102",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H05",
+     "subject": "Help for my uncle",
+     "description": "My uncle Bao is 80 and needs someone to help him with his medicines.",
+     "details": [
+      [
+       "Bao",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H06",
+     "subject": "Ride needed",
+     "description": "Ride needed from Lakshmi's house to the temple on Sunday morning.",
+     "details": [
+      [
+       "Lakshmi",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H07",
+     "subject": "Phone number",
+     "description": "phone: 408‑555‑0133 (please leave a voicemail)",
+     "details": [
+      [
+       "408‑555‑0133",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H08",
+     "subject": "Moving help",
+     "description": "Moving out of my place on the weekend, my cell is [PHONE].",
+     "details": [
+      [
+       "(510)5550187",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H09",
+     "subject": "Family in Mexico",
+     "description": "My sister in Mexico City needs medicine sent. Her WhatsApp is +52 55 1234 5678.",
+     "details": [
+      [
+       "+52 55 1234 5678",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H10",
+     "subject": "Email",
+     "description": "Questions? Write to [EMAIL]",
+     "details": [
+      [
+       "OLU.ADEYEMI@EXAMPLE.ORG",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H11",
+     "subject": "Groceries",
+     "description": "Deliver to Unit 5, 210 W Santa Clara St please.",
+     "details": [
+      [
+       "Unit 5, 210 W Santa Clara St",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H12",
+     "subject": "Fix fence",
+     "description": "Fence broke at apt 3, 45 river rd. Need a handyman.",
+     "details": [
+      [
+       "apt 3, 45 river rd",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H13",
+     "subject": "Dog walking",
+     "description": "Dog walker needed for Mrs. Kowalczyk while she recovers from surgery.",
+     "details": [
+      [
+       "Kowalczyk",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H14",
+     "subject": "Lunch for seniors",
+     "description": "Volunteer coordinator is Wei, number [PHONE], she will share the list.",
+     "details": [
+      [
+       "Wei",
+       "NAME",
+       "missed"
+      ],
+      [
+       "669 555 0119",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H15",
+     "subject": "School form",
+     "description": "Need help with a school form for my kid, my email is lan.nguyen.92 at yahoo dot com",
+     "details": [
+      [
+       "lan.nguyen.92 at yahoo dot com",
+       "EMAIL",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H16",
+     "subject": "Car seat",
+     "description": "Need a car seat. I'm Precious Moyo, you can reach me on [PHONE].",
+     "details": [
+      [
+       "Precious Moyo",
+       "NAME",
+       "missed"
+      ],
+      [
+       "408-555-0128",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "HC1",
+     "subject": "Park cleanup",
+     "description": "Volunteers needed for the Will Rogers Park cleanup on Saturday.",
+     "details": []
+    },
+    {
+     "id": "HC2",
+     "subject": "Rent went up",
+     "description": "Rent increased from 1800 to 2100 and I cannot cover the gap.",
+     "details": []
+    },
+    {
+     "id": "HC3",
+     "subject": "Info line",
+     "description": "I called 211 but they told me to post here.",
+     "details": []
+    },
+    {
+     "id": "HC4",
+     "subject": "Coat drive",
+     "description": "Is the Salvation Army coat drive still open this week?",
+     "details": []
+    },
+    {
+     "id": "HC5",
+     "subject": "Kids shoes",
+     "description": "Need shoes for my two kids, sizes 13 and 2.",
+     "details": []
+    },
+    {
+     "id": "HC6",
+     "subject": "Interview clothes",
+     "description": "I have a job interview at Target on Monday and need a shirt.",
+     "details": []
+    },
+    {
+     "id": "HC7",
+     "subject": "Faith based help",
+     "description": "Looking for a church or mosque food pantry near Santa Clara.",
+     "details": []
+    },
+    {
+     "id": "HC8",
+     "subject": "Bills",
+     "description": "My PG&E bill of $310 is overdue, account is in my name.",
+     "details": []
+    }
+   ],
+   "timing": "0.014 ms",
+   "timing_detail": {
+    "ms_per_request": 0.014,
+    "repeats": 200
+   },
+   "title": "Pattern matching only (current pipeline)"
+  },
+  "2": {
+   "per_type": {
+    "NAME": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 8
+    },
+    "PHONE": {
+     "caught": 4,
+     "partial": 0,
+     "missed": 2
+    },
+    "EMAIL": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 1
+    },
+    "ADDRESS": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 2
+    },
+    "ID": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    },
+    "CARD": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    },
+    "URL": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    }
+   },
+   "totals": {
+    "caught": 6,
+    "partial": 0,
+    "missed": 13
+   },
+   "false_positive_redactions": 0,
+   "clean_texts_wrongly_redacted": [],
+   "pii_texts_fully_cleaned": 3,
+   "names_registered": {
+    "caught": 1,
+    "total": 2
+   },
+   "names_unregistered": {
+    "caught": 0,
+    "total": 7
+   },
+   "rows": [
+    {
+     "id": "H01",
+     "subject": "Need diapers",
+     "description": "Spoke with Aleksandra Nowak at the shelter, she said to ask here. Size 4 diapers please.",
+     "details": [
+      [
+       "Aleksandra Nowak",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H02",
+     "subject": "Signed up for meals",
+     "description": "We need meals for two weeks after the baby arrives. Signed: Tomás Ortega",
+     "details": [
+      [
+       "Tomás Ortega",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H03",
+     "subject": "Contact person",
+     "description": "Contact person - Nadia Haddad, best reached in the evening.",
+     "details": [
+      [
+       "Nadia Haddad",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H04",
+     "subject": "PLEASE HELP",
+     "description": "PLEASE CALL SUNIL AT [PHONE] (CELL). NEED FOOD URGENTLY.",
+     "details": [
+      [
+       "SUNIL",
+       "NAME",
+       "missed"
+      ],
+      [
+       "408 555 0102",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H05",
+     "subject": "Help for my uncle",
+     "description": "My uncle Bao is 80 and needs someone to help him with his medicines.",
+     "details": [
+      [
+       "Bao",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H06",
+     "subject": "Ride needed",
+     "description": "Ride needed from Lakshmi's house to the temple on Sunday morning.",
+     "details": [
+      [
+       "Lakshmi",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H07",
+     "subject": "Phone number",
+     "description": "phone: 408‑555‑0133 (please leave a voicemail)",
+     "details": [
+      [
+       "408‑555‑0133",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H08",
+     "subject": "Moving help",
+     "description": "Moving out of my place on the weekend, my cell is [PHONE].",
+     "details": [
+      [
+       "(510)5550187",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H09",
+     "subject": "Family in Mexico",
+     "description": "My sister in Mexico City needs medicine sent. Her WhatsApp is +52 55 1234 5678.",
+     "details": [
+      [
+       "+52 55 1234 5678",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H10",
+     "subject": "Email",
+     "description": "Questions? Write to [EMAIL]",
+     "details": [
+      [
+       "OLU.ADEYEMI@EXAMPLE.ORG",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H11",
+     "subject": "Groceries",
+     "description": "Deliver to Unit 5, 210 W Santa Clara St please.",
+     "details": [
+      [
+       "Unit 5, 210 W Santa Clara St",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H12",
+     "subject": "Fix fence",
+     "description": "Fence broke at apt 3, 45 river rd. Need a handyman.",
+     "details": [
+      [
+       "apt 3, 45 river rd",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H13",
+     "subject": "Dog walking",
+     "description": "Dog walker needed for Mrs. Kowalczyk while she recovers from surgery.",
+     "details": [
+      [
+       "Kowalczyk",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H14",
+     "subject": "Lunch for seniors",
+     "description": "Volunteer coordinator is [NAME], number [PHONE], she will share the list.",
+     "details": [
+      [
+       "Wei",
+       "NAME",
+       "caught"
+      ],
+      [
+       "669 555 0119",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H15",
+     "subject": "School form",
+     "description": "Need help with a school form for my kid, my email is lan.nguyen.92 at yahoo dot com",
+     "details": [
+      [
+       "lan.nguyen.92 at yahoo dot com",
+       "EMAIL",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H16",
+     "subject": "Car seat",
+     "description": "Need a car seat. I'm Precious Moyo, you can reach me on [PHONE].",
+     "details": [
+      [
+       "Precious Moyo",
+       "NAME",
+       "missed"
+      ],
+      [
+       "408-555-0128",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "HC1",
+     "subject": "Park cleanup",
+     "description": "Volunteers needed for the Will Rogers Park cleanup on Saturday.",
+     "details": []
+    },
+    {
+     "id": "HC2",
+     "subject": "Rent went up",
+     "description": "Rent increased from 1800 to 2100 and I cannot cover the gap.",
+     "details": []
+    },
+    {
+     "id": "HC3",
+     "subject": "Info line",
+     "description": "I called 211 but they told me to post here.",
+     "details": []
+    },
+    {
+     "id": "HC4",
+     "subject": "Coat drive",
+     "description": "Is the Salvation Army coat drive still open this week?",
+     "details": []
+    },
+    {
+     "id": "HC5",
+     "subject": "Kids shoes",
+     "description": "Need shoes for my two kids, sizes 13 and 2.",
+     "details": []
+    },
+    {
+     "id": "HC6",
+     "subject": "Interview clothes",
+     "description": "I have a job interview at Target on Monday and need a shirt.",
+     "details": []
+    },
+    {
+     "id": "HC7",
+     "subject": "Faith based help",
+     "description": "Looking for a church or mosque food pantry near Santa Clara.",
+     "details": []
+    },
+    {
+     "id": "HC8",
+     "subject": "Bills",
+     "description": "My PG&E bill of $310 is overdue, account is in my name.",
+     "details": []
+    }
+   ],
+   "timing": "0.025 ms",
+   "timing_detail": {
+    "ms_per_request": 0.0251,
+    "repeats": 200
+   },
+   "title": "Patterns + users-table name lookup"
+  },
+  "3": {
+   "title": "Patterns + Amazon Comprehend",
+   "skipped": "no AWS access yet (run with --comprehend live)"
+  },
+  "4": {
+   "per_type": {
+    "NAME": {
+     "caught": 6,
+     "partial": 0,
+     "missed": 3
+    },
+    "PHONE": {
+     "caught": 5,
+     "partial": 0,
+     "missed": 1
+    },
+    "EMAIL": {
+     "caught": 2,
+     "partial": 0,
+     "missed": 0
+    },
+    "ADDRESS": {
+     "caught": 0,
+     "partial": 2,
+     "missed": 0
+    },
+    "ID": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    },
+    "CARD": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    },
+    "URL": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 0
+    }
+   },
+   "totals": {
+    "caught": 13,
+    "partial": 2,
+    "missed": 4
+   },
+   "false_positive_redactions": 0,
+   "clean_texts_wrongly_redacted": [],
+   "pii_texts_fully_cleaned": 10,
+   "names_registered": {
+    "caught": 1,
+    "total": 2
+   },
+   "names_unregistered": {
+    "caught": 5,
+    "total": 7
+   },
+   "rows": [
+    {
+     "id": "H01",
+     "subject": "Need diapers",
+     "description": "Spoke with [NAME] at the shelter, she said to ask here. Size 4 diapers please.",
+     "details": [
+      [
+       "Aleksandra Nowak",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H02",
+     "subject": "Signed up for meals",
+     "description": "We need meals for two weeks after the baby arrives. Signed: Tomás Ortega",
+     "details": [
+      [
+       "Tomás Ortega",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H03",
+     "subject": "Contact person",
+     "description": "Contact person - Nadia Haddad, best reached in the evening.",
+     "details": [
+      [
+       "Nadia Haddad",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H04",
+     "subject": "PLEASE HELP",
+     "description": "PLEASE CALL [NAME] [PHONE] (CELL). NEED FOOD URGENTLY.",
+     "details": [
+      [
+       "SUNIL",
+       "NAME",
+       "caught"
+      ],
+      [
+       "408 555 0102",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H05",
+     "subject": "Help for my uncle",
+     "description": "My uncle [NAME] is 80 and needs someone to help him with his medicines.",
+     "details": [
+      [
+       "Bao",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H06",
+     "subject": "Ride needed",
+     "description": "Ride needed from Lakshmi's house to the temple on Sunday morning.",
+     "details": [
+      [
+       "Lakshmi",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H07",
+     "subject": "Phone number",
+     "description": "phone: 408‑555‑0133 (please leave a voicemail)",
+     "details": [
+      [
+       "408‑555‑0133",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "H08",
+     "subject": "Moving help",
+     "description": "Moving out of my place on the weekend, my cell is [PHONE].",
+     "details": [
+      [
+       "(510)5550187",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H09",
+     "subject": "Family in Mexico",
+     "description": "My sister in Mexico City needs medicine sent. Her WhatsApp is [PHONE].",
+     "details": [
+      [
+       "+52 55 1234 5678",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H10",
+     "subject": "Email",
+     "description": "Questions? Write to [EMAIL]",
+     "details": [
+      [
+       "OLU.ADEYEMI@EXAMPLE.ORG",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H11",
+     "subject": "Groceries",
+     "description": "Deliver to Unit 5, [ADDRESS] please.",
+     "details": [
+      [
+       "Unit 5, 210 W Santa Clara St",
+       "ADDRESS",
+       "partial"
+      ]
+     ]
+    },
+    {
+     "id": "H12",
+     "subject": "Fix fence",
+     "description": "Fence broke at apt 3, [ADDRESS] Need a handyman.",
+     "details": [
+      [
+       "apt 3, 45 river rd",
+       "ADDRESS",
+       "partial"
+      ]
+     ]
+    },
+    {
+     "id": "H13",
+     "subject": "Dog walking",
+     "description": "Dog walker needed for Mrs. [NAME] while she recovers from surgery.",
+     "details": [
+      [
+       "Kowalczyk",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H14",
+     "subject": "Lunch for seniors",
+     "description": "Volunteer coordinator is [NAME], number [PHONE], she will share the list.",
+     "details": [
+      [
+       "Wei",
+       "NAME",
+       "caught"
+      ],
+      [
+       "669 555 0119",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H15",
+     "subject": "School form",
+     "description": "Need help with a school form for my kid, my email is [NAME]",
+     "details": [
+      [
+       "lan.nguyen.92 at yahoo dot com",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "H16",
+     "subject": "Car seat",
+     "description": "Need a car seat. I'm [NAME], you can reach me on [PHONE].",
+     "details": [
+      [
+       "Precious Moyo",
+       "NAME",
+       "caught"
+      ],
+      [
+       "408-555-0128",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "HC1",
+     "subject": "Park cleanup",
+     "description": "Volunteers needed for the Will Rogers Park cleanup on Saturday.",
+     "details": []
+    },
+    {
+     "id": "HC2",
+     "subject": "Rent went up",
+     "description": "Rent increased from 1800 to 2100 and I cannot cover the gap.",
+     "details": []
+    },
+    {
+     "id": "HC3",
+     "subject": "Info line",
+     "description": "I called 211 but they told me to post here.",
+     "details": []
+    },
+    {
+     "id": "HC4",
+     "subject": "Coat drive",
+     "description": "Is the Salvation Army coat drive still open this week?",
+     "details": []
+    },
+    {
+     "id": "HC5",
+     "subject": "Kids shoes",
+     "description": "Need shoes for my two kids, sizes 13 and 2.",
+     "details": []
+    },
+    {
+     "id": "HC6",
+     "subject": "Interview clothes",
+     "description": "I have a job interview at Target on Monday and need a shirt.",
+     "details": []
+    },
+    {
+     "id": "HC7",
+     "subject": "Faith based help",
+     "description": "Looking for a church or mosque food pantry near Santa Clara.",
+     "details": []
+    },
+    {
+     "id": "HC8",
+     "subject": "Bills",
+     "description": "My PG&E bill of $310 is overdue, account is in my name.",
+     "details": []
+    }
+   ],
+   "timing": "0.108 ms",
+   "timing_detail": {
+    "ms_per_request": 0.1084,
+    "repeats": 200
+   },
+   "title": "Improved patterns + users names + name cues"
+  }
+ },
+ "test_set": "holdout"
+}
