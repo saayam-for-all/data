@@ -1,0 +1,14 @@
+[
+  {"case": "new_york_ewkb",   "input": "0101000020E6100000AAF1D24D628052C05E4BC8073D5B4440", "expected": "POINT(-74.006 40.7128)"},
+  {"case": "pune_ewkb",       "input": "0101000020E6100000ED9E3C2CD4765240A1D634EF38853240", "expected": "POINT(73.8567 18.5204)"},
+  {"case": "sydney_big_endian", "input": "0020000001000010E64062E6B295E9E1B1C040EF34D6A161E5", "expected": "POINT(151.2093 -33.8688)"},
+  {"case": "london_plain_wkb", "input": "0101000000DA1B7C613255C0BFFE43FAEDEBC04940", "expected": "POINT(-0.1276 51.5072)"},
+  {"case": "origin",          "input": "0101000020E610000000000000000000000000000000000000", "expected": "POINT(0 0)"},
+  {"case": "null",            "input": null, "expected": ""},
+  {"case": "blank",           "input": "   ", "expected": ""},
+  {"case": "plain_text",      "input": "Suffolk, VA", "expected": ""},
+  {"case": "truncated_hex",   "input": "0101000020E6100000AAF1D24D628052C0", "expected": ""},
+  {"case": "nan_longitude",   "input": "0101000020E6100000000000000000F87F000000000000F03F", "expected": ""},
+  {"case": "longitude_out_of_range", "input": "0101000020E61000000000000000407F400000000000006940", "expected": ""},
+  {"case": "latitude_out_of_range",  "input": "0101000020E610000000000000000024400000000000C05640", "expected": ""}
+]
