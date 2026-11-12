@@ -1,8 +1,10 @@
-# Beneficiary Dashboard Analytics
+# Beneficiary Tab Documentation
 
 > **Issue:** [#603 — Document Application Analytics Flow and Implementation - Beneficiary Dashboard](https://github.com/saayam-for-all/data/issues/603)
 >
-> **Code documented:** [`data-analytics/lambda_functions/beneficiariesTrendAnalysis.py`](https://github.com/saayam-for-all/data/blob/test/data-analytics/lambda_functions/beneficiariesTrendAnalysis.py) as it exists on the `test` branch (last changed by commit `11b5f7b`).
+> **Code documented:** [`data-analytics/lambda_functions/beneficiariesTrendAnalysis.py`](https://github.com/saayam-for-all/data/blob/2602a8897d25b086624e202beb7515d1d31b634a/data-analytics/lambda_functions/beneficiariesTrendAnalysis.py) at data commit `2602a8897d25b086624e202beb7515d1d31b634a` (handler last changed by commit `11b5f7b`).
+>
+> **Document history:** Renamed from `issue_603_beneficiary_dashboard_analytics.md`, originally merged through [PR #645](https://github.com/saayam-for-all/data/pull/645). Frontend integration details below are adapted from [PR #672](https://github.com/saayam-for-all/data/pull/672) by [pratyush0824](https://github.com/pratyush0824), documentation commit `b02ea33db5a33ecd65d273340de15e7a6514080e`. Consolidated November 11, 2026.
 >
 > **Scope of this document:** it records existing behavior and history. It does not change any implementation.
 
@@ -48,7 +50,26 @@ The intended high-level flow, based on Issues #82, #84, and #138:
 6. Results are aggregated into date-bucketed and country-level counts.
 7. The frontend displays beneficiary trend and geographic distribution visualizations.
 
-**Open question:** This repository contains no frontend code, API Gateway configuration, or endpoint definition for this tab. Confirmed by directory listing: `data-analytics/dashboards/` and `data-analytics/notebooks/` each contain only a `.gitkeep` placeholder, with no dashboard or notebook files checked in. The frontend component names, the HTTP route, and how the frontend passes the date range cannot be confirmed from this repository.
+**Frontend source review:** The UI lives in the separate webapp repository. Section 2.1 records its component, endpoint and payload at a pinned revision. API Gateway mapping, deployed Lambda revision and live integration remain unverified.
+
+---
+
+### 2.1 Frontend behavior and integration contract
+
+The reviewed webapp source is pinned to commit `388534d902110bac4d4a38f7a4fc1cdbba8ac6ad`. [BeneficiariesAnalytics.jsx][beneficiary-frontend] provides a line chart and a country bar/map view, independent 7D/30D/1Y/All/Custom controls, Day/Month grouping for custom dates, and a Top 10 country option. Both dates must be present before a custom request is committed. The UI handles loading, empty and error states; a failed country-specific request can reuse the trend response without a separate country error.
+
+[analyticsServices.js][beneficiary-service] posts the supplied payload to `v1/ml/beneficiariesTrendAnalysis`, as registered in [endpoints.json][beneficiary-endpoints]. The service does not translate the legacy handler contract. [ApplicationAnalytics.jsx][beneficiary-application] initially selects Requests; the user then selects Beneficiaries.
+
+| Request or response | Reviewed frontend | Reviewed backend in this document |
+|---|---|---|
+| Preset request | `{}` | Requires all four legacy top-level date fields listed in Section 3.2 |
+| Custom request | `custom_start_date`, `custom_end_date`, `custom_group_by` | Reads `beneficiaries_start_date`, `beneficiaries_end_date`, `help_requests_start_date`, `help_requests_end_date`; custom grouping is daily |
+| Trend keys | `Beneficiaries count 7 days`, `Beneficiaries count 30 days`, `Beneficiaries count 1 year`, `Beneficiaries count all`, `Beneficiaries count custom date range` | `7 days beneficiaries`, `1 month beneficiaries`, `1 year beneficiaries`, `Custom date range beneficiaries`; no All series |
+| Country keys | `Beneficiaries count by country <period>`, including `all` and `custom date range` | One all-time `Country beneficiaries` list |
+
+**Known source mismatch:** Connecting these two revisions directly would fail on missing input fields or leave expected chart keys absent. This does not establish a live production failure: the deployed package and Gateway transformations have not been checked. The backend also lacks the UI's country-period and custom-grouping capabilities. Country codes are mapped to display names by the frontend's country-name utility.
+
+The UI source handles map hover but has no country click-to-filter handler for the trend or regional drill-down. The original #672 author also recorded a native date-picker issue discussed in [webapp #1518](https://github.com/saayam-for-all/webapp/issues/1518) and [#1642](https://github.com/saayam-for-all/webapp/pull/1642): date input changes can trigger requests while the user navigates the picker. Browser reproduction remains unverified during consolidation.
 
 ---
 
@@ -76,14 +97,6 @@ All four ranges are always calculated on every invocation. The caller does not s
 
 The handler reads these fields **directly from the top-level `event` object**, for example `event['beneficiaries_start_date']`. The line that would read an API Gateway request body (`# body = event['body']`) is commented out.
 
-Lines 254–256 of `beneficiariesTrendAnalysis.py`:
-
-```python
-    # body = event['body']
-    beneficiaries_start_date = event['beneficiaries_start_date']
-    beneficiaries_end_date = event['beneficiaries_end_date']
-```
-
 **Known limitation:** The file's own local test block (`if __name__ == "__main__":`) places these fields inside a JSON string under `event["body"]`, which is the shape API Gateway proxy integrations typically send. Because the handler reads top-level keys, the local example does not match what the handler expects. When this was run during research with the database connection mocked to succeed, the handler stopped with `KeyError: 'beneficiaries_start_date'`. No AWS or database access was used for that check.
 
 The fields are required: there is no default when they are missing.
@@ -108,18 +121,6 @@ The Lambda opens two separate PostgreSQL connections, one labelled "Virginia" an
 | `IRELAND_REAL_TABLE_REQUEST` | `virginia_dev_saayam_rdbms.request` | **Virginia** |
 | `IRELAND_REAL_TABLE_USERS` | `ireland_dev_saayam_rdbms.users` | Ireland |
 | `IRELAND_REAL_TABLE_COUNTRY` | `virginia_dev_saayam_rdbms.country` | **Virginia** |
-
-Lines 32–38 of `beneficiariesTrendAnalysis.py`:
-
-```python
-    VIRGINIA_REAL_TABLE_REQUEST = "virginia_dev_saayam_rdbms.request"
-    VIRGINIA_REAL_TABLE_USERS = "virginia_dev_saayam_rdbms.users"
-    VIRGINIA_REAL_TABLE_COUNTRY = "virginia_dev_saayam_rdbms.country"
-
-    IRELAND_REAL_TABLE_REQUEST = "virginia_dev_saayam_rdbms.request"
-    IRELAND_REAL_TABLE_USERS = "ireland_dev_saayam_rdbms.users"
-    IRELAND_REAL_TABLE_COUNTRY = "virginia_dev_saayam_rdbms.country"
-```
 
 **Intended:** Issue #138 asks for the Ireland `request`, `users`, and `country` tables to be added so that beneficiaries from the Ireland region are counted.
 
@@ -163,9 +164,9 @@ The SSM client is created in region `us-east-1`. `get_db_config()` parses host, 
 | 1 year | Monthly |
 | Custom | Daily |
 
-**What the metric represents:** Each counted row is a distinct pair of (`req_user_id`, `last_update_date`) from the request table, bucketed by the date of `last_update_date`. This describes what the code calculates. It is not necessarily the same as a business definition such as "new beneficiaries" or "unique beneficiaries per period". For example, one user with requests updated on several different days is counted once on each of those days. **Open question:** the intended business definition of a "beneficiary" count for this tab is not documented in the issues reviewed.
+**What the metric represents:** Each counted row is a distinct pair of (`req_user_id`, `last_update_date`) from the request table, bucketed by the date of `last_update_date`. This describes what the code calculates. It is not necessarily the same as a business definition such as "new beneficiaries" or "unique beneficiaries per period". For example, one user with distinct request-update timestamps at 10:00 and 11:00 on the same day contributes two counts that day. Identical user/timestamp pairs collapse; a user can contribute again on later days. **Open question:** the intended business definition of a "beneficiary" count for this tab is not documented in the issues reviewed.
 
-**Empty and failure behavior (Confirmed):** If the query raises an exception, `aggregate_beneficiaries()` returns `[]`. An empty input produces an empty list of records.
+**Empty and failure behavior (Confirmed):** If `cursor.execute` raises an exception, `aggregate_beneficiaries()` returns `[]`; `fetchall` errors occur outside that catch. An empty input produces an empty list of records.
 
 ### 5.2 Beneficiaries by Country
 
@@ -238,17 +239,17 @@ The success response body always contains these 10 keys:
 
 Issue #138 describes "8 analytics statistics". The two custom-date-range keys were added later, in commit `11b5f7b`, which accounts for the current total of 10.
 
-### 6.2 Sample structure (structure only, no real values)
+### 6.2 Illustrative response (synthetic values)
 
 ```json
 {
   "statusCode": 200,
   "body": {
-    "7 days beneficiaries": [{"Date": "<ISO-8601 timestamp>", "Count": "<integer>"}],
+    "7 days beneficiaries": [{"Date": "2026-11-01T00:00:00", "Count": 2}],
     "1 month beneficiaries": [],
     "1 year beneficiaries": [],
     "Custom date range beneficiaries": [],
-    "Country beneficiaries": [{"country": "<country name>", "Count": "<integer>"}],
+    "Country beneficiaries": [{"country": "India", "Count": 2}],
     "7 days help requests": [],
     "1 month help requests": [],
     "1 year help requests": [],
@@ -303,24 +304,13 @@ Separate Virginia and Ireland connections and cursors are created. **However, ev
 - In the trend functions (`get_beneficiaries_dic()`, `get_help_requests_dic()`), the Ireland calls are commented out.
 - In the country functions (`get_beneficiaries_country_dic()`, `get_help_requests_country_dic()`), Ireland rows are fetched into `rows_ireland`, then discarded when `rows = rows_virginia` is assigned.
 
-Lines 131–136 of `beneficiariesTrendAnalysis.py`:
-
-```python
-    def get_beneficiaries_country_dic():
-        rows_virginia = aggregate_beneficiaries_country(VIRGINIA_REAL_TABLE_REQUEST, VIRGINIA_REAL_TABLE_USERS, VIRGINIA_REAL_TABLE_COUNTRY,
-        cursor_V)
-        rows_ireland = aggregate_beneficiaries_country(IRELAND_REAL_TABLE_REQUEST, IRELAND_REAL_TABLE_USERS, IRELAND_REAL_TABLE_COUNTRY,
-        cursor_I)
-        rows = rows_virginia
-```
-
 Connections are closed only after `response_body` has been built successfully. There is no `finally` block (see [Section 9](#9-known-limitations-and-open-questions)).
 
 ---
 
 ## 8. Development History
 
-Each related task was reviewed individually through GitHub issue/PR metadata, issue comments, and local git history.
+The following task-by-task review is retained from the merged document. Later frontend details and consolidation checks are attributed separately.
 
 ### Issue #70 — Trend Analysis for Beneficiaries
 
@@ -380,7 +370,7 @@ The issue explains that real data was not yet available in the database, so real
 - let the UI team build dashboards independently, and
 - keep the API contract stable, so that the CSV source could later be replaced by database queries without UI changes.
 
-The issue attaches a table/column-name spreadsheet for the `virginia_dev_saayam_rdbms` schema and a "Types of Visualizations for Application Analytics Dashboard" document. Neither attachment was reviewed for this document.
+The issue attaches a table/column-name spreadsheet for the `virginia_dev_saayam_rdbms` schema and a "Types of Visualizations for Application Analytics Dashboard" document. The original merged review did not inspect these attachments; the schema and visualization files were subsequently inspected during consolidation.
 
 **Comments:** The closing comment (2026-03-24) states that JSON objects were created and sent to the UI team for integration.
 
@@ -391,7 +381,7 @@ The issue attaches a table/column-name spreadsheet for the `virginia_dev_saayam_
 `data-engineering/TASK_TRACKER.md` groups three more closed issues alongside #82 and #84 under the same Super Admin Dashboard Analytics effort. Each was checked individually for Beneficiary-tab content; none contains any:
 
 - **[Issue #81 — Creation of Super Admin Dashboard Analytics](https://github.com/saayam-for-all/data/issues/81).** The umbrella issue for the whole effort ("There are 3 sub categories under Super Admin Analytics tab"), which spawned #82 as a sub-issue. No mention of beneficiaries.
-- **[Issue #89 — Application Analytics Dashboard implementation in Python using plotly library](https://github.com/saayam-for-all/data/issues/89).** Empty issue body; its only comment describes converting mock CSVs into JSON for the frontend team in general, not any specific tab. No mention of beneficiaries.
+- **[Issue #89 — Application Analytics Dashboard implementation in Python using plotly library](https://github.com/saayam-for-all/data/issues/89).** Empty issue body; its comments report converting mock CSVs into JSON for the frontend team and completion, without a tab-specific contract. No mention of beneficiaries.
 - **[Issue #96 — Design of Consolidated metrics of application analytics on the Saayam Home Page](https://github.com/saayam-for-all/data/issues/96).** A different feature (a metrics ticker on the public Home Page, replacing a static tagline). "Total Beneficiaries" appears once, as one of five summary numbers (alongside Total Requests, Requests Resolved, Avg Resolution Time, Total Volunteers) — not a description of the Beneficiary tab itself. Its closing comment references a follow-on issue, #104, for backend implementation; #104 was not reviewed for this document.
 
 ### Issue #138 — Implement real API for beneficiary_trend_analysis.py
@@ -414,21 +404,7 @@ The issue attaches a table/column-name spreadsheet for the `virginia_dev_saayam_
 | 3 | Package and deploy to AWS Lambda; test with an empty event `{}`; confirm `statusCode: 200`; check CloudWatch logs |
 | 4 | Move DB credentials out of source code |
 
-**Comparison with the current merged code (Confirmed):**
-
-| Requested item | Present in current code? |
-|---|---|
-| Fake-data code removed | Yes. No fake-table code, `create_tables` block, or `sqlite3` import remains. |
-| Ireland tables added | Partially. Ireland connection and Ireland `users` table exist; Ireland `request` and `country` constants point to Virginia; Ireland results are not used. |
-| Empty-data `[]` handling | Partially. The two trend query functions return `[]` on failure; the two country query functions return an error dictionary instead. |
-| `try/except` around DB connection | Yes |
-| `try/except` around query functions | Yes |
-| `finally` block for cleanup | No |
-| Cursor closing | No. Cursors are never explicitly closed. |
-| Local `__main__` test block | Present, but its event shape does not match what the handler reads. |
-| Test with empty event `{}` | Would not succeed against the current code, because the custom date fields are required. Confirmed by code reading only. |
-| Credentials out of source code | Yes, via SSM Parameter Store |
-| Deployment / CloudWatch verification | **Open question.** Cannot be verified from the repository. |
+**Code comparison:** The reviewed handler uses SSM and real queries but does not guarantee cleanup, include Ireland rows, or accept an empty event; see Sections 3, 7 and 9.
 
 Three PRs reference Issue #138. **None of them are merged**, so none of them define current `main`/`test` behavior.
 
@@ -490,64 +466,20 @@ This PR was opened after commit `11b5f7b` was merged. Because it is unmerged, it
 
 ## 9. Known Limitations and Open Questions
 
-### Confirmed
+The metric, regional and frontend-contract differences are detailed in Sections 2–5. Additional operational limitations are:
 
-| # | Area | Status | Details |
-|---|---|---|---|
-| 1 | Ireland request table | Confirmed | `IRELAND_REAL_TABLE_REQUEST` is set to `virginia_dev_saayam_rdbms.request`. |
-| 2 | Ireland country table | Confirmed | `IRELAND_REAL_TABLE_COUNTRY` is set to `virginia_dev_saayam_rdbms.country`. |
-| 3 | Ireland results in response | Confirmed | No Ireland data contributes to any returned metric. |
-| 4 | Ireland trend calls | Confirmed | Ireland calls in `get_beneficiaries_dic()` and `get_help_requests_dic()` are commented out. |
-| 5 | Ireland country rows | Confirmed | `rows_ireland` is fetched in both country functions, then discarded (`rows = rows_virginia`). |
-| 6 | Custom-date input location | Confirmed | The handler reads the custom date fields from the top-level `event`. |
-| 7 | Local `__main__` sample | Confirmed | The sample wraps the custom date fields in a JSON string under `event["body"]`. |
-| 8 | Local example vs handler | Confirmed | The local example does not match the handler's input expectations. With the DB connection mocked, it raises `KeyError: 'beneficiaries_start_date'`. |
-| 9 | Country/region requirement | Confirmed | Only partially implemented: country breakdown exists, region breakdown does not. |
-| 10 | Country query failure handling | Confirmed | `aggregate_beneficiaries_country()` and `aggregate_help_requests_country()` return an error dictionary instead of `[]` on failure. The caller then builds a DataFrame from that dictionary, so failures are not reported cleanly. Issue #138 asked for `[]`. |
-| 11 | Connection cleanup | Confirmed | No `finally` block. If an exception occurs after connecting (for example, the `KeyError` in item 8), the connections are not closed by the handler. |
-| 12 | Cursor cleanup | Confirmed | `cursor_V` and `cursor_I` are never explicitly closed. |
-| 13 | Response body encoding | Confirmed | The success `body` is a Python dictionary, not `json.dumps(...)` output. |
-| 14 | Status key naming | Confirmed | Success uses `statusCode`; error paths use `status_code`. |
-| 15 | SQL construction | Confirmed | Custom dates from the event (and fixed intervals) are interpolated into SQL with f-strings. This should be reviewed and parameterized. |
-| 16 | `TASK_TRACKER.md` | Confirmed | `data-engineering/TASK_TRACKER.md` lists #138 under "In Progress" as "Open", while GitHub shows the issue as closed. The tracker appears stale for this issue. |
+- Country-query failures return an error dictionary that callers pass to pandas without checking it. Trend execute failures return empty lists; `fetchall` failures can escape. Empty responses do not reliably distinguish no activity from failed queries.
+- Configuration lookup runs before the connection `try`; missing event keys, fetch errors and processing failures can escape without a formatted response. A failed SQL transaction is not rolled back between queries.
+- Connections close only after successful processing, and cursors are never explicitly closed. There is no `finally` block. If Ireland fails after Virginia connects, the Virginia connection can remain open.
+- Custom dates are interpolated directly into SQL, without binding or format/order validation. Fixed ranges have no upper bound. A date-only custom end value can exclude later timestamps on that day; database timezone and live timestamp types need confirmation.
+- The code uses singular `request`, `req_user_id` and `last_update_date`; the repository mock CSV uses `requests`, `creator_id`/`beneficiary_id` and `last_updated_at`. The historical workbook agrees with the older names, but neither fixture establishes current live DDL.
+- Confirm the business definition of a beneficiary, whether identifiers refer to creators or people helped, the serving Lambda revision, Gateway transformations and authorization. The frontend contract inspected in Section 2.1 is known; deployment equivalence remains unverified.
 
-### Requires verification / unclear
-
-| # | Area | Status | Details |
-|---|---|---|---|
-| 17 | `request` vs `requests` | Open question — now with concrete conflicting sources | The Lambda queries the singular `virginia_dev_saayam_rdbms.request` table. This exact name and its primary key `req_id` are recorded in [`data-analytics/sql/Saayam_Table.column.names_data.xlsx`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/Saayam_Table.column.names_data.xlsx) (sheet `Table & column names_data-17649`) — the schema reference Issue #146 tells contributors to use. However, [`data-analytics/sql/requests.csv`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/requests.csv), a separate, newer-looking mock dataset in the same repository, uses the plural name `requests` with a different column set (see #18–#19). **Open question:** which of these two in-repo sources reflects the live database — the Lambda and the xlsx agree with each other, but `requests.csv` matches neither. |
-| 18 | `req_user_id` vs `beneficiary_id` | Open question — now with concrete conflicting sources | The Lambda identifies the beneficiary through `req_user_id`, which the xlsx confirms as a column of `virginia_dev_saayam_rdbms.request`. `data-analytics/sql/requests.csv` has no `req_user_id` column at all — it splits the concept into separate `creator_id` and `beneficiary_id` columns instead. **Open question:** whether the live table has since been migrated to this newer creator/beneficiary split. |
-| 19 | `last_update_date` vs `last_updated_at` | Open question — now with concrete conflicting sources | The Lambda filters on `last_update_date`, matching the xlsx's `request.last_update_date` column exactly. `data-analytics/sql/requests.csv` instead has `last_updated_at`. All three mismatches (#17–#19) point the same direction: `requests.csv` looks like a newer schema revision than both the xlsx and the Lambda, but nothing in this repository confirms which one the live Virginia/Ireland databases actually match. |
-| 20 | Legacy `request` table | Open question | Whether a singular `request` table still exists in the deployed Virginia and Ireland databases. |
-| 21 | Deployed vs committed code | Open question | Whether the deployed `beneficiariesTrendAnalysis` Lambda matches the code in this repository. The Issue #70 comment links to a console-edited Lambda, which cannot be compared from here. |
-| 22 | Region-level analytics elsewhere | Open question | Whether region-level beneficiary analytics are implemented outside this repository (for example in the frontend, the `ml` repository, or the JSON delivered under Issue #84). |
-| 23 | Beneficiary count definition | Open question | The intended business definition of the beneficiary count (see Section 5.1) is not documented in the reviewed issues. |
-| 24 | Frontend integration | Open question | Frontend components, the API route, and how the date range is sent are not in this repository. |
+The local task tracker also lists #138 as open despite GitHub's closed status. Historical issue state is not evidence of deployment.
 
 ---
 
-## 10. Current vs Intended Behavior
-
-| Capability | Intended | Current repository implementation |
-|---|---|---|
-| Virginia support | Yes (#138) | Yes. All returned metrics come from Virginia. |
-| Ireland support | Yes (#138 Phase 1.2) | Not effective. A connection is opened, but two of three Ireland table constants point to Virginia and Ireland results are not used. |
-| 7-day trend | Yes (#70, #82) | Yes, daily grouping |
-| 1-month trend | Yes (#70, #82) | Yes, daily grouping |
-| 1-year trend | Yes (#70, #82) | Yes, monthly grouping |
-| Custom date range | Yes (#70, #82) | Yes, daily grouping. Requires top-level event fields; no defaults. |
-| Country breakdown | Yes (#82) | Yes, all time, counts only, Virginia only |
-| Region breakdown | Yes (#82) | Not implemented |
-| Empty-data handling | `[]` from all four query functions (#138) | Trend functions: yes. Country functions: return an error dictionary instead. |
-| Connection cleanup | `finally` closes cursor and connection (#138) | Connections closed on success only; cursors not closed; no `finally` |
-| API Gateway body parsing | Not specified in #138; implied by the `__main__` example | Not implemented. `event['body']` parsing is commented out. |
-| JSON response body | Original version used `json.dumps` | Returned as a Python dictionary |
-| Credentials outside source | Yes (#138 Phase 4) | Yes, via SSM Parameter Store |
-| Test with empty event `{}` | Should return 200 (#138 Phase 3) | Would fail due to the required date fields (code reading) |
-
----
-
-## 11. Supporting References
+## 10. Supporting References
 
 ### Issues
 
@@ -568,10 +500,10 @@ This PR was opened after commit `11b5f7b` was merged. Because it is unmerged, it
 
 ### Code and repository files
 
-- Current code: [`data-analytics/lambda_functions/beneficiariesTrendAnalysis.py`](https://github.com/saayam-for-all/data/blob/test/data-analytics/lambda_functions/beneficiariesTrendAnalysis.py)
-- Task tracker: [`data-engineering/TASK_TRACKER.md`](https://github.com/saayam-for-all/data/blob/test/data-engineering/TASK_TRACKER.md)
-- Schema reference (matches the Lambda — see Section 9, items 17–19): [`data-analytics/sql/Saayam_Table.column.names_data.xlsx`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/Saayam_Table.column.names_data.xlsx)
-- Conflicting mock dataset (does not match the Lambda or the xlsx — see Section 9, items 17–19): [`data-analytics/sql/requests.csv`](https://github.com/saayam-for-all/data/blob/test/data-analytics/sql/requests.csv)
+- Current code: [`data-analytics/lambda_functions/beneficiariesTrendAnalysis.py`](https://github.com/saayam-for-all/data/blob/2602a8897d25b086624e202beb7515d1d31b634a/data-analytics/lambda_functions/beneficiariesTrendAnalysis.py)
+- Task tracker: [`data-engineering/TASK_TRACKER.md`](https://github.com/saayam-for-all/data/blob/2602a8897d25b086624e202beb7515d1d31b634a/data-engineering/TASK_TRACKER.md)
+- Schema reference (historical column reference): [`data-analytics/sql/Saayam_Table.column.names_data.xlsx`](https://github.com/saayam-for-all/data/blob/2602a8897d25b086624e202beb7515d1d31b634a/data-analytics/sql/Saayam_Table.column.names_data.xlsx)
+- Conflicting mock dataset (uses different request/identity/timestamp names): [`data-analytics/sql/requests.csv`](https://github.com/saayam-for-all/data/blob/2602a8897d25b086624e202beb7515d1d31b634a/data-analytics/sql/requests.csv)
 - Commits: `04b5fb4` (file created), `11b5f7b` (current implementation)
 - Unmerged branches: `origin/issue#70` (Issue #70 CSVs and notebook), `origin/vighneshsridhar-beneficiaries_trend_analysis` (commit `1bc97dc`)
 
@@ -583,10 +515,14 @@ This PR was opened after commit `11b5f7b` was merged. Because it is unmerged, it
 
 ---
 
-## 12. Conclusion
+## 11. Verification
 
-The Beneficiary tab's analytics started as exploratory and mock-data work (Issues #70 and #84), was defined as part of the Application Analytics dashboard design (Issue #82), and moved toward database-backed analytics (Issue #138 and commit `11b5f7b`).
+The merged document remains the basis for backend calculations and development history. The frontend component at the pinned revision was inspected during consolidation, and its payload fields, chart keys, date controls and country behavior were checked against the backend. Source paths were checked against the webapp Git tree. Frontend details were adapted with attribution from #672; its reported 32 passing tests were not independently repeated. The #84 schema/visualization attachments were inspected during the broader dashboard review; historical tests in the merged document remain attributed to its author. No live API, AWS, SQL or authenticated browser checks were performed.
 
-The current repository code establishes the design direction: SSM-managed credentials, separate regional connections, fixed and custom date ranges, and a country breakdown. Several inconsistencies remain. Ireland data does not reach the response, the handler's input shape differs from its own local example, there is no region breakdown, and error handling, cleanup, and response formatting are only partly aligned with Issue #138.
+[beneficiary-frontend]: https://github.com/saayam-for-all/webapp/blob/388534d902110bac4d4a38f7a4fc1cdbba8ac6ad/src/pages/Dashboard/components/Analytics/BeneficiariesAnalytics.jsx
 
-This document records existing behavior and does not change the implementation. The open schema and runtime questions in [Section 9](#9-known-limitations-and-open-questions) (table and column names, the deployed Lambda version, and region analytics outside this repository) should be validated separately against the live databases and AWS environment before implementation work relies on them.
+[beneficiary-service]: https://github.com/saayam-for-all/webapp/blob/388534d902110bac4d4a38f7a4fc1cdbba8ac6ad/src/services/analyticsServices.js
+
+[beneficiary-endpoints]: https://github.com/saayam-for-all/webapp/blob/388534d902110bac4d4a38f7a4fc1cdbba8ac6ad/src/services/endpoints.json
+
+[beneficiary-application]: https://github.com/saayam-for-all/webapp/blob/388534d902110bac4d4a38f7a4fc1cdbba8ac6ad/src/pages/Dashboard/components/Analytics/ApplicationAnalytics.jsx
