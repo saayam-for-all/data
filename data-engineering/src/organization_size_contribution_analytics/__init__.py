@@ -1,0 +1,1 @@
+"""Organization size and contribution analytics Lambda package."""
