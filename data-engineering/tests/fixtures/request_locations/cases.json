@@ -1,0 +1,14 @@
+[
+  {"request_id": "REQ-001", "case_id": "issue_example_ewkb", "category": "valid", "input": "0101000020E6100000AAF1D24D628052C05E4BC8073D5B4440", "expected": "POINT(-74.006 40.7128)"},
+  {"request_id": "REQ-002", "case_id": "sydney_little_wkb", "category": "valid", "input": "0101000000B1E1E995B2E66240E561A1D634EF40C0", "expected": "POINT(151.2093 -33.8688)"},
+  {"request_id": "REQ-003", "case_id": "london_big_wkb", "category": "valid", "input": "0000000001BFC05532617C1BDA4049C0EBEDFA43FE", "expected": "POINT(-0.1276 51.5072)"},
+  {"request_id": "REQ-004", "case_id": "paris_ewkb_srid", "category": "valid", "input": "0101000020E6100000A835CD3B4ED1024076E09C11A56D4840", "expected": "POINT(2.3522 48.8566)"},
+  {"request_id": "REQ-005", "case_id": "san_francisco_ewkb_z", "category": "valid", "input": "010100008050FC1873D79A5EC0D0D556EC2FE342400000000000403040", "expected": "POINT(-122.4194 37.7749)"},
+  {"request_id": "REQ-006", "case_id": "new_york_precision", "category": "valid", "input": "0101000020E610000057D66BFD147F52C0581856AFCC5F4440", "expected": "POINT(-73.98565612345679 40.74843398765432)"},
+  {"request_id": "REQ-007", "case_id": "already_readable", "category": "valid", "input": "POINT(-74.006 40.7128)", "expected": "POINT(-74.006 40.7128)"},
+  {"request_id": "REQ-008", "case_id": "null_location", "category": "null", "input": null, "expected": ""},
+  {"request_id": "REQ-009", "case_id": "blank_location", "category": "null", "input": "", "expected": ""},
+  {"request_id": "REQ-010", "case_id": "malformed_hex", "category": "invalid", "input": "not-hex", "expected": ""},
+  {"request_id": "REQ-011", "case_id": "non_point_geometry", "category": "invalid", "input": "010200000000000000008052C00000000000004440", "expected": ""},
+  {"request_id": "REQ-012", "case_id": "out_of_range", "category": "invalid", "input": "01010000000000000000A066400000000000004440", "expected": ""}
+]
