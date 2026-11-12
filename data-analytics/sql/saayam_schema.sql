@@ -1,7 +1,7 @@
 --
 -- Saayam For All - schema for the request archival pipeline
 --
--- The `requests` table and every table it references. Contains no data. This will be enough to help and understand the schema and to complete realted task ( 573) 
+-- The `requests` table and every table it references. Contains no data. This will be enough to help and understand the schema and to complete realted task ( 573)
 --
 
 
@@ -129,7 +129,7 @@ CREATE TABLE virginia_dev_saayam_rdbms.requests (
 
 -- ========================================================== what joins what
 --
--- The nine foreign keys above are the answer to "which columns reference 
+-- The nine foreign keys above are the answer to "which columns reference
 -- other tables". Because they are enforced constraints, a non-null value is
 -- guaranteed to match a row in its target. Null counts, from 221 requests in
 -- dev on 24 October 2026:
