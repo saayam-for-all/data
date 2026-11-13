@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -45,6 +46,9 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    # organizations.is_contributor; if a database doesn't have the column yet,
+    # the merge's reindex leaves it empty and the response shows null.
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -56,6 +60,7 @@ AI_RENAME = {
     "organization_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "contact": "contact",
     "web_url": "web_url",
 }
@@ -676,6 +681,7 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        orgs["is_contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -686,6 +692,19 @@ def get_ai_orgs(subject, description, location, category):
         raise Exception(
             f"Unexpected response structure from GenAI Lambda: {e}"
         ) from e
+
+
+# Response fields that are yes/no flags.
+BOOLEAN_COLUMNS = ("collaborator", "contributor")
+
+
+def _to_flag(value):
+    """True/False for real flags, None (null) when the value is missing."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return None
+    if isinstance(value, str):
+        return value.strip().lower() in ("true", "t", "1", "yes")
+    return bool(value)
 
 
 def merge_organizations(db_organizations, genAI_organizations):
@@ -704,10 +723,18 @@ def merge_organizations(db_organizations, genAI_organizations):
         db_orgs = _normalize(db_organizations, DB_RENAME)
         ai_orgs = _normalize(genAI_organizations, AI_RENAME)
 
-        return pd.concat(
+        combined = pd.concat(
             [db_orgs, ai_orgs],
             ignore_index=True,
         )
+
+        # Keep the yes/no flags as true / false / null in the JSON. Without this,
+        # concatenating an all-empty column (e.g. a DB without is_contributor)
+        # with the AI orgs' False turns False into the number 0.0.
+        for flag in BOOLEAN_COLUMNS:
+            combined[flag] = combined[flag].astype(object).map(_to_flag)
+
+        return combined
 
     except Exception as e:
         raise Exception(
