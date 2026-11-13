@@ -1,0 +1,2627 @@
+{
+ "n_items": 70,
+ "n_pii_items": 50,
+ "n_clean_items": 20,
+ "n_details": 66,
+ "name_index_parts": 386,
+ "name_index_ms": 21.1,
+ "comprehend_cost": {
+  "avg_chars": 85.5,
+  "avg_units": 3.0,
+  "usd_per_request": 0.00030000000000000003,
+  "monthly": {
+   "1000": 0.3,
+   "10000": 3.0,
+   "100000": 30.0
+  }
+ },
+ "approaches": {
+  "1": {
+   "per_type": {
+    "NAME": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 35
+    },
+    "PHONE": {
+     "caught": 9,
+     "partial": 0,
+     "missed": 6
+    },
+    "EMAIL": {
+     "caught": 4,
+     "partial": 0,
+     "missed": 2
+    },
+    "ADDRESS": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 7
+    },
+    "ID": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    },
+    "CARD": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    },
+    "URL": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    }
+   },
+   "totals": {
+    "caught": 16,
+    "partial": 0,
+    "missed": 50
+   },
+   "false_positive_redactions": 2,
+   "clean_texts_wrongly_redacted": [
+    "C09",
+    "C20"
+   ],
+   "pii_texts_fully_cleaned": 10,
+   "names_registered": {
+    "caught": 0,
+    "total": 30
+   },
+   "names_unregistered": {
+    "caught": 0,
+    "total": 5
+   },
+   "rows": [
+    {
+     "id": "T01",
+     "subject": "Need groceries this week",
+     "description": "We ran out of food. Please call me at [PHONE] any time after 5pm.",
+     "details": [
+      [
+       "(408) 555-0134",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T02",
+     "subject": "Ride to clinic",
+     "description": "I need a ride to my appointment on Friday. My cell is [PHONE].",
+     "details": [
+      [
+       "408.555.0177",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T03",
+     "subject": "Help moving furniture",
+     "description": "Moving out on Saturday, need two people to help lift a couch. Text [PHONE].",
+     "details": [
+      [
+       "4085550123",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T04",
+     "subject": "Tutoring for my son",
+     "description": "Looking for a math tutor for 8th grade. Reach me on [PHONE] or WhatsApp.",
+     "details": [
+      [
+       "+1 408 555 0145",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T05",
+     "subject": "Need help with rent",
+     "description": "Lost my job last month. My number in India is +91 98765 43210, I am visiting family.",
+     "details": [
+      [
+       "+91 98765 43210",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T06",
+     "subject": "Medicine pickup",
+     "description": "Can someone pick up my prescription? Call my home line 555-0199.",
+     "details": [
+      [
+       "555-0199",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T07",
+     "subject": "Help with job application",
+     "description": "I need help filling online forms. My phone is four zero eight five five five zero one nine two.",
+     "details": [
+      [
+       "four zero eight five five five zero one nine two",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T08",
+     "subject": "Food for family of five",
+     "description": "Please contact 408 five five five 0161 when food is ready, thank you.",
+     "details": [
+      [
+       "408 five five five 0161",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T09",
+     "subject": "Translator needed",
+     "description": "Need a Spanish translator for a school meeting. UK number while abroad: +44 20 7946 0958.",
+     "details": [
+      [
+       "+44 20 7946 0958",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T10",
+     "subject": "Wheelchair ramp",
+     "description": "Need a ramp built at the front door. Phone [PHONE] ext. 12.",
+     "details": [
+      [
+       "408-555-0188",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T11",
+     "subject": "Laptop for school",
+     "description": "My daughter needs a laptop for online classes. Email me at [EMAIL]",
+     "details": [
+      [
+       "maria.lopez@example.com",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T12",
+     "subject": "Resume review",
+     "description": "Please send feedback to raghu dot priya at gmail dot com, I check it daily.",
+     "details": [
+      [
+       "raghu dot priya at gmail dot com",
+       "EMAIL",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T13",
+     "subject": "Winter clothes",
+     "description": "Need jackets for two kids. You can write to kwame_m [at] example [dot] org.",
+     "details": [
+      [
+       "kwame_m [at] example [dot] org",
+       "EMAIL",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T14",
+     "subject": "Contact me by email",
+     "description": "Email: [EMAIL]",
+     "details": [
+      [
+       "chou.meiling+help@example.net",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T15",
+     "subject": "Groceries for Maria Lopez",
+     "description": "Maria Lopez is my neighbour and cannot walk to the store.",
+     "details": [
+      [
+       "Maria Lopez",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Maria Lopez",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T16",
+     "subject": "Help for elderly father",
+     "description": "My father José Hernández needs someone to check on him twice a week.",
+     "details": [
+      [
+       "José Hernández",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T17",
+     "subject": "Need a ride",
+     "description": "Hi, this is Oluwaseun Adeyemi. I need a ride to the DMV on Monday.",
+     "details": [
+      [
+       "Oluwaseun Adeyemi",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T18",
+     "subject": "Meal delivery",
+     "description": "Please deliver meals to Mohammed Al-Rashid, he just had surgery.",
+     "details": [
+      [
+       "Mohammed Al-Rashid",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T19",
+     "subject": "Help with English classes",
+     "description": "I am Nguyễn Thị Lan and I want to learn English to find work.",
+     "details": [
+      [
+       "Nguyễn Thị Lan",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T20",
+     "subject": "Babysitting",
+     "description": "Need babysitting on Tuesday evening. Ask for Fatima Zahra Benali at the front desk.",
+     "details": [
+      [
+       "Fatima Zahra Benali",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T21",
+     "subject": "Computer help",
+     "description": "My grandmother Aiko Tanaka needs help setting up video calls with family.",
+     "details": [
+      [
+       "Aiko Tanaka",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T22",
+     "subject": "Food assistance",
+     "description": "my name is guadalupe ramírez and we need food for this week",
+     "details": [
+      [
+       "guadalupe ramírez",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T23",
+     "subject": "Yard cleanup",
+     "description": "Chinedu Okafor here, need help clearing fallen branches after the storm.",
+     "details": [
+      [
+       "Chinedu Okafor",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T24",
+     "subject": "Hospital visit company",
+     "description": "Lakshmi Narayanan would like someone to sit with her during dialysis.",
+     "details": [
+      [
+       "Lakshmi Narayanan",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T25",
+     "subject": "Bike repair",
+     "description": "Need my bike fixed to get to work. Thanks, Björn Lindqvist",
+     "details": [
+      [
+       "Björn Lindqvist",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T26",
+     "subject": "School supplies",
+     "description": "Ms. Siddiqui, my son's teacher, said he needs a calculator. Please contact Ayesha Siddiqui (me).",
+     "details": [
+      [
+       "Siddiqui",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Ayesha Siddiqui",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T27",
+     "subject": "Moving boxes",
+     "description": "Dmitri Volkov needs boxes and tape for a move next week.",
+     "details": [
+      [
+       "Dmitri Volkov",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T28",
+     "subject": "Help for Siobhán",
+     "description": "Siobhán Ní Bhriain broke her arm and needs help with shopping.",
+     "details": [
+      [
+       "Siobhán",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Siobhán Ní Bhriain",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T29",
+     "subject": "Thai interpreter",
+     "description": "Need a Thai speaker to help Anan Srisuk talk to his landlord.",
+     "details": [
+      [
+       "Anan Srisuk",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T30",
+     "subject": "Grocery run",
+     "description": "Thandiwe Dlamini cannot drive this month, needs weekly groceries.",
+     "details": [
+      [
+       "Thandiwe Dlamini",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T31",
+     "subject": "Visit my mother",
+     "description": "My mother Rosa Delgado lives alone and needs someone to visit on weekends.",
+     "details": [
+      [
+       "Rosa Delgado",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T32",
+     "subject": "Help my neighbor",
+     "description": "My neighbor Mr. Haruto Sato fell last week and needs help with groceries.",
+     "details": [
+      [
+       "Haruto Sato",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T33",
+     "subject": "Caseworker follow-up",
+     "description": "Our caseworker Emily Carter said to post here for diapers and formula.",
+     "details": [
+      [
+       "Emily Carter",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T34",
+     "subject": "Landlord dispute",
+     "description": "Need advice. Landlord Viktor Petrenko wants to evict us without notice.",
+     "details": [
+      [
+       "Viktor Petrenko",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T35",
+     "subject": "Pet care",
+     "description": "Please walk our dog while my husband Ikenna is in hospital.",
+     "details": [
+      [
+       "Ikenna",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T36",
+     "subject": "Food delivery needed",
+     "description": "Please drop off the food at 1234 Oak Street, Apt 4B. Ring the bell twice.",
+     "details": [
+      [
+       "1234 Oak Street, Apt 4B",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T37",
+     "subject": "Snow shoveling",
+     "description": "Driveway at 77 Maple Ave needs shoveling before Monday morning.",
+     "details": [
+      [
+       "77 Maple Ave",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T38",
+     "subject": "Mail pickup",
+     "description": "I am traveling, please collect mail from PO Box 2210 for me.",
+     "details": [
+      [
+       "PO Box 2210",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T39",
+     "subject": "Ride to work",
+     "description": "Pick me up from 4521 Stevens Creek Blvd, San Jose at 7am.",
+     "details": [
+      [
+       "4521 Stevens Creek Blvd",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T40",
+     "subject": "Fix leaking sink",
+     "description": "Our sink is leaking. We live at the blue house on twelve Elm Road.",
+     "details": [
+      [
+       "twelve Elm Road",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T41",
+     "subject": "Help with benefits form",
+     "description": "The form asks for my SSN [SSN], can someone help me fill it in?",
+     "details": [
+      [
+       "123-45-6789",
+       "ID",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T42",
+     "subject": "Pay electricity bill",
+     "description": "Can someone pay my bill? My card is [CARD].",
+     "details": [
+      [
+       "4111 1111 1111 1111",
+       "CARD",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T43",
+     "subject": "Find me online",
+     "description": "You can message me on [URL] for details.",
+     "details": [
+      [
+       "https://www.facebook.com/priya.r.example",
+       "URL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T44",
+     "subject": "Urgent: food and diapers",
+     "description": "This is Carmen Ruiz, call [PHONE] or email [EMAIL] Address is 89 Pine Lane.",
+     "details": [
+      [
+       "Carmen Ruiz",
+       "NAME",
+       "missed"
+      ],
+      [
+       "650-555-0112",
+       "PHONE",
+       "caught"
+      ],
+      [
+       "carmen.r@example.org",
+       "EMAIL",
+       "caught"
+      ],
+      [
+       "89 Pine Lane",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T45",
+     "subject": "Help for Wei Zhang",
+     "description": "Wei Zhang needs a ride to the airport. His number is [PHONE].",
+     "details": [
+      [
+       "Wei Zhang",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Wei Zhang",
+       "NAME",
+       "missed"
+      ],
+      [
+       "(669) 555-0170",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T46",
+     "subject": "Need help with taxes",
+     "description": "Rahul Verma, [EMAIL], [PHONE]. Need help with tax filing.",
+     "details": [
+      [
+       "Rahul Verma",
+       "NAME",
+       "missed"
+      ],
+      [
+       "rahulv@example.com",
+       "EMAIL",
+       "caught"
+      ],
+      [
+       "510 555 0193",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T47",
+     "subject": "Donation pickup",
+     "description": "Yusuf Demir has a sofa to donate, pick up at 300 Bay Road. Call five one zero, five five five, zero one four four.",
+     "details": [
+      [
+       "Yusuf Demir",
+       "NAME",
+       "missed"
+      ],
+      [
+       "300 Bay Road",
+       "ADDRESS",
+       "missed"
+      ],
+      [
+       "five one zero, five five five, zero one four four",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T48",
+     "subject": "Need a ride for Grace",
+     "description": "Grace Thompson needs a ride to church on Sunday, call [PHONE].",
+     "details": [
+      [
+       "Grace",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Grace Thompson",
+       "NAME",
+       "missed"
+      ],
+      [
+       "408-555-0150",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T49",
+     "subject": "Hope needs a coat",
+     "description": "Hope Williams needs a winter coat, size M.",
+     "details": [
+      [
+       "Hope",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Hope Williams",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T50",
+     "subject": "Help Jordan move",
+     "description": "Jordan Brooks is moving to a new apartment and needs a truck.",
+     "details": [
+      [
+       "Jordan",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Jordan Brooks",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "C01",
+     "subject": "Groceries for a family of four",
+     "description": "We need rice, beans, milk and vegetables for this week.",
+     "details": []
+    },
+    {
+     "id": "C02",
+     "subject": "Rent help",
+     "description": "Rent of $1,250 is due on 11/15/2026 and I am short by $400.",
+     "details": []
+    },
+    {
+     "id": "C03",
+     "subject": "Childcare",
+     "description": "I have 3 kids aged 4, 7 and 12 and need after-school care twice a week.",
+     "details": []
+    },
+    {
+     "id": "C04",
+     "subject": "Emergency info",
+     "description": "If it is an emergency please call 911. Otherwise any time this week is fine.",
+     "details": []
+    },
+    {
+     "id": "C05",
+     "subject": "Grace period ended",
+     "description": "The grace period on my rent ended and I need help paying it.",
+     "details": []
+    },
+    {
+     "id": "C06",
+     "subject": "Hope to find work",
+     "description": "Hope someone can help me write a cover letter. Will pay it forward.",
+     "details": []
+    },
+    {
+     "id": "C07",
+     "subject": "Clinic on Mission Blvd",
+     "description": "Need a ride to the free clinic on Mission Blvd in Fremont.",
+     "details": []
+    },
+    {
+     "id": "C08",
+     "subject": "Help after flood",
+     "description": "Our basement flooded during the storm. Need help moving things upstairs.",
+     "details": []
+    },
+    {
+     "id": "C09",
+     "subject": "Food bank information",
+     "description": "Where is the nearest food bank? I saw [URL] but could not find one.",
+     "details": []
+    },
+    {
+     "id": "C10",
+     "subject": "Refugee family from Jordan",
+     "description": "A family that just arrived from Jordan needs furniture and kitchen items.",
+     "details": []
+    },
+    {
+     "id": "C11",
+     "subject": "Laptop repair",
+     "description": "My laptop model 15-ay041wm will not turn on. Need someone who knows computers.",
+     "details": []
+    },
+    {
+     "id": "C12",
+     "subject": "Bus pass",
+     "description": "Need a monthly bus pass for route 22 to get to my new job.",
+     "details": []
+    },
+    {
+     "id": "C13",
+     "subject": "Medicine",
+     "description": "I take 2 pills a day and the pharmacy is closed on Sunday.",
+     "details": []
+    },
+    {
+     "id": "C14",
+     "subject": "Tutoring",
+     "description": "Looking for a chemistry tutor, high school level, 2 hours per week.",
+     "details": []
+    },
+    {
+     "id": "C15",
+     "subject": "Wheelchair",
+     "description": "Need a used wheelchair, budget under 150 dollars.",
+     "details": []
+    },
+    {
+     "id": "C16",
+     "subject": "Tax help",
+     "description": "I need help with my 2025 tax return and form 1040.",
+     "details": []
+    },
+    {
+     "id": "C17",
+     "subject": "Phone plan",
+     "description": "My phone was cut off. Need help finding a cheap phone plan.",
+     "details": []
+    },
+    {
+     "id": "C18",
+     "subject": "Help at Lincoln Elementary",
+     "description": "Volunteers needed to paint the fence at Lincoln Elementary on Saturday.",
+     "details": []
+    },
+    {
+     "id": "C19",
+     "subject": "May food drive",
+     "description": "May I get a box from the food drive? We are a family of 6.",
+     "details": []
+    },
+    {
+     "id": "C20",
+     "subject": "Order tracking",
+     "description": "Donated items were shipped, tracking number 1Z999AA[PHONE].",
+     "details": []
+    }
+   ],
+   "timing": "0.016 ms",
+   "timing_detail": {
+    "ms_per_request": 0.0163,
+    "repeats": 200
+   },
+   "title": "Pattern matching only (current pipeline)"
+  },
+  "2": {
+   "per_type": {
+    "NAME": {
+     "caught": 28,
+     "partial": 1,
+     "missed": 6
+    },
+    "PHONE": {
+     "caught": 9,
+     "partial": 0,
+     "missed": 6
+    },
+    "EMAIL": {
+     "caught": 4,
+     "partial": 0,
+     "missed": 2
+    },
+    "ADDRESS": {
+     "caught": 0,
+     "partial": 0,
+     "missed": 7
+    },
+    "ID": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    },
+    "CARD": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    },
+    "URL": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    }
+   },
+   "totals": {
+    "caught": 44,
+    "partial": 1,
+    "missed": 21
+   },
+   "false_positive_redactions": 8,
+   "clean_texts_wrongly_redacted": [
+    "C05",
+    "C06",
+    "C09",
+    "C10",
+    "C20"
+   ],
+   "pii_texts_fully_cleaned": 29,
+   "names_registered": {
+    "caught": 28,
+    "total": 30
+   },
+   "names_unregistered": {
+    "caught": 0,
+    "total": 5
+   },
+   "rows": [
+    {
+     "id": "T01",
+     "subject": "Need groceries this week",
+     "description": "We ran out of food. Please call me at [PHONE] any time after 5pm.",
+     "details": [
+      [
+       "(408) 555-0134",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T02",
+     "subject": "Ride to clinic",
+     "description": "I need a ride to my appointment on Friday. My cell is [PHONE].",
+     "details": [
+      [
+       "408.555.0177",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T03",
+     "subject": "Help moving furniture",
+     "description": "Moving out on Saturday, need two people to help lift a couch. Text [PHONE].",
+     "details": [
+      [
+       "4085550123",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T04",
+     "subject": "Tutoring for my son",
+     "description": "Looking for a math tutor for 8th grade. Reach me on [PHONE] or WhatsApp.",
+     "details": [
+      [
+       "+1 408 555 0145",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T05",
+     "subject": "Need help with rent",
+     "description": "Lost my job last month. My number in India is +91 98765 43210, I am visiting family.",
+     "details": [
+      [
+       "+91 98765 43210",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T06",
+     "subject": "Medicine pickup",
+     "description": "Can someone pick up my prescription? Call my home line 555-0199.",
+     "details": [
+      [
+       "555-0199",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T07",
+     "subject": "Help with job application",
+     "description": "I need help filling online forms. My phone is four zero eight five five five zero one nine two.",
+     "details": [
+      [
+       "four zero eight five five five zero one nine two",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T08",
+     "subject": "Food for family of five",
+     "description": "Please contact 408 five five five 0161 when food is ready, thank you.",
+     "details": [
+      [
+       "408 five five five 0161",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T09",
+     "subject": "Translator needed",
+     "description": "Need a Spanish translator for a school meeting. UK number while abroad: +44 20 7946 0958.",
+     "details": [
+      [
+       "+44 20 7946 0958",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T10",
+     "subject": "Wheelchair ramp",
+     "description": "Need a ramp built at the front door. Phone [PHONE] ext. 12.",
+     "details": [
+      [
+       "408-555-0188",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T11",
+     "subject": "Laptop for school",
+     "description": "My daughter needs a laptop for online classes. Email me at [EMAIL]",
+     "details": [
+      [
+       "maria.lopez@example.com",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T12",
+     "subject": "Resume review",
+     "description": "Please send feedback to raghu dot priya at gmail dot com, I check it daily.",
+     "details": [
+      [
+       "raghu dot priya at gmail dot com",
+       "EMAIL",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T13",
+     "subject": "Winter clothes",
+     "description": "Need jackets for two kids. You can write to kwame_m [at] example [dot] org.",
+     "details": [
+      [
+       "kwame_m [at] example [dot] org",
+       "EMAIL",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T14",
+     "subject": "Contact me by email",
+     "description": "Email: [EMAIL]",
+     "details": [
+      [
+       "chou.meiling+help@example.net",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T15",
+     "subject": "Groceries for [NAME] [NAME]",
+     "description": "[NAME] [NAME] is my neighbour and cannot walk to the store.",
+     "details": [
+      [
+       "Maria Lopez",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Maria Lopez",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T16",
+     "subject": "Help for elderly father",
+     "description": "My father [NAME] [NAME] needs someone to check on him twice a week.",
+     "details": [
+      [
+       "José Hernández",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T17",
+     "subject": "Need a ride",
+     "description": "Hi, this is [NAME] [NAME]. I need a ride to the DMV on Monday.",
+     "details": [
+      [
+       "Oluwaseun Adeyemi",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T18",
+     "subject": "Meal delivery",
+     "description": "Please deliver meals to [NAME] [NAME], he just had surgery.",
+     "details": [
+      [
+       "Mohammed Al-Rashid",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T19",
+     "subject": "Help with English classes",
+     "description": "I am [NAME] [NAME] [NAME] and I want to learn English to find work.",
+     "details": [
+      [
+       "Nguyễn Thị Lan",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T20",
+     "subject": "Babysitting",
+     "description": "Need babysitting on Tuesday evening. Ask for [NAME] [NAME] [NAME] at the front desk.",
+     "details": [
+      [
+       "Fatima Zahra Benali",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T21",
+     "subject": "Computer help",
+     "description": "My grandmother [NAME] [NAME] needs help setting up video calls with family.",
+     "details": [
+      [
+       "Aiko Tanaka",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T22",
+     "subject": "Food assistance",
+     "description": "my name is guadalupe ramírez and we need food for this week",
+     "details": [
+      [
+       "guadalupe ramírez",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T23",
+     "subject": "Yard cleanup",
+     "description": "[NAME] [NAME] here, need help clearing fallen branches after the storm.",
+     "details": [
+      [
+       "Chinedu Okafor",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T24",
+     "subject": "Hospital visit company",
+     "description": "[NAME] [NAME] would like someone to sit with her during dialysis.",
+     "details": [
+      [
+       "Lakshmi Narayanan",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T25",
+     "subject": "Bike repair",
+     "description": "Need my bike fixed to get to work. Thanks, [NAME] [NAME]",
+     "details": [
+      [
+       "Björn Lindqvist",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T26",
+     "subject": "School supplies",
+     "description": "Ms. [NAME], my son's teacher, said he needs a calculator. Please contact [NAME] [NAME] (me).",
+     "details": [
+      [
+       "Siddiqui",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Ayesha Siddiqui",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T27",
+     "subject": "Moving boxes",
+     "description": "[NAME] [NAME] needs boxes and tape for a move next week.",
+     "details": [
+      [
+       "Dmitri Volkov",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T28",
+     "subject": "Help for [NAME]",
+     "description": "[NAME] Ní [NAME] broke her arm and needs help with shopping.",
+     "details": [
+      [
+       "Siobhán",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Siobhán Ní Bhriain",
+       "NAME",
+       "partial"
+      ]
+     ]
+    },
+    {
+     "id": "T29",
+     "subject": "Thai interpreter",
+     "description": "Need a Thai speaker to help [NAME] [NAME] talk to his landlord.",
+     "details": [
+      [
+       "Anan Srisuk",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T30",
+     "subject": "Grocery run",
+     "description": "[NAME] [NAME] cannot drive this month, needs weekly groceries.",
+     "details": [
+      [
+       "Thandiwe Dlamini",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T31",
+     "subject": "Visit my mother",
+     "description": "My mother Rosa Delgado lives alone and needs someone to visit on weekends.",
+     "details": [
+      [
+       "Rosa Delgado",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T32",
+     "subject": "Help my neighbor",
+     "description": "My neighbor Mr. Haruto Sato fell last week and needs help with groceries.",
+     "details": [
+      [
+       "Haruto Sato",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T33",
+     "subject": "Caseworker follow-up",
+     "description": "Our caseworker Emily Carter said to post here for diapers and formula.",
+     "details": [
+      [
+       "Emily Carter",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T34",
+     "subject": "Landlord dispute",
+     "description": "Need advice. Landlord Viktor Petrenko wants to evict us without notice.",
+     "details": [
+      [
+       "Viktor Petrenko",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T35",
+     "subject": "Pet care",
+     "description": "Please walk our dog while my husband Ikenna is in hospital.",
+     "details": [
+      [
+       "Ikenna",
+       "NAME",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T36",
+     "subject": "Food delivery needed",
+     "description": "Please drop off the food at 1234 Oak Street, Apt 4B. Ring the bell twice.",
+     "details": [
+      [
+       "1234 Oak Street, Apt 4B",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T37",
+     "subject": "Snow shoveling",
+     "description": "Driveway at 77 Maple Ave needs shoveling before Monday morning.",
+     "details": [
+      [
+       "77 Maple Ave",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T38",
+     "subject": "Mail pickup",
+     "description": "I am traveling, please collect mail from PO Box 2210 for me.",
+     "details": [
+      [
+       "PO Box 2210",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T39",
+     "subject": "Ride to work",
+     "description": "Pick me up from 4521 Stevens Creek Blvd, San [NAME] at 7am.",
+     "details": [
+      [
+       "4521 Stevens Creek Blvd",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T40",
+     "subject": "Fix leaking sink",
+     "description": "Our sink is leaking. We live at the blue house on twelve Elm Road.",
+     "details": [
+      [
+       "twelve Elm Road",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T41",
+     "subject": "Help with benefits form",
+     "description": "The form asks for my SSN [SSN], can someone help me fill it in?",
+     "details": [
+      [
+       "123-45-6789",
+       "ID",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T42",
+     "subject": "Pay electricity bill",
+     "description": "Can someone pay my bill? My card is [CARD].",
+     "details": [
+      [
+       "4111 1111 1111 1111",
+       "CARD",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T43",
+     "subject": "Find me online",
+     "description": "You can message me on [URL] for details.",
+     "details": [
+      [
+       "https://www.facebook.com/priya.r.example",
+       "URL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T44",
+     "subject": "Urgent: food and diapers",
+     "description": "This is [NAME] [NAME], call [PHONE] or email [EMAIL] Address is 89 Pine Lane.",
+     "details": [
+      [
+       "Carmen Ruiz",
+       "NAME",
+       "caught"
+      ],
+      [
+       "650-555-0112",
+       "PHONE",
+       "caught"
+      ],
+      [
+       "carmen.r@example.org",
+       "EMAIL",
+       "caught"
+      ],
+      [
+       "89 Pine Lane",
+       "ADDRESS",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T45",
+     "subject": "Help for [NAME] [NAME]",
+     "description": "[NAME] [NAME] needs a ride to the airport. His number is [PHONE].",
+     "details": [
+      [
+       "Wei Zhang",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Wei Zhang",
+       "NAME",
+       "caught"
+      ],
+      [
+       "(669) 555-0170",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T46",
+     "subject": "Need help with taxes",
+     "description": "[NAME] [NAME], [EMAIL], [PHONE]. Need help with tax filing.",
+     "details": [
+      [
+       "Rahul Verma",
+       "NAME",
+       "caught"
+      ],
+      [
+       "rahulv@example.com",
+       "EMAIL",
+       "caught"
+      ],
+      [
+       "510 555 0193",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T47",
+     "subject": "Donation pickup",
+     "description": "[NAME] [NAME] has a sofa to donate, pick up at 300 Bay Road. Call five one zero, five five five, zero one four four.",
+     "details": [
+      [
+       "Yusuf Demir",
+       "NAME",
+       "caught"
+      ],
+      [
+       "300 Bay Road",
+       "ADDRESS",
+       "missed"
+      ],
+      [
+       "five one zero, five five five, zero one four four",
+       "PHONE",
+       "missed"
+      ]
+     ]
+    },
+    {
+     "id": "T48",
+     "subject": "Need a ride for [NAME]",
+     "description": "[NAME] [NAME] needs a ride to church on Sunday, call [PHONE].",
+     "details": [
+      [
+       "Grace",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Grace Thompson",
+       "NAME",
+       "caught"
+      ],
+      [
+       "408-555-0150",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T49",
+     "subject": "[NAME] needs a coat",
+     "description": "[NAME] [NAME] needs a winter coat, size M.",
+     "details": [
+      [
+       "Hope",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Hope Williams",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T50",
+     "subject": "Help [NAME] move",
+     "description": "[NAME] [NAME] is moving to a new apartment and needs a truck.",
+     "details": [
+      [
+       "Jordan",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Jordan Brooks",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "C01",
+     "subject": "Groceries for a family of four",
+     "description": "We need rice, beans, milk and vegetables for this week.",
+     "details": []
+    },
+    {
+     "id": "C02",
+     "subject": "Rent help",
+     "description": "Rent of $1,250 is due on 11/15/2026 and I am short by $400.",
+     "details": []
+    },
+    {
+     "id": "C03",
+     "subject": "Childcare",
+     "description": "I have 3 kids aged 4, 7 and 12 and need after-school care twice a week.",
+     "details": []
+    },
+    {
+     "id": "C04",
+     "subject": "Emergency info",
+     "description": "If it is an emergency please call 911. Otherwise any time this week is fine.",
+     "details": []
+    },
+    {
+     "id": "C05",
+     "subject": "[NAME] period ended",
+     "description": "The grace period on my rent ended and I need help paying it.",
+     "details": []
+    },
+    {
+     "id": "C06",
+     "subject": "[NAME] to find work",
+     "description": "[NAME] someone can help me write a cover letter. Will pay it forward.",
+     "details": []
+    },
+    {
+     "id": "C07",
+     "subject": "Clinic on Mission Blvd",
+     "description": "Need a ride to the free clinic on Mission Blvd in Fremont.",
+     "details": []
+    },
+    {
+     "id": "C08",
+     "subject": "Help after flood",
+     "description": "Our basement flooded during the storm. Need help moving things upstairs.",
+     "details": []
+    },
+    {
+     "id": "C09",
+     "subject": "Food bank information",
+     "description": "Where is the nearest food bank? I saw [URL] but could not find one.",
+     "details": []
+    },
+    {
+     "id": "C10",
+     "subject": "Refugee family from [NAME]",
+     "description": "A family that just arrived from [NAME] needs furniture and kitchen items.",
+     "details": []
+    },
+    {
+     "id": "C11",
+     "subject": "Laptop repair",
+     "description": "My laptop model 15-ay041wm will not turn on. Need someone who knows computers.",
+     "details": []
+    },
+    {
+     "id": "C12",
+     "subject": "Bus pass",
+     "description": "Need a monthly bus pass for route 22 to get to my new job.",
+     "details": []
+    },
+    {
+     "id": "C13",
+     "subject": "Medicine",
+     "description": "I take 2 pills a day and the pharmacy is closed on Sunday.",
+     "details": []
+    },
+    {
+     "id": "C14",
+     "subject": "Tutoring",
+     "description": "Looking for a chemistry tutor, high school level, 2 hours per week.",
+     "details": []
+    },
+    {
+     "id": "C15",
+     "subject": "Wheelchair",
+     "description": "Need a used wheelchair, budget under 150 dollars.",
+     "details": []
+    },
+    {
+     "id": "C16",
+     "subject": "Tax help",
+     "description": "I need help with my 2025 tax return and form 1040.",
+     "details": []
+    },
+    {
+     "id": "C17",
+     "subject": "Phone plan",
+     "description": "My phone was cut off. Need help finding a cheap phone plan.",
+     "details": []
+    },
+    {
+     "id": "C18",
+     "subject": "Help at Lincoln Elementary",
+     "description": "Volunteers needed to paint the fence at Lincoln Elementary on Saturday.",
+     "details": []
+    },
+    {
+     "id": "C19",
+     "subject": "May food drive",
+     "description": "May I get a box from the food drive? We are a family of 6.",
+     "details": []
+    },
+    {
+     "id": "C20",
+     "subject": "Order tracking",
+     "description": "Donated items were shipped, tracking number 1Z999AA[PHONE].",
+     "details": []
+    }
+   ],
+   "timing": "0.028 ms",
+   "timing_detail": {
+    "ms_per_request": 0.0282,
+    "repeats": 200
+   },
+   "title": "Patterns + users-table name lookup"
+  },
+  "3": {
+   "title": "Patterns + Amazon Comprehend",
+   "skipped": "no AWS access yet (run with --comprehend live)"
+  },
+  "4": {
+   "per_type": {
+    "NAME": {
+     "caught": 34,
+     "partial": 0,
+     "missed": 1
+    },
+    "PHONE": {
+     "caught": 15,
+     "partial": 0,
+     "missed": 0
+    },
+    "EMAIL": {
+     "caught": 6,
+     "partial": 0,
+     "missed": 0
+    },
+    "ADDRESS": {
+     "caught": 7,
+     "partial": 0,
+     "missed": 0
+    },
+    "ID": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    },
+    "CARD": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    },
+    "URL": {
+     "caught": 1,
+     "partial": 0,
+     "missed": 0
+    }
+   },
+   "totals": {
+    "caught": 65,
+    "partial": 0,
+    "missed": 1
+   },
+   "false_positive_redactions": 6,
+   "clean_texts_wrongly_redacted": [
+    "C09",
+    "C10",
+    "C20"
+   ],
+   "pii_texts_fully_cleaned": 49,
+   "names_registered": {
+    "caught": 29,
+    "total": 30
+   },
+   "names_unregistered": {
+    "caught": 5,
+    "total": 5
+   },
+   "rows": [
+    {
+     "id": "T01",
+     "subject": "Need groceries this week",
+     "description": "We ran out of food. Please call me at [PHONE] any time after 5pm.",
+     "details": [
+      [
+       "(408) 555-0134",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T02",
+     "subject": "Ride to clinic",
+     "description": "I need a ride to my appointment on Friday. My cell is [PHONE].",
+     "details": [
+      [
+       "408.555.0177",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T03",
+     "subject": "Help moving furniture",
+     "description": "Moving out on Saturday, need two people to help lift a couch. Text [PHONE].",
+     "details": [
+      [
+       "4085550123",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T04",
+     "subject": "Tutoring for my son",
+     "description": "Looking for a math tutor for 8th grade. Reach me on [PHONE] or WhatsApp.",
+     "details": [
+      [
+       "+1 408 555 0145",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T05",
+     "subject": "Need help with rent",
+     "description": "Lost my job last month. My number in India is [PHONE], I am visiting family.",
+     "details": [
+      [
+       "+91 98765 43210",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T06",
+     "subject": "Medicine pickup",
+     "description": "Can someone pick up my prescription? Call my home line [PHONE].",
+     "details": [
+      [
+       "555-0199",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T07",
+     "subject": "Help with job application",
+     "description": "I need help filling online forms. My phone is [PHONE].",
+     "details": [
+      [
+       "four zero eight five five five zero one nine two",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T08",
+     "subject": "Food for family of five",
+     "description": "Please contact [PHONE] when food is ready, thank you.",
+     "details": [
+      [
+       "408 five five five 0161",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T09",
+     "subject": "Translator needed",
+     "description": "Need a Spanish translator for a school meeting. UK number while abroad: [PHONE].",
+     "details": [
+      [
+       "+44 20 7946 0958",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T10",
+     "subject": "Wheelchair ramp",
+     "description": "Need a ramp built at the front door. Phone [PHONE] ext. 12.",
+     "details": [
+      [
+       "408-555-0188",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T11",
+     "subject": "Laptop for school",
+     "description": "My daughter needs a laptop for online classes. Email me at [NAME]",
+     "details": [
+      [
+       "maria.lopez@example.com",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T12",
+     "subject": "Resume review",
+     "description": "Please send feedback to [EMAIL], I check it daily.",
+     "details": [
+      [
+       "raghu dot priya at gmail dot com",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T13",
+     "subject": "Winter clothes",
+     "description": "Need jackets for two kids. You can write to [EMAIL].",
+     "details": [
+      [
+       "kwame_m [at] example [dot] org",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T14",
+     "subject": "Contact me by email",
+     "description": "Email: [NAME]",
+     "details": [
+      [
+       "chou.meiling+help@example.net",
+       "EMAIL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T15",
+     "subject": "Groceries for [NAME]",
+     "description": "[NAME] is my neighbour and cannot walk to the store.",
+     "details": [
+      [
+       "Maria Lopez",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Maria Lopez",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T16",
+     "subject": "Help for elderly father",
+     "description": "My father [NAME] needs someone to check on him twice a week.",
+     "details": [
+      [
+       "José Hernández",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T17",
+     "subject": "Need a ride",
+     "description": "Hi, this is [NAME]. I need a ride to the DMV on Monday.",
+     "details": [
+      [
+       "Oluwaseun Adeyemi",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T18",
+     "subject": "Meal delivery",
+     "description": "Please deliver meals to [NAME], he just had surgery.",
+     "details": [
+      [
+       "Mohammed Al-Rashid",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T19",
+     "subject": "Help with English classes",
+     "description": "I am [NAME] and I want to learn English to find work.",
+     "details": [
+      [
+       "Nguyễn Thị Lan",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T20",
+     "subject": "Babysitting",
+     "description": "Need babysitting on Tuesday evening. Ask for [NAME] at the front desk.",
+     "details": [
+      [
+       "Fatima Zahra Benali",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T21",
+     "subject": "Computer help",
+     "description": "My grandmother [NAME] needs help setting up video calls with family.",
+     "details": [
+      [
+       "Aiko Tanaka",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T22",
+     "subject": "Food assistance",
+     "description": "my name is [NAME] and we need food for this week",
+     "details": [
+      [
+       "guadalupe ramírez",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T23",
+     "subject": "Yard cleanup",
+     "description": "[NAME] here, need help clearing fallen branches after the storm.",
+     "details": [
+      [
+       "Chinedu Okafor",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T24",
+     "subject": "Hospital visit company",
+     "description": "[NAME] would like someone to sit with her during dialysis.",
+     "details": [
+      [
+       "Lakshmi Narayanan",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T25",
+     "subject": "Bike repair",
+     "description": "Need my bike fixed to get to work. Thanks, [NAME]",
+     "details": [
+      [
+       "Björn Lindqvist",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T26",
+     "subject": "School supplies",
+     "description": "Ms. [NAME], my son's teacher, said he needs a calculator. Please contact [NAME] (me).",
+     "details": [
+      [
+       "Siddiqui",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Ayesha Siddiqui",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T27",
+     "subject": "Moving boxes",
+     "description": "[NAME] needs boxes and tape for a move next week.",
+     "details": [
+      [
+       "Dmitri Volkov",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T28",
+     "subject": "Help for [NAME]",
+     "description": "[NAME] broke her arm and needs help with shopping.",
+     "details": [
+      [
+       "Siobhán",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Siobhán Ní Bhriain",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T29",
+     "subject": "Thai interpreter",
+     "description": "Need a Thai speaker to help [NAME] talk to his landlord.",
+     "details": [
+      [
+       "Anan Srisuk",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T30",
+     "subject": "Grocery run",
+     "description": "[NAME] cannot drive this month, needs weekly groceries.",
+     "details": [
+      [
+       "Thandiwe Dlamini",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T31",
+     "subject": "Visit my mother",
+     "description": "My mother [NAME] lives alone and needs someone to visit on weekends.",
+     "details": [
+      [
+       "Rosa Delgado",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T32",
+     "subject": "Help my neighbor",
+     "description": "My neighbor [NAME]. [NAME] fell last week and needs help with groceries.",
+     "details": [
+      [
+       "Haruto Sato",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T33",
+     "subject": "Caseworker follow-up",
+     "description": "Our caseworker [NAME] said to post here for diapers and formula.",
+     "details": [
+      [
+       "Emily Carter",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T34",
+     "subject": "Landlord dispute",
+     "description": "Need advice. Landlord [NAME] wants to evict us without notice.",
+     "details": [
+      [
+       "Viktor Petrenko",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T35",
+     "subject": "Pet care",
+     "description": "Please walk our dog while my husband [NAME] is in hospital.",
+     "details": [
+      [
+       "Ikenna",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T36",
+     "subject": "Food delivery needed",
+     "description": "Please drop off the food at [ADDRESS]. Ring the bell twice.",
+     "details": [
+      [
+       "1234 Oak Street, Apt 4B",
+       "ADDRESS",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T37",
+     "subject": "Snow shoveling",
+     "description": "Driveway at [ADDRESS] needs shoveling before Monday morning.",
+     "details": [
+      [
+       "77 Maple Ave",
+       "ADDRESS",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T38",
+     "subject": "Mail pickup",
+     "description": "I am traveling, please collect mail from [NAME] for me.",
+     "details": [
+      [
+       "PO Box 2210",
+       "ADDRESS",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T39",
+     "subject": "Ride to work",
+     "description": "Pick me up from [ADDRESS], [NAME] at 7am.",
+     "details": [
+      [
+       "4521 Stevens Creek Blvd",
+       "ADDRESS",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T40",
+     "subject": "Fix leaking sink",
+     "description": "Our sink is leaking. We live at the blue house on [ADDRESS]",
+     "details": [
+      [
+       "twelve Elm Road",
+       "ADDRESS",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T41",
+     "subject": "Help with benefits form",
+     "description": "The form asks for my SSN [ID], can someone help me fill it in?",
+     "details": [
+      [
+       "123-45-6789",
+       "ID",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T42",
+     "subject": "Pay electricity bill",
+     "description": "Can someone pay my bill? My card is [CARD].",
+     "details": [
+      [
+       "4111 1111 1111 1111",
+       "CARD",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T43",
+     "subject": "Find me online",
+     "description": "You can message me on [URL] for details.",
+     "details": [
+      [
+       "https://www.facebook.com/priya.r.example",
+       "URL",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T44",
+     "subject": "Urgent: food and diapers",
+     "description": "This is [NAME], call [PHONE] or email [NAME] Address is [ADDRESS]",
+     "details": [
+      [
+       "Carmen Ruiz",
+       "NAME",
+       "caught"
+      ],
+      [
+       "650-555-0112",
+       "PHONE",
+       "caught"
+      ],
+      [
+       "carmen.r@example.org",
+       "EMAIL",
+       "caught"
+      ],
+      [
+       "89 Pine Lane",
+       "ADDRESS",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T45",
+     "subject": "Help for [NAME]",
+     "description": "[NAME] needs a ride to the airport. His number is [PHONE].",
+     "details": [
+      [
+       "Wei Zhang",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Wei Zhang",
+       "NAME",
+       "caught"
+      ],
+      [
+       "(669) 555-0170",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T46",
+     "subject": "Need help with taxes",
+     "description": "[NAME], [EMAIL], [PHONE]. Need help with tax filing.",
+     "details": [
+      [
+       "Rahul Verma",
+       "NAME",
+       "caught"
+      ],
+      [
+       "rahulv@example.com",
+       "EMAIL",
+       "caught"
+      ],
+      [
+       "510 555 0193",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T47",
+     "subject": "Donation pickup",
+     "description": "[NAME] has a sofa to donate, pick up at [ADDRESS] Call [PHONE].",
+     "details": [
+      [
+       "Yusuf Demir",
+       "NAME",
+       "caught"
+      ],
+      [
+       "300 Bay Road",
+       "ADDRESS",
+       "caught"
+      ],
+      [
+       "five one zero, five five five, zero one four four",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T48",
+     "subject": "Need a ride for [NAME]",
+     "description": "[NAME] needs a ride to church on Sunday, call [PHONE].",
+     "details": [
+      [
+       "Grace",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Grace Thompson",
+       "NAME",
+       "caught"
+      ],
+      [
+       "408-555-0150",
+       "PHONE",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T49",
+     "subject": "Hope needs a coat",
+     "description": "[NAME] needs a winter coat, size M.",
+     "details": [
+      [
+       "Hope",
+       "NAME",
+       "missed"
+      ],
+      [
+       "Hope Williams",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "T50",
+     "subject": "Help [NAME] move",
+     "description": "[NAME] is moving to a new apartment and needs a truck.",
+     "details": [
+      [
+       "Jordan",
+       "NAME",
+       "caught"
+      ],
+      [
+       "Jordan Brooks",
+       "NAME",
+       "caught"
+      ]
+     ]
+    },
+    {
+     "id": "C01",
+     "subject": "Groceries for a family of four",
+     "description": "We need rice, beans, milk and vegetables for this week.",
+     "details": []
+    },
+    {
+     "id": "C02",
+     "subject": "Rent help",
+     "description": "Rent of $1,250 is due on 11/15/2026 and I am short by $400.",
+     "details": []
+    },
+    {
+     "id": "C03",
+     "subject": "Childcare",
+     "description": "I have 3 kids aged 4, 7 and 12 and need after-school care twice a week.",
+     "details": []
+    },
+    {
+     "id": "C04",
+     "subject": "Emergency info",
+     "description": "If it is an emergency please call 911. Otherwise any time this week is fine.",
+     "details": []
+    },
+    {
+     "id": "C05",
+     "subject": "Grace period ended",
+     "description": "The grace period on my rent ended and I need help paying it.",
+     "details": []
+    },
+    {
+     "id": "C06",
+     "subject": "Hope to find work",
+     "description": "Hope someone can help me write a cover letter. Will pay it forward.",
+     "details": []
+    },
+    {
+     "id": "C07",
+     "subject": "Clinic on Mission Blvd",
+     "description": "Need a ride to the free clinic on Mission Blvd in Fremont.",
+     "details": []
+    },
+    {
+     "id": "C08",
+     "subject": "Help after flood",
+     "description": "Our basement flooded during the storm. Need help moving things upstairs.",
+     "details": []
+    },
+    {
+     "id": "C09",
+     "subject": "Food bank information",
+     "description": "Where is the nearest food bank? I saw [URL] but could not find one.",
+     "details": []
+    },
+    {
+     "id": "C10",
+     "subject": "Refugee family from [NAME]",
+     "description": "A family that just arrived from [NAME] needs furniture and kitchen items.",
+     "details": []
+    },
+    {
+     "id": "C11",
+     "subject": "Laptop repair",
+     "description": "My laptop model 15-ay041wm will not turn on. Need someone who knows computers.",
+     "details": []
+    },
+    {
+     "id": "C12",
+     "subject": "Bus pass",
+     "description": "Need a monthly bus pass for route 22 to get to my new job.",
+     "details": []
+    },
+    {
+     "id": "C13",
+     "subject": "Medicine",
+     "description": "I take 2 pills a day and the pharmacy is closed on Sunday.",
+     "details": []
+    },
+    {
+     "id": "C14",
+     "subject": "Tutoring",
+     "description": "Looking for a chemistry tutor, high school level, 2 hours per week.",
+     "details": []
+    },
+    {
+     "id": "C15",
+     "subject": "Wheelchair",
+     "description": "Need a used wheelchair, budget under 150 dollars.",
+     "details": []
+    },
+    {
+     "id": "C16",
+     "subject": "Tax help",
+     "description": "I need help with my 2025 tax return and form 1040.",
+     "details": []
+    },
+    {
+     "id": "C17",
+     "subject": "Phone plan",
+     "description": "My phone was cut off. Need help finding a cheap phone plan.",
+     "details": []
+    },
+    {
+     "id": "C18",
+     "subject": "Help at Lincoln Elementary",
+     "description": "Volunteers needed to paint the fence at Lincoln Elementary on Saturday.",
+     "details": []
+    },
+    {
+     "id": "C19",
+     "subject": "May food drive",
+     "description": "May I get a box from the food drive? We are a family of 6.",
+     "details": []
+    },
+    {
+     "id": "C20",
+     "subject": "Order tracking",
+     "description": "Donated items were shipped, tracking number 1Z999AA[PHONE].",
+     "details": []
+    }
+   ],
+   "timing": "0.127 ms",
+   "timing_detail": {
+    "ms_per_request": 0.1265,
+    "repeats": 200
+   },
+   "title": "Improved patterns + users names + name cues"
+  }
+ },
+ "test_set": "main"
+}
