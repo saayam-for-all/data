@@ -1,0 +1,41 @@
+﻿request_id,pii_type,pii_value,start,end
+1,PHONE,312-555-0142,11,23
+2,EMAIL,maya@example.com,6,22
+3,NAME,Priya Sharma,11,23
+4,ADDRESS,123 Oak Street,16,30
+5,PHONE,(312) 555-0188,19,33
+6,PHONE,312.555.0174,12,24
+7,EMAIL,rahul@example.org,6,23
+8,NAME,Ahmed Khan,5,15
+9,ADDRESS,45 Maple Avenue,14,29
+10,PHONE,three one two five five five zero one four two,5,51
+11,NAME,María García,12,24
+12,EMAIL,aisha.test@example.net,8,30
+13,ADDRESS,800 Pine Road,10,23
+14,PHONE,+1 312 555 0119,5,20
+15,NAME,李明,5,7
+16,NAME,Fatima Al-Hassan,11,27
+17,EMAIL,ravi.k@example.com,6,24
+18,ADDRESS,22 Cedar Lane,13,26
+19,PHONE,3125550165,13,23
+20,NAME,Nguyễn Văn An,5,18
+21,PHONE,773-555-0102,11,23
+22,NAME,José Martínez,11,24
+23,ADDRESS,14 Elm Street,15,28
+24,EMAIL,test.person@example.com,8,31
+25,PHONE,seven seven three five five five zero one two three,12,63
+26,NAME,Ananya Patel,14,26
+27,ADDRESS,90 Lake Avenue,20,34
+28,PHONE,630-555-0134,12,24
+29,NAME,김민수,5,8
+30,EMAIL,help.request@example.org,6,30
+31,PHONE,847-555-0112,12,24
+32,NAME,Olúwáṣẹun Adeyemi,11,28
+33,ADDRESS,61 Birch Street,16,31
+34,EMAIL,care.team@example.net,8,29
+35,NAME,Sofia Rossi,5,16
+36,PHONE,224-555-0191,13,25
+37,ADDRESS,77 Walnut Drive,14,29
+38,NAME,Yuki Tanaka,15,26
+39,EMAIL,samira@example.com,6,24
+40,PHONE,(708) 555-0127,11,25
