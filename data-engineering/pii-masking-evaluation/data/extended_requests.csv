@@ -1,0 +1,70 @@
+﻿id,description,contains_pii,pii_type
+1,Call me at 312-555-0142 for grocery help.,1,PHONE
+2,Email maya@example.com about transportation.,1,EMAIL
+3,My name is Priya Sharma.,1,NAME
+4,"Deliver food to 123 Oak Street, Chicago.",1,ADDRESS
+5,My phone number is (312) 555-0188.,1,PHONE
+6,Reach me at 312.555.0174.,1,PHONE
+7,Email rahul@example.org.,1,EMAIL
+8,I am Ahmed Khan and need medicine.,1,NAME
+9,My address is 45 Maple Avenue.,1,ADDRESS
+10,Call three one two five five five zero one four two.,1,PHONE
+11,Please help María García.,1,NAME
+12,Contact aisha.test@example.net.,1,EMAIL
+13,I live at 800 Pine Road.,1,ADDRESS
+14,Call +1 312 555 0119.,1,PHONE
+15,I am 李明 and need transportation.,1,NAME
+16,My name is Fatima Al-Hassan.,1,NAME
+17,Email ravi.k@example.com.,1,EMAIL
+18,Please visit 22 Cedar Lane.,1,ADDRESS
+19,My number is 3125550165.,1,PHONE
+20,I am Nguyễn Văn An.,1,NAME
+21,Call me at 773-555-0102.,1,PHONE
+22,My name is José Martínez.,1,NAME
+23,I need help at 14 Elm Street.,1,ADDRESS
+24,Contact test.person@example.com.,1,EMAIL
+25,My phone is seven seven three five five five zero one two three.,1,PHONE
+26,Please assist Ananya Patel.,1,NAME
+27,Deliver supplies to 90 Lake Avenue.,1,ADDRESS
+28,Reach me at 630-555-0134.,1,PHONE
+29,I am 김민수 and need food.,1,NAME
+30,Email help.request@example.org.,1,EMAIL
+31,Please call 847-555-0112.,1,PHONE
+32,My name is Olúwáṣẹun Adeyemi.,1,NAME
+33,Deliver food to 61 Birch Street.,1,ADDRESS
+34,Contact care.team@example.net.,1,EMAIL
+35,I am Sofia Rossi.,1,NAME
+36,My number is 224-555-0191.,1,PHONE
+37,My address is 77 Walnut Drive.,1,ADDRESS
+38,Please contact Yuki Tanaka.,1,NAME
+39,Email samira@example.com.,1,EMAIL
+40,Call me at (708) 555-0127.,1,PHONE
+41,I am Priya Sharma. Call 312-555-0142.,1,NAME|PHONE
+42,Ahmed Khan needs help at 45 Maple Avenue.,1,ADDRESS|NAME
+43,Contact José Martínez at jose@example.com.,1,EMAIL|NAME
+44,Please call 773-555-0102 or email help@example.org.,1,EMAIL|PHONE
+45,Yuki Tanaka lives at 61 Birch Street.,1,ADDRESS|NAME
+46,My card number is 4111 1111 1111 1111.,1,CREDIT_CARD
+47,My SSN is 123-45-6789.,1,SSN
+48,Priya Sharma needs help. Card number is 4111-1111-1111-1111.,1,CREDIT_CARD|NAME
+49,Please contact me at maya@example.com. SSN: 123-45-6789.,1,EMAIL|SSN
+50,I need groceries this weekend.,0,NONE
+51,Looking for transportation to a clinic.,0,NONE
+52,Please help with winter clothing.,0,NONE
+53,I need information about food pantries.,0,NONE
+54,Can a volunteer help move boxes?,0,NONE
+55,Requesting community resources.,0,NONE
+56,I need a ride to an appointment.,0,NONE
+57,Looking for school supplies.,0,NONE
+58,Please arrange grocery delivery.,0,NONE
+59,I need household cleaning assistance.,0,NONE
+60,Can someone help fill out forms?,0,NONE
+61,I need help applying for jobs.,0,NONE
+62,Looking for volunteer programs.,0,NONE
+63,Please provide food assistance information.,0,NONE
+64,I need help scheduling transportation.,0,NONE
+65,Requesting support for an appointment.,0,NONE
+66,Can a volunteer deliver clothes?,0,NONE
+67,I need help accessing community services.,0,NONE
+68,Looking for basic computer lessons.,0,NONE
+69,Please connect me with volunteers.,0,NONE

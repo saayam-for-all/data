@@ -1,0 +1,53 @@
+﻿
+METHOD 1: REGEX
+---------------------------------------------
+Total requests: 69
+PII values removed: 37
+PII values remaining: 19
+Fully masked PII requests: 30
+Partially masked requests: 5
+False-positive clean requests: 0
+Median processing time: 0.247 ms
+
+Missed PII examples:
+  Request 3: ['Priya Sharma']
+  Request 8: ['Ahmed Khan']
+  Request 10: ['three one two five five five zero one four two']
+  Request 11: ['Mar├¡a Garc├¡a']
+  Request 15: ['µ¥ÄµÿÄ']
+  Request 16: ['Fatima Al-Hassan']
+  Request 20: ['Nguyß╗àn V─ân An']
+  Request 22: ['Jos├⌐ Mart├¡nez']
+  Request 25: ['seven seven three five five five zero one two three']
+  Request 26: ['Ananya Patel']
+  Request 29: ['Ω╣Çδ»╝∞êÿ']
+  Request 32: ['Ol├║w├íß╣úß║╣un Adeyemi']
+  Request 35: ['Sofia Rossi']
+  Request 38: ['Yuki Tanaka']
+  Request 41: ['Priya Sharma']
+  Request 42: ['Ahmed Khan']
+  Request 43: ['Jos├⌐ Mart├¡nez']
+  Request 45: ['Yuki Tanaka']
+  Request 48: ['Priya Sharma']
+
+METHOD 2: REGEX + USERS LOOKUP
+---------------------------------------------
+Total requests: 69
+PII values removed: 46
+PII values remaining: 10
+Fully masked PII requests: 39
+Partially masked requests: 2
+False-positive clean requests: 0
+Median processing time: 0.793 ms
+
+Missed PII examples:
+  Request 10: ['three one two five five five zero one four two']
+  Request 15: ['µ¥ÄµÿÄ']
+  Request 20: ['Nguyß╗àn V─ân An']
+  Request 22: ['Jos├⌐ Mart├¡nez']
+  Request 25: ['seven seven three five five five zero one two three']
+  Request 29: ['Ω╣Çδ»╝∞êÿ']
+  Request 32: ['Ol├║w├íß╣úß║╣un Adeyemi']
+  Request 38: ['Yuki Tanaka']
+  Request 43: ['Jos├⌐ Mart├¡nez']
+  Request 45: ['Yuki Tanaka']
