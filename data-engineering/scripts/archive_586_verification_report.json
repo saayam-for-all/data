@@ -1,0 +1,55 @@
+{
+  "issue": 586,
+  "generated_at_utc": "2026-11-10T21:33:09.574781+00:00",
+  "results": [
+    {
+      "check": "Source vs archive row counts",
+      "status": "PASS",
+      "expected": 3,
+      "actual": 3,
+      "details": "Archive file: test_archive.csv"
+    },
+    {
+      "check": "Duplicate request IDs across archive files",
+      "status": "PASS",
+      "expected": "No repeated request IDs",
+      "actual": "0 duplicate occurrences",
+      "details": ""
+    },
+    {
+      "check": "Watermark window continuity",
+      "status": "PASS",
+      "expected": "Consecutive windows with no gaps or overlaps",
+      "actual": "3 windows checked; 0 issues found",
+      "details": ""
+    },
+    {
+      "check": "Foreign-key readable values",
+      "status": "PASS",
+      "expected": "All readable values match lookup mappings",
+      "actual": "4 resolved references checked; 8 unresolved; 0 mismatches",
+      "details": ""
+    },
+    {
+      "check": "Broken/null category FK preservation",
+      "status": "PASS",
+      "expected": "All specified requests are preserved in archive",
+      "actual": "2/2 requests found",
+      "details": ""
+    },
+    {
+      "check": "Archive byte-identical rerun",
+      "status": "PASS",
+      "expected": "Identical SHA-256 hashes",
+      "actual": "Hashes match",
+      "details": "First: 9c2560e4be2b42af1609701dbed4d8a7c9a052e7b25e784a441daf0c48e73e4b; Second: 9c2560e4be2b42af1609701dbed4d8a7c9a052e7b25e784a441daf0c48e73e4b"
+    },
+    {
+      "check": "S3 object-count idempotency (simulated fixture only)",
+      "status": "PASS",
+      "expected": "No additional or removed S3 objects",
+      "actual": "Before: 1 objects; After: 1 objects; New: 0; Removed: 0",
+      "details": ""
+    }
+  ]
+}
