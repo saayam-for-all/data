@@ -17,6 +17,7 @@ from helpers import (
     merge_organizations,
     get_beneficiary_location,
     get_beneficiary_location_candidates,
+    ensure_db_connection,
     load_city_coordinates,
     reset_db_connection,
 )
@@ -61,6 +62,7 @@ def add_organization_distances(organizations, request_id, beneficiary_id, sort_b
         print(
             "geocode cache hits/misses:", cache.hits, cache.misses,
             "external calls:", session.external_calls,
+            "timed out:", session.timed_out_calls,
         )
     except Exception as e:  # noqa: BLE001
         print("distance calculation failed:", str(e))
@@ -95,6 +97,9 @@ def lambda_handler(event, context):
                     }
                 ),
             }
+
+        # Reconnect first if the warm container's DB connection was dropped.
+        ensure_db_connection()
 
         beneficiary_location, beneficiary_city = get_beneficiary_location(
             beneficiary_id

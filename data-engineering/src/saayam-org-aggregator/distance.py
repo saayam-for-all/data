@@ -51,6 +51,8 @@ import os
 import re
 import struct
 import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeout
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -85,8 +87,11 @@ MISSING_LOCATION_TOKENS = {"", "n/a", "na", "none", "null", "unknown", "nan", "-
 
 DEFAULT_GEOCODE_BUDGET = 25          # external geocode calls per invocation
 DEFAULT_GEOCODE_TIME_BUDGET_S = 5.0  # wall-clock seconds spent geocoding
+DEFAULT_GEOCODE_CALL_TIMEOUT_S = 2.0  # max wait for ONE external call (capped by budget left)
+DEFAULT_GEOCODE_WORKERS = 4          # threads that run external calls
 DEFAULT_CITY_TABLE_RETRY_MAX_S = 60.0  # longest wait between retries of a failing cities load
 DEFAULT_CITY_TABLE_REFRESH_S = 6 * 3600.0  # reload a good cities table this often
+DEFAULT_CITY_TABLE_EMPTY_RECHECK_S = 60.0  # re-check an EMPTY cities table this often
 
 
 class LookupUnavailable(Exception):
@@ -112,6 +117,7 @@ class GeoPoint:
 class GeocodeResult:
     status: str                      # ok | not_found | deferred | error
     point: Optional[GeoPoint] = None
+    cacheable: bool = True           # False: don't remember this answer (see CityTableGeocoder)
 
 
 def _is_valid(lat: Any, lon: Any) -> bool:
@@ -254,7 +260,11 @@ class Geocoder:
         """Hook called once at the start of each Lambda invocation."""
 
     def geocode(self, address: Optional[str], city: Optional[str] = None,
-                state: Optional[str] = None) -> GeocodeResult:
+                state: Optional[str] = None,
+                timeout: Optional[float] = None) -> GeocodeResult:
+        """External providers should pass `timeout` (seconds) to their HTTP client.
+        GeocodeSession also enforces it, so a provider that ignores it can only
+        hold a background thread, never the response."""
         raise NotImplementedError
 
 
@@ -263,7 +273,7 @@ class NoGeocoder(Geocoder):
 
     name = "none"
 
-    def geocode(self, address, city=None, state=None):
+    def geocode(self, address, city=None, state=None, timeout=None):
         return GeocodeResult(STATUS_DEFERRED)
 
 
@@ -303,6 +313,8 @@ class CityTableGeocoder(Geocoder):
         self.retry_max_s = float(os.environ.get("CITY_TABLE_RETRY_MAX_S",
                                                 DEFAULT_CITY_TABLE_RETRY_MAX_S)
                                  if retry_max_s is None else retry_max_s)
+        self.empty_recheck_s = float(os.environ.get("CITY_TABLE_EMPTY_RECHECK_S",
+                                                    DEFAULT_CITY_TABLE_EMPTY_RECHECK_S))
         self.refresh_s = float(os.environ.get("CITY_TABLE_REFRESH_S",
                                               DEFAULT_CITY_TABLE_REFRESH_S)
                                if refresh_s is None else refresh_s)
@@ -329,8 +341,12 @@ class CityTableGeocoder(Geocoder):
     def _load(self) -> None:
         """Make sure lookup data is available, or raise LookupUnavailable."""
         now = time.time()   # wall clock: these timers span Lambda freezes (see class doc)
+        # A loaded-but-EMPTY table (e.g. dev before cities is populated) is
+        # re-checked every minute, so distances appear soon after it's filled.
+        max_age = (self.refresh_s if self._by_city_state
+                   else min(self.refresh_s, self.empty_recheck_s))
         fresh = (self._by_city_state is not None
-                 and now - self._loaded_at < self.refresh_s)
+                 and now - self._loaded_at < max_age)
         if fresh:
             return
         if self._attempted_this_request or now < self._next_attempt:
@@ -349,9 +365,11 @@ class CityTableGeocoder(Geocoder):
                 logger.warning("cities refresh failed, keeping previous data: %s", exc)
                 return
             raise LookupUnavailable(f"cities table unavailable: {exc}") from exc
-        if not rows and self._by_city_state is not None:
-            # An empty refresh after a good load isn't a real answer (the table is
-            # probably being reloaded). Treat it like a failure: keep the old data.
+        if not rows and self._by_city_state:
+            # An empty refresh after a good, NON-empty load isn't a real answer (the
+            # table is probably being reloaded). Treat it like a failure: keep the old
+            # data. If the table was already empty on the first load there's nothing
+            # to keep, so 0 rows is simply the current answer (no warning, no retries).
             self._failures += 1
             self._next_attempt = now + self._retry_delay()
             logger.warning("cities refresh returned 0 rows (%d in a row); keeping previous "
@@ -401,7 +419,7 @@ class CityTableGeocoder(Geocoder):
             return None   # a state was given and did not match - don't guess
         return self._by_city.get(city_key)
 
-    def geocode(self, address, city=None, state=None):
+    def geocode(self, address, city=None, state=None, timeout=None):
         try:
             self._load()
         except LookupUnavailable:
@@ -419,7 +437,9 @@ class CityTableGeocoder(Geocoder):
                 point = self._lookup(parts[i], state_part)
                 if point:
                     return GeocodeResult(STATUS_OK, point)
-        return GeocodeResult(STATUS_NOT_FOUND)
+        # With an empty cities table every address is "not found", but that answer
+        # will change as soon as the table is filled, so don't let it be cached.
+        return GeocodeResult(STATUS_NOT_FOUND, cacheable=bool(self._by_city_state))
 
 
 class ChainGeocoder(Geocoder):
@@ -434,17 +454,21 @@ class ChainGeocoder(Geocoder):
         self.name = "+".join(p.name for p in self.providers)
         self.external = any(p.external for p in self.providers)
 
-    def geocode(self, address, city=None, state=None):
+    def geocode(self, address, city=None, state=None, timeout=None):
+        # Used only outside a GeocodeSession; the session walks the chain itself
+        # so it can apply the budget and timeout to external providers only.
         statuses = []
+        cacheable = True
         for provider in self.providers:
-            result = provider.geocode(address, city, state)
+            result = provider.geocode(address, city, state, timeout=timeout)
             if result.status == STATUS_OK:
                 return result
             statuses.append(result.status)
+            cacheable = cacheable and result.cacheable
         for status in (STATUS_ERROR, STATUS_DEFERRED):
             if status in statuses:
                 return GeocodeResult(status)
-        return GeocodeResult(STATUS_NOT_FOUND)
+        return GeocodeResult(STATUS_NOT_FOUND, cacheable=cacheable)
 
 
 # name -> factory(context) -> Geocoder. context carries e.g. the cities loader.
@@ -532,6 +556,8 @@ class CoordinateCache:
         return None
 
     def set(self, key: str, result: GeocodeResult) -> None:
+        if not result.cacheable:
+            return
         if result.status == STATUS_OK:
             self._put(key, result, self.ttl_s)
             if self.backend is not None:
@@ -559,20 +585,65 @@ def get_cache() -> CoordinateCache:
 # --------------------------------------------------------------------------- #
 # geocode_address: the single entry point the issue asks for
 # --------------------------------------------------------------------------- #
+_EXECUTOR: Optional[ThreadPoolExecutor] = None
+
+
+def _executor() -> ThreadPoolExecutor:
+    """Shared pool for external geocoding calls (created on first use)."""
+    global _EXECUTOR
+    if _EXECUTOR is None:
+        workers = int(os.environ.get("GEOCODE_WORKERS", DEFAULT_GEOCODE_WORKERS))
+        _EXECUTOR = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="geocode")
+    return _EXECUTOR
+
+
 class GeocodeSession:
-    """One invocation's geocoding: cache first, then provider, within a budget."""
+    """One invocation's geocoding: cache first, then providers, within a hard budget.
+
+    Budget rules (issue #433 review, step 4):
+      * Local providers (cities table) run inline and never use the budget.
+      * Each EXTERNAL call runs on a worker thread and we wait at most
+        min(GEOCODE_CALL_TIMEOUT_S, time left in GEOCODE_TIME_BUDGET_S).
+        If it doesn't answer in time we stop waiting and report "deferred";
+        a hung provider can keep a worker thread busy, but not the response.
+      * Once the time or GEOCODE_MAX_CALLS budget is used up, remaining
+        external lookups are "deferred" immediately.
+      * deferred / error are never cached, so they are retried next request.
+    """
 
     def __init__(self, geocoder: Geocoder, cache: Optional[CoordinateCache] = None,
-                 max_calls: Optional[int] = None, time_budget_s: Optional[float] = None):
+                 max_calls: Optional[int] = None, time_budget_s: Optional[float] = None,
+                 call_timeout_s: Optional[float] = None):
         self.geocoder = geocoder
+        self.providers = list(geocoder.providers) if isinstance(geocoder, ChainGeocoder) \
+            else [geocoder]
         self.cache = cache or _CACHE
         self.max_calls = int(os.environ.get("GEOCODE_MAX_CALLS", DEFAULT_GEOCODE_BUDGET)
                              if max_calls is None else max_calls)
         budget = (os.environ.get("GEOCODE_TIME_BUDGET_S", DEFAULT_GEOCODE_TIME_BUDGET_S)
                   if time_budget_s is None else time_budget_s)
+        self.call_timeout_s = float(
+            os.environ.get("GEOCODE_CALL_TIMEOUT_S", DEFAULT_GEOCODE_CALL_TIMEOUT_S)
+            if call_timeout_s is None else call_timeout_s)
         self.deadline = time.monotonic() + float(budget)
         self.external_calls = 0
+        self.timed_out_calls = 0
         geocoder.begin_request()
+
+    def _call_external(self, provider: Geocoder, address, city, state) -> GeocodeResult:
+        remaining = self.deadline - time.monotonic()
+        if remaining <= 0 or self.external_calls >= self.max_calls:
+            return GeocodeResult(STATUS_DEFERRED)
+        timeout = min(self.call_timeout_s, remaining)
+        self.external_calls += 1
+        future = _executor().submit(provider.geocode, address, city, state, timeout=timeout)
+        try:
+            return future.result(timeout=timeout)
+        except FutureTimeout:
+            self.timed_out_calls += 1
+            future.cancel()   # no-op if already running; we just stop waiting
+            logger.warning("geocoder %s timed out after %.1f s", provider.name, timeout)
+            return GeocodeResult(STATUS_DEFERRED)
 
     def geocode_address(self, address: Optional[str], city: Optional[str] = None,
                         state: Optional[str] = None) -> GeocodeResult:
@@ -584,20 +655,30 @@ class GeocodeSession:
         if cached is not None:
             return cached
 
-        if self.geocoder.external:
-            if self.external_calls >= self.max_calls or time.monotonic() > self.deadline:
-                return GeocodeResult(STATUS_DEFERRED)
-            self.external_calls += 1
+        statuses = []
+        cacheable = True
+        for provider in self.providers:
+            try:
+                if provider.external:
+                    result = self._call_external(provider, address, city, state)
+                else:
+                    result = provider.geocode(address, city, state)
+            except Exception as exc:  # noqa: BLE001 - a provider failure is a status
+                logger.warning("geocoder %s failed for %r: %s", provider.name, address, exc)
+                result = GeocodeResult(STATUS_ERROR)
+            if result.status not in DISTANCE_STATUSES:
+                result = GeocodeResult(STATUS_ERROR)
+            if result.status == STATUS_OK and result.point is not None:
+                self.cache.set(key, result)
+                return result
+            statuses.append(result.status)
+            cacheable = cacheable and result.cacheable
 
-        try:
-            result = self.geocoder.geocode(address, city, state)
-        except Exception as exc:  # noqa: BLE001 - a provider failure is a status, not a crash
-            logger.warning("geocoding failed for %r: %s", address, exc)
-            return GeocodeResult(STATUS_ERROR)
-
-        if result.status not in DISTANCE_STATUSES:
-            result = GeocodeResult(STATUS_ERROR)
-        self.cache.set(key, result)
+        for status in (STATUS_ERROR, STATUS_DEFERRED):
+            if status in statuses:
+                return GeocodeResult(status)          # not cached: retried later
+        result = GeocodeResult(STATUS_NOT_FOUND, cacheable=cacheable)
+        self.cache.set(key, result)                   # cached unless from an empty cities table
         return result
 
 
