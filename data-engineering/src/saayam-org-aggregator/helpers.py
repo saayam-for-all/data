@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -45,6 +46,7 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -676,6 +678,7 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        orgs["contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -698,7 +701,14 @@ def merge_organizations(db_organizations, genAI_organizations):
         normalized = df.rename(columns=rename_map).copy()
 
         # GEO_COLUMNS are internal and removed again after distance calculation.
-        return normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
+        normalized = normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
+
+        # Preserve contributor as Boolean or None when the DB column is unavailable.
+        normalized["contributor"] = normalized["contributor"].map(
+            lambda value: None if pd.isna(value) else bool(value)
+        )
+
+        return normalized
 
     try:
         db_orgs = _normalize(db_organizations, DB_RENAME)
