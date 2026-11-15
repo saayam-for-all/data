@@ -1,0 +1,3 @@
+# Provide pandas and its dependencies through a compatible AWS Lambda Layer.
+# Local development dependencies are declared in data-engineering/requirements.txt.
+# No additional lightweight packages are required in this deployment package.
