@@ -1,0 +1,4 @@
+# Local-only mock CSVs for analytics Lambdas. Do not commit.
+mock_data/
+__pycache__/
+*.pyc
