@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -32,6 +33,9 @@ ORG_COLUMNS = [
     "mission",
     "source",
 ]
+
+# Yes/no response fields that must serialize as true / false / null only.
+FLAG_COLUMNS = ("collaborator", "contributor")
 
 # Internal geocoding inputs carried through the merge; distance.add_distances
 # strips them before the response is returned.
@@ -45,6 +49,9 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    # organizations.is_contributor. If the live table does not have the column
+    # yet, reindex leaves contributor empty and the response uses null.
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -56,6 +63,7 @@ AI_RENAME = {
     "organization_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "contact": "contact",
     "web_url": "web_url",
 }
@@ -676,6 +684,8 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        # GenAI orgs are never collaborators or contributors (same rule).
+        orgs["is_contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -688,6 +698,30 @@ def get_ai_orgs(subject, description, location, category):
         ) from e
 
 
+def _to_json_flag(value):
+    """Normalize a yes/no field to True, False, or None for JSON output.
+
+    Pandas can turn missing flags into NaN and, when an all-empty DB column is
+    concatenated with GenAI False values, coerce False into the float 0.0.
+    Callers must never emit 0, 0.0, or NaN for collaborator / contributor.
+    """
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in ("true", "t", "1", "yes"):
+            return True
+        if normalized in ("false", "f", "0", "no"):
+            return False
+        return None
+    return bool(value)
+
+
 def merge_organizations(db_organizations, genAI_organizations):
     """Normalize DB and AI organizations and combine them safely."""
 
@@ -698,7 +732,17 @@ def merge_organizations(db_organizations, genAI_organizations):
         normalized = df.rename(columns=rename_map).copy()
 
         # GEO_COLUMNS are internal and removed again after distance calculation.
-        return normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
+        normalized = normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
+
+        # Normalize flags before concat so a missing DB is_contributor column
+        # (all-null) cannot coerce GenAI False values into float 0.0.
+        for flag in FLAG_COLUMNS:
+            normalized[flag] = pd.Series(
+                (_to_json_flag(value) for value in normalized[flag]),
+                index=normalized.index,
+                dtype=object,
+            )
+        return normalized
 
     try:
         db_orgs = _normalize(db_organizations, DB_RENAME)
