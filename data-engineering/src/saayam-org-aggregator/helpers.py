@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -45,6 +46,7 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -56,6 +58,7 @@ AI_RENAME = {
     "organization_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "contact": "contact",
     "web_url": "web_url",
 }
@@ -676,6 +679,7 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        orgs["is_contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -686,7 +690,7 @@ def get_ai_orgs(subject, description, location, category):
         raise Exception(
             f"Unexpected response structure from GenAI Lambda: {e}"
         ) from e
-
+	
 
 def merge_organizations(db_organizations, genAI_organizations):
     """Normalize DB and AI organizations and combine them safely."""
@@ -697,15 +701,44 @@ def merge_organizations(db_organizations, genAI_organizations):
 
         normalized = df.rename(columns=rename_map).copy()
 
+        for column in ("collaborator", "contributor"):
+            if column not in normalized.columns:
+                normalized[column] = pd.Series(
+                    [None] * len(normalized),
+                    index=normalized.index,
+                    dtype=object,
+                )
+            else:
+                normalized[column] = pd.Series(
+                    [
+                        None
+                        if pd.isna(value)
+                        else bool(value)
+                        for value in normalized[column]
+                    ],
+                    index=normalized.index,
+                    dtype=object,
+                )
+
         # GEO_COLUMNS are internal and removed again after distance calculation.
         return normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
 
     try:
-        db_orgs = _normalize(db_organizations, DB_RENAME)
-        ai_orgs = _normalize(genAI_organizations, AI_RENAME)
+        db_orgs = _normalize(
+            db_organizations,
+            DB_RENAME,
+        )
+
+        ai_orgs = _normalize(
+            genAI_organizations,
+            AI_RENAME,
+        )
 
         return pd.concat(
-            [db_orgs, ai_orgs],
+            [
+                db_orgs,
+                ai_orgs,
+            ],
             ignore_index=True,
         )
 
