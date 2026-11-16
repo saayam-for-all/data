@@ -7,7 +7,8 @@ is returned, and that one range is used for both charts.
 The country and organization_type filters apply to both charts in every case.
 
 Data comes from organizations.csv, states.csv and countries.csv in the
-mock_data folder next to this file. No environment variables are needed.
+mock_data folder next to this file, or from mock-data-generation in a
+repository checkout without that folder. No environment variables are needed.
 """
 
 import json
@@ -28,7 +29,9 @@ SIZE_ORDER = {"small": 0, "medium": 1, "large": 2}  # display order only
 TRUE_VALUES = ("true", "t", "1", "yes")
 REQUIRED_COLUMNS = ("org_id", "org_size", "is_collaborator", "org_type", "state_id")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-MOCK_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_data")
+MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
+MOCK_DATA_DIR = os.path.join(MODULE_DIR, "mock_data")
+REPOSITORY_MOCK_DATA_DIR = os.path.join(os.path.dirname(MODULE_DIR), "mock-data-generation")
 
 HEADERS = {
     "Content-Type": "application/json",
@@ -75,16 +78,18 @@ def normalize_org_type(value):
 
 def parse_filters(body):
     """Returns (country, org_type). None means ALL."""
-    country = body.get("country") or "ALL"
-    org_type = body.get("organization_type") or "ALL"
-    if not isinstance(country, str) or not isinstance(org_type, str):
+    country = body.get("country")
+    org_type = body.get("organization_type")
+    if (country is not None and not isinstance(country, str)) or (
+        org_type is not None and not isinstance(org_type, str)
+    ):
         raise BadRequestError("country and organization_type must be text")
-    country = normalize_country(country)
-    org_type = normalize_org_type(org_type)
+    country = normalize_country(country or "ALL")
+    org_type = normalize_org_type(org_type or "ALL")
     if org_type not in ORGANIZATION_TYPES + ("all",):
         raise BadRequestError("organization_type must be non_profit, for_profit or ALL")
     return (
-        None if country == "ALL" else country,
+        None if country in ("", "ALL") else country,
         None if org_type == "all" else org_type,
     )
 
@@ -195,12 +200,13 @@ def build_body(count, date_pair, today):
 
 
 def read_mock_csv(*filenames):
-    """Read the first of these CSVs found in the mock_data folder, as plain text."""
+    """Read the first matching CSV from the packaged or repository mock data."""
+    folder = MOCK_DATA_DIR if os.path.isdir(MOCK_DATA_DIR) else REPOSITORY_MOCK_DATA_DIR
     for filename in filenames:
-        path = os.path.join(MOCK_DATA_DIR, filename)
+        path = os.path.join(folder, filename)
         if os.path.exists(path):
             return pd.read_csv(path, dtype=str)
-    raise DataSourceError(f"{filenames[0]} not found in mock_data folder")
+    raise DataSourceError(f"{filenames[0]} not found in {os.path.basename(folder)} folder")
 
 
 def to_bool(series):
@@ -215,7 +221,10 @@ def mock_counter(country, org_type):
     if missing:
         raise DataSourceError(f"organizations.csv is missing column(s): {', '.join(missing)}")
 
-    orgs["created_at"] = pd.to_datetime(orgs["created_at"], errors="coerce", format="ISO8601")
+    # Match the naive UTC window bounds.
+    orgs["created_at"] = pd.to_datetime(
+        orgs["created_at"], errors="coerce", format="ISO8601", utc=True
+    ).dt.tz_localize(None)
     orgs["is_collaborator"] = to_bool(orgs["is_collaborator"])
     # is_contributor isn't in every dataset yet, count it as 0 if missing
     if "is_contributor" in orgs.columns:
@@ -233,6 +242,8 @@ def mock_counter(country, org_type):
         match = countries["country_code"].fillna("").map(normalize_country) == country
         if "country_name" in countries.columns:
             match |= countries["country_name"].fillna("").map(normalize_country) == country
+        if not match.any():
+            raise BadRequestError("Unknown country")
         country_ids = countries.loc[match, "country_id"]
         state_ids = states.loc[states["country_id"].isin(country_ids), "state_id"]
         orgs = orgs[orgs["state_id"].isin(state_ids)]
@@ -270,6 +281,8 @@ def lambda_handler(event, context):
     try:
         count = mock_counter(country, org_type)
         return build_response(200, build_body(count, date_pair, utc_today()))
+    except BadRequestError as exc:
+        return build_response(400, {"error": str(exc)})
     except DataSourceError as exc:
         logger.error("Size & Contribution analytics: %s", exc)
         return build_response(500, {"error": str(exc)})
