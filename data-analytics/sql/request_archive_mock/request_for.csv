@@ -1,0 +1,3 @@
+"req_for_id","req_for","req_for_desc","last_updated_at"
+"0","SELF","Request is for the person creating it.","2026-01-01 00:00:00.000000"
+"1","OTHER","Request is for another person.","2026-01-01 00:00:00.000000"
