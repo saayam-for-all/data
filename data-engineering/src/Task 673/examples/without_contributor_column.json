@@ -1,0 +1,81 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  "body": [
+    {
+      "name": "Neighborhood Kitchen",
+      "organization_type": "Nonprofit",
+      "collaborator": false,
+      "contributor": null,
+      "location": "Chicago, IL",
+      "size": "Small",
+      "rating": 4.5,
+      "contact": "555-0102",
+      "email": "kitchen@example.invalid",
+      "web_url": "https://kitchen.example.invalid",
+      "mission": "Food assistance",
+      "source": "db",
+      "distance": 0.0,
+      "distance_unit": "miles",
+      "distance_method": "city_centroid",
+      "distance_status": "ok"
+    },
+    {
+      "name": "Volunteer Groceries",
+      "organization_type": "Community",
+      "collaborator": null,
+      "contributor": null,
+      "location": "Chicago, IL",
+      "size": "Medium",
+      "rating": 4.0,
+      "contact": "555-0103",
+      "email": "groceries@example.invalid",
+      "web_url": "https://groceries.example.invalid",
+      "mission": "Food assistance",
+      "source": "db",
+      "distance": 0.0,
+      "distance_unit": "miles",
+      "distance_method": "city_centroid",
+      "distance_status": "ok"
+    },
+    {
+      "name": "Community Pantry",
+      "organization_type": "Nonprofit",
+      "collaborator": true,
+      "contributor": null,
+      "location": "Chicago, IL",
+      "size": "Large",
+      "rating": 4.8,
+      "contact": "555-0101",
+      "email": "pantry@example.invalid",
+      "web_url": "https://pantry.example.invalid",
+      "mission": "Food assistance",
+      "source": "db",
+      "distance": 0.0,
+      "distance_unit": "miles",
+      "distance_method": "city_centroid",
+      "distance_status": "ok"
+    },
+    {
+      "name": "Generated Food Network",
+      "organization_type": "Nonprofit",
+      "collaborator": false,
+      "contributor": false,
+      "location": "Evanston, IL",
+      "size": "Small",
+      "rating": 4.2,
+      "contact": "555-0104",
+      "email": "generated@example.invalid",
+      "web_url": "https://generated.example.invalid",
+      "mission": "Food assistance",
+      "source": "ai",
+      "distance": 11.9,
+      "distance_unit": "miles",
+      "distance_method": "city_centroid",
+      "distance_status": "ok"
+    }
+  ]
+}
