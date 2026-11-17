@@ -1,0 +1,2 @@
+# pg8000, aws-lambda-powertools and boto3 come from the Lambda runtime and layers,
+# same setup as saayam-org-aggregator. Only add lightweight packages here.
