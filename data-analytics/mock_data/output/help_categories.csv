@@ -1,0 +1,39 @@
+cat_id,cat_name,cat_desc
+1,Food & Groceries,Food & Groceries (top-level category)
+1.1,Meal delivery,Meal delivery requests
+1.1.1,Meal delivery: Hot meals,Hot meals help within Meal delivery
+1.1.2,Meal delivery: Meal kits,Meal kits help within Meal delivery
+1.2,Grocery pickup,Grocery pickup requests
+1.3,Food bank referral,Food bank referral requests
+2,Transportation,Transportation (top-level category)
+2.1,Ride to appointment,Ride to appointment requests
+2.1.1,Ride to appointment: Medical,Medical help within Ride to appointment
+2.1.2,Ride to appointment: Legal,Legal help within Ride to appointment
+2.2,Airport pickup,Airport pickup requests
+2.3,Bus pass help,Bus pass help requests
+3,Housing,Housing (top-level category)
+3.1,Rent assistance,Rent assistance requests
+3.2,Moving help,Moving help requests
+3.2.1,Moving help: Packing,Packing help within Moving help
+3.2.2,Moving help: Lifting,Lifting help within Moving help
+3.3,Home repair,Home repair requests
+4,Health & Wellness,Health & Wellness (top-level category)
+4.1,Prescription pickup,Prescription pickup requests
+4.2,Companionship visit,Companionship visit requests
+4.3,Mobility aid,Mobility aid requests
+5,Education,Education (top-level category)
+5.1,Tutoring,Tutoring requests
+5.1.1,Tutoring: Math,Math help within Tutoring
+5.1.2,Tutoring: English,English help within Tutoring
+5.2,Form filling help,Form filling help requests
+5.3,Language practice,Language practice requests
+6,Legal & Paperwork,Legal & Paperwork (top-level category)
+6.1,Document translation,Document translation requests
+6.2,Benefits application,Benefits application requests
+6.3,Notary referral,Notary referral requests
+7,Technology,Technology (top-level category)
+7.1,Phone setup,Phone setup requests
+7.2,Online account help,Online account help requests
+7.3,Video call setup,Video call setup requests
+8,Other,Other (top-level category)
+8.1,General help,General help requests

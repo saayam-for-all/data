@@ -1,0 +1,3 @@
+req_type_id,req_type,req_type_desc
+0,IN_PERSON,Volunteer helps in person
+1,REMOTE,Volunteer helps remotely
