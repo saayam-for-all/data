@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -45,6 +46,7 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -56,9 +58,15 @@ AI_RENAME = {
     "organization_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "contact": "contact",
     "web_url": "web_url",
 }
+
+# Yes/no fields that must reach the JSON as true, false or null - never 0, 0.0 or NaN.
+FLAG_COLUMNS = ["collaborator", "contributor"]
+_TRUE_TEXT = {"true", "t", "yes", "y", "1"}
+_FALSE_TEXT = {"false", "f", "no", "n", "0"}
 
 # --- Cached at module level so Lambda cold-starts are cheap ---
 lambda_client = boto3.client("lambda")
@@ -97,6 +105,43 @@ def _join_parts(parts, sep=", "):
         and str(p).strip()
     ]
     return sep.join(cleaned) if cleaned else None
+
+
+def _to_flag(value):
+    """True / False / None for one yes/no value.
+
+    Handles Python and numpy booleans, 0/1 numbers and 't'/'false'-style text.
+    Missing values (None, NaN, NaT) and anything unrecognised become None, so
+    the JSON never shows 0, 0.0 or NaN for these fields.
+    """
+    if value is None:
+        return None
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if text in _TRUE_TEXT:
+            return True
+        if text in _FALSE_TEXT:
+            return False
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        return None
+    if isinstance(value, (bool, int, float)) or hasattr(value, "item"):
+        if value == 1:
+            return True
+        if value == 0:
+            return False
+    return None
+
+
+def _normalize_flags(df):
+    """Make every FLAG_COLUMNS value a real True / False / None (object dtype)."""
+    for column in FLAG_COLUMNS:
+        if column in df.columns:
+            df[column] = df[column].astype(object).map(_to_flag).astype(object)
+    return df
 
 
 def _empty_ai_frame():
@@ -562,6 +607,15 @@ def get_orgs_from_db(location, category):
 
         df["source"] = "db"
 
+        # Issue #673: older databases may not have organizations.is_contributor
+        # yet. Keep the API working and return contributor = null for DB orgs.
+        if "is_contributor" not in df.columns:
+            logger.warning(
+                "organizations.is_contributor column not found; "
+                "returning contributor = null for DB organizations"
+            )
+            df["is_contributor"] = None
+
         df["location"] = df.apply(
             lambda r: _join_parts(
                 [r.get("city_name"), r.get("state_id")]
@@ -676,6 +730,8 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        # Issue #673: GenAI organizations are never contributors (same as collaborator).
+        orgs["is_contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -704,10 +760,11 @@ def merge_organizations(db_organizations, genAI_organizations):
         db_orgs = _normalize(db_organizations, DB_RENAME)
         ai_orgs = _normalize(genAI_organizations, AI_RENAME)
 
-        return pd.concat(
+        merged = pd.concat(
             [db_orgs, ai_orgs],
             ignore_index=True,
         )
+        return _normalize_flags(merged)
 
     except Exception as e:
         raise Exception(
