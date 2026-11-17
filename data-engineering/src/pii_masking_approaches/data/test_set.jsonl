@@ -1,0 +1,72 @@
+{"id": "P01", "subj": "Need groceries this week", "desc": "We ran out of food. Please call me at 571-555-0142 after 5pm.", "pii": [{"field": "desc", "text": "571-555-0142", "type": "PHONE"}]}
+{"id": "P02", "subj": "Ride to clinic", "desc": "My appointment is Friday morning. Text me on (703) 555 0198 if you can drive.", "pii": [{"field": "desc", "text": "(703) 555 0198", "type": "PHONE"}]}
+{"id": "P03", "subj": "Help moving furniture", "desc": "Contact me at maria.gonzalez84@example.com, I'm free on weekends.", "pii": [{"field": "desc", "text": "maria.gonzalez84@example.com", "type": "EMAIL"}]}
+{"id": "P04", "subj": "Food for my family", "desc": "Hi, my name is Priya Venkataraman and we need rice and lentils for 4 people.", "pii": [{"field": "desc", "text": "Priya Venkataraman", "type": "NAME"}]}
+{"id": "P05", "subj": "Wheelchair ramp", "desc": "I live at 1428 Elm Street, Apt 3B, Reston VA 20190 and need a small ramp built.", "pii": [{"field": "desc", "text": "1428 Elm Street, Apt 3B", "type": "ADDRESS"}]}
+{"id": "P06", "subj": "Tutoring for my son", "desc": "My son Mateo needs help with algebra. You can reach my husband Wei Zhang at +1 202 555 0175.", "pii": [{"field": "desc", "text": "Mateo", "type": "NAME"}, {"field": "desc", "text": "Wei Zhang", "type": "NAME"}, {"field": "desc", "text": "+1 202 555 0175", "type": "PHONE"}]}
+{"id": "P07", "subj": "Medicine pickup", "desc": "Please pick up my prescription. My phone number is five seven one, five five five, zero one nine three.", "pii": [{"field": "desc", "text": "five seven one, five five five, zero one nine three", "type": "PHONE"}]}
+{"id": "P08", "subj": "Rent help", "desc": "I am Oluwaseun Adeyemi, a single mother of two, and I am short on rent this month.", "pii": [{"field": "desc", "text": "Oluwaseun Adeyemi", "type": "NAME"}]}
+{"id": "P09", "subj": "Phone call needed", "desc": "Call 9876543210 (India) and ask for Lakshmi.", "pii": [{"field": "desc", "text": "9876543210", "type": "PHONE"}, {"field": "desc", "text": "Lakshmi", "type": "NAME"}]}
+{"id": "P10", "subj": "Help with groceries", "desc": "Email: fatima dot alsayed at gmail dot com", "pii": [{"field": "desc", "text": "fatima dot alsayed at gmail dot com", "type": "EMAIL"}]}
+{"id": "P11", "subj": "Winter clothes", "desc": "Drop off at 77 Maple Ave, Herndon. Ring the bell twice.", "pii": [{"field": "desc", "text": "77 Maple Ave", "type": "ADDRESS"}]}
+{"id": "P12", "subj": "Translation help", "desc": "Necesito ayuda con documentos. Me llamo José Hernández, mi teléfono es 555-201-7788.", "pii": [{"field": "desc", "text": "José Hernández", "type": "NAME"}, {"field": "desc", "text": "555-201-7788", "type": "PHONE"}]}
+{"id": "P13", "subj": "Job application help", "desc": "Please review my resume. My SSN is 123-45-6789 if the form needs it.", "pii": [{"field": "desc", "text": "123-45-6789", "type": "ID"}]}
+{"id": "P14", "subj": "Paying a bill", "desc": "Can someone pay my electricity bill? Card 4111 1111 1111 1111 exp 09/27.", "pii": [{"field": "desc", "text": "4111 1111 1111 1111", "type": "CARD"}]}
+{"id": "P15", "subj": "Elderly neighbor check-in", "desc": "My neighbour Dmitri Volkov is 82 and lives alone; his number is 703.555.0123.", "pii": [{"field": "desc", "text": "Dmitri Volkov", "type": "NAME"}, {"field": "desc", "text": "703.555.0123", "type": "PHONE"}]}
+{"id": "P16", "subj": "Groceries", "desc": "aiko.tanaka@example.org - please deliver Tuesday", "pii": [{"field": "desc", "text": "aiko.tanaka@example.org", "type": "EMAIL"}]}
+{"id": "P17", "subj": "Need a ride", "desc": "Pickup from 3300 Fairfax Drive, Arlington around 9. Ask for Mr. Mehta.", "pii": [{"field": "desc", "text": "3300 Fairfax Drive", "type": "ADDRESS"}, {"field": "desc", "text": "Mehta", "type": "NAME"}]}
+{"id": "P18", "subj": "Help for my mom", "desc": "My mother Siobhan O'Connor needs someone to help her with shopping.", "pii": [{"field": "desc", "text": "Siobhan O'Connor", "type": "NAME"}]}
+{"id": "P19", "subj": "Car seat", "desc": "WhatsApp +91 98450 12345 anytime.", "pii": [{"field": "desc", "text": "+91 98450 12345", "type": "PHONE"}]}
+{"id": "P20", "subj": "Cooking help", "desc": "Contact Lan Nguyen on 0412 345 678 (Australia).", "pii": [{"field": "desc", "text": "Lan Nguyen", "type": "NAME"}, {"field": "desc", "text": "0412 345 678", "type": "PHONE"}]}
+{"id": "P21", "subj": "Laptop for school", "desc": "My daughter Zainab Okafor needs a laptop for online classes.", "pii": [{"field": "desc", "text": "Zainab Okafor", "type": "NAME"}]}
+{"id": "P22", "subj": "Tax forms", "desc": "Hello, this is Tomasz Kowalski. I need help filing taxes. Email tkowalski@example.net.", "pii": [{"field": "desc", "text": "Tomasz Kowalski", "type": "NAME"}, {"field": "desc", "text": "tkowalski@example.net", "type": "EMAIL"}]}
+{"id": "P23", "subj": "Food bank directions", "desc": "I'm at 15 Rue de la Paix, call me 0612345678.", "pii": [{"field": "desc", "text": "15 Rue de la Paix", "type": "ADDRESS"}, {"field": "desc", "text": "0612345678", "type": "PHONE"}]}
+{"id": "P24", "subj": "Help with forms", "desc": "My name is grace kim and I need help with a housing application.", "pii": [{"field": "desc", "text": "grace kim", "type": "NAME"}]}
+{"id": "P25", "subj": "Dog walking", "desc": "Hope Williams here, recovering from surgery, need someone to walk my dog.", "pii": [{"field": "desc", "text": "Hope Williams", "type": "NAME"}]}
+{"id": "P26", "subj": "Diapers", "desc": "Please call May Lin at 571 555 0110.", "pii": [{"field": "desc", "text": "May Lin", "type": "NAME"}, {"field": "desc", "text": "571 555 0110", "type": "PHONE"}]}
+{"id": "P27", "subj": "Ride to court", "desc": "You can find me on facebook https://facebook.com/rahul.mehta.77", "pii": [{"field": "desc", "text": "https://facebook.com/rahul.mehta.77", "type": "URL"}]}
+{"id": "P28", "subj": "Emergency food", "desc": "Text 2025550147. Thanks, Maria", "pii": [{"field": "desc", "text": "2025550147", "type": "PHONE"}, {"field": "desc", "text": "Maria", "type": "NAME"}]}
+{"id": "P29", "subj": "Furniture", "desc": "Address: 9 Birch Ct, Leesburg VA 20175", "pii": [{"field": "desc", "text": "9 Birch Ct", "type": "ADDRESS"}]}
+{"id": "P30", "subj": "Medical transport", "desc": "Patient: Ahmed Hassan, DOB 03/14/1958, needs transport to dialysis.", "pii": [{"field": "desc", "text": "Ahmed Hassan", "type": "NAME"}, {"field": "desc", "text": "03/14/1958", "type": "DOB"}]}
+{"id": "P31", "subj": "Phone number", "desc": "my number is 7 0 3 5 5 5 0 1 6 6", "pii": [{"field": "desc", "text": "7 0 3 5 5 5 0 1 6 6", "type": "PHONE"}]}
+{"id": "P32", "subj": "Help for Ravi", "desc": "Ravi Shankar needs grocery delivery, he is diabetic.", "pii": [{"field": "subj", "text": "Ravi", "type": "NAME"}, {"field": "desc", "text": "Ravi Shankar", "type": "NAME"}]}
+{"id": "P33", "subj": "Groceries", "desc": "Contact: chen.wei@example.com or 571-555-0199 ext 4", "pii": [{"field": "desc", "text": "chen.wei@example.com", "type": "EMAIL"}, {"field": "desc", "text": "571-555-0199", "type": "PHONE"}]}
+{"id": "P34", "subj": "Shelter", "desc": "I'm staying at my cousin's place, 210 Oak Lane Unit 5. Name is Kwame Mensah.", "pii": [{"field": "desc", "text": "210 Oak Lane Unit 5", "type": "ADDRESS"}, {"field": "desc", "text": "Kwame Mensah", "type": "NAME"}]}
+{"id": "P35", "subj": "School supplies", "desc": "Ask Ms. Iyer at the front desk, she knows my situation.", "pii": [{"field": "desc", "text": "Iyer", "type": "NAME"}]}
+{"id": "P36", "subj": "Help needed", "desc": "Please call nine eight seven six five four three two one zero.", "pii": [{"field": "desc", "text": "nine eight seven six five four three two one zero", "type": "PHONE"}]}
+{"id": "P37", "subj": "Passport renewal", "desc": "My passport number is K1234567, need help booking an appointment.", "pii": [{"field": "desc", "text": "K1234567", "type": "ID"}]}
+{"id": "P38", "subj": "Groceries for Mrs. Gonzalez", "desc": "She lives on the second floor and cannot carry bags.", "pii": [{"field": "subj", "text": "Gonzalez", "type": "NAME"}]}
+{"id": "P39", "subj": "Babysitter", "desc": "Reach me (Aisha) on +44 7700 900123.", "pii": [{"field": "desc", "text": "Aisha", "type": "NAME"}, {"field": "desc", "text": "+44 7700 900123", "type": "PHONE"}]}
+{"id": "P40", "subj": "Food", "desc": "मेरा नाम सुनीता शर्मा है, I need food for my kids.", "pii": [{"field": "desc", "text": "सुनीता शर्मा", "type": "NAME"}]}
+{"id": "P41", "subj": "Water bill", "desc": "Account holder: Juan Pablo Ortiz. Please help with $120.", "pii": [{"field": "desc", "text": "Juan Pablo Ortiz", "type": "NAME"}]}
+{"id": "P42", "subj": "Move help", "desc": "Moving from 500 King St to 12 Queen Street on Saturday.", "pii": [{"field": "desc", "text": "500 King St", "type": "ADDRESS"}, {"field": "desc", "text": "12 Queen Street", "type": "ADDRESS"}]}
+{"id": "P43", "subj": "Ride", "desc": "Pick me up near 8100 Lee Hwy, my name is Dmitri.", "pii": [{"field": "desc", "text": "8100 Lee Hwy", "type": "ADDRESS"}, {"field": "desc", "text": "Dmitri", "type": "NAME"}]}
+{"id": "P44", "subj": "Meals", "desc": "Contact my caseworker Ana Souza: ana.souza@example.org", "pii": [{"field": "desc", "text": "Ana Souza", "type": "NAME"}, {"field": "desc", "text": "ana.souza@example.org", "type": "EMAIL"}]}
+{"id": "P45", "subj": "Help please", "desc": "Call me at 1-800-555-0100 or my cell 571 5550123.", "pii": [{"field": "desc", "text": "1-800-555-0100", "type": "PHONE"}, {"field": "desc", "text": "571 5550123", "type": "PHONE"}]}
+{"id": "P46", "subj": "Tutor", "desc": "I'm Nguyen, student at the community college, need maths help.", "pii": [{"field": "desc", "text": "Nguyen", "type": "NAME"}]}
+{"id": "P47", "subj": "Hospital visit", "desc": "My wife Fatima is in the hospital, need someone to cook. My email is f_alsayed_99@example.com", "pii": [{"field": "desc", "text": "Fatima", "type": "NAME"}, {"field": "desc", "text": "f_alsayed_99@example.com", "type": "EMAIL"}]}
+{"id": "P48", "subj": "Phone repair", "desc": "My number: (571)555-0134. Name: O. Adeyemi", "pii": [{"field": "desc", "text": "(571)555-0134", "type": "PHONE"}, {"field": "desc", "text": "O. Adeyemi", "type": "NAME"}]}
+{"id": "P49", "subj": "Groceries", "desc": "Deliver to Flat 12, 4 Park Road, Mumbai 400050. Contact Rajesh Kumar.", "pii": [{"field": "desc", "text": "Flat 12, 4 Park Road", "type": "ADDRESS"}, {"field": "desc", "text": "Rajesh Kumar", "type": "NAME"}]}
+{"id": "P50", "subj": "Clothes donation pickup", "desc": "Please email me at wei.zhang [at] example [dot] com to arrange pickup.", "pii": [{"field": "desc", "text": "wei.zhang [at] example [dot] com", "type": "EMAIL"}]}
+{"id": "C01", "subj": "Need groceries", "desc": "We need rice, beans and cooking oil for a family of five.", "pii": []}
+{"id": "C02", "subj": "Ride to the food bank", "desc": "The Main Street food bank opens at 9am on Saturdays; I need a ride there.", "pii": []}
+{"id": "C03", "subj": "Help with homework", "desc": "My kids need help with grade 7 math and reading, two evenings a week.", "pii": []}
+{"id": "C04", "subj": "Grace period on rent", "desc": "I hope the landlord will give me a grace period. Can someone help me write a letter?", "pii": []}
+{"id": "C05", "subj": "Winter coats", "desc": "Looking for 3 winter coats, sizes 8, 10 and 12.", "pii": []}
+{"id": "C06", "subj": "Medicine", "desc": "I may need help picking up medicine from the CVS pharmacy every month.", "pii": []}
+{"id": "C07", "subj": "Furniture", "desc": "We need a bed and 2 chairs after moving into a new apartment in May.", "pii": []}
+{"id": "C08", "subj": "Transport", "desc": "Need transport to Inova Fairfax Hospital for a 10:30 appointment on 11/20.", "pii": []}
+{"id": "C09", "subj": "Food", "desc": "Order #45821 from the pantry never arrived, please help.", "pii": []}
+{"id": "C10", "subj": "Job search", "desc": "Looking for help writing a cover letter for a warehouse job paying $18.50/hour.", "pii": []}
+{"id": "C11", "subj": "Tutoring", "desc": "Need an English tutor; I speak Spanish and Hindi at home.", "pii": []}
+{"id": "C12", "subj": "Utilities", "desc": "Our electricity bill is 3 months overdue, around 450 dollars.", "pii": []}
+{"id": "C13", "subj": "Help with taxes", "desc": "Need help with Form 1040 and the 2025 child tax credit.", "pii": []}
+{"id": "C14", "subj": "Elder care", "desc": "My grandmother needs someone to check on her twice a week.", "pii": []}
+{"id": "C15", "subj": "Donation", "desc": "Donate 25 cans of soup to the Red Cross shelter on Route 7.", "pii": []}
+{"id": "C16", "subj": "Wheelchair", "desc": "Need a wheelchair for 6 to 8 weeks after knee surgery.", "pii": []}
+{"id": "C17", "subj": "Prescription", "desc": "Insulin supply runs out on December 3rd; need help applying for assistance.", "pii": []}
+{"id": "C18", "subj": "Car repair", "desc": "My 2012 Honda Civic needs new brakes, the quote was 300-400 dollars.", "pii": []}
+{"id": "C19", "subj": "Counseling", "desc": "Looking for free counseling services near Washington DC.", "pii": []}
+{"id": "C20", "subj": "Shelter", "desc": "Family of 4 needs emergency shelter for 2 nights, call the 211 hotline for details.", "pii": []}
+{"id": "C21", "subj": "County paperwork", "desc": "Reference number 2026 1104 5567 89 from the county office, need help reading the letter.", "pii": []}
+{"id": "C22", "subj": "Food drive", "desc": "Can volunteers help with the Martin Luther King Jr. Day food drive at the school?", "pii": []}
