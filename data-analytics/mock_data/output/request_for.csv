@@ -1,3 +1,3 @@
-req_for_id,req_for
-1,SELF
-2,OTHER
+req_for_id,req_for,req_for_desc
+0,SELF,Request is for the requester
+1,OTHER,Request is on behalf of someone else

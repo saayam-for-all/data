@@ -1,8 +1,10 @@
-req_status_id,req_status
-1,CREATED
-2,MANAGED
-3,ASSIGNED
-4,IN_PROGRESS
-5,RESOLVED
-6,CANCELLED
-7,VOLUNTEER_NOT_FOUND
+req_status_id,req_status,req_status_desc
+0,CREATED,Request created
+1,MATCHING_VOLUNTEER,Looking for a volunteer
+2,IN_PROGRESS,Volunteer working on it
+3,RESOLVED,Request resolved
+4,CANCELLED,Cancelled by requester
+5,DELETED,Deleted
+6,RATED_BY_REQUESTER,Requester rated the volunteer
+7,RATED_BY_VOLUNTEER,Volunteer rated the requester
+8,VOLUNTEER_NOT_FOUND,No volunteer could be matched

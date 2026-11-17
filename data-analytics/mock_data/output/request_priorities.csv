@@ -1,5 +1,5 @@
-req_priority_id,req_priority
-1,LOW
-2,MEDIUM
-3,HIGH
-4,CRITICAL
+req_priority_id,req_priority,req_priority_desc
+0,LOW,Low priority
+1,MEDIUM,Medium priority
+2,HIGH,High priority
+3,CRITICAL,Critical priority
