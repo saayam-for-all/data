@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -32,6 +33,9 @@ ORG_COLUMNS = [
     "mission",
     "source",
 ]
+
+# Boolean response fields: serialized as JSON true, false or null only.
+FLAG_COLUMNS = ["collaborator", "contributor"]
 
 # Internal geocoding inputs carried through the merge; distance.add_distances
 # strips them before the response is returned.
@@ -45,6 +49,7 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -97,6 +102,26 @@ def _join_parts(parts, sep=", "):
         and str(p).strip()
     ]
     return sep.join(cleaned) if cleaned else None
+
+
+def _to_nullable_bool(value):
+    """True/False for boolean values, None for missing; never 0/1, NaN or text.
+
+    Handles Python, NumPy and pandas booleans and missing values (None, NaN,
+    pd.NA). Anything that is not clearly true or false, including non-scalar
+    values such as lists, becomes None.
+    """
+    if pd.api.types.is_bool(value):
+        return bool(value)
+    # Lists, dicts and arrays are not scalars (pd.isna would return an array).
+    if not pd.api.types.is_scalar(value) or pd.isna(value):
+        return None
+    if isinstance(value, str):
+        value = value.strip().lower()
+        return {"true": True, "t": True, "false": False, "f": False}.get(value)
+    if value in (0, 1):
+        return bool(value)
+    return None
 
 
 def _empty_ai_frame():
@@ -698,11 +723,22 @@ def merge_organizations(db_organizations, genAI_organizations):
         normalized = df.rename(columns=rename_map).copy()
 
         # GEO_COLUMNS are internal and removed again after distance calculation.
-        return normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
+        normalized = normalized.reindex(columns=ORG_COLUMNS + GEO_COLUMNS)
+
+        # object dtype keeps true/false/null intact through concat and
+        # to_dict (a bool column with NULLs would otherwise become 1.0/NaN).
+        for column in FLAG_COLUMNS:
+            normalized[column] = (
+                normalized[column].map(_to_nullable_bool).astype(object)
+            )
+        return normalized
 
     try:
         db_orgs = _normalize(db_organizations, DB_RENAME)
         ai_orgs = _normalize(genAI_organizations, AI_RENAME)
+
+        # GenAI organizations are never contributors, whatever GenAI sent.
+        ai_orgs["contributor"] = pd.Series(False, index=ai_orgs.index, dtype=object)
 
         return pd.concat(
             [db_orgs, ai_orgs],
