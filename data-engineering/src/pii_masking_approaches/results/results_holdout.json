@@ -1,0 +1,174 @@
+{
+  "meta": {
+    "set": "holdout",
+    "requests": 30,
+    "with_pii": 20,
+    "clean": 10,
+    "labels": 26,
+    "name_parts": 408,
+    "lookup_ms": 8.8,
+    "avg_chars_per_request": 61.2,
+    "comprehend_cost": {
+      "1000": {
+        "units_per_request": 3,
+        "usd_per_month": 0.3,
+        "usd_with_free_tier": 0.0
+      },
+      "10000": {
+        "units_per_request": 3,
+        "usd_per_month": 3.0,
+        "usd_with_free_tier": 0.0
+      },
+      "100000": {
+        "units_per_request": 3,
+        "usd_per_month": 30.0,
+        "usd_with_free_tier": 25.0
+      }
+    }
+  },
+  "results": [
+    {
+      "approach": "1. Pipeline patterns only",
+      "labels": 26,
+      "caught": 5,
+      "partly": 0,
+      "missed": 21,
+      "caught_pct": 19.2,
+      "pii_requests_fully_cleaned": "2/20",
+      "clean_requests_wrongly_redacted": "0/10",
+      "clean_ids_wrongly_redacted": [],
+      "false_positive_redactions": 0,
+      "ms_per_request": 0.0049,
+      "note": "",
+      "by_type": {
+        "NAME": "0/14",
+        "PHONE": "3/6",
+        "EMAIL": "2/2",
+        "ADDRESS": "0/3",
+        "ID": "0/1"
+      },
+      "not_fully_caught": [
+        "H02 NAME (missed)",
+        "H03 NAME (missed)",
+        "H03 ADDRESS (missed)",
+        "H05 PHONE (missed)",
+        "H06 NAME (missed)",
+        "H07 ADDRESS (missed)",
+        "H08 NAME (missed)",
+        "H09 NAME (missed)",
+        "H10 NAME (missed)",
+        "H11 PHONE (missed)",
+        "H12 NAME (missed)",
+        "H13 ID (missed)",
+        "H14 NAME (missed)",
+        "H15 ADDRESS (missed)",
+        "H15 NAME (missed)",
+        "H16 NAME (missed)",
+        "H16 NAME (missed)",
+        "H17 NAME (missed)",
+        "H18 PHONE (missed)",
+        "H19 NAME (missed)",
+        "H20 NAME (missed)"
+      ]
+    },
+    {
+      "approach": "2. Pipeline + users-table lookup",
+      "labels": 26,
+      "caught": 8,
+      "partly": 1,
+      "missed": 17,
+      "caught_pct": 30.8,
+      "pii_requests_fully_cleaned": "4/20",
+      "clean_requests_wrongly_redacted": "0/10",
+      "clean_ids_wrongly_redacted": [],
+      "false_positive_redactions": 0,
+      "ms_per_request": 0.0093,
+      "note": "",
+      "by_type": {
+        "NAME": "3/14",
+        "PHONE": "3/6",
+        "EMAIL": "2/2",
+        "ADDRESS": "0/3",
+        "ID": "0/1"
+      },
+      "not_fully_caught": [
+        "H02 NAME (missed)",
+        "H03 NAME (missed)",
+        "H03 ADDRESS (missed)",
+        "H05 PHONE (missed)",
+        "H06 NAME (missed)",
+        "H07 ADDRESS (missed)",
+        "H09 NAME (missed)",
+        "H10 NAME (missed)",
+        "H11 PHONE (missed)",
+        "H12 NAME (missed)",
+        "H13 ID (missed)",
+        "H15 ADDRESS (missed)",
+        "H15 NAME (missed)",
+        "H16 NAME (partly)",
+        "H17 NAME (missed)",
+        "H18 PHONE (missed)",
+        "H19 NAME (missed)",
+        "H20 NAME (missed)"
+      ]
+    },
+    {
+      "approach": "3. Pipeline + Amazon Comprehend",
+      "skipped": "no AWS access yet (run with --comprehend)"
+    },
+    {
+      "approach": "4. Improved rules (patterns + users names + name cues)",
+      "labels": 26,
+      "caught": 20,
+      "partly": 1,
+      "missed": 5,
+      "caught_pct": 76.9,
+      "pii_requests_fully_cleaned": "14/20",
+      "clean_requests_wrongly_redacted": "0/10",
+      "clean_ids_wrongly_redacted": [],
+      "false_positive_redactions": 0,
+      "ms_per_request": 0.0446,
+      "note": "",
+      "by_type": {
+        "NAME": "8/14",
+        "PHONE": "6/6",
+        "EMAIL": "2/2",
+        "ADDRESS": "3/3",
+        "ID": "1/1"
+      },
+      "not_fully_caught": [
+        "H02 NAME (missed)",
+        "H03 NAME (missed)",
+        "H06 NAME (missed)",
+        "H15 NAME (missed)",
+        "H16 NAME (partly)",
+        "H19 NAME (missed)"
+      ]
+    },
+    {
+      "approach": "5. Improved patterns + spaCy small model (reference)",
+      "labels": 26,
+      "caught": 24,
+      "partly": 0,
+      "missed": 2,
+      "caught_pct": 92.3,
+      "pii_requests_fully_cleaned": "18/20",
+      "clean_requests_wrongly_redacted": "0/10",
+      "clean_ids_wrongly_redacted": [],
+      "false_positive_redactions": 3,
+      "ms_per_request": 4.0884,
+      "note": "",
+      "by_type": {
+        "NAME": "12/14",
+        "PHONE": "6/6",
+        "EMAIL": "2/2",
+        "ADDRESS": "3/3",
+        "ID": "1/1"
+      },
+      "not_fully_caught": [
+        "H10 NAME (missed)",
+        "H15 NAME (missed)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{"id": "H01", "subj": "Groceries", "desc": "pls call my mobile 240 555 0187 thx", "pii": [{"field": "desc", "text": "240 555 0187", "type": "PHONE"}]}
+{"id": "H02", "subj": "Help w/ kids", "desc": "I'm a single dad, Carlos Mendoza, two kids under 5.", "pii": [{"field": "desc", "text": "Carlos Mendoza", "type": "NAME"}]}
+{"id": "H03", "subj": "Ride to dialysis", "desc": "Mrs Okonkwo needs a ride Mon/Wed/Fri, she is at 4512 Willow Creek Rd.", "pii": [{"field": "desc", "text": "Okonkwo", "type": "NAME"}, {"field": "desc", "text": "4512 Willow Creek Rd", "type": "ADDRESS"}]}
+{"id": "H04", "subj": "Food", "desc": "you can email me anytime: sunita.sharma1975@yahoo.co.in", "pii": [{"field": "desc", "text": "sunita.sharma1975@yahoo.co.in", "type": "EMAIL"}]}
+{"id": "H05", "subj": "Phone", "desc": "My contact is +971 50 123 4567 (UAE).", "pii": [{"field": "desc", "text": "+971 50 123 4567", "type": "PHONE"}]}
+{"id": "H06", "subj": "Need help", "desc": "My daughter is Mei Ling and she needs school uniforms.", "pii": [{"field": "desc", "text": "Mei Ling", "type": "NAME"}]}
+{"id": "H07", "subj": "Moving", "desc": "New address is Apt 7, 22 Cedar Blvd, Ashburn VA.", "pii": [{"field": "desc", "text": "Apt 7, 22 Cedar Blvd", "type": "ADDRESS"}]}
+{"id": "H08", "subj": "Rent", "desc": "Landlord is Mr. Patel, his number is 571.555.0166.", "pii": [{"field": "desc", "text": "Patel", "type": "NAME"}, {"field": "desc", "text": "571.555.0166", "type": "PHONE"}]}
+{"id": "H09", "subj": "Medicine", "desc": "Ask for Hiroshi at the pharmacy counter.", "pii": [{"field": "desc", "text": "Hiroshi", "type": "NAME"}]}
+{"id": "H10", "subj": "Food", "desc": "Me llamo Ana María López y necesito comida para mis hijos.", "pii": [{"field": "desc", "text": "Ana María López", "type": "NAME"}]}
+{"id": "H11", "subj": "Ride", "desc": "call me on two zero two, five five five, zero one four four", "pii": [{"field": "desc", "text": "two zero two, five five five, zero one four four", "type": "PHONE"}]}
+{"id": "H12", "subj": "Tutoring", "desc": "Kindly contact Ms. Adaeze Nwosu, my sister, regarding tutoring.", "pii": [{"field": "desc", "text": "Adaeze Nwosu", "type": "NAME"}]}
+{"id": "H13", "subj": "Bills", "desc": "My driver license number is D123-4567-8901.", "pii": [{"field": "desc", "text": "D123-4567-8901", "type": "ID"}]}
+{"id": "H14", "subj": "Help", "desc": "This is Fatima again, the phone number changed to 703 555 0102.", "pii": [{"field": "desc", "text": "Fatima", "type": "NAME"}, {"field": "desc", "text": "703 555 0102", "type": "PHONE"}]}
+{"id": "H15", "subj": "Groceries", "desc": "Deliver to 1600 Pennsylvania Avenue NW please, ring twice. -Tom", "pii": [{"field": "desc", "text": "1600 Pennsylvania Avenue", "type": "ADDRESS"}, {"field": "desc", "text": "Tom", "type": "NAME"}]}
+{"id": "H16", "subj": "School form", "desc": "Child: Arjun Reddy, age 9. Parent: Kavya Reddy.", "pii": [{"field": "desc", "text": "Arjun Reddy", "type": "NAME"}, {"field": "desc", "text": "Kavya Reddy", "type": "NAME"}]}
+{"id": "H17", "subj": "Visit", "desc": "Please visit my grandpa Giuseppe Rossi, he lives alone.", "pii": [{"field": "desc", "text": "Giuseppe Rossi", "type": "NAME"}]}
+{"id": "H18", "subj": "Phone", "desc": "WhatsApp only: 0300-1234567", "pii": [{"field": "desc", "text": "0300-1234567", "type": "PHONE"}]}
+{"id": "H19", "subj": "Need diapers", "desc": "Diapers size 4 for baby Noah, contact noah.mom@example.com", "pii": [{"field": "desc", "text": "Noah", "type": "NAME"}, {"field": "desc", "text": "noah.mom@example.com", "type": "EMAIL"}]}
+{"id": "H20", "subj": "Shelter", "desc": "I'm Olga Petrova, I sleep in my car near the Walmart on Route 28.", "pii": [{"field": "desc", "text": "Olga Petrova", "type": "NAME"}]}
+{"id": "HC01", "subj": "Food", "desc": "Need baby formula and diapers for a 6 month old.", "pii": []}
+{"id": "HC02", "subj": "Ride", "desc": "Need a ride to the Social Security office on Monday at 10am.", "pii": []}
+{"id": "HC03", "subj": "Help", "desc": "Please call back when a volunteer is available.", "pii": []}
+{"id": "HC04", "subj": "Rent", "desc": "Rent of $1,450 is due on the 1st; I can pay $700.", "pii": []}
+{"id": "HC05", "subj": "Tutoring", "desc": "Need help preparing for the SAT in March.", "pii": []}
+{"id": "HC06", "subj": "Clothes", "desc": "Looking for a size 10 dress for a job interview at Target.", "pii": []}
+{"id": "HC07", "subj": "Utilities", "desc": "Account 00123 is overdue; can someone help negotiate a payment plan?", "pii": []}
+{"id": "HC08", "subj": "Groceries", "desc": "Need halal groceries, we are a family of 6 new to Virginia.", "pii": []}
+{"id": "HC09", "subj": "Transport", "desc": "Bus 5A stopped running near Lincoln Elementary, need rides to school.", "pii": []}
+{"id": "HC10", "subj": "Help", "desc": "My phone is broken so please email through the app instead.", "pii": []}
