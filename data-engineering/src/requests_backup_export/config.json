@@ -1,0 +1,30 @@
+{
+  "_comment": [
+    "Backup export: requests, with the lookup tables joined in.",
+    "",
+    "This is the full fidelity copy. Nothing is hashed, masked or dropped.",
+    "De-identification happens in the second stage, S3 to S3.",
+    "",
+    "joins: each entry adds a readable column next to its ID column. The ID is",
+    "kept, not replaced, because it is the join key back to the source.",
+    "geometry: these columns are passed through ST_AsText so the file holds",
+    "POINT(lon lat) rather than PostGIS hex."
+  ],
+  "schema": "virginia_dev_saayam_rdbms",
+  "table": "requests",
+  "timestamp_column": "last_updated_at",
+  "key_column": "req_id",
+  "lag_minutes": 5,
+  "initial_value": "2000-01-01T00:00:00",
+  "geometry_columns": ["req_loc", "created_loc"],
+  "joins": [
+    {"column": "req_cat_id",      "table": "help_categories",   "key": "cat_id",          "label": "cat_name",      "as": "req_cat_name"},
+    {"column": "req_for_id",      "table": "request_for",       "key": "req_for_id",      "label": "req_for",       "as": "req_for"},
+    {"column": "req_islead_id",   "table": "request_isleadvol", "key": "req_islead_id",   "label": "req_islead",    "as": "req_islead"},
+    {"column": "req_type_id",     "table": "request_types",     "key": "req_type_id",     "label": "req_type",      "as": "req_type"},
+    {"column": "req_priority_id", "table": "request_priorities","key": "req_priority_id", "label": "req_priority",  "as": "req_priority"},
+    {"column": "req_status_id",   "table": "request_statuses",  "key": "req_status_id",   "label": "req_status",    "as": "req_status"}
+  ],
+  "expected_unjoined": ["creator_id", "beneficiary_id", "lead_volunteer_id"],
+  "_note": "users is deliberately not joined. There is no readable label for a person that is not their identity, and the IDs alone are enough to join back."
+}
