@@ -1,0 +1,31 @@
+cat_id,cat_name,cat_desc
+1,Food & Groceries,Food & Groceries (top-level category)
+2,Meal delivery,Meal delivery requests
+3,Grocery pickup,Grocery pickup requests
+4,Food bank referral,Food bank referral requests
+5,Transportation,Transportation (top-level category)
+6,Ride to appointment,Ride to appointment requests
+7,Airport pickup,Airport pickup requests
+8,Bus pass help,Bus pass help requests
+9,Housing,Housing (top-level category)
+10,Rent assistance,Rent assistance requests
+11,Moving help,Moving help requests
+12,Home repair,Home repair requests
+13,Health & Wellness,Health & Wellness (top-level category)
+14,Prescription pickup,Prescription pickup requests
+15,Companionship visit,Companionship visit requests
+16,Mobility aid,Mobility aid requests
+17,Education,Education (top-level category)
+18,Tutoring,Tutoring requests
+19,Form filling help,Form filling help requests
+20,Language practice,Language practice requests
+21,Legal & Paperwork,Legal & Paperwork (top-level category)
+22,Document translation,Document translation requests
+23,Benefits application,Benefits application requests
+24,Notary referral,Notary referral requests
+25,Technology,Technology (top-level category)
+26,Phone setup,Phone setup requests
+27,Online account help,Online account help requests
+28,Video call setup,Video call setup requests
+29,Other,Other (top-level category)
+30,General help,General help requests
