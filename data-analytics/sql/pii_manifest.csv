@@ -1,0 +1,7 @@
+req_id,fields,pii_types,synthetic
+REQ-MOCK-0017,req_desc,name;phone;email;street_address,true
+REQ-MOCK-0018,req_desc,name;phone;email;street_address,true
+REQ-MOCK-0019,req_desc,name;phone;email;street_address,true
+REQ-MOCK-0020,req_desc,name;phone;email;street_address,true
+REQ-MOCK-0021,req_desc,name;phone;email;street_address,true
+REQ-MOCK-0022,req_desc,name;phone;email;street_address,true

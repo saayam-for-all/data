@@ -1,0 +1,36 @@
+case_number,file,req_id,columns,description
+1,requests.csv,REQ-MOCK-0001,beneficiary_id;lead_volunteer_id,Both nullable references are null; the README documents the full-column null rates.
+2,requests.csv,REQ-MOCK-0001,last_updated_at,Rows 1-3 and 6 share 2026-10-24 12:00:00.123456; rows 4 and 5 differ by one microsecond.
+2,requests.csv,REQ-MOCK-0002,last_updated_at,Rows 1-3 and 6 share 2026-10-24 12:00:00.123456; rows 4 and 5 differ by one microsecond.
+2,requests.csv,REQ-MOCK-0003,last_updated_at,Rows 1-3 and 6 share 2026-10-24 12:00:00.123456; rows 4 and 5 differ by one microsecond.
+2,requests.csv,REQ-MOCK-0004,last_updated_at,Rows 1-3 and 6 share 2026-10-24 12:00:00.123456; rows 4 and 5 differ by one microsecond.
+2,requests.csv,REQ-MOCK-0005,last_updated_at,Rows 1-3 and 6 share 2026-10-24 12:00:00.123456; rows 4 and 5 differ by one microsecond.
+2,requests.csv,REQ-MOCK-0006,last_updated_at,Rows 1-3 and 6 share 2026-10-24 12:00:00.123456; rows 4 and 5 differ by one microsecond.
+3,requests.csv,REQ-MOCK-0006,last_updated_at;submission_date,Update timestamp precedes submission by one day.
+4,requests.csv,REQ-MOCK-0007,req_desc,"Embedded newline, comma and double quotes."
+5,requests.csv,REQ-MOCK-0008,req_desc,Non-ASCII Spanish text.
+6,requests.csv,REQ-MOCK-0017,req_desc,Planted synthetic personal details; see pii_manifest.csv.
+6,requests.csv,REQ-MOCK-0018,req_desc,Planted synthetic personal details; see pii_manifest.csv.
+6,requests.csv,REQ-MOCK-0019,req_desc,Planted synthetic personal details; see pii_manifest.csv.
+6,requests.csv,REQ-MOCK-0020,req_desc,Planted synthetic personal details; see pii_manifest.csv.
+6,requests.csv,REQ-MOCK-0021,req_desc,Planted synthetic personal details; see pii_manifest.csv.
+6,requests.csv,REQ-MOCK-0022,req_desc,Planted synthetic personal details; see pii_manifest.csv.
+7,requests.csv,REQ-MOCK-0001,beneficiary_id;lead_volunteer_id;req_doc_link;audio_req_desc;deletion_reason,"Row 1 has nulls (\N); row 9 has empty strings, including valid FKs to the empty user key."
+7,requests.csv,REQ-MOCK-0009,beneficiary_id;lead_volunteer_id;req_doc_link;audio_req_desc;deletion_reason,"Row 1 has nulls (\N); row 9 has empty strings, including valid FKs to the empty user key."
+8,requests.csv,REQ-MAX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,req_id;creator_id;beneficiary_id;lead_volunteer_id;req_cat_id;req_subj;req_desc;audio_req_desc,Every varchar column in requests reaches its declared maximum length.
+9,requests.csv,REQ-MOCK-0001,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0002,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0003,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0004,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0005,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0006,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0007,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0008,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0009,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0010,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0011,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MAX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0013,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+9,requests.csv,REQ-MOCK-0026,req_cat_id;req_for_id;req_islead_id;req_type_id;req_priority_id;req_status_id,These rows collectively exercise every lookup and category value.
+10,requests.csv,REQ-MOCK-0011,req_islead_id;lead_volunteer_id,Lead flag is 1 but the lead volunteer is null.
+11,fixtures/requests_broken_reference.csv,REQ-BROKEN-REFERENCE,creator_id,"Missing user reference, deliberately excluded from the loadable main data."
