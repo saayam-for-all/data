@@ -1,0 +1,6 @@
+# Generated mock data output
+output_csv_files/
+
+# Python cache files
+__pycache__/
+*.py[cod]
