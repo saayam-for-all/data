@@ -1,0 +1,9 @@
+req_id,case_number,kind
+"REQ-000-000-000-0018",6,"phone with dashes"
+"REQ-000-000-000-0019",6,"phone with parentheses"
+"REQ-000-000-000-0020",6,"phone with country code"
+"REQ-000-000-000-0021",6,"phone written as words"
+"REQ-000-000-000-0022",6,"email address"
+"REQ-000-000-000-0023",6,"street address"
+"REQ-000-000-000-0024",6,"non-English name"
+"REQ-000-000-000-0025",6,"names"
