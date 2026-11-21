@@ -23,6 +23,7 @@ ORG_COLUMNS = [
     "name",
     "organization_type",
     "collaborator",
+    "contributor",
     "location",
     "size",
     "rating",
@@ -45,6 +46,7 @@ DB_RENAME = {
     "org_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "org_rating": "rating",
     "org_size": "size",
     "web_url": "web_url",
@@ -56,6 +58,7 @@ AI_RENAME = {
     "organization_name": "name",
     "org_type": "organization_type",
     "is_collaborator": "collaborator",
+    "is_contributor": "contributor",
     "contact": "contact",
     "web_url": "web_url",
 }
@@ -676,6 +679,7 @@ def get_ai_orgs(subject, description, location, category):
         orgs = pd.DataFrame(org_records)
         orgs["source"] = "ai"
         orgs["is_collaborator"] = False
+        orgs["is_contributor"] = False
 
         return add_ai_geo_columns(orgs)
 
@@ -704,10 +708,20 @@ def merge_organizations(db_organizations, genAI_organizations):
         db_orgs = _normalize(db_organizations, DB_RENAME)
         ai_orgs = _normalize(genAI_organizations, AI_RENAME)
 
-        return pd.concat(
+        combined = pd.concat(
             [db_orgs, ai_orgs],
             ignore_index=True,
         )
+
+        # Reindexing a missing DB column introduces NaN. Normalize after concat
+        # and keep object dtype so nullable flags serialize as bool/None, never
+        # numeric 0/1 or NaN (including when is_contributor is not in the DB yet).
+        for column in ("collaborator", "contributor"):
+            combined[column] = combined[column].map(
+                lambda value: None if pd.isna(value) else bool(value)
+            ).astype(object)
+
+        return combined
 
     except Exception as e:
         raise Exception(
