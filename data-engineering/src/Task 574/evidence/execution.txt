@@ -1,0 +1,8 @@
+Command: python local_run.py
+Handler: Data_ArchiveRequestData.lambda_function.lambda_handler({}, None)
+Validation: passed
+Source: 12 | Exported: 12 | Distinct: 12 | Duplicates: 0
+Source file unchanged: True | Source/export ID sets equal: True
+Local CSV: requests_enriched.csv (3907 bytes)
+SHA-256: 72b7c5aeeee50079dec190313b53a88f494e73b13b7abdb168027f5a48d0cde5
+Network access blocked during handler execution.
