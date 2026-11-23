@@ -85,7 +85,7 @@ To complete it:
 `pip install presidio-analyzer` into an empty directory (Linux, Python 3.13) gives **299 MB unzipped before adding any spaCy language model** (spaCy 120 MB, blis 39 MB, numpy 30 MB + 28 MB libs, phonenumbers 23 MB). Adding a model on top only makes it larger. That independently supports the issue's claim that it exceeds Lambda's 250 MB unzipped limit and would force container images. Approach 4 imports only `re` and `csv`, so package size is a few tens of KB. (Reproduce with `CHECK_PRESIDIO=1 ./run_all.sh`.)
 
 ## 7. Monthly cost estimate
-**Current monthly request volume: [FILL IN – not stated in the issue or visible in the repo; the mock `requests.csv` has 25 rows].** Until then, figures are for scenarios.
+**Current monthly request volume is not known to the author (it is not stated in the issue or visible in the repo; the mock `requests.csv` has 25 rows), so the figures below are scenarios. Replace them with the real monthly request count when a team lead provides it.**
 
 Assumptions: one text per request (`req_subj` + `req_desc`, under 300 characters) and one pass per month of new/archived rows.
 
