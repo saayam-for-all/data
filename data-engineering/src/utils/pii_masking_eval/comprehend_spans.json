@@ -1,0 +1,959 @@
+{
+ "Need a ride to dialysis on Friday. You can reach me at (480) 555-0142 after 5pm.": [
+  [
+   55,
+   69,
+   "PHONE"
+  ],
+  [
+   76,
+   79,
+   "DATE_TIME"
+  ]
+ ],
+ "Please call 480-555-0187, I can't always check email.": [
+  [
+   12,
+   24,
+   "PHONE"
+  ]
+ ],
+ "My number is 480.555.0123 if anyone can help with groceries.": [
+  [
+   13,
+   25,
+   "PHONE"
+  ]
+ ],
+ "Text me at +1 602 555 0166 about the furniture pickup.": [
+  [
+   11,
+   26,
+   "PHONE"
+  ]
+ ],
+ "contact 6025550171 anytime, need help with a form": [
+  [
+   8,
+   18,
+   "PHONE"
+  ]
+ ],
+ "WhatsApp +91 98765 43210, I am in Tempe temporarily for studies.": [
+  [
+   9,
+   24,
+   "PHONE"
+  ],
+  [
+   34,
+   39,
+   "ADDRESS"
+  ]
+ ],
+ "You can call me at four eight zero five five five zero one nine nine, evenings are best.": [
+  [
+   19,
+   68,
+   "PHONE"
+  ]
+ ],
+ "Call me on 602 five five five 0134 please, I need a tutor for my son.": [
+  [
+   11,
+   34,
+   "PHONE"
+  ]
+ ],
+ "My phone is four-eight-zero, five-five-five, zero-one-four-eight. Need help with a resume.": [
+  [
+   12,
+   64,
+   "PHONE"
+  ]
+ ],
+ "ph: 480 555 0102 (landline), ask for Maria when you call": [
+  [
+   4,
+   16,
+   "PHONE"
+  ],
+  [
+   37,
+   42,
+   "NAME"
+  ]
+ ],
+ "Email me at rahul.sharma92@gmail.com with any volunteer who can tutor math.": [
+  [
+   12,
+   36,
+   "EMAIL"
+  ]
+ ],
+ "my email is priya_nair@asu.edu, looking for help with a statement of purpose": [
+  [
+   12,
+   30,
+   "EMAIL"
+  ]
+ ],
+ "reach me at john dot miller at gmail dot com if you can help move boxes": [
+  [
+   12,
+   44,
+   "EMAIL"
+  ]
+ ],
+ "send details to sarah.k@outlook.com or sarahk.work@yahoo.com": [
+  [
+   16,
+   35,
+   "EMAIL"
+  ],
+  [
+   39,
+   60,
+   "EMAIL"
+  ]
+ ],
+ "Please come to 742 Evergreen Terrace, Tempe, AZ 85281 to pick up the donated couch.": [
+  [
+   15,
+   53,
+   "ADDRESS"
+  ]
+ ],
+ "I live at 1900 E Apache Blvd Apt 214 and need help carrying groceries up.": [
+  [
+   10,
+   36,
+   "ADDRESS"
+  ]
+ ],
+ "Pickup from 55 N Mill Ave, unit 3B. The items are in the garage.": [
+  [
+   12,
+   34,
+   "ADDRESS"
+  ]
+ ],
+ "My house is on 12 Oak Lane near the park, the blue door. Need yard cleanup.": [
+  [
+   15,
+   26,
+   "ADDRESS"
+  ]
+ ],
+ "Send the paperwork to P.O. Box 4471, Mesa AZ 85201": [
+  [
+   22,
+   50,
+   "ADDRESS"
+  ]
+ ],
+ "I live at four hundred twelve West Elm Street and the stairs are hard for me.": [
+  [
+   10,
+   45,
+   "ADDRESS"
+  ]
+ ],
+ "Need help with my tax form, my SSN is 123-45-6789 in case the volunteer needs it.": [
+  [
+   38,
+   49,
+   "SSN"
+  ]
+ ],
+ "Aadhaar 2345 6789 0123 needed for the scholarship form help": [
+  [
+   8,
+   22,
+   "IN_AADHAAR"
+  ]
+ ],
+ "My card 4111 1111 1111 1111 was declined at the pharmacy, need help with the bill": [
+  [
+   8,
+   27,
+   "CREDIT_DEBIT_NUMBER"
+  ]
+ ],
+ "Passport number K1234567 expires soon, need renewal guidance": [
+  [
+   16,
+   24,
+   "PASSPORT_NUMBER"
+  ]
+ ],
+ "Hi, my name is Priya Venkataraman and I need help filling out a Medicaid renewal.": [
+  [
+   15,
+   33,
+   "NAME"
+  ]
+ ],
+ "This is Wei Zhang. My mother needs a translator for her doctor visit (Mandarin).": [
+  [
+   8,
+   17,
+   "NAME"
+  ]
+ ],
+ "I'm Fatima Al-Mansouri, new to the area and need help finding a halal food pantry.": [
+  [
+   4,
+   22,
+   "NAME"
+  ]
+ ],
+ "my name is jose hernandez, no tengo transporte para mi cita": [
+  [
+   11,
+   25,
+   "NAME"
+  ]
+ ],
+ "Mi nombre es María Guadalupe Ramírez y necesito ayuda con la renta.": [
+  [
+   13,
+   36,
+   "NAME"
+  ]
+ ],
+ "Please help Nguyen Thi Lan, an elderly neighbor, with grocery delivery.": [
+  [
+   12,
+   26,
+   "NAME"
+  ]
+ ],
+ "My neighbor Mrs. Okafor has been unable to leave her home since her surgery.": [
+  [
+   17,
+   23,
+   "NAME"
+  ]
+ ],
+ "Ask for Dmitri Volkov at the front desk, he knows about my case.": [
+  [
+   8,
+   21,
+   "NAME"
+  ]
+ ],
+ "Aarav Deshmukh is the point of contact for my child's tutoring sessions.": [
+  [
+   0,
+   14,
+   "NAME"
+  ]
+ ],
+ "My son Kwame needs a ride to school every morning this week.": [
+  [
+   7,
+   12,
+   "NAME"
+  ]
+ ],
+ "Hello, I am Anil Poojari and I need help reading and answering my mail.": [
+  [
+   12,
+   24,
+   "NAME"
+  ]
+ ],
+ "Rashmi here - need help with a resume review before Friday.": [
+  [
+   0,
+   6,
+   "NAME"
+  ]
+ ],
+ "माझे नाव सुनीता पाटील आहे, मला घरभाडे भरण्यासाठी मदत हवी आहे.": [],
+ "제 이름은 김민준입니다. 병원까지 태워주실 분 찾습니다.": [
+  [
+   6,
+   9,
+   "NAME"
+  ]
+ ],
+ "I'm Tomasz Kowalski, call (480) 555-0155 or email tomasz.k@gmail.com. I live at 88 W University Dr.": [
+  [
+   4,
+   19,
+   "NAME"
+  ],
+  [
+   26,
+   40,
+   "PHONE"
+  ],
+  [
+   50,
+   68,
+   "EMAIL"
+  ],
+  [
+   80,
+   98,
+   "ADDRESS"
+  ]
+ ],
+ "Contact my daughter Aisha Rahman at 602-555-0190 about the appointment.": [
+  [
+   20,
+   32,
+   "NAME"
+  ],
+  [
+   36,
+   48,
+   "PHONE"
+  ]
+ ],
+ "Hi it's Li Na, I'm at Unit 2006, 301 Palm Court and need help with a broken heater.": [
+  [
+   8,
+   13,
+   "NAME"
+  ],
+  [
+   22,
+   47,
+   "ADDRESS"
+  ]
+ ],
+ "Name: Oluwaseun Adeyemi, DOB 03/14/1961. Needs help with pharmacy pickup.": [
+  [
+   6,
+   23,
+   "NAME"
+  ],
+  [
+   29,
+   39,
+   "DATE_TIME"
+  ]
+ ],
+ "Need a ride to dialysis on Friday morning, around 9:30 am, round trip.": [
+  [
+   50,
+   57,
+   "DATE_TIME"
+  ]
+ ],
+ "Looking for help moving a couch, about 150 pounds, from a second floor apartment.": [],
+ "Rent is $1,450 this month and I'm short by $320.": [],
+ "My landlord gave a 30 day notice on Nov 12, need legal aid information.": [
+  [
+   36,
+   42,
+   "DATE_TIME"
+  ]
+ ],
+ "Requesting grocery delivery for a family of 5, no peanuts please.": [
+  [
+   44,
+   45,
+   "AGE"
+  ]
+ ],
+ "Need tutoring in Algebra 2 for my 10th grade daughter, twice a week.": [
+  [
+   34,
+   44,
+   "AGE"
+  ]
+ ],
+ "Looking for a volunteer who speaks Spanish or Vietnamese to translate at a clinic visit.": [],
+ "Storm damage to the roof, tarp needed before Monday. Home Depot quote was $890.": [],
+ "Help with job application at Walmart and Amazon, need resume formatting.": [],
+ "Looking for transportation from Tempe to Phoenix Sky Harbor on Dec 3rd at 6 am.": [
+  [
+   32,
+   37,
+   "ADDRESS"
+  ],
+  [
+   41,
+   59,
+   "ADDRESS"
+  ],
+  [
+   63,
+   70,
+   "DATE_TIME"
+  ],
+  [
+   74,
+   75,
+   "DATE_TIME"
+  ],
+  [
+   76,
+   78,
+   "DATE_TIME"
+  ]
+ ],
+ "Need winter coats for 3 kids, sizes 6, 8 and 10.": [
+  [
+   36,
+   37,
+   "AGE"
+  ],
+  [
+   39,
+   40,
+   "AGE"
+  ],
+  [
+   45,
+   47,
+   "AGE"
+  ]
+ ],
+ "Can someone explain the Medicaid renewal letter I received? Some of the terms are confusing.": [],
+ "Senior needs help setting up a smartphone and video calls with grandchildren.": [],
+ "Request REQ-000123 was not updated, please check the status.": [],
+ "Our food pantry on Saturday served 212 households, we need 40 more volunteers.": [],
+ "Need a wheelchair ramp, 3 steps, about 24 inches high.": [],
+ "Please help with a bus pass for the 72 route to get to work at 7:00.": [
+  [
+   63,
+   67,
+   "DATE_TIME"
+  ]
+ ],
+ "Help writing a letter to the Housing Authority about a broken heater since 12/01/2026.": [
+  [
+   75,
+   85,
+   "DATE_TIME"
+  ]
+ ],
+ "Mondays and Wednesdays after 4 pm work best. Anyone from Arizona State University or Mesa Community College is welcome.": [
+  [
+   29,
+   30,
+   "DATE_TIME"
+  ],
+  [
+   31,
+   33,
+   "DATE_TIME"
+  ]
+ ],
+ "Need help understanding Social Security benefits, I'm not sure how to apply online.": [],
+ "Help needed with a Chinese to English translation of school forms.": [],
+ "I need Help with Rent. The Mayor's office said funds open in January.": [],
+ "Hello. I'm Chinedu Okonkwo. I recently lost my job and need help with bills.": [
+  [
+   11,
+   26,
+   "NAME"
+  ]
+ ],
+ "call my cell 480 555 0111 any time after lunch": [
+  [
+   13,
+   25,
+   "PHONE"
+  ]
+ ],
+ "you can email jmartinez77@hotmail.com with questions": [
+  [
+   14,
+   37,
+   "EMAIL"
+  ]
+ ],
+ "We live at 3015 S Rural Rd, Apt 5, Tempe and need a car seat installed.": [
+  [
+   11,
+   40,
+   "ADDRESS"
+  ]
+ ],
+ "My phone number: (602)555-0128. Please text first.": [
+  [
+   17,
+   30,
+   "PHONE"
+  ]
+ ],
+ "Please contact Ms. Priyanka Joshi regarding the school forms.": [
+  [
+   19,
+   33,
+   "NAME"
+  ]
+ ],
+ "my aadhaar is 3456-7890-1234, needed for a subsidy application": [
+  [
+   14,
+   28,
+   "IN_AADHAAR"
+  ]
+ ],
+ "Reach me at five five five, one two three four after 6 pm": [
+  [
+   12,
+   46,
+   "ADDRESS"
+  ],
+  [
+   53,
+   54,
+   "DATE_TIME"
+  ],
+  [
+   55,
+   57,
+   "DATE_TIME"
+  ]
+ ],
+ "Soy Carlos Mendoza, necesito comida para mi familia esta semana.": [
+  [
+   4,
+   18,
+   "NAME"
+  ]
+ ],
+ "Khadija Bint Rashid asked me to submit this for her, she can't use the app.": [
+  [
+   0,
+   19,
+   "NAME"
+  ]
+ ],
+ "Send the receipt to ahmed.ali [at] gmail [dot] com please": [
+  [
+   20,
+   50,
+   "EMAIL"
+  ]
+ ],
+ "Dropoff at 7421 W Camelback Road Phoenix please, before noon.": [
+  [
+   11,
+   40,
+   "ADDRESS"
+  ]
+ ],
+ "Need help with a computer for school. Thanks, Elena Petrova": [
+  [
+   46,
+   59,
+   "NAME"
+  ]
+ ],
+ "My daughter Mei Lin and I need a ride to the clinic on Tuesday.": [
+  [
+   12,
+   19,
+   "NAME"
+  ]
+ ],
+ "Need help installing a smoke detector, the ceiling is about 10 feet high.": [],
+ "Does anyone have a used laptop for a high school student? Windows is fine.": [],
+ "Looking for a ride on Tuesday at 8:15 to the DMV on Baseline Road.": [
+  [
+   33,
+   37,
+   "DATE_TIME"
+  ],
+  [
+   52,
+   65,
+   "ADDRESS"
+  ]
+ ],
+ "Need diapers size 4, about 3 packs, and baby formula.": [],
+ "Family of four needs help with an electric bill of $212 due Dec 5.": [
+  [
+   60,
+   65,
+   "DATE_TIME"
+  ]
+ ],
+ "Seeking a Hindi speaking volunteer for a bank visit on Thursday.": [],
+ "Can someone call me back on 4805550198? I need help filling out a Medicaid form.": [
+  [
+   28,
+   38,
+   "PHONE"
+  ]
+ ],
+ "best number is (602) 555-0144, I work nights so mornings are fine": [
+  [
+   15,
+   29,
+   "PHONE"
+  ]
+ ],
+ "Reach my daughter instead, 480 555 0176, she speaks better English than me.": [
+  [
+   27,
+   39,
+   "PHONE"
+  ]
+ ],
+ "Cell: 623-555-0119. Looking for a used stroller for a newborn.": [
+  [
+   6,
+   18,
+   "PHONE"
+  ]
+ ],
+ "call or text 1-480-555-0163, either is fine": [
+  [
+   13,
+   27,
+   "PHONE"
+  ]
+ ],
+ "my number is nine two eight five five five zero one two two": [
+  [
+   13,
+   59,
+   "PHONE"
+  ]
+ ],
+ "You can get me on +1 (480) 555-0187 during the day.": [
+  [
+   18,
+   35,
+   "PHONE"
+  ]
+ ],
+ "Phone 4 8 0 5 5 5 0 1 7 7, I do not have email.": [
+  [
+   6,
+   26,
+   "PHONE"
+  ]
+ ],
+ "Text 602.555.0191, I don't answer unknown calls.": [
+  [
+   5,
+   17,
+   "PHONE"
+  ]
+ ],
+ "Leave a message on 480-555-0108 and I will call back in the evening.": [
+  [
+   19,
+   31,
+   "PHONE"
+  ]
+ ],
+ "Please email lucia.ramos@gmail.com, I check it twice a day.": [
+  [
+   13,
+   34,
+   "EMAIL"
+  ]
+ ],
+ "write to me: tdang91@yahoo.com about the bus pass": [
+  [
+   13,
+   30,
+   "EMAIL"
+  ]
+ ],
+ "my email is ahmed [at] hotmail [dot] com if that is easier": [
+  [
+   12,
+   40,
+   "EMAIL"
+  ]
+ ],
+ "contact k.obrien@asu.edu for the tutoring slot on Saturday": [
+  [
+   8,
+   24,
+   "EMAIL"
+  ]
+ ],
+ "send to grace.mensah@outlook.com, I check it daily": [
+  [
+   8,
+   32,
+   "EMAIL"
+  ]
+ ],
+ "My name is Oluwaseun Adeyemi and I need winter clothes for my kids.": [
+  [
+   11,
+   28,
+   "NAME"
+  ]
+ ],
+ "This is Tran Van Minh, I called last week about the wheelchair ramp.": [
+  [
+   8,
+   21,
+   "NAME"
+  ]
+ ],
+ "Mi nombre es Rosa Delgado, necesito ayuda con la renta.": [
+  [
+   13,
+   25,
+   "NAME"
+  ]
+ ],
+ "my name is kwame boateng, i am looking for a job reference": [
+  [
+   11,
+   24,
+   "NAME"
+  ]
+ ],
+ "Thanks, Dmitri Volkov": [
+  [
+   8,
+   21,
+   "NAME"
+  ]
+ ],
+ "मेरा नाम सुनीता शर्मा है, मुझे राशन की मदद चाहिए।": [],
+ "Fatima Zahra cannot walk to the clinic and needs a ride Tuesday.": [
+  [
+   0,
+   12,
+   "NAME"
+  ]
+ ],
+ "Nguyen Thi Hoa lost her job and needs food assistance this month.": [
+  [
+   0,
+   14,
+   "NAME"
+  ]
+ ],
+ "Could someone tutor Priyanka in algebra on weekends?": [
+  [
+   20,
+   28,
+   "NAME"
+  ]
+ ],
+ "Jorge Villanueva is moving out on the 30th and has no truck.": [
+  [
+   0,
+   16,
+   "NAME"
+  ],
+  [
+   38,
+   42,
+   "DATE_TIME"
+  ]
+ ],
+ "The wheelchair is for Bernice Okafor, she is 82 and lives alone.": [
+  [
+   22,
+   36,
+   "NAME"
+  ],
+  [
+   45,
+   47,
+   "AGE"
+  ]
+ ],
+ "Hassan needs a winter coat, size medium.": [
+  [
+   0,
+   6,
+   "NAME"
+  ]
+ ],
+ "Chen Wei's apartment flooded and he lost his documents.": [
+  [
+   0,
+   8,
+   "NAME"
+  ]
+ ],
+ "Looking for someone to sit with Margarethe Lindqvist while I work nights.": [
+  [
+   32,
+   52,
+   "NAME"
+  ]
+ ],
+ "Aditi and Rohan both need school supplies before Monday.": [
+  [
+   0,
+   5,
+   "NAME"
+  ],
+  [
+   10,
+   15,
+   "NAME"
+  ]
+ ],
+ "I'm at 3421 S Rural Rd, Tempe AZ 85282. The couch is on the porch.": [
+  [
+   7,
+   38,
+   "ADDRESS"
+  ]
+ ],
+ "Delivery to 88 West Baseline Road, apartment 7.": [
+  [
+   12,
+   46,
+   "ADDRESS"
+  ]
+ ],
+ "We live near 1200 N Scottsdale Rd but the gate needs a code.": [
+  [
+   13,
+   33,
+   "ADDRESS"
+  ]
+ ],
+ "PO Box 4471, Mesa AZ 85201 is where mail should go.": [
+  [
+   0,
+   26,
+   "ADDRESS"
+  ]
+ ],
+ "My place is at twelve forty one East Broadway, the grey building.": [
+  [
+   15,
+   45,
+   "ADDRESS"
+  ]
+ ],
+ "My SSN is 412-55-9087, do I need it for the application?": [
+  [
+   10,
+   21,
+   "SSN"
+  ]
+ ],
+ "Aadhaar 4521 8899 1234, I just moved here from India.": [
+  [
+   8,
+   22,
+   "IN_AADHAAR"
+  ],
+  [
+   47,
+   52,
+   "ADDRESS"
+  ]
+ ],
+ "passport number X1234567 if that helps with the paperwork": [
+  [
+   16,
+   24,
+   "PASSPORT_NUMBER"
+  ]
+ ],
+ "Is it safe to share a card here? It is 4111 1111 1111 1111.": [
+  [
+   39,
+   58,
+   "CREDIT_DEBIT_NUMBER"
+  ]
+ ],
+ "DOB: 03/14/1978, applying for senior services.": [
+  [
+   5,
+   15,
+   "DATE_TIME"
+  ]
+ ],
+ "I need help with my Social Security application, no idea where to start.": [],
+ "Looking for a volunteer who speaks Mandarin to help at the clinic Thursday.": [],
+ "Our rent went up by $340 this month and we are short.": [],
+ "Request ID 00-123-456 was closed but my issue is not resolved.": [],
+ "Can anyone donate a microwave? Ours died last week.": [],
+ "The food bank on Baseline closes at 4pm, is there a later one?": [
+  [
+   36,
+   39,
+   "DATE_TIME"
+  ]
+ ],
+ "I work at Walmart on weekends and need childcare Saturday mornings.": [],
+ "Need a ride to the airport on December 3rd at 6am.": [
+  [
+   30,
+   42,
+   "DATE_TIME"
+  ],
+  [
+   46,
+   49,
+   "DATE_TIME"
+  ]
+ ],
+ "Thanksgiving dinner for four, if anyone has extra.": [
+  [
+   0,
+   12,
+   "DATE_TIME"
+  ]
+ ],
+ "Contact Center said to file here instead.": [],
+ "Help Wanted signs are everywhere but nobody calls back.": [],
+ "I'm looking for English classes near Mill Avenue.": [
+  [
+   37,
+   48,
+   "ADDRESS"
+  ]
+ ],
+ "My Medicaid renewal is due but the website keeps timing out.": [],
+ "Call Center hours are 9 to 5, that does not work for me.": [
+  [
+   22,
+   23,
+   "DATE_TIME"
+  ],
+  [
+   24,
+   28,
+   "DATE_TIME"
+  ]
+ ],
+ "Five people in the household, two are under ten.": [
+  [
+   44,
+   47,
+   "AGE"
+  ]
+ ],
+ "We need about 20 blankets for the shelter on Apache.": [],
+ "Is there a free legal clinic in Maricopa County?": [
+  [
+   32,
+   47,
+   "ADDRESS"
+  ]
+ ],
+ "The appointment is at 2:30 on Tuesday the 14th.": [
+  [
+   22,
+   26,
+   "DATE_TIME"
+  ],
+  [
+   30,
+   46,
+   "DATE_TIME"
+  ]
+ ],
+ "Lost my job in March, still looking for anything.": [],
+ "My son is in third grade and needs a backpack.": []
+}
