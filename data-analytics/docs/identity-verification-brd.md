@@ -4,11 +4,11 @@
 
 | Field | Value |
 | --- | --- |
-| Author | Purnendu Kale (`ipurnendu26`) |
-| Date / version / status | 2026-11-17 / 0.1 / **Draft — for leadership review** |
-| Issue / delivery | [#694][S01]; document only; PR base `test`; requested deadline 2026-11-21 |
+| Author | Omsali; revised from the earlier research draft by Purnendu Kale (`ipurnendu26`, [commit](https://github.com/saayam-for-all/data/commit/d16ee75bc3da7c210ad8b820eadefbfd8d5b9fbc)) |
+| Date / version / status | 2026-11-24 / 0.2 / **Draft — for leadership review** |
+| Issue / delivery | [#694][S01]; document only; PR base `test`; requested deadline 2026-11-22 |
 | Proposed reviewers (not yet approved) | Issue maintainer; Data Analytics lead; volunteer operations/safeguarding owner; engineering lead; privacy/legal counsel; budget owner |
-| Evidence baseline | Public sources checked **2026-11-17**; no vendor accounts created, sales contacted, sandbox sessions executed, or personal documents submitted |
+| Evidence baseline | Vendor pricing and product pages refreshed **2026-11-24**; other dated sources retain their individual check dates in section 18. No vendor accounts created, sales contacted, sandbox sessions executed, or personal documents submitted |
 
 **Reading convention:** linked statements are documented facts or vendor claims, not independently tested performance. **Proposal**, **estimate** and **judgment** identify analyst recommendations. **Unknown** means not established by the reviewed evidence. Sources and check dates are in section 18. No purchasing or production approval is implied.
 
@@ -18,9 +18,9 @@
 
 **Recommendation — conditional pilot:** use **Didit for document authenticity, passive liveness and face matching**, paired with **Checkr for legally permitted, country-specific criminal checks**. Do not treat Didit's AML/watchlist product, or Checkr's adverse-media substitute, as a criminal-record clearance. Checkr documents that some countries receive adverse-media checks instead of criminal-record searches. No evaluated solution demonstrates worldwide completeness for criminal history or pending cases. [S09] [S10] [S24] **Runner-up:** Stripe Identity plus the same country-specific screening route; its existing-account fit reduces setup uncertainty, although Identity still requires activation. [S01] [S03]
 
-**Estimated monthly budget, USD:** at **500 applicants**, Didit identity fees are **$155** on its current Free-plan list rates with eligible $10 monthly credit; **$165 without credit**. Screening all 500 through Checkr International Basic adds **at least $16,000**, where that package is suitable and actually supplies criminal records. With proposed internal review labor of **$625**, the combined planning floor is **$16,780/month**, excluding taxes, country/court fees, extra searches, appeals and setup. Screening only 20% would produce a **$3,980** floor, but **would not meet a requirement to screen everyone**. These are scenarios, not quotes; country mix and legal eligibility must be settled first. [S09] [S23] Section 11 gives 100/500/1,000 scenarios and manual comparison.
+**Estimated monthly budget, USD:** at **500 applicants**, Didit identity checks are **$155** with the eligible $10 monthly credit or **$165** without it; proposed provider-assisted review labor is **$625**. This gives a **$780–$790 identity-and-review estimate**, before criminal screening. Checkr does not currently publish an international per-check rate on the reviewed pricing page, so the global screening total is **$780–$790 + 500 × the quoted country-specific rate + pass-through fees**. As a clearly separate **U.S.-only public-price benchmark**, Checkr Basic at $29.99/report would add $14,995, producing $15,775–$15,785 before court/database fees if the package is eligible and appropriate. Do not apply that domestic price to international checks. [S09] [S10] [S23] [S55] Section 11 gives 100/500/1,000 scenarios and manual comparison.
 
-**Why this choice (judgment).** Didit's low published usage cost and hosted workflow make it a sensible cost-first pilot; the weighted assessment is 83/100 versus Stripe's 80/100. This narrow difference is not measured accuracy. Didit's price page changed on November 1 and conflicts with older indexed free-tier claims, so revalidate terms before approval. [S09] [S10]
+**Why this choice (judgment).** Didit's low published usage cost and hosted workflow make it a sensible cost-first pilot; the weighted assessment is 83/100 versus Stripe's 80/100. This narrow difference is not measured accuracy. Didit's current feature-level billing lists separate charges for completed checks, so the selected workflow must be costed from its exact modules; revalidate terms before approval. [S09] [S10]
 
 **Main risks:** inaccessible or incomplete criminal records; false identity or name matches; biometric privacy and retention; unsupported local documents; and screening expense dominating identity fees. A missing check must remain **unavailable/pending**, never “clear.”
 
@@ -127,7 +127,7 @@ BR-01–BR-05 and BR-07 originate in the issue; all others are **proposed additi
 | ID.me | ID verification | Video selfie and assisted/video routes | Not established by reviewed identity documentation | Not established; do not assume identity attribute verification is AML | Country/type list says 200+ territories; other help copy says 230+/12,500+ docs. Treat the product-specific list, not the largest headline, as the gate. [S15] [S16] [S17] |
 | Veriff | ID verification | Liveness in self-serve plans | Not established by reviewed IDV/AML scope | Paid PEP/sanctions add-on | Claims 230+ countries/territories and 12,500+ documents with type table. [S19] [S20] |
 | Sumsub | ID verification | Liveness and face match | Not established by reviewed KYC scope | Compliance plan adds AML | Claims 220+ countries/territories; use document-level list. [S21] [S22] |
-| Checkr (complement) | International document-validation product available separately | Equivalent liveness bundle not established for International Basic | Country-specific criminal search; adverse media may replace it where restricted; pending scope needs confirmation | Global watchlist in International Basic | Broad international service coverage does **not** mean criminal records everywhere. [S23] [S24] [S25] |
+| Checkr (screening complement) | Identity verification is listed in U.S. Essential/Complete packages; international document-authenticity coverage is not established | Liveness for an international background-check flow is not established | International coverage is advertised, but each country’s criminal-record vs. adverse-media scope and pending-case coverage needs confirmation | U.S. Basic lists a global watchlist; do not assume international package parity | Broad international service coverage does **not** establish criminal-record availability in every country. [S23] [S24] [S25] |
 
 ## 10. Vendor evaluation
 
@@ -174,7 +174,7 @@ Rate 1–5: **1** weak/unknown fit, **3** plausible with gaps, **5** strongest e
 | Sumsub Basic | 4 | 3 | 5 | 4 | 3 | 4 | **77** |
 | Veriff Premium | 4 | 2 | 5 | 4 | 4 | 4 | **75** |
 | ID.me / quote required | 4 | 1 | 3 | 3 | 2 | 4 | **57** |
-| Checkr International Basic* | 1 | 1 | 2 | 3 | 2 | 4 | **39** |
+| Checkr screening complement* | 1 | 1 | 2 | 3 | 2 | 4 | **39** |
 
 *Checkr's score uses the same **identity-solution** rubric solely for comparability; it is not ranked as an alternative to the five ID vendors and says nothing about its criminal-search quality. Its separate selection depends on lawful country sources, pending-case scope, price and dispute handling, all unresolved procurement gates. [S23]–[S26]
 
@@ -191,7 +191,7 @@ Rate 1–5: **1** weak/unknown fit, **3** plausible with gaps, **5** strongest e
 
 ## 11. Cost analysis
 
-**Estimate basis:** USD public list prices checked 2026-11-17; N = applicants/check sessions, one completed identity bundle each, no negotiated/nonprofit discount, taxes, FX, extras or repeated billable sessions. Do not confuse **per session/check** with **per successfully approved volunteer**. Identity and criminal searches are priced separately.
+**Estimate basis:** USD public list prices; relevant pricing sources rechecked 2026-11-24. N = applicants/check sessions, one completed identity bundle each, no negotiated/nonprofit discount, taxes, FX, extras or repeated billable sessions. Do not confuse **per session/check** with **per successfully approved volunteer**. Identity and criminal searches are priced separately.
 
 | Service / model | Monthly formula | N=100 | N=500 | N=1,000 |
 | --- | --- | --- | --- | --- |
@@ -203,7 +203,8 @@ Rate 1–5: **1** weak/unknown fit, **3** plausible with gaps, **5** strongest e
 | Sumsub Basic; $149 minimum [S21] | max(149, 1.35N) | $149 | $675 | $1,350 |
 | Sumsub Compliance; $299 minimum, AML included [S21] | max(299, 1.85N) | $299 | $925 | $1,850 |
 | ID.me: **contact sales; no public commercial rate established** [S15] [S30] | F + pN, subject to negotiated minimums | Quote | Quote | Quote |
-| Checkr International Basic: **starting** $32/check; criminal or adverse media + watchlist [S23] | ≥32N, country-dependent | ≥$3,200 | ≥$16,000 | ≥$32,000 |
+| Checkr U.S. Basic (domestic-only public benchmark; not an international rate) [S23] | $29.99N, before pass-through fees | $2,999 | $14,995 | $29,990 |
+| Checkr international screening: **contact sales**; no public per-check price established [S23] [S25] [S55] | N × quoted country rate + pass-through fees | Quote + fees | Quote + fees | Quote + fees |
 
 **Pricing qualifications:**
 
@@ -211,7 +212,7 @@ Rate 1–5: **1** weak/unknown fit, **3** plausible with gaps, **5** strongest e
 - Stripe advertises the **first 50 verifications free**, not 50 every month. If still available to Saayam, first-period totals would be **$75/$675/$1,425**; the baseline deliberately excludes that one-time benefit. Completion includes a verified or unverified report, so failure need not be free. [S06] [S32]
 - Veriff advertises a 15-day/50-session trial. AML adds $0.64/check, so Premium + AML costs **$273/$1,265/$2,530** at these volumes; extras sit above the minimum. Essential is a price floor, subject to control/plan acceptance. [S19] [S33]
 - Sumsub charges the plan bundle even if some included features are unused. Extra messaging, data fields, proof-of-address and monitoring can add costs; confirm the detailed rate card and ongoing-screening units rather than assuming unlimited monitoring. [S21]
-- F and p for ID.me, as well as any API entitlement, onboarding fees, minimums and assisted-review charges, are **unknown**, not zero. Checkr country fees, extra jurisdictions, pass-through costs, rescreening and whether pending cases are covered require a package-specific quote. No sales request was sent. [S23] [S26] [S30]
+- F and p for ID.me, as well as any API entitlement, onboarding fees, minimums and assisted-review charges, are **unknown**, not zero. The $29.99 Checkr Basic rate is a U.S. public price and is not evidence of international pricing or suitability. International country rates, extra jurisdictions, court/database pass-through costs, rescreening and whether pending cases are covered require written confirmation; no sales request was sent. [S23] [S25] [S26] [S30] [S55]
 
 ### Manual comparison and combined recommendation
 
@@ -221,13 +222,13 @@ Rate 1–5: **1** weak/unknown fit, **3** plausible with gaps, **5** strongest e
 | --- | --- | --- | --- |
 | Manual ID review labor only | $625 | $3,125 | $6,250 |
 | Didit identity + proposed internal labor | $148 | $780 | $1,570 |
-| Didit + screening 100% at $32 floor + internal labor | ≥$3,348 | ≥$16,780 | ≥$33,570 |
-| Didit + screening 20% at $32 floor + internal labor | ≥$788 | ≥$3,980 | ≥$7,970 |
-| Manual ID review + screening 100% at same floor | ≥$3,825 | ≥$19,125 | ≥$38,250 |
+| Didit + Checkr U.S. Basic for 100% + internal labor (U.S.-only reference) | $3,147 | $15,775 | $31,560 |
+| Didit + Checkr international screening for 100% + internal labor | $148 + 100 × quote + fees | $780 + 500 × quote + fees | $1,570 + 1,000 × quote + fees |
+| Manual ID review + Checkr U.S. Basic for 100% (U.S.-only reference) | $3,624 | $18,120 | $36,240 |
 
-The 20% scenario is a **policy alternative**, not compliance with universal screening. For actual country prices `c_j` and shares `q_j`, screening cost is `N × sum(q_j × c_j)`, plus additional residence/jurisdiction searches and any minimums. If criminal screening is unavailable, a cheap adverse-media result does not close BR-02. The all-in scenarios omit any optional Didit AML screen because Checkr's modeled package already includes watchlists; avoid paying twice without a defined purpose. [S23]
+The Checkr U.S. figures are a domestic list-price reference only, exclude pass-through fees, and may not be legally available or appropriate for volunteer screening. For international checks, use actual country prices `c_j` and shares `q_j`: screening cost is `N × sum(q_j × c_j)`, plus extra residence/jurisdiction searches, pass-through fees and any minimums. The total international screening estimate remains **contact sales / quote required**; do not use the former $32/check assumption, which the current public page does not substantiate. If criminal screening is unavailable, adverse media does not close BR-02. The all-in scenarios omit an optional Didit AML screen because the Checkr U.S. package includes a watchlist search; avoid duplicate screening without a defined purpose. [S23] [S25] [S55]
 
-**Hidden-cost reserve (proposal):** at 500/month, a 10% increase in paid identity bundles adds $16.50; an extra five minutes on every required criminal report adds **$1,041.67** labor. One additional $32 search on 20% of applicants adds **$3,200**. These sensitivities show why country history and adjudication matter more than headline ID prices. Include taxes, translations, accessibility support, training, disputes, legal review and privacy/security due diligence in the approved budget; their costs are unknown. No hosting cost is added to phase 1; future AWS/API engineering and infrastructure require a separate estimate.
+**Hidden-cost reserve (proposal):** at 500/month, a 10% increase in paid identity bundles adds $16.50; an extra five minutes of reviewer time on every required criminal report adds **$1,041.67** labor at the assumed $25/hour. If an additional-jurisdiction search costs `q`, running it for 20% of applicants adds `100 × q` at 500 applicants, plus any pass-through fees. These sensitivities show why residence history and adjudication matter more than headline ID prices. Include taxes, translations, accessibility support, training, disputes, legal review and privacy/security due diligence in the approved budget; their costs are unknown. No hosting cost is added to phase 1; future AWS/API engineering and infrastructure require a separate estimate.
 
 ## 12. Integration and technical fit
 
@@ -310,7 +311,7 @@ Choose Veriff Premium or Sumsub only if pilot evidence shows enough extra covera
 | 5. Operations/budget owner | Measure reviewer minutes, completion, case status accuracy and modeled billable events; reconcile 100/500/1,000 estimates and vendor billing rules |
 | 6. Leadership | Go/no-go after all musts have evidence; select vendor, lawful countries and spending cap; create separate implementation work only after approval |
 
-The issue's **2026-11-21 deadline is for this analysis**, not a promised integration launch. [S01] Live accuracy, real document acceptance and actual conversion remain unvalidated by a synthetic-only pilot. Any later live pilot needs separate authorization and privacy/legal preparation, outside this issue.
+The issue's requested **2026-11-22 deadline** is for this analysis, not a promised integration launch. [S01] This document is dated 2026-11-24. Live accuracy, real document acceptance and actual conversion remain unvalidated by a synthetic-only pilot. Any later live pilot needs separate authorization and privacy/legal preparation, outside this issue.
 
 ## 17. Open questions
 
@@ -327,7 +328,7 @@ The issue's **2026-11-21 deadline is for this analysis**, not a promised integra
 
 ## 18. Appendix: sources and glossary
 
-Every source below was checked **2026-11-17**. Prices/features are snapshots; recheck before procurement. Repository manifests establish source dependencies, not live deployments. No provider sandbox was executed. Source ranges in the text refer to the individual links listed here.
+Prices/features are snapshots; recheck before procurement. The Didit pricing/billing pages, Veriff and Sumsub pricing/product pages, and Checkr pricing/international/pass-through pages were checked **2026-11-24**. The Stripe unit price was checked 2026-11-17; its public page was rechecked 2026-11-24 for the first-50-verifications promotion, but did not expose a unit rate in the retrieved page text. Other sources were checked on the date shown. Repository manifests establish source dependencies, not live deployments. No provider sandbox was executed. Source ranges in the text refer to the individual links listed here.
 
 | ID | Primary source / purpose | Checked |
 | --- | --- | --- |
@@ -339,8 +340,8 @@ Every source below was checked **2026-11-17**. Prices/features are snapshots; re
 | S06 | [Stripe US product/pricing][S06] | 2026-11-17 |
 | S07 | [Stripe asynchronous outcomes and signature validation][S07] | 2026-11-17 |
 | S08 | [Stripe redaction API and completion timing][S08] | 2026-11-17 |
-| S09 | [Didit current pricing, credits and change notice][S09] | 2026-11-17 |
-| S10 | [Didit billable module rules][S10] | 2026-11-17 |
+| S09 | [Didit current pricing and plan credits][S09] | 2026-11-24 |
+| S10 | [Didit billable module rules and per-feature rates][S10] | 2026-11-24 |
 | S11 | [Didit ID verification and document catalog][S11] | 2026-11-17 |
 | S12 | [Didit sandbox limits and simulated outcomes][S12] | 2026-11-17 |
 | S13 | [Didit webhook setup and signature guidance][S13] | 2026-11-17 |
@@ -349,13 +350,13 @@ Every source below was checked **2026-11-17**. Prices/features are snapshots; re
 | S16 | [ID.me country/document matrix][S16] | 2026-11-17 |
 | S17 | [ID.me supported documents and assisted-route caveats][S17] | 2026-11-17 |
 | S18 | [ID.me biometric consent and purposes][S18] | 2026-11-17 |
-| S19 | [Veriff pricing, control tiers, liveness and trial][S19] | 2026-11-17 |
+| S19 | [Veriff pricing, control tiers, liveness and trial][S19] | 2026-11-24 |
 | S20 | [Veriff supported countries/documents][S20] | 2026-11-17 |
-| S21 | [Sumsub plans, minimums and extra charges][S21] | 2026-11-17 |
-| S22 | [Sumsub user verification scope][S22] | 2026-11-17 |
-| S23 | [Checkr international package starting prices][S23] | 2026-11-17 |
+| S21 | [Sumsub plans, minimums and extra charges][S21] | 2026-11-24 |
+| S22 | [Sumsub user verification scope][S22] | 2026-11-24 |
+| S23 | [Checkr public U.S. package pricing; no international per-check rate listed][S23] | 2026-11-24 |
 | S24 | [Checkr API: international criminal/adverse-media distinction][S24] | 2026-11-17 |
-| S25 | [Checkr international coverage and API overview][S25] | 2026-11-17 |
+| S25 | [Checkr international background-check overview][S25] | 2026-11-24 |
 | S26 | [Checkr credentialing and staging prerequisites][S26] | 2026-11-17 |
 | S27 | [Sumsub React/WebSDK setup and mobile caveats][S27] | 2026-11-17 |
 | S28 | [Sumsub isolated sandbox][S28] | 2026-11-17 |
@@ -385,6 +386,7 @@ Every source below was checked **2026-11-17**. Prices/features are snapshots; re
 | S52 | [German Federal Office of Justice: applicant/enhanced certificate procedure][S52] | 2026-11-17 |
 | S53 | [India MEA: Police Clearance Certificate purposes/routes][S53] | 2026-11-17 |
 | S54 | [RCMP: vulnerable-sector eligibility and recipient restriction][S54] | 2026-11-17 |
+| S55 | [Checkr court/database pass-through fee policy][S55] | 2026-11-24 |
 
 | Term | Meaning in this document |
 | --- | --- |
@@ -453,3 +455,4 @@ Every source below was checked **2026-11-17**. Prices/features are snapshots; re
 [S52]: https://www.bundesjustizamt.de/SharedDocs/Downloads/DE/ZentraleRegister/Bundeszentralregister/Merkblatt_Antrag_en.pdf?__blob=publicationFile&v=3
 [S53]: https://www.mea.gov.in/police-clearance-certificate.htm
 [S54]: https://rcmp.ca/en/criminal-records/criminal-record-checks/vulnerable-sector-checks
+[S55]: https://checkr.com/pricing/passthrough-fees-overview
