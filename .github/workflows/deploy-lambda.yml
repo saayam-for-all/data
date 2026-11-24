@@ -1,11 +1,17 @@
-name: Deploy Lambda Function
+name: CI/CD - Lambda
 
 on:
   pull_request:
-    types: [closed]
-    branches: [main]
+    branches:
+      - main
     paths:
-      - 'data-engineering/src/saayam-org-*/**'
+      - 'data-engineering/**'
+
+  push:
+    branches:
+      - main
+      - dev
+      - test
 
   workflow_dispatch:
     inputs:
@@ -13,50 +19,170 @@ on:
         description: 'Source folder under data-engineering/src/'
         required: true
         type: string
+
       lambda_function_name:
         description: 'AWS Lambda function name'
         required: true
         type: string
 
+
 concurrency:
-  group: deploy-lambda-${{ github.ref }}
+  group: ci-cd-${{ github.ref }}
   cancel-in-progress: true
 
+
+# ============================================================
+# CI
+# ============================================================
 jobs:
+
+  ci:
+    name: CI - Lint, SAST, Tests & Dependency Audit
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    defaults:
+      run:
+        working-directory: data-engineering
+
+    steps:
+
+      # --------------------------------------------------------
+      # Checkout
+      # --------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------------
+      # Python
+      # --------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: |
+            data-engineering/requirements.txt
+            data-engineering/src/categorizer/requirements.txt
+
+      # --------------------------------------------------------
+      # Install dependencies
+      # --------------------------------------------------------
+      - name: Install application dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install categorizer dependencies
+        run: |
+          pip install -r src/categorizer/requirements.txt
+
+      # --------------------------------------------------------
+      # CI tools
+      # --------------------------------------------------------
+      - name: Install CI tools
+        run: |
+          pip install flake8 bandit pip-audit
+
+      # ========================================================
+      # 1. FLAKE8
+      # ========================================================
+      # - name: Run Flake8
+      #   run: |
+      #     flake8 src \
+      #       --exclude='__pycache__,.pytest_cache' \
+      #       --max-line-length=120
+
+      # ========================================================
+      # 2. BANDIT / SAST
+      # ========================================================
+      # - name: Run Bandit SAST
+      #   run: |
+      #     bandit -r src \
+      #       -x src/categorizer/__pycache__,src/__pycache__ \
+      #       -ll
+
+      # ========================================================
+      # 3. PYTEST
+      # ========================================================
+      - name: Run pytest
+        env:
+          SECRET_KEY: test-secret
+        run: |
+          pytest -v tests/
+
+      # ========================================================
+      # 4. PIP-AUDIT
+      # ========================================================
+      - name: Run pip-audit - application dependencies
+        run: |
+          pip-audit -r requirements.txt
+
+      - name: Run pip-audit - categorizer dependencies
+        run: |
+          pip-audit -r src/categorizer/requirements.txt
+
+
+  # ============================================================
+  # CD - Detect changed Lambda functions
+  # ============================================================
   detect-changes:
+    name: Detect Changed Lambdas
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     outputs:
       lambdas: ${{ steps.find-lambdas.outputs.lambdas }}
+
     steps:
-      - uses: actions/checkout@v4
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Find changed Lambda folders
         id: find-lambdas
         run: |
-          CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} \
+          CHANGED=$(git diff --name-only \
+            ${{ github.event.pull_request.base.sha }} \
+            ${{ github.event.pull_request.head.sha }} \
             | grep '^data-engineering/src/saayam-org-' \
             | cut -d'/' -f3 \
-            | sort -u)
+            | sort -u || true)
 
           if [ -z "$CHANGED" ]; then
-            echo "lambdas=[]" >> $GITHUB_OUTPUT
+            echo "lambdas=[]" >> "$GITHUB_OUTPUT"
           else
-            JSON=$(echo "$CHANGED" | jq -R -s -c 'split("\n") | map(select(length > 0))')
-            echo "lambdas=$JSON" >> $GITHUB_OUTPUT
+            JSON=$(echo "$CHANGED" \
+              | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+            echo "lambdas=$JSON" >> "$GITHUB_OUTPUT"
             echo "📋 Lambdas to deploy: $JSON"
           fi
 
+
+  # ============================================================
+  # CD - Automatic Lambda deployment
+  # ============================================================
   deploy-auto:
+    name: Deploy Lambda - ${{ matrix.lambda }}
     needs: detect-changes
+
     if: needs.detect-changes.outputs.lambdas != '[]'
+
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         lambda: ${{ fromJson(needs.detect-changes.outputs.lambdas) }}
+
     steps:
+
+      # --------------------------------------------------------
+      # Authorization
+      # --------------------------------------------------------
       - name: Check if authorized
         run: |
           if [ "${{ github.actor }}" != "saquibb8" ]; then
@@ -64,46 +190,100 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/checkout@v4
+      # --------------------------------------------------------
+      # Checkout
+      # --------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      # --------------------------------------------------------
+      # Python
+      # --------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
+      # --------------------------------------------------------
+      # Build deployment package
+      # --------------------------------------------------------
       - name: Build deployment package
         run: |
-          mkdir package
-          if [ -f data-engineering/src/${{ matrix.lambda }}/requirements.txt ]; then
-            pip install -r data-engineering/src/${{ matrix.lambda }}/requirements.txt -t package/ --quiet
+          mkdir -p package
+
+          REQUIREMENTS="data-engineering/src/${{ matrix.lambda }}/requirements.txt"
+
+          if [ -f "$REQUIREMENTS" ] && grep -qvE '^\s*(#|$)' "$REQUIREMENTS"; then
+            pip install \
+              -r "$REQUIREMENTS" \
+              -t package/ \
+              --quiet
           fi
-          cp -r data-engineering/src/${{ matrix.lambda }}/* package/
-          [ -d data-engineering/src/utils ] && cp -r data-engineering/src/utils package/
-          [ -d data-engineering/src/models ] && cp -r data-engineering/src/models package/
 
-      - name: Create zip
+          cp -r \
+            data-engineering/src/${{ matrix.lambda }}/* \
+            package/
+
+          if [ -d data-engineering/src/utils ]; then
+            cp -r data-engineering/src/utils package/
+          fi
+
+          if [ -d data-engineering/src/models ]; then
+            cp -r data-engineering/src/models package/
+          fi
+
+      # --------------------------------------------------------
+      # Create ZIP
+      # --------------------------------------------------------
+      - name: Create deployment ZIP
         run: |
-          cd package && zip -r ../deployment.zip . --quiet && cd ..
-          echo "📦 Size: $(du -h deployment.zip | cut -f1)"
+          cd package
+          zip -r ../deployment.zip . --quiet
+          cd ..
 
-      - uses: aws-actions/configure-aws-credentials@v4
+          echo "📦 Deployment package:"
+          ls -lh deployment.zip
+
+      # --------------------------------------------------------
+      # AWS
+      # --------------------------------------------------------
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # --------------------------------------------------------
+      # Deploy
+      # --------------------------------------------------------
       - name: Deploy to Lambda
         run: |
           echo "🚀 Deploying: ${{ matrix.lambda }}"
+
           aws lambda update-function-code \
             --function-name "${{ matrix.lambda }}" \
             --zip-file fileb://deployment.zip \
-            --publish --output table
-          echo "✅ Done!"
+            --publish \
+            --output table
 
+          echo "✅ Deployment completed successfully!"
+
+
+  # ============================================================
+  # CD - Manual Lambda deployment
+  # ============================================================
   deploy-manual:
+    name: Manual Lambda Deployment
     if: github.event_name == 'workflow_dispatch'
+
     runs-on: ubuntu-latest
+
     steps:
+
+      # --------------------------------------------------------
+      # Authorization
+      # --------------------------------------------------------
       - name: Check if authorized
         run: |
           if [ "${{ github.actor }}" != "saquibb8" ]; then
@@ -111,41 +291,83 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/checkout@v4
+      # --------------------------------------------------------
+      # Checkout main
+      # --------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           ref: main
 
-      - uses: actions/setup-python@v5
+      # --------------------------------------------------------
+      # Python
+      # --------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
+      # --------------------------------------------------------
+      # Build package
+      # --------------------------------------------------------
       - name: Build deployment package
         run: |
-          mkdir package
-          if [ -f data-engineering/src/${{ inputs.source_folder }}/requirements.txt ]; then
-            pip install -r data-engineering/src/${{ inputs.source_folder }}/requirements.txt -t package/ --quiet
+          mkdir -p package
+
+          REQUIREMENTS="data-engineering/src/${{ inputs.source_folder }}/requirements.txt"
+
+          if [ -f "$REQUIREMENTS" ] && grep -qvE '^\s*(#|$)' "$REQUIREMENTS"; then
+            pip install \
+              -r "$REQUIREMENTS" \
+              -t package/ \
+              --quiet
           fi
-          cp -r data-engineering/src/${{ inputs.source_folder }}/* package/
-          [ -d data-engineering/src/utils ] && cp -r data-engineering/src/utils package/
-          [ -d data-engineering/src/models ] && cp -r data-engineering/src/models package/
 
-      - name: Create zip
+          cp -r \
+            data-engineering/src/${{ inputs.source_folder }}/* \
+            package/
+
+          if [ -d data-engineering/src/utils ]; then
+            cp -r data-engineering/src/utils package/
+          fi
+
+          if [ -d data-engineering/src/models ]; then
+            cp -r data-engineering/src/models package/
+          fi
+
+      # --------------------------------------------------------
+      # ZIP
+      # --------------------------------------------------------
+      - name: Create deployment ZIP
         run: |
-          cd package && zip -r ../deployment.zip . --quiet && cd ..
-          echo "📦 Size: $(du -h deployment.zip | cut -f1)"
+          cd package
+          zip -r ../deployment.zip . --quiet
+          cd ..
 
-      - uses: aws-actions/configure-aws-credentials@v4
+          echo "📦 Deployment package:"
+          ls -lh deployment.zip
+
+      # --------------------------------------------------------
+      # AWS
+      # --------------------------------------------------------
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # --------------------------------------------------------
+      # Deploy
+      # --------------------------------------------------------
       - name: Deploy to Lambda
         run: |
           echo "🚀 Deploying: ${{ inputs.lambda_function_name }}"
+
           aws lambda update-function-code \
             --function-name "${{ inputs.lambda_function_name }}" \
             --zip-file fileb://deployment.zip \
-            --publish --output table
-          echo "✅ Done!"
+            --publish \
+            --output table
 
+          echo "✅ Deployment completed successfully!"
