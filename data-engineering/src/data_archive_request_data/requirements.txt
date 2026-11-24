@@ -1,0 +1,3 @@
+# Bundled into the deployment zip by deploy-lambda.yml.
+# boto3 is already provided by the AWS Lambda Python runtime.
+psycopg2-binary==2.9.9
