@@ -1,5 +1,11 @@
 import json
-from helpers import get_ai_orgs, get_orgs_from_db, merge_organizations
+from helpers import (
+    get_ai_orgs,
+    get_orgs_from_db,
+    merge_organizations,
+    get_beneficiary_location,
+    add_distance_columns,
+)
 from concurrent.futures import ThreadPoolExecutor
 
 # handle the lambda function call
@@ -30,6 +36,12 @@ def lambda_handler(event, context):
 
             db_organizations = db_future.result()
             genAI_organizations = ai_future.result()
+
+        # Distance (#433): from the beneficiary/request location, never the viewer's.
+        # Runs after the parallel calls so the shared DB connection is not used concurrently.
+        beneficiary = get_beneficiary_location(body)
+        db_organizations = add_distance_columns(db_organizations, beneficiary, "db")
+        genAI_organizations = add_distance_columns(genAI_organizations, beneficiary, "ai")
 
         combined_list = merge_organizations(db_organizations, genAI_organizations)
 
